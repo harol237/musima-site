@@ -1,85 +1,194 @@
 ---
 import Base from '~/layouts/Base.astro';
 import EntetePage from '~/components/EntetePage.astro';
-import ARemplir from '~/components/ARemplir.astro';
 import site from '~/data/site.json';
 
+/* Un champ encore vide se reconnaît à son crochet ouvrant. On n'affiche
+   jamais le marqueur au public : on dit explicitement que la donnée est
+   en cours d'attribution. Mieux vaut une lacune assumée qu'un numéro
+   inventé — l'article 10 de la LSSI-CE exige des informations exactes. */
 const aRemplir = (valeur: string) => valeur.startsWith('[');
+const { juridique: j, hebergeur: h, contact: c } = site;
+const maj = new Intl.DateTimeFormat('fr-FR', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid',
+}).format(new Date('2026-09-02'));
 ---
 <Base
   titre="Mentions légales"
-  description="Éditeur, hébergeur et informations légales du site MUSIMA."
-  noindex
+  description="Éditeur, hébergeur, conditions d'utilisation et informations légales du site MUSIMA."
 >
   <EntetePage
     surtitre="Informations légales"
     titre="Mentions légales"
-    chapo="Qui édite ce site, qui l'héberge, et à qui appartient ce que vous y voyez."
+    chapo="Qui édite ce site, qui l'héberge, ce que vous pouvez en faire. Ces informations sont celles qu'exige l'article 10 de la loi espagnole 34/2002 (LSSI-CE)."
     ariane={[{ libelle: 'Mentions légales' }]}
     registre="papier"
   />
   <section class="section conteneur">
     <div class="prose">
-      <h2>Éditeur du site</h2>
-      <p>
-        Ce site est édité par <strong>{site.nom}</strong>, association sans but lucratif de droit
-        espagnol, régie par la loi organique 1/2002 sur le droit d'association et par le livre
-        troisième du Code civil de Catalogne, dont le siège est à {site.contact.ville},
-        {' '}{site.contact.region}, {site.contact.pays}.
-      </p>
-      {aRemplir(site.contact.statut_juridique) && (
-        <ARemplir libelle="NIF DE L'ASSOCIATION ET NUMÉRO D'INSCRIPTION AU REGISTRE DES ASSOCIATIONS DE LA GENERALITAT DE CATALUNYA À AJOUTER" />
-      )}
-      {aRemplir(site.contact.adresse) && (
-        <ARemplir libelle="ADRESSE POSTALE COMPLÈTE DU SIÈGE À AJOUTER" />
-      )}
-      <p>
-        Contact : <a href={`mailto:${site.contact.email}`} class="lien">{site.contact.email}</a>
-      </p>
-      <ARemplir libelle="NOM DE LA PERSONNE RESPONSABLE DE LA PUBLICATION À AJOUTER (généralement la présidence de l'association)" />
 
-      <h2>Hébergement</h2>
+      <h2>1. Identification de l'éditeur</h2>
+      <dl class="fiche-legale">
+        <div><dt>Dénomination</dt><dd>{site.nom}</dd></div>
+        <div><dt>Forme juridique</dt><dd>{j.forme}</dd></div>
+        <div><dt>Cadre légal</dt><dd>{j.cadre}</dd></div>
+        <div>
+          <dt>Siège social</dt>
+          <dd>
+            {aRemplir(c.adresse)
+              ? <>{c.ville}, {c.region}, {c.pays}. <em>L'adresse postale complète du siège sera publiée ici dès que le local de l'association sera fixé.</em></>
+              : <>{c.adresse}, {c.ville}, {c.region}, {c.pays}</>}
+          </dd>
+        </div>
+        <div>
+          <dt>Adresse électronique</dt>
+          <dd><a href={`mailto:${c.email}`} class="lien">{c.email}</a></dd>
+        </div>
+        <div>
+          <dt>NIF</dt>
+          <dd>
+            {aRemplir(j.nif)
+              ? <em>En cours d'attribution — voir « Enregistrement » ci-dessous.</em>
+              : j.nif}
+          </dd>
+        </div>
+        <div>
+          <dt>Enregistrement</dt>
+          <dd>
+            {aRemplir(j.numero_registre) ? (
+              <>
+                Demande d'inscription <strong>en cours d'instruction</strong> auprès du
+                {' '}{j.registre_nom}. Le numéro d'inscription et le NIF seront publiés sur cette
+                page dès leur attribution. Dans l'intervalle, l'association est joignable et
+                identifiable par les coordonnées ci-dessus.
+              </>
+            ) : (
+              <>Inscrite au {j.registre_nom} sous le numéro {j.numero_registre}.</>
+            )}
+          </dd>
+        </div>
+        <div>
+          <dt>Responsable de la publication</dt>
+          <dd>
+            {aRemplir(j.responsable_publication)
+              ? <em>La présidence de l'association, désignée à la constitution du bureau. Le nom sera publié ici.</em>
+              : j.responsable_publication}
+          </dd>
+        </div>
+      </dl>
+
+      <h2>2. Hébergement</h2>
       <p>
-        Le site est un site statique : les pages sont pré-générées et servies telles quelles, sans
+        Le site est hébergé par <strong>{h.nom}</strong>, {h.adresse}
+        {' '}(<a href={h.site} class="lien" rel="noopener">{h.site.replace('https://', '')}</a>),
+        via son service {h.service}.
+      </p>
+      <p>
+        Il s'agit d'un site statique : les pages sont pré-générées et servies telles quelles, sans
         base de données ni traitement côté serveur.
       </p>
+
+      <h2>3. Objet du site</h2>
       <p>
-        Hébergeur : <strong>Cloudflare, Inc.</strong>, 101 Townsend Street, San Francisco,
-        CA 94107, États-Unis — <a href="https://www.cloudflare.com" class="lien" rel="noopener">www.cloudflare.com</a>.
-        Le site est distribué via Cloudflare Pages, depuis les serveurs européens du réseau
-        pour les visiteurs situés en Europe.
+        Ce site présente l'activité de {site.nom} : ses rencontres, les personnes qui y prennent la
+        parole, ses projets et ses publications. Il est d'accès libre et gratuit. Aucune vente,
+        aucun paiement et aucune transaction commerciale n'y sont proposés.
       </p>
 
-      <h2>Propriété intellectuelle</h2>
+      <h2>4. Conditions d'utilisation</h2>
+      <h3>Usage autorisé</h3>
       <p>
-        Les textes publiés sur ce site sont la propriété de {site.nom}, sauf mention contraire.
-        Les photographies restent la propriété de leurs auteurs : chaque image publiée porte son
-        crédit lorsqu'il nous a été communiqué.
+        Vous pouvez consulter ce site, le citer, en partager les adresses et en reproduire des
+        extraits pour un usage privé, pédagogique, associatif ou journalistique, à condition de
+        citer {site.nom} et de ne pas dénaturer le propos. Pour tout autre usage, notamment
+        commercial, demandez-nous : nous répondons.
       </p>
+      <h3>Usage interdit</h3>
       <p>
-        Les portraits et les récits publiés le sont avec l'accord des personnes concernées. Si
-        vous apparaissez sur une photo ou dans un texte et que vous souhaitez qu'il soit retiré,
-        écrivez-nous : nous le ferons sans discuter.
+        Sont interdits : l'extraction systématique ou la réutilisation d'une partie substantielle
+        du contenu, toute tentative d'accès non autorisé, toute action visant à perturber le
+        fonctionnement du site, et l'utilisation des adresses de contact publiées à des fins de
+        prospection non sollicitée.
       </p>
+      <h3>Liens</h3>
       <p>
-        Reproduction possible pour un usage non commercial, à condition de citer {site.nom} et de
-        ne pas dénaturer le propos. Pour tout autre usage, demandez-nous.
+        Les liens sortants pointent vers des sites que nous ne contrôlons pas et dont nous ne
+        répondons pas. Vous pouvez créer un lien vers ce site sans nous demander l'autorisation,
+        dès lors que le lien n'induit pas en erreur sur l'origine du contenu.
       </p>
 
-      <h2>Conception</h2>
+      <h2>5. Propriété intellectuelle</h2>
       <p>
-        Identité visuelle et site conçus pour {site.nom}. Le site n'utilise ni traceur publicitaire,
-        ni service tiers pour l'affichage des pages : les polices de caractères sont hébergées sur
-        notre propre domaine.
+        Les textes publiés sur ce site sont la propriété de {site.nom}, sauf mention contraire. Les
+        photographies restent la propriété de leurs auteurs : chaque image publiée porte son crédit
+        lorsqu'il nous a été communiqué. L'identité visuelle et le nom {site.nom} appartiennent à
+        l'association.
       </p>
-      <ARemplir libelle="CRÉDITS DE CONCEPTION (IDENTITÉ VISUELLE, DÉVELOPPEMENT) À COMPLÉTER" />
+      <p>
+        Les portraits, les récits et les photographies de personnes sont publiés avec l'accord des
+        personnes concernées. Si vous apparaissez sur une image ou dans un texte et souhaitez qu'il
+        soit retiré, écrivez-nous : nous le faisons sans discuter et sans délai.
+      </p>
 
-      <h2>Signaler un contenu</h2>
+      <h2>6. Responsabilité</h2>
       <p>
-        Une erreur, un contenu qui ne devrait pas être là, un lien mort : écrivez à
-        {' '}<a href={`mailto:${site.contact.email}`} class="lien">{site.contact.email}</a> et nous
-        corrigerons.
+        Nous nous efforçons de publier des informations exactes et à jour, en particulier les dates
+        et les lieux de rencontre. Une erreur reste possible : elle ne saurait engager la
+        responsabilité de l'association. Les dates et lieux annoncés peuvent changer ; la page de
+        l'événement fait foi.
       </p>
+      <p>
+        Le site est fourni en l'état. Nous ne garantissons ni une disponibilité continue, ni
+        l'absence d'interruption liée à la maintenance ou à l'hébergeur.
+      </p>
+
+      <h2>7. Protection des données et cookies</h2>
+      <p>
+        Le traitement des données personnelles est décrit dans la
+        {' '}<a href="/confidentialite" class="lien">politique de confidentialité</a>. L'usage des
+        cookies et du stockage local est décrit dans la
+        {' '}<a href="/cookies" class="lien">politique relative aux cookies</a>.
+      </p>
+
+      <h2>8. Droit applicable</h2>
+      <p>
+        Ces mentions sont régies par le droit espagnol, notamment la loi 34/2002 relative aux
+        services de la société de l'information et au commerce électronique (LSSI-CE). Tout litige
+        relève des tribunaux compétents de Barcelone, sans préjudice des règles protectrices
+        applicables aux consommateurs.
+      </p>
+
+      <h2>9. Nous signaler quelque chose</h2>
+      <p>
+        Une erreur, un contenu qui ne devrait pas être là, un lien mort, une image à retirer :
+        écrivez à <a href={`mailto:${c.email}`} class="lien">{c.email}</a>.
+      </p>
+
+      <p class="maj">Dernière mise à jour : {maj}.</p>
     </div>
   </section>
 </Base>
+
+<style>
+  .fiche-legale { display: flex; flex-direction: column; margin: 0; }
+  .fiche-legale > div {
+    display: grid;
+    gap: var(--e-1, 0.25rem);
+    padding-block: var(--e-4);
+    border-bottom: 1px solid var(--trait);
+  }
+  .fiche-legale > div:first-child { border-top: 1px solid var(--trait); }
+  .fiche-legale dt {
+    font-family: var(--f-titre);
+    font-size: var(--t-100);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--encre-faible);
+  }
+  .fiche-legale dd { margin: 0; font-size: var(--t-300); line-height: 1.6; }
+  @media (min-width: 44rem) {
+    .fiche-legale > div { grid-template-columns: 14rem minmax(0, 1fr); gap: var(--e-4); align-items: baseline; }
+  }
+  .maj { margin-top: var(--e-8); font-size: var(--t-200); color: var(--encre-faible); }
+</style>

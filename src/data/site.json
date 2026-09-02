@@ -1,7 +1,11 @@
 {
   "nom": "MUSIMA",
   "baseline": "Mettre en lumière ce que les Africains construisent",
-  "verbes": ["Connecter", "Bâtir", "Impacter"],
+  "verbes": [
+    "Connecter",
+    "Bâtir",
+    "Impacter"
+  ],
   "phrase": "MUSIMA met en lumière ce que les Africains construisent : des personnes, des parcours, des projets. On organise des rencontres où celles et ceux qui font déjà racontent comment ils s'y sont pris, et on fait circuler ce qui s'y dit.",
   "description_courte": "Association basée à Barcelone. Des rencontres où des Africains qui entreprennent, créent et innovent racontent ce qu'ils construisent — et comment.",
   "langue": "fr",
@@ -11,13 +15,21 @@
     "ville": "Barcelone",
     "region": "Catalogne",
     "pays": "Espagne",
-    "adresse": "[ADRESSE DU SIÈGE À AJOUTER]",
-    "statut_juridique": "[FORME JURIDIQUE, NIF ET NUMÉRO AU REGISTRE DES ASSOCIATIONS DE CATALOGNE À AJOUTER]"
+    "adresse": "[ADRESSE COMPLÈTE DU SIÈGE À BARCELONE À AJOUTER]"
   },
   "reseaux": [
-    { "nom": "Instagram", "url": "https://www.instagram.com/musima_official" },
-    { "nom": "LinkedIn", "url": "[LIEN À AJOUTER]" },
-    { "nom": "YouTube", "url": "[LIEN À AJOUTER]" }
+    {
+      "nom": "Instagram",
+      "url": "https://www.instagram.com/musima_official"
+    },
+    {
+      "nom": "LinkedIn",
+      "url": "[LIEN À AJOUTER]"
+    },
+    {
+      "nom": "YouTube",
+      "url": "[LIEN À AJOUTER]"
+    }
   ],
   "infolettre": {
     "actif": true,
@@ -27,5 +39,28 @@
     "action": "[URL DU FORMULAIRE BREVO À AJOUTER]",
     "champ_email": "EMAIL",
     "champ_consentement": "OPT_IN"
+  },
+  "juridique": {
+    "forme": "Associació sense ànim de lucre — association sans but lucratif de droit espagnol",
+    "cadre": "Loi organique 1/2002 sur le droit d'association et livre troisième du Code civil de Catalogne",
+    "registre_nom": "Registre des associations de la Generalitat de Catalunya",
+    "enregistrement_en_cours": true,
+    "nif": "[NIF À AJOUTER DÈS RÉCEPTION]",
+    "numero_registre": "[NUMÉRO D'INSCRIPTION AU REGISTRE À AJOUTER DÈS RÉCEPTION]",
+    "responsable_publication": "[NOM DE LA PERSONNE RESPONSABLE DE LA PUBLICATION À AJOUTER]",
+    "statuts_pdf": "[LIEN VERS LES STATUTS (PDF) À AJOUTER]"
+  },
+  "hebergeur": {
+    "nom": "Cloudflare, Inc.",
+    "adresse": "101 Townsend Street, San Francisco, CA 94107, États-Unis",
+    "site": "https://www.cloudflare.com",
+    "service": "Cloudflare Pages"
+  },
+  "cookies": {
+    "aucun": true,
+    "verifie_le": "2026-09-02",
+    "stockage_local": [
+      "musima-theme"
+    ]
   }
 }

@@ -21,5 +21,6 @@ export const navigationSecondaire: Entree[] = [
 export const navigationLegale: Entree[] = [
   { libelle: 'Mentions légales', url: '/mentions-legales' },
   { libelle: 'Confidentialité', url: '/confidentialite' },
+  { libelle: 'Cookies', url: '/cookies' },
   { libelle: 'Accessibilité', url: '/accessibilite' },
 ];
