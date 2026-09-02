@@ -197,7 +197,10 @@ const estActif = (url: string) => chemin === url || chemin.startsWith(url + '/')
     .entete__nav { display: none; }
     .entete__cta { display: none; }
     .entete__bascule { display: grid; }
-    .menu-mobile { display: block; }
+    /* `:not([hidden])` est indispensable : une règle d'auteur `display: block`
+       l'emporte sur le `[hidden] { display: none }` du navigateur, et le
+       panneau resterait déplié en permanence sur mobile. */
+    .menu-mobile:not([hidden]) { display: block; }
 
     /* Au doigt, 38px c'est petit : on passe les deux bascules à 44px,
        le minimum confortable sur mobile et tablette. */

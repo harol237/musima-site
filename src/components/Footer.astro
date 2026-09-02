@@ -161,6 +161,10 @@ const aRemplir = (valeur: string) => valeur.startsWith('[');
   .pied__colonnes ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--e-2); }
 
   .lien-pied {
+    /* inline-block + marge verticale : porte la cible à 26px, au-dessus
+       du minimum de 24px du critère WCAG 2.5.8. */
+    display: inline-block;
+    padding-block: 0.25rem;
     font-family: var(--f-titre);
     font-size: var(--t-300);
     overflow-wrap: anywhere;
@@ -191,9 +195,9 @@ const aRemplir = (valeur: string) => valeur.startsWith('[');
   }
   .pied__consentement input {
     flex: none;
-    width: 1.05rem;
-    height: 1.05rem;
-    margin-top: 0.15em;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: -0.1em;
     accent-color: var(--terre);
   }
   .pied__form-ligne input {

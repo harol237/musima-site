@@ -36,5 +36,11 @@ const { surtitre, titre, texte, actions = [] } = Astro.props;
   }
   .bandeau__interieur > div:first-child { max-width: 40rem; }
   .bandeau__texte { margin-top: var(--e-4); }
-  .bandeau__actions { flex: none; }
+  /* `flex: none` fige la rangée à sa largeur max-content : les deux
+     boutons restent côte à côte et débordent sous 400px. On ne la fige
+     qu'une fois qu'il y a la place. */
+  .bandeau__actions { flex: 0 1 auto; }
+  @media (min-width: 40rem) {
+    .bandeau__actions { flex: none; }
+  }
 </style>

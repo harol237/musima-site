@@ -331,4 +331,7 @@ const tons = [
   .verbe__texte { font-size: var(--t-300); line-height: 1.65; color: var(--encre-douce); text-wrap: pretty; }
 
   .tons { display: flex; flex-wrap: wrap; gap: var(--e-2); list-style: none; margin: 0; padding: 0; }
+  /* Ces puces-là portent des phrases, pas des étiquettes : le `nowrap`
+     hérité de `.puce` les faisait déborder sous 400px. */
+  .tons .puce { white-space: normal; text-align: center; }
 </style>
