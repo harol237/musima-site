@@ -5,6 +5,7 @@ import EnteteSection from '~/components/EnteteSection.astro';
 import BandeauCta from '~/components/BandeauCta.astro';
 import ARemplir from '~/components/ARemplir.astro';
 import site from '~/data/site.json';
+import { enChantier } from '~/lib/contenu';
 
 const publics = [
   'Les Africains et les personnes issues des diasporas africaines',
@@ -210,16 +211,15 @@ const tons = [
     </div>
   </section>
 
+  {enChantier && (
   <hr class="conteneur filet" />
+  )}
 
   <!-- ============ ÉQUIPE & CADRE ============ -->
+  {enChantier && (
   <section class="section conteneur deux-colonnes">
     <div class="colonne-titre">
-      <EnteteSection
-        surtitre="Le cadre"
-        titre="L’équipe et le fonctionnement"
-        lien={{ url: '/association/equipe', libelle: 'Voir l’équipe' }}
-      />
+      <EnteteSection surtitre="Le cadre" titre="L’équipe et le fonctionnement" />
     </div>
     <div class="pile pile-4">
       <p class="note">
@@ -231,6 +231,8 @@ const tons = [
       <ARemplir libelle="STATUTS DE L’ASSOCIATION (PDF) À AJOUTER" />
     </div>
   </section>
+
+  )}
 
   <BandeauCta
     surtitre="Contribuer"

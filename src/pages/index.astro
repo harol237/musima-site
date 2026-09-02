@@ -13,8 +13,7 @@ import {
   chargerEvenements,
   chargerIntervenants,
   chargerProjets,
-  chargerRecits,
-} from '~/lib/contenu';
+  chargerRecits, enChantier } from '~/lib/contenu';
 
 const { aVenir, passes } = await chargerEvenements();
 const intervenants = await chargerIntervenants();
@@ -79,6 +78,7 @@ const intentions = [
         </div>
       </div>
 
+      {enChantier && (
       <div class="heros__visuel">
         <ARemplir
           libelle="PHOTO D’OUVERTURE À AJOUTER — portrait ou scène de rencontre, format portrait 4:5"
@@ -89,6 +89,7 @@ const intentions = [
           Le visuel d’ouverture donne le ton du site : une personne réelle, dans son environnement.
         </p>
       </div>
+      )}
     </div>
   </section>
 
@@ -137,6 +138,7 @@ const intentions = [
   </section>
 
   <!-- ================= INTERVENANTS ================= -->
+  {(intervenants.length > 0 || enChantier) && (
   <section class="section conteneur">
     <EnteteSection
       surtitre="Les voix"
@@ -157,7 +159,10 @@ const intentions = [
     )}
   </section>
 
+  )}
+
   <!-- ================= PROJETS ================= -->
+  {(projets.length > 0 || enChantier) && (
   <section class="section conteneur">
     <EnteteSection
       surtitre="Projets"
@@ -178,7 +183,10 @@ const intentions = [
     )}
   </section>
 
+  )}
+
   <!-- ================= RÉCITS ================= -->
+  {(recits.length > 0 || enChantier) && (
   <section class="section conteneur">
     <EnteteSection
       surtitre="Récits"
@@ -198,6 +206,8 @@ const intentions = [
       />
     )}
   </section>
+
+  )}
 
   <BandeauCta
     surtitre="Participer"

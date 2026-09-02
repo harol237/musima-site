@@ -2,10 +2,7 @@
 titre: "Pourquoi MUSIMA"
 date: 2026-09-02
 categorie: "Idées & analyses"
-auteur: "[NOM DE L'AUTRICE À AJOUTER]"
 resume: "Pendant des années, j'ai vu des gens autour de moi construire des choses solides sans que ça sorte jamais de leur cercle. MUSIMA est né de cet écart-là — et du moment où j'ai arrêté d'attendre que quelqu'un d'autre s'en occupe."
-image_alt: "[DESCRIPTION DE LA PHOTO À AJOUTER]"
-credit_photo: "[CRÉDIT PHOTO À AJOUTER]"
 mots_cles: ["Origine", "Diaspora", "Barcelone"]
 temps_lecture: "4 min de lecture"
 en_avant: true
@@ -28,7 +25,10 @@ Des gens qui ont monté quelque chose, ici, sans que ça se sache plus loin que 
 
 Rien de spectaculaire pris séparément. Mis bout à bout, énorme.
 
-> [À COMPLÉTER — deux ou trois personnes précises que tu as en tête, avec ce qu'elles ont monté. C'est le passage le plus important du texte : c'est là que le lecteur comprendra que tu ne parles pas en général, mais de gens réels que tu connais.]
+<!-- À COMPLÉTER — le passage le plus important du texte : deux ou trois
+     personnes précises que tu as en tête, avec ce qu'elles ont monté.
+     C'est là que le lecteur comprendra que tu ne parles pas en général,
+     mais de gens réels que tu connais. -->
 
 Et à chaque fois la même chose : quand je demandais comment ils s'y étaient pris, la réponse durait une heure et valait dix conférences. Comment trouver le premier client. Comment on fait quand on n'a pas la nationalité, pas le réseau, pas le compte en banque qui rassure. À qui on demande de l'aide, et à qui on n'en demande surtout pas.
 
@@ -40,7 +40,9 @@ Voilà ce qui m'a décidée. Pas une injustice abstraite — un écart très con
 
 D'un côté, des gens qui savent des choses parce qu'ils les ont faites. De l'autre, des gens qui auraient besoin de ces choses-là et qui ne les entendront jamais, parce qu'il n'existe aucun endroit où ça se dit.
 
-[À COMPLÉTER — le déclic personnel : le moment précis, la conversation, la situation où tu t'es dit « bon, il faut que quelqu'un le fasse ». Une scène concrète vaut mieux qu'une explication.]
+<!-- À COMPLÉTER — le déclic personnel : le moment précis, la conversation,
+     la situation où tu t'es dit « bon, il faut que quelqu'un le fasse ».
+     Une scène concrète vaut mieux qu'une explication. -->
 
 Pendant un moment j'ai attendu. J'ai cherché qui organisait ça, à Barcelone. J'ai trouvé des réseaux professionnels, des salons, des choses très bien par ailleurs, mais rien qui ressemblait à ce que je cherchais. Alors j'ai arrêté d'attendre.
 

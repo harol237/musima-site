@@ -3,8 +3,10 @@ import Base from '~/layouts/Base.astro';
 import EntetePage from '~/components/EntetePage.astro';
 import ARemplir from '~/components/ARemplir.astro';
 import site from '~/data/site.json';
+import { enChantier } from '~/lib/contenu';
 
 const aRemplir = (valeur: string) => valeur.startsWith('[');
+const reseaux = site.reseaux.filter((r) => enChantier || !aRemplir(r.url));
 const sujets = [
   'Proposer une intervention',
   'Proposer un sujet ou un portrait',
@@ -91,6 +93,7 @@ const sujets = [
             <dt>Où</dt>
             <dd>{site.contact.ville}, {site.contact.region}, {site.contact.pays}</dd>
           </div>
+          {(!aRemplir(site.contact.adresse) || enChantier) && (
           <div>
             <dt>Adresse</dt>
             <dd>
@@ -99,13 +102,14 @@ const sujets = [
                 : site.contact.adresse}
             </dd>
           </div>
+          )}
         </dl>
       </div>
 
       <div class="encart">
         <h2 class="encart__titre">Réseaux</h2>
         <ul class="encart__liste">
-          {site.reseaux.map((reseau) => (
+          {reseaux.map((reseau) => (
             <li>
               {aRemplir(reseau.url)
                 ? <span>{reseau.nom} <ARemplir type="lien" forme="ligne" /></span>
@@ -115,6 +119,7 @@ const sujets = [
         </ul>
       </div>
 
+      {enChantier && (
       <div class="encart">
         <h2 class="encart__titre">Presse</h2>
         <p class="encart__texte">
@@ -123,6 +128,7 @@ const sujets = [
         </p>
         <ARemplir libelle="DOSSIER DE PRESSE À AJOUTER" />
       </div>
+      )}
     </aside>
   </section>
   <script>

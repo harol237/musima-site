@@ -12,6 +12,7 @@ liens:
   linkedin: ""
   instagram: ""
 en_avant: true
+brouillon: true
 modele: true
 ---
 

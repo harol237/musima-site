@@ -1,9 +1,20 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { navigationPrincipale, navigationSecondaire } from '~/data/navigation';
 
 /* ---------------------------------------------------------------- *
  *  Helpers de contenu — un seul endroit pour les règles de tri,
  *  de filtrage des brouillons et de formatage des dates.
  * ---------------------------------------------------------------- */
+
+/**
+ * Vrai en développement uniquement.
+ *
+ * Tout ce qui n'est pas prêt — emplacements à remplir, rubriques encore
+ * vides, fiches de démonstration — reste visible pendant l'édition et
+ * disparaît du site public. Un seul interrupteur, pour qu'il n'y ait
+ * jamais deux endroits à penser en publiant.
+ */
+export const enChantier = import.meta.env.DEV;
 
 type AvecBrouillon = { data: { brouillon?: boolean } };
 
@@ -89,4 +100,34 @@ export async function chargerAlbums() {
   return (await getCollection('albums'))
     .filter(estPublie)
     .sort((a, b) => (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0));
+}
+
+
+/* ---------------------------------------------------------------- *
+ *  Menu : une rubrique sans aucun contenu publié ne s'affiche pas.
+ * ---------------------------------------------------------------- */
+export async function chargerMenu() {
+  if (enChantier) {
+    return { principale: navigationPrincipale, secondaire: navigationSecondaire };
+  }
+
+  const [evenements, intervenants, projets, recits, albums] = await Promise.all([
+    chargerEvenements(),
+    chargerIntervenants(),
+    chargerProjets(),
+    chargerRecits(),
+    chargerAlbums(),
+  ]);
+
+  const vides = new Set<string>();
+  if (!evenements.tous.length) vides.add('/evenements');
+  if (!intervenants.length) vides.add('/intervenants');
+  if (!projets.length) vides.add('/projets');
+  if (!recits.length) vides.add('/recits');
+  if (!albums.length) vides.add('/galerie');
+
+  return {
+    principale: navigationPrincipale.filter((e) => !vides.has(e.url)),
+    secondaire: navigationSecondaire.filter((e) => !vides.has(e.url)),
+  };
 }

@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import ARemplir from './ARemplir.astro';
 import BadgeModele from './BadgeModele.astro';
-import { formaterJourMois, formaterPlage, dateISO, estAVenir } from '~/lib/contenu';
+import { formaterJourMois, formaterPlage, dateISO, estAVenir, enChantier } from '~/lib/contenu';
 
 interface Props {
   evenement: CollectionEntry<'evenements'>;
@@ -19,7 +19,7 @@ const lieu = [data.lieu?.nom, data.lieu?.ville].filter(Boolean).join(', ');
 <article class:list={['carte', 'evenement', variante === 'mise-en-avant' && 'evenement--large']}>
   {data.modele && <BadgeModele />}
 
-  {variante === 'mise-en-avant' && (
+  {variante === 'mise-en-avant' && (data.image || enChantier) && (
     <div class="carte__visuel ratio-16-9">
       {data.image ? (
         <Image

@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import ARemplir from './ARemplir.astro';
 import BadgeModele from './BadgeModele.astro';
-import { formaterDate, dateISO } from '~/lib/contenu';
+import { formaterDate, dateISO, enChantier } from '~/lib/contenu';
 
 interface Props {
   recit: CollectionEntry<'recits'>;
@@ -15,6 +15,7 @@ const { data } = recit;
 <article class:list={['carte', 'recit', variante === 'mise-en-avant' && 'recit--large']}>
   {data.modele && <BadgeModele />}
 
+  {(data.image || enChantier) && (
   <div class:list={['carte__visuel', variante === 'mise-en-avant' ? 'ratio-16-9' : 'ratio-3-2']}>
     {data.image ? (
       <Image
@@ -27,6 +28,7 @@ const { data } = recit;
       <ARemplir type="photo" forme="visuel" />
     )}
   </div>
+  )}
 
   <div class="rang">
     <span class="puce puce--sourde">{data.categorie}</span>

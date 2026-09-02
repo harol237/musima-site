@@ -4,19 +4,14 @@ format: Rencontre
 date_debut: 2026-09-26
 heure: "À partir de 17h00"
 lieu:
-  nom: "[NOM DU LIEU À AJOUTER]"
-  adresse: "[ADRESSE À AJOUTER]"
   ville: Barcelone
   pays: Espagne
   en_ligne: false
 resume: "La première rencontre MUSIMA. On a invité des personnes qui ont monté quelque chose à Barcelone — une activité, un projet, une pratique — et on leur a demandé de raconter comment ça s'est passé pour de vrai. Pas les versions retouchées : ce qui a marché, ce qui a coincé, ce qu'elles referaient autrement."
-image_alt: "[DESCRIPTION DE LA PHOTO À AJOUTER]"
-credit_photo: "[CRÉDIT PHOTO À AJOUTER]"
 intervenants:
   - intervenant-modele-1
   - intervenant-modele-2
 lien_inscription: ""
-tarif: "[GRATUIT OU TARIF À PRÉCISER]"
 en_avant: true
 meta_description: "Première rencontre MUSIMA à Barcelone, le samedi 26 septembre 2026 à partir de 17h. Des personnes qui ont construit quelque chose ici racontent comment."
 ---
@@ -47,6 +42,7 @@ Et pour vous encore, si vous n'êtes pas africain·e et que vous avez juste envi
 
 Pas besoin d'être adhérent·e. Pas besoin de connaître quelqu'un. Vous venez, c'est tout.
 
-## Informations pratiques
-
-[ACCÈS, TRANSPORTS ET ACCESSIBILITÉ DU LIEU À COMPLÉTER — métro le plus proche, présence ou non d'un ascenseur, accès de plain-pied]
+<!-- À COMPLÉTER dès que le lieu est confirmé : rétablir le bloc `lieu:`
+     (nom, adresse) et `tarif:` en tête de fichier, puis ajouter ici une
+     section « Informations pratiques » avec le métro le plus proche et
+     l'accessibilité de la salle. -->

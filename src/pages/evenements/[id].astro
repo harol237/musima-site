@@ -7,7 +7,7 @@ import EnteteSection from '~/components/EnteteSection.astro';
 import CarteIntervenant from '~/components/CarteIntervenant.astro';
 import ARemplir from '~/components/ARemplir.astro';
 import BadgeModele from '~/components/BadgeModele.astro';
-import { formaterPlage, dateISO, estAVenir, estPublie } from '~/lib/contenu';
+import { formaterPlage, dateISO, estAVenir, estPublie, enChantier } from '~/lib/contenu';
 
 export async function getStaticPaths() {
   const evenements = (await getCollection('evenements')).filter(estPublie);
@@ -18,7 +18,11 @@ const { evenement } = Astro.props;
 const { data } = evenement;
 const { Content } = await render(evenement);
 
-const intervenants = data.intervenants.length ? await getEntries(data.intervenants) : [];
+/* Les fiches d'intervenants encore en brouillon ne remontent pas sur la
+   page publique : `getEntries` ne filtre pas les brouillons lui-même. */
+const intervenants = (
+  data.intervenants.length ? await getEntries(data.intervenants) : []
+).filter(estPublie);
 const aVenir = estAVenir(evenement);
 const lieuComplet = [data.lieu?.nom, data.lieu?.adresse, data.lieu?.ville, data.lieu?.pays]
   .filter(Boolean)
@@ -64,6 +68,7 @@ const donnees = {
 
   <div class="conteneur page-evenement">
     <article class="page-evenement__corps">
+      {(data.image || enChantier) && (
       <div class="visuel-principal ratio-16-9">
         {data.image ? (
           <Image src={data.image} alt={data.image_alt ?? ''} widths={[640, 1000, 1400]} sizes="(min-width: 64rem) 46rem, 100vw" />
@@ -71,6 +76,7 @@ const donnees = {
           <ARemplir type="photo" forme="visuel" />
         )}
       </div>
+      )}
       {data.credit_photo && <p class="credit">Photo : {data.credit_photo}</p>}
 
       <div class="prose">
@@ -88,10 +94,12 @@ const donnees = {
             <dt>Date</dt>
             <dd><time datetime={dateISO(data.date_debut)}>{formaterPlage(data.date_debut, data.date_fin)}</time></dd>
           </div>
+          {(data.heure || enChantier) && (
           <div>
             <dt>Horaire</dt>
             <dd>{data.heure ?? <ARemplir libelle="HORAIRE À AJOUTER" forme="ligne" />}</dd>
           </div>
+          )}
           <div>
             <dt>Lieu</dt>
             <dd>{lieuComplet ? lieuComplet : <ARemplir libelle="LIEU À AJOUTER" forme="ligne" />}</dd>
@@ -100,10 +108,12 @@ const donnees = {
             <dt>Format</dt>
             <dd>{data.format}</dd>
           </div>
+          {(data.tarif || enChantier) && (
           <div>
             <dt>Tarif</dt>
             <dd>{data.tarif ?? <ARemplir libelle="TARIF À PRÉCISER" forme="ligne" />}</dd>
           </div>
+          )}
         </dl>
 
         {aVenir && (

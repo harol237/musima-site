@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import ARemplir from './ARemplir.astro';
 import BadgeModele from './BadgeModele.astro';
+import { enChantier } from '~/lib/contenu';
 
 interface Props {
   projet: CollectionEntry<'projets'>;
@@ -14,6 +15,7 @@ const teinteStatut = data.statut === 'Réalisé' ? 'puce--sourde' : data.statut 
 <article class="carte projet">
   {data.modele && <BadgeModele />}
 
+  {(data.image || enChantier) && (
   <div class="carte__visuel ratio-3-2">
     {data.image ? (
       <Image
@@ -26,6 +28,7 @@ const teinteStatut = data.statut === 'Réalisé' ? 'puce--sourde' : data.statut 
       <ARemplir type="photo" forme="visuel" />
     )}
   </div>
+  )}
 
   <div class="rang">
     <span class:list={['puce', teinteStatut]}>{data.statut}</span>

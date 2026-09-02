@@ -2,15 +2,18 @@
 import Logo from './Logo.astro';
 import ARemplir from './ARemplir.astro';
 import site from '~/data/site.json';
-import {
-  navigationPrincipale,
-  navigationSecondaire,
-  navigationLegale,
-  actionPrincipale,
-} from '~/data/navigation';
+import { navigationLegale, actionPrincipale } from '~/data/navigation';
+import { chargerMenu, enChantier } from '~/lib/contenu';
+
+const { principale: navigationPrincipale, secondaire: navigationSecondaire } = await chargerMenu();
 
 const annee = new Date().getFullYear();
 const aRemplir = (valeur: string) => valeur.startsWith('[');
+
+/* Un réseau sans adresse n'est pas listé au public : mieux vaut trois
+   liens qui marchent qu'une liste qui promet des comptes inexistants. */
+const reseaux = site.reseaux.filter((r) => enChantier || !aRemplir(r.url));
+const infolettrePrete = !aRemplir(site.infolettre.action);
 ---
 
 <footer class="pied scene">
@@ -45,9 +48,9 @@ const aRemplir = (valeur: string) => valeur.startsWith('[');
           <li class="pied__lieu">{site.contact.ville}, {site.contact.region} — {site.contact.pays}</li>
         </ul>
 
-        <h2 class="pied__titre pied__titre--espace">Suivre</h2>
+        {reseaux.length > 0 && <h2 class="pied__titre pied__titre--espace">Suivre</h2>}
         <ul>
-          {site.reseaux.map((reseau) => (
+          {reseaux.map((reseau) => (
             <li>
               {aRemplir(reseau.url)
                 ? <span class="pied__reseau-vide">{reseau.nom} <ARemplir type="lien" forme="ligne" /></span>
@@ -57,6 +60,7 @@ const aRemplir = (valeur: string) => valeur.startsWith('[');
         </ul>
       </div>
 
+      {(infolettrePrete || enChantier) && (
       <div class="pied__colonne pied__colonne--large">
         <h2 class="pied__titre">{site.infolettre.titre}</h2>
         <p class="pied__texte">{site.infolettre.texte}</p>
@@ -103,6 +107,7 @@ const aRemplir = (valeur: string) => valeur.startsWith('[');
           )}
         </form>
       </div>
+      )}
     </nav>
   </div>
 

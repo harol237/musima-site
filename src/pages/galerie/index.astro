@@ -5,7 +5,7 @@ import EntetePage from '~/components/EntetePage.astro';
 import EtatVide from '~/components/EtatVide.astro';
 import ARemplir from '~/components/ARemplir.astro';
 import BadgeModele from '~/components/BadgeModele.astro';
-import { chargerAlbums, formaterDate } from '~/lib/contenu';
+import { chargerAlbums, formaterDate, enChantier } from '~/lib/contenu';
 
 const albums = await chargerAlbums();
 ---
@@ -13,6 +13,7 @@ const albums = await chargerAlbums();
 <Base
   titre="Galerie"
   description="Les photos des rencontres et des projets MUSIMA, classées par album."
+  noindex={albums.length === 0}
 >
   <EntetePage
     surtitre="Photos"
@@ -28,6 +29,7 @@ const albums = await chargerAlbums();
           <li>
             <article class="carte album">
               {album.data.modele && <BadgeModele />}
+              {(album.data.couverture || enChantier) && (
               <div class="carte__visuel ratio-3-2">
                 {album.data.couverture ? (
                   <Image src={album.data.couverture} alt={album.data.couverture_alt ?? ''} widths={[400, 700, 1000]} sizes="(min-width: 64rem) 22rem, 90vw" />
@@ -35,6 +37,7 @@ const albums = await chargerAlbums();
                   <ARemplir type="photo" forme="visuel" />
                 )}
               </div>
+              )}
               <h2 class="t-carte">
                 <a href={`/galerie/${album.id}`} class="carte__lien">{album.data.titre}</a>
               </h2>

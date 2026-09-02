@@ -8,6 +8,8 @@
  *   <ARemplir type="lien" />           → [LIEN À AJOUTER]
  *   <ARemplir libelle="DATE À CONFIRMER" />
  */
+import { enChantier } from '~/lib/contenu';
+
 interface Props {
   type?: 'photo' | 'texte' | 'lien' | 'info';
   libelle?: string;
@@ -26,6 +28,7 @@ const libelles = {
 const { type = 'texte', libelle, forme = 'bloc', ratio, class: classe = '' } = Astro.props;
 const texte = libelle ?? libelles[type];
 ---
+{enChantier && (
 
 <span
   class:list={[
@@ -37,3 +40,4 @@ const texte = libelle ?? libelles[type];
   ]}
   data-a-remplir={type}
 >[{texte}]</span>
+)}

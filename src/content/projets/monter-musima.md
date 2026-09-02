@@ -4,8 +4,6 @@ statut: En cours
 annee: "2026"
 territoire: "Barcelone, Catalogne"
 resume: "Le premier projet de l'association, c'est l'association elle-même. La monter, lui trouver un lieu, réunir les premières personnes autour d'une table — et le faire au vu de tout le monde plutôt qu'en coulisses."
-image_alt: "[DESCRIPTION DE LA PHOTO À AJOUTER]"
-credit_photo: "[CRÉDIT PHOTO À AJOUTER]"
 partenaires: []
 en_avant: true
 meta_description: "Où en est la création de MUSIMA : ce qui est fait, ce qui reste à faire, et comment donner un coup de main."

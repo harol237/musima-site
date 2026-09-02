@@ -9,7 +9,7 @@
 
 backend:
   name: github
-  repo: harol237/musima-site   # [DÉPÔT À CONFIRMER] utilisateur/nom-du-depot
+  repo: harol237/musima-site
   branch: main
   # base_url: https://votre-service-auth.example  # [AUTH À CONFIGURER]
 

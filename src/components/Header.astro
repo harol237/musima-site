@@ -1,6 +1,9 @@
 ---
 import Logo from './Logo.astro';
-import { navigationPrincipale, actionPrincipale } from '~/data/navigation';
+import { actionPrincipale } from '~/data/navigation';
+import { chargerMenu } from '~/lib/contenu';
+
+const { principale: navigationPrincipale } = await chargerMenu();
 
 const chemin = Astro.url.pathname.replace(/\/$/, '') || '/';
 const estActif = (url: string) => chemin === url || chemin.startsWith(url + '/');

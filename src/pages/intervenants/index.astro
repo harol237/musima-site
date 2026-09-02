@@ -5,7 +5,7 @@ import CarteIntervenant from '~/components/CarteIntervenant.astro';
 import Filtres from '~/components/Filtres.astro';
 import EtatVide from '~/components/EtatVide.astro';
 import BandeauCta from '~/components/BandeauCta.astro';
-import { chargerIntervenants } from '~/lib/contenu';
+import { chargerIntervenants, enChantier } from '~/lib/contenu';
 
 const intervenants = await chargerIntervenants();
 const domaines = [...new Set(intervenants.flatMap((i) => i.data.domaines))].sort((a, b) =>
@@ -16,6 +16,7 @@ const domaines = [...new Set(intervenants.flatMap((i) => i.data.domaines))].sort
 <Base
   titre="Intervenants"
   description="Les personnes invitées par MUSIMA : parcours, domaines et rencontres auxquelles elles ont participé."
+  noindex={intervenants.length === 0}
 >
   <EntetePage
     surtitre="Les voix"

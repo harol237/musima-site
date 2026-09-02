@@ -4,6 +4,7 @@ import EntetePage from '~/components/EntetePage.astro';
 import EnteteSection from '~/components/EnteteSection.astro';
 import ARemplir from '~/components/ARemplir.astro';
 import BandeauCta from '~/components/BandeauCta.astro';
+import { enChantier } from '~/lib/contenu';
 
 const voies = [
   {
@@ -58,14 +59,17 @@ const voies = [
           </div>
           <p class="voie__pour">{voie.pour}</p>
           <p class="voie__texte">{voie.texte}</p>
+          {enChantier && (
           <div class="voie__action">
             <ARemplir libelle={`${voie.action.toUpperCase()} — LIEN OU FORMULAIRE À AJOUTER`} />
           </div>
+          )}
         </li>
       ))}
     </ul>
   </section>
 
+  {enChantier && (
   <section class="section conteneur deux-colonnes">
     <div>
       <EnteteSection surtitre="Cadre" titre="Adhésion et cotisation" />
@@ -80,6 +84,7 @@ const voies = [
       <ARemplir libelle="BULLETIN D’ADHÉSION (PDF OU FORMULAIRE) À AJOUTER" />
     </div>
   </section>
+  )}
 
   <BandeauCta
     surtitre="Une question ?"

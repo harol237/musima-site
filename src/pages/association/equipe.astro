@@ -4,6 +4,7 @@ import EntetePage from '~/components/EntetePage.astro';
 import EnteteSection from '~/components/EnteteSection.astro';
 import ARemplir from '~/components/ARemplir.astro';
 import BandeauCta from '~/components/BandeauCta.astro';
+import { enChantier } from '~/lib/contenu';
 
 /* Les rôles listés correspondent à la structure minimale d'une
    association. Les noms se saisiront quand le bureau sera constitué. */
@@ -13,6 +14,7 @@ const roles = ['Présidence', 'Trésorerie', 'Secrétariat', 'Membre du bureau']
 <Base
   titre="L’équipe"
   description="Les personnes qui portent MUSIMA : bureau, membres actifs et bénévoles."
+  noindex={!enChantier}
 >
   <EntetePage
     surtitre="Le cadre"
