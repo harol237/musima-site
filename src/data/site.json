@@ -12,10 +12,14 @@
   "contact": {
     "email": "Musima.org@mail.com",
     "telephone": "[TÉLÉPHONE À AJOUTER]",
+    "rue": "Carrer Musima 237",
+    "code_postal": "08930",
+    "ville_siege": "Sant Adrià de Besòs",
+    "province": "Barcelone",
     "ville": "Barcelone",
     "region": "Catalogne",
     "pays": "Espagne",
-    "adresse": "Carrer Musima 237, 08930 Barcelona"
+    "adresse": "Carrer Musima 237, 08930 Sant Adrià de Besòs (Barcelone)"
   },
   "reseaux": [
     {

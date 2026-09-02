@@ -44,8 +44,12 @@ const organisation = {
   areaServed: [site.contact.pays, 'Europe', 'Afrique'],
   address: {
     '@type': 'PostalAddress',
-    addressLocality: site.contact.ville,
-    addressRegion: site.contact.region,
+    streetAddress: site.contact.rue,
+    postalCode: site.contact.code_postal,
+    /* La commune du siège, et non « Barcelone » : les moteurs consomment
+       cette adresse comme une donnée administrative. */
+    addressLocality: site.contact.ville_siege,
+    addressRegion: site.contact.province,
     addressCountry: 'ES',
   },
 };
