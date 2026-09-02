@@ -15,7 +15,7 @@
     "ville": "Barcelone",
     "region": "Catalogne",
     "pays": "Espagne",
-    "adresse": "[ADRESSE COMPLÈTE DU SIÈGE À BARCELONE À AJOUTER]"
+    "adresse": "Carrer Musima 237, 08930 Barcelona"
   },
   "reseaux": [
     {
@@ -47,7 +47,7 @@
     "enregistrement_en_cours": true,
     "nif": "[NIF À AJOUTER DÈS RÉCEPTION]",
     "numero_registre": "[NUMÉRO D'INSCRIPTION AU REGISTRE À AJOUTER DÈS RÉCEPTION]",
-    "responsable_publication": "[NOM DE LA PERSONNE RESPONSABLE DE LA PUBLICATION À AJOUTER]",
+    "responsable_publication": "Noubissie Dzitou Roxanne Fiona",
     "statuts_pdf": "[LIEN VERS LES STATUTS (PDF) À AJOUTER]"
   },
   "hebergeur": {
