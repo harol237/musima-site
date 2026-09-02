@@ -1,0 +1,124 @@
+---
+import Base from '~/layouts/Base.astro';
+import EntetePage from '~/components/EntetePage.astro';
+import ARemplir from '~/components/ARemplir.astro';
+import site from '~/data/site.json';
+
+const aRemplir = (valeur: string) => valeur.startsWith('[');
+const majParDefaut = new Date('2026-09-02');
+const maj = new Intl.DateTimeFormat('fr-FR', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'Europe/Madrid',
+}).format(majParDefaut);
+---
+<Base
+  titre="Politique de confidentialité"
+  description="Comment MUSIMA traite les données personnelles collectées sur ce site."
+  noindex
+>
+  <EntetePage
+    surtitre="Vos données"
+    titre="Politique de confidentialité"
+    chapo="Ce site collecte le strict minimum. Voici quoi, pourquoi, et comment faire supprimer ce qui vous concerne."
+    ariane={[{ libelle: 'Confidentialité' }]}
+    registre="papier"
+  />
+  <section class="section conteneur">
+    <div class="prose">
+      <h2>En une phrase</h2>
+      <p>
+        Le site en lui-même ne collecte rien : aucun cookie, aucun traceur, aucune mesure
+        d'audience. La seule donnée personnelle que nous conservons, c'est votre adresse e-mail si
+        vous vous inscrivez à l'infolettre — et uniquement dans ce cas.
+      </p>
+
+      <h2>Qui est responsable du traitement</h2>
+      <p>
+        {site.nom}, association sans but lucratif établie à {site.contact.ville},
+        {' '}{site.contact.region}, {site.contact.pays}. Pour toute question relative à vos
+        données : <a href={`mailto:${site.contact.email}`} class="lien">{site.contact.email}</a>.
+      </p>
+      {aRemplir(site.contact.statut_juridique) && (
+        <ARemplir libelle="NIF ET NUMÉRO D'INSCRIPTION AU REGISTRE DES ASSOCIATIONS À AJOUTER (identiques aux mentions légales)" />
+      )}
+
+      <h2>Ce que le site ne fait pas</h2>
+      <ul>
+        <li>Aucun cookie n'est déposé sur votre navigateur — ni publicitaire, ni de mesure, ni « technique ».</li>
+        <li>Aucun outil de statistiques n'est installé. Nous ne savons pas combien de personnes visitent ce site.</li>
+        <li>Aucun bouton de partage tiers, aucun script externe, aucune police chargée depuis Google : tout est servi depuis notre propre domaine.</li>
+        <li>Aucune donnée n'est revendue, échangée ou transmise à des fins commerciales. Jamais.</li>
+      </ul>
+
+      <h2>Le formulaire de contact</h2>
+      <p>
+        Le formulaire de la <a href="/contact" class="lien">page contact</a> n'envoie rien à un
+        serveur : il prépare un e-mail dans votre propre logiciel de messagerie, et c'est vous qui
+        l'envoyez. Rien ne transite par ce site, rien n'y est enregistré.
+      </p>
+      <p>
+        Une fois votre message reçu dans notre boîte, nous le conservons le temps de traiter votre
+        demande, puis <strong>trois ans au maximum</strong> à compter de notre dernier échange.
+        Base légale : notre intérêt légitime à répondre aux personnes qui nous écrivent.
+      </p>
+
+      <h2>L'infolettre</h2>
+      <p>
+        Si vous vous inscrivez, nous conservons votre adresse e-mail et la date de votre
+        inscription. Rien d'autre : ni nom, ni suivi d'ouverture individuel, ni profilage.
+      </p>
+      <p>
+        <strong>Base légale :</strong> votre consentement, donné en cochant la case au moment de
+        l'inscription. Vous pouvez le retirer à tout moment, sans avoir à vous justifier, via le
+        lien de désinscription présent dans chaque envoi — ou simplement en nous écrivant.
+      </p>
+      <p>
+        <strong>Sous-traitant :</strong> l'envoi est assuré par {site.infolettre.fournisseur}
+        {' '}(Brevo SAS, 106 boulevard Haussmann, 75008 Paris, France), qui héberge ses données
+        dans l'Union européenne. Nous avons conclu avec ce prestataire un accord de traitement des
+        données conforme à l'article 28 du RGPD.
+      </p>
+      <p>
+        <strong>Durée de conservation :</strong> jusqu'à votre désinscription, ou après trois ans
+        sans aucune interaction de votre part.
+      </p>
+      {aRemplir(site.infolettre.action) && (
+        <ARemplir libelle="COMPTE BREVO À CRÉER PUIS URL DU FORMULAIRE À COLLER DANS src/data/site.json — TANT QUE C'EST VIDE, LE FORMULAIRE RESTE DÉSACTIVÉ ET AUCUNE DONNÉE N'EST COLLECTÉE" />
+      )}
+
+      <h2>Photos et récits</h2>
+      <p>
+        Les rencontres MUSIMA sont parfois photographiées. Les images publiées le sont avec
+        l'accord des personnes reconnaissables. Si vous apparaissez sur une photo et que vous
+        voulez qu'elle disparaisse du site, écrivez-nous : nous la retirons, sans discussion et
+        sans délai.
+      </p>
+
+      <h2>Vos droits</h2>
+      <p>
+        Le règlement général sur la protection des données (RGPD) et la loi organique espagnole
+        3/2018 (LOPDGDD) vous donnent un droit d'accès, de rectification, d'effacement, de
+        limitation, d'opposition et de portabilité sur vos données.
+      </p>
+      <p>
+        Pour l'exercer, écrivez à
+        {' '}<a href={`mailto:${site.contact.email}`} class="lien">{site.contact.email}</a>. Nous
+        répondons sous un mois. Vous n'avez aucune justification à fournir, et une demande de
+        suppression est traitée immédiatement.
+      </p>
+      <p>
+        Si notre réponse ne vous satisfait pas, vous pouvez saisir l'autorité de contrôle
+        espagnole : l'<em>Agencia Española de Protección de Datos</em> (AEPD), C/ Jorge Juan 6,
+        28001 Madrid — <a href="https://www.aepd.es" class="lien" rel="noopener">www.aepd.es</a>.
+      </p>
+
+      <h2>Mise à jour</h2>
+      <p>
+        Dernière mise à jour : {maj}. Si cette politique change, la nouvelle version sera publiée
+        sur cette page, et les inscrits à l'infolettre en seront informés par e-mail.
+      </p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,253 @@
+# ==================================================================
+#  MUSIMA — Configuration de l'interface d'administration
+# ------------------------------------------------------------------
+#  Chaque « collection » ci-dessous correspond à un type de contenu
+#  éditable. Les noms de champs correspondent exactement au schéma
+#  défini dans src/content.config.ts : si vous ajoutez un champ ici,
+#  ajoutez-le aussi là-bas.
+# ==================================================================
+
+backend:
+  name: github
+  repo: harol237/musima-site   # [DÉPÔT À CONFIRMER] utilisateur/nom-du-depot
+  branch: main
+  # base_url: https://votre-service-auth.example  # [AUTH À CONFIGURER]
+
+# Permet d'éditer directement les fichiers locaux pendant le
+# développement : lancer `npm run cms` puis ouvrir /admin.
+local_backend: true
+
+# Les images sont rangées dans src/ pour qu'Astro les optimise
+# automatiquement (AVIF/WebP, tailles multiples, chargement différé).
+media_folder: src/assets/uploads
+public_folder: /src/assets/uploads
+
+locale: fr
+publish_mode: editorial_workflow
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: '-'
+
+collections:
+  # ---------------------------------------------------------------
+  - name: evenements
+    label: Événements
+    label_singular: Événement
+    description: Conférences, rencontres, tables rondes et ateliers.
+    folder: src/content/evenements
+    create: true
+    slug: '{{year}}-{{month}}-{{slug}}'
+    extension: md
+    format: yaml-frontmatter
+    summary: '{{titre}} — {{date_debut | date("DD/MM/YYYY")}}'
+    sortable_fields: [date_debut, titre]
+    view_filters:
+      - { label: 'Mis en avant', field: en_avant, pattern: true }
+      - { label: 'Brouillons', field: brouillon, pattern: true }
+      - { label: 'Fiches modèles', field: modele, pattern: true }
+    fields:
+      - { name: titre, label: Titre, widget: string }
+      - name: format
+        label: Format
+        widget: select
+        default: Rencontre
+        options: [Conférence, Rencontre, Table ronde, Atelier, Projection, Autre]
+      - { name: date_debut, label: Date de début, widget: datetime, date_format: 'DD/MM/YYYY', time_format: false, format: 'YYYY-MM-DD' }
+      - { name: date_fin, label: Date de fin, widget: datetime, date_format: 'DD/MM/YYYY', time_format: false, format: 'YYYY-MM-DD', required: false, hint: 'À remplir uniquement si la rencontre dure plusieurs jours.' }
+      - { name: heure, label: Horaire, widget: string, required: false, hint: 'Exemple : 19h00 – 21h30' }
+      - name: lieu
+        label: Lieu
+        widget: object
+        collapsed: false
+        fields:
+          - { name: nom, label: Nom du lieu, widget: string, required: false }
+          - { name: adresse, label: Adresse, widget: string, required: false }
+          - { name: ville, label: Ville, widget: string, required: false }
+          - { name: pays, label: Pays, widget: string, required: false }
+          - { name: en_ligne, label: Rencontre en ligne, widget: boolean, default: false }
+      - { name: resume, label: Résumé, widget: text, required: false, hint: 'Deux à trois phrases. Utilisé dans les listes et les partages sur les réseaux.' }
+      - { name: image, label: Image principale, widget: image, required: false, choose_url: false }
+      - { name: image_alt, label: Description de l'image, widget: string, required: false, hint: 'Obligatoire dès qu''une image est ajoutée : décrit ce que montre la photo.' }
+      - { name: credit_photo, label: Crédit photo, widget: string, required: false }
+      - { name: intervenants, label: Intervenants, widget: relation, collection: intervenants, value_field: '{{slug}}', search_fields: [nom], display_fields: [nom], multiple: true, required: false }
+      - { name: projets, label: Projets liés, widget: relation, collection: projets, value_field: '{{slug}}', search_fields: [titre], display_fields: [titre], multiple: true, required: false }
+      - { name: lien_inscription, label: Lien d'inscription, widget: string, required: false }
+      - { name: tarif, label: Tarif, widget: string, required: false, hint: 'Exemple : Gratuit, sur inscription' }
+      - { name: complet, label: Complet, widget: boolean, default: false }
+      - { name: en_avant, label: Mettre en avant, widget: boolean, default: false }
+      - { name: brouillon, label: Brouillon (masqué du site), widget: boolean, default: false }
+      - { name: modele, label: Fiche modèle (à supprimer), widget: boolean, default: false }
+      - { name: meta_titre, label: 'SEO — titre', widget: string, required: false }
+      - { name: meta_description, label: 'SEO — description', widget: text, required: false }
+      - { name: body, label: Contenu de la page, widget: markdown, required: false }
+
+  # ---------------------------------------------------------------
+  - name: intervenants
+    label: Intervenants
+    label_singular: Intervenant·e
+    description: Les personnes invitées à prendre la parole.
+    folder: src/content/intervenants
+    create: true
+    slug: '{{slug}}'
+    extension: md
+    format: yaml-frontmatter
+    summary: '{{nom}} — {{fonction}}'
+    sortable_fields: [nom]
+    fields:
+      - { name: nom, label: Nom et prénom, widget: string }
+      - { name: fonction, label: Fonction, widget: string, required: false }
+      - { name: organisation, label: Organisation, widget: string, required: false }
+      - { name: territoire, label: Territoire, widget: string, required: false, hint: 'Exemple : Barcelone, Espagne' }
+      - { name: domaines, label: Domaines, widget: list, required: false, hint: 'Sert aussi de filtre sur la page annuaire.' }
+      - { name: photo, label: Portrait, widget: image, required: false, choose_url: false, hint: 'Format portrait, cadrage 4:5 de préférence.' }
+      - { name: photo_alt, label: Description du portrait, widget: string, required: false }
+      - { name: credit_photo, label: Crédit photo, widget: string, required: false }
+      - { name: accroche, label: Phrase d'accroche, widget: text, required: false }
+      - name: liens
+        label: Liens
+        widget: object
+        collapsed: true
+        required: false
+        fields:
+          - { name: site, label: Site web, widget: string, required: false }
+          - { name: linkedin, label: LinkedIn, widget: string, required: false }
+          - { name: instagram, label: Instagram, widget: string, required: false }
+          - { name: youtube, label: YouTube, widget: string, required: false }
+      - { name: en_avant, label: Mettre en avant, widget: boolean, default: false }
+      - { name: brouillon, label: Brouillon (masqué du site), widget: boolean, default: false }
+      - { name: modele, label: Fiche modèle (à supprimer), widget: boolean, default: false }
+      - { name: meta_titre, label: 'SEO — titre', widget: string, required: false }
+      - { name: meta_description, label: 'SEO — description', widget: text, required: false }
+      - { name: body, label: Biographie, widget: markdown, required: false }
+
+  # ---------------------------------------------------------------
+  - name: projets
+    label: Projets
+    label_singular: Projet
+    folder: src/content/projets
+    create: true
+    slug: '{{slug}}'
+    extension: md
+    format: yaml-frontmatter
+    summary: '{{titre}} — {{statut}}'
+    fields:
+      - { name: titre, label: Titre, widget: string }
+      - { name: statut, label: État, widget: select, default: En cours, options: [Idée, En préparation, En cours, Réalisé] }
+      - { name: annee, label: Année, widget: string, required: false }
+      - { name: territoire, label: Territoire, widget: string, required: false }
+      - { name: resume, label: Résumé, widget: text, required: false }
+      - { name: image, label: Image, widget: image, required: false, choose_url: false }
+      - { name: image_alt, label: Description de l'image, widget: string, required: false }
+      - { name: credit_photo, label: Crédit photo, widget: string, required: false }
+      - { name: partenaires, label: Partenaires, widget: list, required: false }
+      - { name: intervenants, label: Personnes impliquées, widget: relation, collection: intervenants, value_field: '{{slug}}', search_fields: [nom], display_fields: [nom], multiple: true, required: false }
+      - { name: lien, label: Lien externe, widget: string, required: false }
+      - { name: en_avant, label: Mettre en avant, widget: boolean, default: false }
+      - { name: brouillon, label: Brouillon (masqué du site), widget: boolean, default: false }
+      - { name: modele, label: Fiche modèle (à supprimer), widget: boolean, default: false }
+      - { name: meta_titre, label: 'SEO — titre', widget: string, required: false }
+      - { name: meta_description, label: 'SEO — description', widget: text, required: false }
+      - { name: body, label: Contenu de la page, widget: markdown, required: false }
+
+  # ---------------------------------------------------------------
+  - name: recits
+    label: Récits
+    label_singular: Récit
+    description: Portraits, retours de rencontres, idées et actualités.
+    folder: src/content/recits
+    create: true
+    slug: '{{year}}-{{month}}-{{slug}}'
+    extension: md
+    format: yaml-frontmatter
+    summary: '{{titre}} — {{date | date("DD/MM/YYYY")}}'
+    sortable_fields: [date, titre]
+    fields:
+      - { name: titre, label: Titre, widget: string }
+      - { name: date, label: Date de publication, widget: datetime, date_format: 'DD/MM/YYYY', time_format: false, format: 'YYYY-MM-DD' }
+      - { name: categorie, label: Catégorie, widget: select, default: Portrait, options: [Portrait, "Retour d'événement", 'Idées & analyses', Actualité] }
+      - { name: auteur, label: Auteur·rice, widget: string, required: false }
+      - { name: resume, label: Chapô, widget: text, required: false }
+      - { name: image, label: Image principale, widget: image, required: false, choose_url: false }
+      - { name: image_alt, label: Description de l'image, widget: string, required: false }
+      - { name: credit_photo, label: Crédit photo, widget: string, required: false }
+      - { name: mots_cles, label: Mots-clés, widget: list, required: false }
+      - { name: intervenants, label: Personnes citées, widget: relation, collection: intervenants, value_field: '{{slug}}', search_fields: [nom], display_fields: [nom], multiple: true, required: false }
+      - { name: temps_lecture, label: Temps de lecture, widget: string, required: false, hint: 'Exemple : 6 min de lecture' }
+      - { name: en_avant, label: Mettre en avant, widget: boolean, default: false }
+      - { name: brouillon, label: Brouillon (masqué du site), widget: boolean, default: false }
+      - { name: modele, label: Fiche modèle (à supprimer), widget: boolean, default: false }
+      - { name: meta_titre, label: 'SEO — titre', widget: string, required: false }
+      - { name: meta_description, label: 'SEO — description', widget: text, required: false }
+      - { name: body, label: Article, widget: markdown, required: false }
+
+  # ---------------------------------------------------------------
+  - name: albums
+    label: Galerie photo
+    label_singular: Album
+    folder: src/content/albums
+    create: true
+    slug: '{{slug}}'
+    extension: md
+    format: yaml-frontmatter
+    summary: '{{titre}}'
+    fields:
+      - { name: titre, label: Titre de l'album, widget: string }
+      - { name: date, label: Date, widget: datetime, date_format: 'DD/MM/YYYY', time_format: false, format: 'YYYY-MM-DD', required: false }
+      - { name: lieu, label: Lieu, widget: string, required: false }
+      - { name: evenement, label: Rencontre associée, widget: relation, collection: evenements, value_field: '{{slug}}', search_fields: [titre], display_fields: [titre], required: false }
+      - { name: couverture, label: Photo de couverture, widget: image, required: false, choose_url: false }
+      - { name: couverture_alt, label: Description de la couverture, widget: string, required: false }
+      - name: photos
+        label: Photos
+        widget: list
+        required: false
+        summary: '{{fields.alt}}'
+        fields:
+          - { name: fichier, label: Photo, widget: image, choose_url: false }
+          - { name: alt, label: Description, widget: string, hint: 'Obligatoire : décrit ce que montre la photo pour les personnes qui ne la voient pas.' }
+          - { name: credit, label: Crédit, widget: string, required: false }
+      - { name: brouillon, label: Brouillon (masqué du site), widget: boolean, default: false }
+      - { name: modele, label: Fiche modèle (à supprimer), widget: boolean, default: false }
+      - { name: meta_description, label: 'SEO — description', widget: text, required: false }
+      - { name: body, label: Légende générale, widget: markdown, required: false }
+
+  # ---------------------------------------------------------------
+  - name: parametres
+    label: Paramètres du site
+    files:
+      - name: general
+        label: Identité et coordonnées
+        file: src/data/site.json
+        fields:
+          - { name: nom, label: Nom, widget: string }
+          - { name: baseline, label: Baseline, widget: string }
+          - { name: phrase, label: Phrase de positionnement, widget: text }
+          - { name: description_courte, label: 'Description (SEO)', widget: text }
+          - { name: langue, label: Langue, widget: hidden, default: fr }
+          - name: contact
+            label: Coordonnées
+            widget: object
+            fields:
+              - { name: email, label: E-mail, widget: string }
+              - { name: telephone, label: Téléphone, widget: string, required: false }
+              - { name: ville, label: Ville, widget: string }
+              - { name: region, label: Région, widget: string }
+              - { name: pays, label: Pays, widget: string }
+              - { name: adresse, label: Adresse, widget: string, required: false }
+              - { name: statut_juridique, label: Statut juridique, widget: string, required: false }
+          - name: reseaux
+            label: Réseaux sociaux
+            widget: list
+            fields:
+              - { name: nom, label: Nom, widget: string }
+              - { name: url, label: Lien, widget: string }
+          - name: infolettre
+            label: Infolettre
+            widget: object
+            fields:
+              - { name: actif, label: Afficher le bloc, widget: boolean, default: true }
+              - { name: titre, label: Titre, widget: string }
+              - { name: texte, label: Texte, widget: text }
+              - { name: action, label: Lien du formulaire, widget: string }

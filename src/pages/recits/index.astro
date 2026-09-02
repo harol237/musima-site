@@ -1,0 +1,63 @@
+---
+import Base from '~/layouts/Base.astro';
+import EntetePage from '~/components/EntetePage.astro';
+import CarteRecit from '~/components/CarteRecit.astro';
+import Filtres from '~/components/Filtres.astro';
+import EtatVide from '~/components/EtatVide.astro';
+import BandeauCta from '~/components/BandeauCta.astro';
+import { chargerRecits } from '~/lib/contenu';
+
+const recits = await chargerRecits();
+const categories = [...new Set(recits.map((r) => r.data.categorie))];
+const [premier, ...suite] = recits;
+---
+
+<Base
+  titre="Récits"
+  description="Portraits, retours de rencontres, idées et actualités : les contenus publiés par MUSIMA pour enrichir le récit sur ce que les Africains construisent."
+>
+  <EntetePage
+    surtitre="Récits"
+    titre="Enrichir le récit"
+    chapo="Donner davantage à voir ce qui se construit, ce qui se crée, ce qui évolue et ce que les Africains apportent."
+    ariane={[{ libelle: 'Récits' }]}
+  />
+
+  <section class="section conteneur">
+    {recits.length > 0 ? (
+      <>
+        <Filtres legende="Filtrer par catégorie" options={categories} cible=".carte-recit" />
+        <ul class="pile pile-8 liste-nue">
+          <li class="carte-recit" data-etiquettes={premier.data.categorie}>
+            <CarteRecit recit={premier} variante="mise-en-avant" />
+          </li>
+          {suite.length > 0 && (
+            <li>
+              <ul class="grille grille--2 liste-nue">
+                {suite.map((recit) => (
+                  <li class="carte-recit" data-etiquettes={recit.data.categorie}>
+                    <CarteRecit recit={recit} />
+                  </li>
+                ))}
+              </ul>
+            </li>
+          )}
+        </ul>
+      </>
+    ) : (
+      <EtatVide titre="Les premiers récits sont à venir" texte="Portraits, retours de rencontres et analyses apparaîtront ici." />
+    )}
+  </section>
+
+  <BandeauCta
+    surtitre="Contribuer"
+    titre="Un parcours ou une initiative à faire connaître ?"
+    texte="MUSIMA publie des portraits et des récits de ce qui se construit. Les propositions sont les bienvenues."
+    actions={[{ url: '/contact', libelle: 'Proposer un sujet' }]}
+  />
+</Base>
+
+<style>
+  .liste-nue { list-style: none; margin: 0; padding: 0; }
+  .liste-nue li[hidden] { display: none; }
+</style>

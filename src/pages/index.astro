@@ -1,0 +1,284 @@
+---
+import Base from '~/layouts/Base.astro';
+import EnteteSection from '~/components/EnteteSection.astro';
+import CarteEvenement from '~/components/CarteEvenement.astro';
+import CarteIntervenant from '~/components/CarteIntervenant.astro';
+import CarteProjet from '~/components/CarteProjet.astro';
+import CarteRecit from '~/components/CarteRecit.astro';
+import BandeauCta from '~/components/BandeauCta.astro';
+import EtatVide from '~/components/EtatVide.astro';
+import ARemplir from '~/components/ARemplir.astro';
+import site from '~/data/site.json';
+import {
+  chargerEvenements,
+  chargerIntervenants,
+  chargerProjets,
+  chargerRecits,
+} from '~/lib/contenu';
+
+const { aVenir, passes } = await chargerEvenements();
+const intervenants = await chargerIntervenants();
+const projets = await chargerProjets();
+const recits = await chargerRecits();
+
+const prochaine = aVenir[0];
+const suivants = aVenir.slice(1, 4);
+
+const enAvant = <T extends { data: { en_avant: boolean } }>(liste: T[], nombre: number) => {
+  const mis = liste.filter((e) => e.data.en_avant);
+  return (mis.length ? mis : liste).slice(0, nombre);
+};
+
+/* Les quatre intentions sont issues mot pour mot de la mission de
+   l'association : elles ne sont pas rédigées pour remplir la page. */
+const intentions = [
+  {
+    titre: 'Mettre en lumière',
+    texte:
+      'Des personnes, des parcours, des projets et des initiatives d’Africains qui entreprennent, créent, innovent et apportent de la valeur dans leurs domaines.',
+  },
+  {
+    titre: 'Faire circuler',
+    texte:
+      'Un espace où les expériences, les savoir-faire, les idées et les initiatives peuvent se rencontrer et circuler.',
+  },
+  {
+    titre: 'Ouvrir le champ des possibles',
+    texte:
+      'Donner à voir des trajectoires et des réalisations qui permettent de se dire que certaines choses sont possibles, et qu’il est possible d’aller plus loin.',
+  },
+  {
+    titre: 'Enrichir le récit',
+    texte:
+      'Donner davantage à voir ce qui se construit, ce qui se crée, ce qui évolue et ce que les Africains apportent.',
+  },
+];
+---
+
+<Base titre={site.nom} description={site.description_courte}>
+  <!-- ================= HÉROS ================= -->
+  <section class="heros scene">
+    <svg class="heros__trait" viewBox="0 0 1200 400" aria-hidden="true" preserveAspectRatio="none">
+      <path d="M-40 330 C 180 330 200 90 400 90 C 600 90 620 310 820 310 C 1020 310 1040 120 1260 120" />
+    </svg>
+
+    <div class="conteneur heros__interieur">
+      <div class="heros__texte">
+        <p class="surtitre">Association · {site.contact.ville}, {site.contact.region}</p>
+        <h1 class="t-hero heros__titre">
+          Mettre en lumière ce que les <em>Africains</em> construisent.
+        </h1>
+        <p class="chapo heros__chapo">
+          MUSIMA met en lumière des personnes, des parcours, des projets et des initiatives
+          d’Africains qui entreprennent, créent, innovent et apportent de la valeur dans leurs
+          domaines.
+        </p>
+        <div class="rang heros__actions">
+          <a href="/evenements" class="bouton">Voir les rencontres</a>
+          <a href="/association" class="bouton bouton--fantome">Découvrir l’association</a>
+        </div>
+      </div>
+
+      <div class="heros__visuel">
+        <ARemplir
+          libelle="PHOTO D’OUVERTURE À AJOUTER — portrait ou scène de rencontre, format portrait 4:5"
+          forme="visuel"
+          ratio="ratio-4-5"
+        />
+        <p class="heros__legende">
+          Le visuel d’ouverture donne le ton du site : une personne réelle, dans son environnement.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= INTENTIONS ================= -->
+  <section class="section conteneur">
+    <EnteteSection
+      surtitre="Ce que fait MUSIMA"
+      titre="Quatre choses, concrètement"
+    />
+    <ul class="grille grille--2 intentions">
+      {intentions.map((intention) => (
+        <li class="intention apparait">
+          <span class="intention__trait" aria-hidden="true"></span>
+          <h3 class="t-petit">{intention.titre}</h3>
+          <p>{intention.texte}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- ================= PROCHAINE RENCONTRE ================= -->
+  <section class="section conteneur">
+    <EnteteSection
+      surtitre="Rencontres"
+      titre="Prochaine rencontre"
+      lien={{ url: '/evenements', libelle: 'Tous les événements' }}
+    />
+    {prochaine ? (
+      <div class="grille prochaine">
+        <CarteEvenement evenement={prochaine} variante="mise-en-avant" />
+        {suivants.length > 0 && (
+          <ul class="pile pile-4 prochaine__suite">
+            {suivants.map((evenement) => (
+              <li><CarteEvenement evenement={evenement} /></li>
+            ))}
+          </ul>
+        )}
+      </div>
+    ) : (
+      <EtatVide
+        titre="Aucune rencontre programmée pour le moment"
+        texte="Les prochaines conférences et rencontres seront annoncées ici dès qu’elles seront fixées."
+        action={passes.length > 0 ? { url: '/evenements', libelle: 'Voir les rencontres passées' } : undefined}
+      />
+    )}
+  </section>
+
+  <!-- ================= INTERVENANTS ================= -->
+  <section class="section conteneur">
+    <EnteteSection
+      surtitre="Les voix"
+      titre="Celles et ceux qui prennent la parole"
+      lien={{ url: '/intervenants', libelle: 'Tous les intervenants' }}
+    />
+    {intervenants.length > 0 ? (
+      <ul class="grille grille--4 liste-nue">
+        {enAvant(intervenants, 4).map((intervenant) => (
+          <li><CarteIntervenant intervenant={intervenant} /></li>
+        ))}
+      </ul>
+    ) : (
+      <EtatVide
+        titre="Les premières fiches d’intervenants arrivent"
+        texte="Chaque personne invitée par MUSIMA aura sa fiche : parcours, domaines et rencontres auxquelles elle a participé."
+      />
+    )}
+  </section>
+
+  <!-- ================= PROJETS ================= -->
+  <section class="section conteneur">
+    <EnteteSection
+      surtitre="Projets"
+      titre="Ce que l’association construit"
+      lien={{ url: '/projets', libelle: 'Tous les projets' }}
+    />
+    {projets.length > 0 ? (
+      <ul class="grille grille--2 liste-nue">
+        {enAvant(projets, 3).map((projet) => (
+          <li><CarteProjet projet={projet} /></li>
+        ))}
+      </ul>
+    ) : (
+      <EtatVide
+        titre="Les projets seront présentés ici"
+        texte="Chaque projet porté ou accompagné par MUSIMA sera documenté : intention, avancement, partenaires."
+      />
+    )}
+  </section>
+
+  <!-- ================= RÉCITS ================= -->
+  <section class="section conteneur">
+    <EnteteSection
+      surtitre="Récits"
+      titre="Portraits, retours et idées"
+      lien={{ url: '/recits', libelle: 'Tous les récits' }}
+    />
+    {recits.length > 0 ? (
+      <ul class="grille grille--2 liste-nue">
+        {enAvant(recits, 3).map((recit) => (
+          <li><CarteRecit recit={recit} /></li>
+        ))}
+      </ul>
+    ) : (
+      <EtatVide
+        titre="Les premiers récits sont à venir"
+        texte="Portraits, retours de rencontres et analyses : les contenus publiés par MUSIMA apparaîtront ici."
+      />
+    )}
+  </section>
+
+  <BandeauCta
+    surtitre="Participer"
+    titre="Vous avez une expérience, un savoir-faire ou un projet à partager ?"
+    texte="MUSIMA se construit avec celles et ceux qui font. Intervenir, adhérer, devenir bénévole ou partenaire : il y a plusieurs façons de contribuer."
+    actions={[
+      { url: '/s-engager', libelle: 'Voir comment s’engager' },
+      { url: '/contact', libelle: 'Nous écrire', variante: 'fantome' },
+    ]}
+  />
+</Base>
+
+<style>
+  /* ---------------- Héros ---------------- */
+  .heros {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--trait);
+  }
+
+  /* Le trait continu du logo, déplié à travers le héros. */
+  .heros__trait {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: var(--or);
+    stroke-width: 2;
+    stroke-linecap: round;
+    opacity: 0.16;
+    pointer-events: none;
+  }
+
+  .heros__interieur {
+    position: relative;
+    display: grid;
+    gap: var(--e-8);
+    padding-block: clamp(3rem, 8vw, 6.5rem) clamp(3rem, 7vw, 6rem);
+    align-items: center;
+  }
+
+  .heros__texte { display: flex; flex-direction: column; align-items: flex-start; }
+  .heros__titre { margin-bottom: var(--e-5); max-width: 15ch; }
+  .heros__titre em {
+    font-style: normal;
+    color: var(--terre);
+  }
+  .heros__chapo { margin-bottom: var(--e-6); }
+  .heros__actions { gap: var(--e-3); }
+
+  .heros__visuel { display: flex; flex-direction: column; gap: var(--e-3); }
+  .heros__legende {
+    font-family: var(--f-titre);
+    font-size: var(--t-100);
+    line-height: 1.5;
+    color: var(--encre-faible);
+    max-width: 24rem;
+  }
+
+  @media (min-width: 62rem) {
+    .heros__interieur { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: var(--e-10); }
+  }
+
+  /* ---------------- Intentions ---------------- */
+  .intentions { list-style: none; margin: 0; padding: 0; }
+  .intention { display: flex; flex-direction: column; gap: var(--e-3); }
+  .intention__trait {
+    width: 2.5rem;
+    height: var(--epaisseur-trait);
+    border-radius: var(--r-pilule);
+    background: var(--or);
+  }
+  .intention p { font-size: var(--t-300); line-height: 1.65; color: var(--encre-douce); text-wrap: pretty; }
+
+  /* ---------------- Divers ---------------- */
+  .liste-nue { list-style: none; margin: 0; padding: 0; }
+  .prochaine { list-style: none; margin: 0; padding: 0; }
+  .prochaine__suite { list-style: none; margin: 0; padding: 0; }
+
+  @media (min-width: 62rem) {
+    .prochaine { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: start; }
+  }
+</style>

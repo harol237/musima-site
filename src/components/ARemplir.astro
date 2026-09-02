@@ -1,0 +1,39 @@
+---
+/**
+ * Emplacement temporaire, volontairement visible.
+ * Disparaît dès que l'information est saisie dans le CMS.
+ *
+ *   <ARemplir type="photo" />          → [PHOTO À AJOUTER]
+ *   <ARemplir type="texte" />          → [TEXTE À FINALISER]
+ *   <ARemplir type="lien" />           → [LIEN À AJOUTER]
+ *   <ARemplir libelle="DATE À CONFIRMER" />
+ */
+interface Props {
+  type?: 'photo' | 'texte' | 'lien' | 'info';
+  libelle?: string;
+  /** `visuel` remplit un bloc image, `ligne` s'insère dans une phrase. */
+  forme?: 'bloc' | 'visuel' | 'ligne';
+  ratio?: string;
+  class?: string;
+}
+const libelles = {
+  photo: 'PHOTO À AJOUTER',
+  texte: 'TEXTE À FINALISER',
+  lien: 'LIEN À AJOUTER',
+  info: 'INFORMATION À COMPLÉTER',
+} as const;
+
+const { type = 'texte', libelle, forme = 'bloc', ratio, class: classe = '' } = Astro.props;
+const texte = libelle ?? libelles[type];
+---
+
+<span
+  class:list={[
+    'a-remplir',
+    forme === 'visuel' && 'a-remplir--visuel',
+    forme === 'ligne' && 'a-remplir--ligne',
+    ratio,
+    classe,
+  ]}
+  data-a-remplir={type}
+>[{texte}]</span>

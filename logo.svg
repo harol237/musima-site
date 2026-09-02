@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" width="100%" height="100%" style="background-color: #ffffff;">
+<polyline points="100,220 100,80 180,170 260,80 260,220" fill="none" stroke="#D05638" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M 300,80 L 300,160 A 60,60 0 0,0 420,160 L 420,80" fill="none" stroke="#133D52" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+<circle cx="360" cy="145" r="14" fill="#D8982D" />
+<path d="M 530,105 C 530,80 460,80 460,115 C 460,150 530,150 530,185 C 530,225 460,225 460,195" fill="none" stroke="#133D52" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+<line x1="580" y1="80" x2="580" y2="220" stroke="#D8982D" stroke-width="14" stroke-linecap="round" />
+<polyline points="630,220 630,80 710,170 790,80 790,220" fill="none" stroke="#D05638" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+<polyline points="820,220 890,80 960,220" fill="none" stroke="#133D52" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+<circle cx="890" cy="150" r="14" fill="#D8982D" />
+</svg>

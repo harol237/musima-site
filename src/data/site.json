@@ -1,0 +1,31 @@
+{
+  "nom": "MUSIMA",
+  "baseline": "Mettre en lumière ce que les Africains construisent",
+  "verbes": ["Connecter", "Bâtir", "Impacter"],
+  "phrase": "MUSIMA met en lumière ce que les Africains construisent : des personnes, des parcours, des projets. On organise des rencontres où celles et ceux qui font déjà racontent comment ils s'y sont pris, et on fait circuler ce qui s'y dit.",
+  "description_courte": "Association basée à Barcelone. Des rencontres où des Africains qui entreprennent, créent et innovent racontent ce qu'ils construisent — et comment.",
+  "langue": "fr",
+  "contact": {
+    "email": "Musima.org@mail.com",
+    "telephone": "[TÉLÉPHONE À AJOUTER]",
+    "ville": "Barcelone",
+    "region": "Catalogne",
+    "pays": "Espagne",
+    "adresse": "[ADRESSE DU SIÈGE À AJOUTER]",
+    "statut_juridique": "[FORME JURIDIQUE, NIF ET NUMÉRO AU REGISTRE DES ASSOCIATIONS DE CATALOGNE À AJOUTER]"
+  },
+  "reseaux": [
+    { "nom": "Instagram", "url": "https://www.instagram.com/musima_official" },
+    { "nom": "LinkedIn", "url": "[LIEN À AJOUTER]" },
+    { "nom": "YouTube", "url": "[LIEN À AJOUTER]" }
+  ],
+  "infolettre": {
+    "actif": true,
+    "fournisseur": "Brevo",
+    "titre": "Rester au courant",
+    "texte": "Les prochaines rencontres, les nouveaux portraits, ce qui se construit autour de MUSIMA. Quelques envois par an, pas plus — on n'a ni le temps ni l'envie de vous encombrer.",
+    "action": "[URL DU FORMULAIRE BREVO À AJOUTER]",
+    "champ_email": "EMAIL",
+    "champ_consentement": "OPT_IN"
+  }
+}

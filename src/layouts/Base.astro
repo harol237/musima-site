@@ -1,0 +1,80 @@
+---
+import { Font } from 'astro:assets';
+import Seo from '~/components/Seo.astro';
+import Header from '~/components/Header.astro';
+import Footer from '~/components/Footer.astro';
+import '~/styles/global.css';
+
+interface Props {
+  titre: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article' | 'profile' | 'event';
+  publieLe?: Date;
+  noindex?: boolean;
+}
+const props = Astro.props;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0e2e3f" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f3f1ec" media="(prefers-color-scheme: light)" />
+
+    <Font cssVariable="--font-display" preload />
+    <Font cssVariable="--font-read" preload />
+
+    <Seo {...props} />
+
+    <script is:inline>
+      // Applique le thème mémorisé avant le premier rendu : évite tout
+      // clignotement au chargement.
+      try {
+        const choix = localStorage.getItem('musima-theme');
+        if (choix === 'dark' || choix === 'light') {
+          document.documentElement.dataset.theme = choix;
+        }
+      } catch (e) {
+        /* stockage indisponible : on suit simplement le thème du système */
+      }
+    </script>
+  </head>
+
+  <body>
+    <a href="#contenu" class="saut-contenu">Aller au contenu</a>
+    <Header />
+    <main id="contenu">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Révélation discrète au défilement. Sans JS ou avec animations
+      // réduites, tout reste visible : la classe n'est ajoutée que si
+      // l'utilisateur ne demande pas de mouvement réduit.
+      const mouvementOk = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+      const cibles = document.querySelectorAll('.apparait');
+
+      if (!mouvementOk || !('IntersectionObserver' in window)) {
+        cibles.forEach((cible) => cible.classList.add('est-visible'));
+      } else {
+        const observateur = new IntersectionObserver(
+          (entrees) => {
+            for (const entree of entrees) {
+              if (entree.isIntersecting) {
+                entree.target.classList.add('est-visible');
+                observateur.unobserve(entree.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
+        );
+        cibles.forEach((cible) => observateur.observe(cible));
+      }
+    </script>
+  </body>
+</html>

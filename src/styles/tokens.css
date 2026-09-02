@@ -1,0 +1,152 @@
+/* ==================================================================
+   MUSIMA — JETONS DE DESIGN
+   ------------------------------------------------------------------
+   Un seul endroit à modifier pour changer l'apparence du site.
+   Les trois couleurs viennent du logo (logo.svg) :
+     terracotta #D05638 · bleu pétrole #133D52 · ocre #D8982D
+   Les variantes « encre » sont des versions assombries, calculées
+   pour rester lisibles (contraste AA) sur fond clair.
+   ================================================================== */
+
+:root {
+  /* --- Marque : valeurs brutes du logo, jamais utilisées pour du texte
+         sur fond clair (contraste insuffisant en petit corps) --------- */
+  --marque-terre: #d05638;
+  --marque-petrole: #133d52;
+  --marque-or: #d8982d;
+
+  /* --- Registre clair (défaut) ----------------------------------- */
+  --papier: #f3f1ec;
+  --surface: #fbfaf8;
+  --surface-2: #ece8e0;
+  --encre: #12303f;          /* 10.6:1 sur --papier */
+  --encre-douce: #4b6472;    /*  5.5:1 sur --papier */
+  --encre-faible: #6a808b;   /*  3.6:1 — métadonnées en gros corps seulement */
+  --trait: #ded8ce;
+  --trait-fort: #c3bbae;
+  --terre: #b8442a;          /*  4.8:1 sur --papier — liens, CTA */
+  --terre-vive: #d05638;     /* aplats et décor */
+  --or: #d8982d;             /* aplats et décor */
+  --or-encre: #8a5e12;       /*  5.0:1 sur --papier — texte doré */
+  --sur-terre: #fffaf7;      /* texte posé sur --terre */
+  --sur-or: #133d52;         /* texte posé sur --or — 4.6:1 */
+  --focus: #b8442a;
+  --ombre-carte: none;
+
+  /* --- Registre « scène » : toujours sombre, dans les deux thèmes.
+         C'est la signature MUSIMA — le contenu mis en lumière sur
+         un fond profond. Utilisé pour le héros, les bandeaux et le
+         pied de page. -------------------------------------------- */
+  --scene-fond: #0e2e3f;
+  --scene-fond-2: #14394c;
+  --scene-encre: #f0ebe3;    /* 11.9:1 */
+  --scene-encre-douce: #a9bec8; /* 7.3:1 */
+  --scene-trait: #24506699;
+  --scene-terre: #e8825f;    /*  5.3:1 */
+  --scene-or: #e3ac48;       /*  6.9:1 */
+  --scene-focus: #e3ac48;
+
+  /* --- Typographie ----------------------------------------------- */
+  --f-titre: var(--font-display), 'Segoe UI', system-ui, sans-serif;
+  --f-lecture: var(--font-read), 'Iowan Old Style', Georgia, serif;
+
+  --t-100: 0.75rem;
+  --t-200: 0.8125rem;
+  --t-300: 0.9375rem;
+  --t-400: 1.0625rem;
+  --t-500: clamp(1.125rem, 0.5vw + 1rem, 1.3125rem);
+  --t-600: clamp(1.3125rem, 0.9vw + 1.05rem, 1.6875rem);
+  --t-700: clamp(1.625rem, 1.8vw + 1.15rem, 2.375rem);
+  --t-800: clamp(2.125rem, 3.4vw + 1.1rem, 3.625rem);
+  --t-900: clamp(2.5rem, 5.6vw + 0.9rem, 5.25rem);
+
+  --interligne-serre: 1.06;
+  --interligne-titre: 1.14;
+  --interligne-texte: 1.68;
+
+  /* --- Rythme ------------------------------------------------------
+         Le pas de base est 4px. Les sections respirent largement :
+         c'est le principal marqueur de sérieux du site. ------------ */
+  --e-1: 0.25rem;
+  --e-2: 0.5rem;
+  --e-3: 0.75rem;
+  --e-4: 1rem;
+  --e-5: 1.5rem;
+  --e-6: 2rem;
+  --e-7: 2.75rem;
+  --e-8: 3.5rem;
+  --e-9: 4.5rem;
+  --e-10: 6rem;
+  --e-section: clamp(3.5rem, 7vw, 7rem);
+
+  /* --- Mise en page ---------------------------------------------- */
+  --largeur-page: 76rem;
+  --largeur-texte: 38rem;
+  --largeur-etroite: 52rem;
+  --gouttiere: clamp(1.25rem, 5vw, 3rem);
+
+  /* --- Formes ------------------------------------------------------
+         Le logo est tracé en capuchons ronds : les éléments
+         d'action reprennent cette rondeur (pilules), les surfaces
+         restent presque droites pour tenir la structure. ---------- */
+  --r-carte: 3px;
+  --r-image: 4px;
+  --r-pilule: 999px;
+  --epaisseur-trait: 2px;
+
+  --transition: 180ms cubic-bezier(0.2, 0, 0.13, 1);
+
+  color-scheme: light;
+}
+
+/* --- Registre sombre : suit le système, sauf choix explicite ------ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --papier: #0e2e3f;
+    --surface: #14394c;
+    --surface-2: #1b4257;
+    --encre: #f0ebe3;
+    --encre-douce: #a9bec8;
+    --encre-faible: #8ba5b1;
+    --trait: #245066;
+    --trait-fort: #35667e;
+    --terre: #e8825f;
+    --terre-vive: #e8825f;
+    --or: #e3ac48;
+    --or-encre: #e3ac48;
+    --sur-terre: #2a0f07;
+    --sur-or: #133d52;
+    --focus: #e3ac48;
+    --ombre-carte: none;
+
+    --scene-fond: #0a2130;
+    --scene-fond-2: #10354a;
+
+    color-scheme: dark;
+  }
+}
+
+/* --- Registre sombre forcé par l'utilisateur ---------------------- */
+:root[data-theme='dark'] {
+  --papier: #0e2e3f;
+  --surface: #14394c;
+  --surface-2: #1b4257;
+  --encre: #f0ebe3;
+  --encre-douce: #a9bec8;
+  --encre-faible: #8ba5b1;
+  --trait: #245066;
+  --trait-fort: #35667e;
+  --terre: #e8825f;
+  --terre-vive: #e8825f;
+  --or: #e3ac48;
+  --or-encre: #e3ac48;
+  --sur-terre: #2a0f07;
+  --sur-or: #133d52;
+  --focus: #e3ac48;
+  --ombre-carte: none;
+
+  --scene-fond: #0a2130;
+  --scene-fond-2: #10354a;
+
+  color-scheme: dark;
+}

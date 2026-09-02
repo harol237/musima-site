@@ -1,0 +1,80 @@
+---
+import Base from '~/layouts/Base.astro';
+import EntetePage from '~/components/EntetePage.astro';
+import ARemplir from '~/components/ARemplir.astro';
+import site from '~/data/site.json';
+
+const aRemplir = (valeur: string) => valeur.startsWith('[');
+---
+<Base
+  titre="Mentions légales"
+  description="Éditeur, hébergeur et informations légales du site MUSIMA."
+  noindex
+>
+  <EntetePage
+    surtitre="Informations légales"
+    titre="Mentions légales"
+    chapo="Qui édite ce site, qui l'héberge, et à qui appartient ce que vous y voyez."
+    ariane={[{ libelle: 'Mentions légales' }]}
+    registre="papier"
+  />
+  <section class="section conteneur">
+    <div class="prose">
+      <h2>Éditeur du site</h2>
+      <p>
+        Ce site est édité par <strong>{site.nom}</strong>, association sans but lucratif de droit
+        espagnol, régie par la loi organique 1/2002 sur le droit d'association et par le livre
+        troisième du Code civil de Catalogne, dont le siège est à {site.contact.ville},
+        {' '}{site.contact.region}, {site.contact.pays}.
+      </p>
+      {aRemplir(site.contact.statut_juridique) && (
+        <ARemplir libelle="NIF DE L'ASSOCIATION ET NUMÉRO D'INSCRIPTION AU REGISTRE DES ASSOCIATIONS DE LA GENERALITAT DE CATALUNYA À AJOUTER" />
+      )}
+      {aRemplir(site.contact.adresse) && (
+        <ARemplir libelle="ADRESSE POSTALE COMPLÈTE DU SIÈGE À AJOUTER" />
+      )}
+      <p>
+        Contact : <a href={`mailto:${site.contact.email}`} class="lien">{site.contact.email}</a>
+      </p>
+      <ARemplir libelle="NOM DE LA PERSONNE RESPONSABLE DE LA PUBLICATION À AJOUTER (généralement la présidence de l'association)" />
+
+      <h2>Hébergement</h2>
+      <p>
+        Le site est un site statique : les pages sont pré-générées et servies telles quelles, sans
+        base de données ni traitement côté serveur.
+      </p>
+      <ARemplir libelle="NOM, RAISON SOCIALE ET ADRESSE DE L'HÉBERGEUR À AJOUTER (Netlify, Cloudflare Pages, GitHub Pages ou Vercel selon le choix retenu)" />
+
+      <h2>Propriété intellectuelle</h2>
+      <p>
+        Les textes publiés sur ce site sont la propriété de {site.nom}, sauf mention contraire.
+        Les photographies restent la propriété de leurs auteurs : chaque image publiée porte son
+        crédit lorsqu'il nous a été communiqué.
+      </p>
+      <p>
+        Les portraits et les récits publiés le sont avec l'accord des personnes concernées. Si
+        vous apparaissez sur une photo ou dans un texte et que vous souhaitez qu'il soit retiré,
+        écrivez-nous : nous le ferons sans discuter.
+      </p>
+      <p>
+        Reproduction possible pour un usage non commercial, à condition de citer {site.nom} et de
+        ne pas dénaturer le propos. Pour tout autre usage, demandez-nous.
+      </p>
+
+      <h2>Conception</h2>
+      <p>
+        Identité visuelle et site conçus pour {site.nom}. Le site n'utilise ni traceur publicitaire,
+        ni service tiers pour l'affichage des pages : les polices de caractères sont hébergées sur
+        notre propre domaine.
+      </p>
+      <ARemplir libelle="CRÉDITS DE CONCEPTION (IDENTITÉ VISUELLE, DÉVELOPPEMENT) À COMPLÉTER" />
+
+      <h2>Signaler un contenu</h2>
+      <p>
+        Une erreur, un contenu qui ne devrait pas être là, un lien mort : écrivez à
+        {' '}<a href={`mailto:${site.contact.email}`} class="lien">{site.contact.email}</a> et nous
+        corrigerons.
+      </p>
+    </div>
+  </section>
+</Base>

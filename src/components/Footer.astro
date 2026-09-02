@@ -1,0 +1,227 @@
+---
+import Logo from './Logo.astro';
+import ARemplir from './ARemplir.astro';
+import site from '~/data/site.json';
+import {
+  navigationPrincipale,
+  navigationSecondaire,
+  navigationLegale,
+  actionPrincipale,
+} from '~/data/navigation';
+
+const annee = new Date().getFullYear();
+const aRemplir = (valeur: string) => valeur.startsWith('[');
+---
+
+<footer class="pied scene">
+  <div class="conteneur pied__interieur">
+    <div class="pied__marque">
+      <Logo hauteur="2.5rem" />
+      <p class="pied__phrase">{site.phrase}</p>
+      <a href={actionPrincipale.url} class="bouton">{actionPrincipale.libelle}</a>
+    </div>
+
+    <nav class="pied__colonnes" aria-label="Pied de page">
+      <div class="pied__colonne">
+        <h2 class="pied__titre">Explorer</h2>
+        <ul>
+          {navigationPrincipale.map((e) => (
+            <li><a href={e.url} class="lien-pied">{e.libelle}</a></li>
+          ))}
+          {navigationSecondaire.map((e) => (
+            <li><a href={e.url} class="lien-pied">{e.libelle}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="pied__colonne">
+        <h2 class="pied__titre">Contact</h2>
+        <ul>
+          <li>
+            {aRemplir(site.contact.email)
+              ? <ARemplir libelle="EMAIL À AJOUTER" forme="ligne" />
+              : <a href={`mailto:${site.contact.email}`} class="lien-pied">{site.contact.email}</a>}
+          </li>
+          <li class="pied__lieu">{site.contact.ville}, {site.contact.region} — {site.contact.pays}</li>
+        </ul>
+
+        <h2 class="pied__titre pied__titre--espace">Suivre</h2>
+        <ul>
+          {site.reseaux.map((reseau) => (
+            <li>
+              {aRemplir(reseau.url)
+                ? <span class="pied__reseau-vide">{reseau.nom} <ARemplir type="lien" forme="ligne" /></span>
+                : <a href={reseau.url} class="lien-pied" rel="me noopener">{reseau.nom}</a>}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="pied__colonne pied__colonne--large">
+        <h2 class="pied__titre">{site.infolettre.titre}</h2>
+        <p class="pied__texte">{site.infolettre.texte}</p>
+        <form
+          class="pied__form"
+          action={aRemplir(site.infolettre.action) ? undefined : site.infolettre.action}
+          method="post"
+          target="_blank"
+          rel="noopener"
+        >
+          <div class="pied__form-ligne">
+            <label for="courriel-infolettre" class="visuellement-cache">Adresse e-mail</label>
+            <input
+              id="courriel-infolettre"
+              type="email"
+              name={site.infolettre.champ_email}
+              required
+              autocomplete="email"
+              placeholder="votre@email.com"
+              disabled={aRemplir(site.infolettre.action)}
+            />
+            <button type="submit" class="bouton" disabled={aRemplir(site.infolettre.action)}>
+              S'inscrire
+            </button>
+          </div>
+
+          {/* Consentement explicite : obligatoire avant toute inscription (RGPD). */}
+          <label class="pied__consentement">
+            <input
+              type="checkbox"
+              name={site.infolettre.champ_consentement}
+              value="1"
+              required
+              disabled={aRemplir(site.infolettre.action)}
+            />
+            <span>
+              J'accepte de recevoir les actualités de {site.nom}. Désinscription en un clic dans
+              chaque envoi. <a href="/confidentialite" class="lien-pied">En savoir plus</a>.
+            </span>
+          </label>
+
+          {aRemplir(site.infolettre.action) && (
+            <ARemplir libelle={`FORMULAIRE ${site.infolettre.fournisseur.toUpperCase()} À CONNECTER — COLLER L'URL DU FORMULAIRE DANS src/data/site.json`} />
+          )}
+        </form>
+      </div>
+    </nav>
+  </div>
+
+  <div class="conteneur pied__bas">
+    <p class="pied__droits">© {annee} {site.nom}. Tous droits réservés.</p>
+    <ul class="pied__legal">
+      {navigationLegale.map((e) => (
+        <li><a href={e.url} class="lien-pied">{e.libelle}</a></li>
+      ))}
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .pied { margin-top: auto; }
+
+  .pied__interieur {
+    display: grid;
+    gap: var(--e-8);
+    padding-block: var(--e-9) var(--e-7);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pied__marque { display: flex; flex-direction: column; align-items: flex-start; gap: var(--e-4); }
+  .pied__phrase {
+    max-width: 30rem;
+    font-size: var(--t-300);
+    line-height: 1.65;
+    color: var(--encre-douce);
+  }
+
+  .pied__colonnes {
+    display: grid;
+    gap: var(--e-7);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  }
+
+  /* La colonne infolettre ne s'élargit qu'une fois qu'il y a bien deux
+     colonnes à occuper : sur mobile, `span 2` créerait une colonne
+     implicite et ferait déborder le pied de page. */
+  .pied__colonne--large { min-width: 0; }
+  @media (min-width: 40rem) {
+    .pied__colonne--large { grid-column: span 2; }
+  }
+
+  .pied__titre {
+    font-size: var(--t-200);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: var(--e-4);
+  }
+  .pied__titre--espace { margin-top: var(--e-6); }
+
+  .pied__colonnes ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--e-2); }
+
+  .lien-pied {
+    font-family: var(--f-titre);
+    font-size: var(--t-300);
+    overflow-wrap: anywhere;
+    text-decoration: none;
+    color: var(--encre-douce);
+    transition: color var(--transition);
+  }
+  .lien-pied:hover { color: var(--encre); text-decoration: underline; text-underline-offset: 0.22em; }
+
+  .pied__lieu, .pied__texte, .pied__reseau-vide {
+    font-size: var(--t-300);
+    color: var(--encre-douce);
+  }
+  .pied__texte { line-height: 1.6; margin-bottom: var(--e-4); max-width: 26rem; }
+
+  .pied__form { display: flex; flex-direction: column; gap: var(--e-3); max-width: 26rem; }
+  .pied__form-ligne { display: flex; flex-wrap: wrap; gap: var(--e-2); }
+  .pied__form :disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .pied__consentement {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--e-3);
+    font-size: var(--t-200);
+    line-height: 1.5;
+    color: var(--encre-douce);
+    cursor: pointer;
+  }
+  .pied__consentement input {
+    flex: none;
+    width: 1.05rem;
+    height: 1.05rem;
+    margin-top: 0.15em;
+    accent-color: var(--terre);
+  }
+  .pied__form-ligne input {
+    flex: 1 1 12rem;
+    min-width: 0;
+    padding: 0.8em 1.1em;
+    border-radius: var(--r-pilule);
+    border: 1px solid var(--trait-fort);
+    background: transparent;
+    color: var(--encre);
+    font-size: var(--t-300);
+  }
+  .pied__form-ligne input::placeholder { color: var(--encre-faible); }
+
+  .pied__bas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-4);
+    padding-block: var(--e-5);
+    border-top: 1px solid var(--trait);
+  }
+  .pied__droits { font-family: var(--f-titre); font-size: var(--t-200); color: var(--encre-faible); }
+  .pied__legal { display: flex; flex-wrap: wrap; gap: var(--e-5); list-style: none; margin: 0; padding: 0; }
+  .pied__legal .lien-pied { font-size: var(--t-200); }
+
+  @media (min-width: 64rem) {
+    .pied__interieur { grid-template-columns: 20rem minmax(0, 1fr); gap: var(--e-10); }
+  }
+</style>

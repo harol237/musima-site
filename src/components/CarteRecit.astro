@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import ARemplir from './ARemplir.astro';
+import BadgeModele from './BadgeModele.astro';
+import { formaterDate, dateISO } from '~/lib/contenu';
+
+interface Props {
+  recit: CollectionEntry<'recits'>;
+  variante?: 'liste' | 'mise-en-avant';
+}
+const { recit, variante = 'liste' } = Astro.props;
+const { data } = recit;
+---
+<article class:list={['carte', 'recit', variante === 'mise-en-avant' && 'recit--large']}>
+  {data.modele && <BadgeModele />}
+
+  <div class:list={['carte__visuel', variante === 'mise-en-avant' ? 'ratio-16-9' : 'ratio-3-2']}>
+    {data.image ? (
+      <Image
+        src={data.image}
+        alt={data.image_alt ?? ''}
+        widths={[400, 800, 1200]}
+        sizes={variante === 'mise-en-avant' ? '(min-width: 64rem) 46rem, 100vw' : '(min-width: 64rem) 22rem, 90vw'}
+      />
+    ) : (
+      <ARemplir type="photo" forme="visuel" />
+    )}
+  </div>
+
+  <div class="rang">
+    <span class="puce puce--sourde">{data.categorie}</span>
+    <time class="meta" datetime={dateISO(data.date)}>{formaterDate(data.date)}</time>
+  </div>
+
+  <h3 class={variante === 'mise-en-avant' ? 't-section' : 't-carte'}>
+    <a href={`/recits/${recit.id}`} class="carte__lien">{data.titre}</a>
+  </h3>
+
+  {data.resume ? (
+    <p class="recit__resume">{data.resume}</p>
+  ) : (
+    <ARemplir type="texte" forme="ligne" />
+  )}
+
+  <p class="meta recit__signature">
+    {data.auteur ?? 'MUSIMA'}
+    {data.temps_lecture && <> · {data.temps_lecture}</>}
+  </p>
+</article>
+
+<style>
+  .recit__resume { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.6; text-wrap: pretty; }
+  .recit__signature { margin-top: auto; padding-top: var(--e-2); font-size: var(--t-100); }
+  .recit--large .recit__resume { font-size: var(--t-400); }
+</style>

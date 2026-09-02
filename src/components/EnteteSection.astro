@@ -1,0 +1,20 @@
+---
+interface Props {
+  surtitre?: string;
+  titre: string;
+  lien?: { url: string; libelle: string };
+  niveau?: 'h2' | 'h3';
+  class?: string;
+}
+const { surtitre, titre, lien, niveau: Niveau = 'h2', class: classe = '' } = Astro.props;
+---
+<div class:list={['entete-section', classe]}>
+  <div>
+    {surtitre && <p class="surtitre">{surtitre}</p>}
+    <Niveau class="t-section">{titre}</Niveau>
+  </div>
+  {lien && <a href={lien.url} class="bouton bouton--discret lien-suite">{lien.libelle} <span aria-hidden="true">→</span></a>}
+</div>
+<style>
+  .lien-suite { flex: none; padding-bottom: 0.35rem; }
+</style>

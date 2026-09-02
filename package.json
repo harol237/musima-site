@@ -1,0 +1,26 @@
+{
+  "name": "musima-site",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev --host",
+    "build": "npm run verifier && astro build",
+    "verifier": "astro sync && tsc --noEmit",
+    "preview": "astro preview --host",
+    "astro": "astro",
+    "cms": "sveltia-cms-proxy-server",
+    "cms:maj": "cp node_modules/@sveltia/cms/dist/sveltia-cms.js public/admin/sveltia-cms.js",
+    "nettoyer-modeles": "grep -rl \"^modele: true\" src/content | xargs -r rm -v"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.2.4",
+    "sharp": "^0.35.3",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@sveltia/cms": "^0.193.2"
+  }
+}

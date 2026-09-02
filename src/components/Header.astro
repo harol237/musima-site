@@ -1,0 +1,260 @@
+---
+import Logo from './Logo.astro';
+import { navigationPrincipale, actionPrincipale } from '~/data/navigation';
+
+const chemin = Astro.url.pathname.replace(/\/$/, '') || '/';
+const estActif = (url: string) => chemin === url || chemin.startsWith(url + '/');
+---
+
+<header class="entete" data-entete>
+  <div class="conteneur entete__interieur">
+    <a href="/" class="entete__marque" aria-label="MUSIMA — accueil">
+      <Logo hauteur="1.9rem" />
+    </a>
+
+    <nav class="entete__nav" aria-label="Navigation principale">
+      <ul class="entete__liste">
+        {navigationPrincipale.map((entree) => (
+          <li>
+            <a
+              href={entree.url}
+              class="lien-trait entete__lien"
+              aria-current={estActif(entree.url) ? 'page' : undefined}
+            >{entree.libelle}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="entete__actions">
+      <button
+        type="button"
+        class="bascule-theme"
+        data-bascule-theme
+        aria-label="Changer de thème clair ou sombre"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="bascule-theme__icone bascule-theme__icone--clair">
+          <circle cx="12" cy="12" r="4.5" />
+          <path d="M12 2.5v2M12 19.5v2M21.5 12h-2M4.5 12h-2M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4M18.7 18.7l-1.4-1.4M6.7 6.7L5.3 5.3" />
+        </svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="bascule-theme__icone bascule-theme__icone--sombre">
+          <path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.5 8.5 0 1 0 10.2 10.2Z" />
+        </svg>
+      </button>
+
+      <a href={actionPrincipale.url} class="bouton entete__cta">{actionPrincipale.libelle}</a>
+
+      <button
+        type="button"
+        class="entete__bascule"
+        data-bascule-menu
+        aria-expanded="false"
+        aria-controls="menu-mobile"
+      >
+        <span class="entete__bascule-traits" aria-hidden="true"><span></span><span></span></span>
+        <span class="visuellement-cache">Ouvrir le menu</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="menu-mobile" id="menu-mobile" data-menu-mobile hidden>
+    <nav class="conteneur menu-mobile__interieur" aria-label="Navigation principale (mobile)">
+      <ul class="menu-mobile__liste">
+        {navigationPrincipale.map((entree) => (
+          <li>
+            <a href={entree.url} aria-current={estActif(entree.url) ? 'page' : undefined}>
+              <span class="menu-mobile__libelle">{entree.libelle}</span>
+              {entree.description && <span class="menu-mobile__desc">{entree.description}</span>}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a href={actionPrincipale.url} class="bouton menu-mobile__cta">{actionPrincipale.libelle}</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .entete {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in oklab, var(--papier) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition);
+  }
+  .entete[data-defile] { border-bottom-color: var(--trait); }
+
+  .entete__interieur {
+    display: flex;
+    align-items: center;
+    gap: var(--e-5);
+    min-height: 4.75rem;
+  }
+
+  .entete__marque {
+    display: flex;
+    align-items: center;
+    flex: none;
+    border-radius: 3px;
+  }
+
+  .entete__nav { margin-inline: auto; }
+
+  .entete__liste {
+    display: flex;
+    align-items: center;
+    gap: var(--e-6);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .entete__lien { font-size: var(--t-300); }
+
+  .entete__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--e-3);
+    margin-left: auto;
+  }
+
+  .entete__cta { font-size: var(--t-200); padding: 0.7em 1.2em; }
+
+  /* --- Bascule de thème --- */
+  .bascule-theme {
+    display: grid;
+    place-items: center;
+    width: 2.375rem;
+    height: 2.375rem;
+    border-radius: var(--r-pilule);
+    border: 1px solid var(--trait);
+    color: var(--encre-douce);
+    transition: color var(--transition), border-color var(--transition);
+  }
+  .bascule-theme:hover { color: var(--terre); border-color: var(--terre); }
+  .bascule-theme__icone {
+    grid-area: 1 / 1;
+    width: 1.05rem;
+    height: 1.05rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .bascule-theme__icone--sombre { display: none; }
+  :global(:root[data-theme='dark']) .bascule-theme__icone--clair { display: none; }
+  :global(:root[data-theme='dark']) .bascule-theme__icone--sombre { display: block; }
+
+  /* --- Bascule mobile : deux traits, capuchons ronds (motif du logo) --- */
+  .entete__bascule { display: none; width: 2.375rem; height: 2.375rem; place-items: center; }
+  .entete__bascule-traits { display: grid; gap: 5px; width: 1.25rem; }
+  .entete__bascule-traits span {
+    display: block;
+    height: var(--epaisseur-trait);
+    border-radius: var(--r-pilule);
+    background: var(--encre);
+    transition: transform var(--transition), opacity var(--transition);
+  }
+  .entete__bascule[aria-expanded='true'] .entete__bascule-traits span:first-child {
+    transform: translateY(3.5px) rotate(45deg);
+  }
+  .entete__bascule[aria-expanded='true'] .entete__bascule-traits span:last-child {
+    transform: translateY(-3.5px) rotate(-45deg);
+  }
+
+  /* --- Panneau mobile --- */
+  .menu-mobile {
+    display: none;
+    border-top: 1px solid var(--trait);
+    background: var(--papier);
+    max-height: calc(100dvh - 4.75rem);
+    overflow-y: auto;
+  }
+  .menu-mobile__interieur { display: flex; flex-direction: column; gap: var(--e-5); padding-block: var(--e-5) var(--e-7); }
+  .menu-mobile__liste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .menu-mobile__liste li + li { border-top: 1px solid var(--trait); }
+  .menu-mobile__liste a {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-block: var(--e-4);
+    text-decoration: none;
+  }
+  .menu-mobile__libelle {
+    font-family: var(--f-titre);
+    font-size: var(--t-600);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .menu-mobile__liste a[aria-current='page'] .menu-mobile__libelle { color: var(--terre); }
+  .menu-mobile__desc { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.4; }
+  .menu-mobile__cta { align-self: flex-start; }
+
+  @media (max-width: 60rem) {
+    .entete__nav { display: none; }
+    .entete__cta { display: none; }
+    .entete__bascule { display: grid; }
+    .menu-mobile { display: block; }
+
+    /* Au doigt, 38px c'est petit : on passe les deux bascules à 44px,
+       le minimum confortable sur mobile et tablette. */
+    .bascule-theme,
+    .entete__bascule { width: 2.75rem; height: 2.75rem; }
+  }
+</style>
+
+<script>
+  const entete = document.querySelector<HTMLElement>('[data-entete]');
+  const bascule = document.querySelector<HTMLButtonElement>('[data-bascule-menu]');
+  const panneau = document.querySelector<HTMLElement>('[data-menu-mobile]');
+
+  if (bascule && panneau) {
+    const definirEtat = (ouvert: boolean) => {
+      bascule.setAttribute('aria-expanded', String(ouvert));
+      panneau.hidden = !ouvert;
+      bascule.querySelector('.visuellement-cache')!.textContent = ouvert
+        ? 'Fermer le menu'
+        : 'Ouvrir le menu';
+    };
+
+    bascule.addEventListener('click', () =>
+      definirEtat(bascule.getAttribute('aria-expanded') !== 'true'),
+    );
+
+    document.addEventListener('keydown', (evenement) => {
+      if (evenement.key === 'Escape' && bascule.getAttribute('aria-expanded') === 'true') {
+        definirEtat(false);
+        bascule.focus();
+      }
+    });
+
+    // Le panneau mobile ne doit pas rester ouvert en passant sur grand écran.
+    const grandEcran = window.matchMedia('(min-width: 60.0625rem)');
+    grandEcran.addEventListener('change', (e) => e.matches && definirEtat(false));
+  }
+
+  // Filet sous l'en-tête dès que la page défile.
+  if (entete) {
+    const surDefilement = () =>
+      entete.toggleAttribute('data-defile', window.scrollY > 8);
+    surDefilement();
+    window.addEventListener('scroll', surDefilement, { passive: true });
+  }
+
+  // Bascule de thème : mémorisée d'une visite à l'autre.
+  document.querySelector('[data-bascule-theme]')?.addEventListener('click', () => {
+    const racine = document.documentElement;
+    const systemeSombre = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const actuel = racine.dataset.theme ?? (systemeSombre ? 'dark' : 'light');
+    const suivant = actuel === 'dark' ? 'light' : 'dark';
+    racine.dataset.theme = suivant;
+    try {
+      localStorage.setItem('musima-theme', suivant);
+    } catch {
+      /* navigation privée : on garde simplement le choix pour la session */
+    }
+  });
+</script>

@@ -1,0 +1,51 @@
+---
+/**
+ * Logo MUSIMA — repris de logo.svg.
+ * Les couleurs passent par des variables CSS pour que le bleu pétrole
+ * devienne ivoire sur les fonds profonds (registre « scène »),
+ * sans jamais dénaturer la terracotta ni l'ocre.
+ */
+interface Props {
+  hauteur?: string;
+  class?: string;
+  titre?: string;
+}
+const { hauteur = '2.25rem', class: classe = '', titre = 'MUSIMA' } = Astro.props;
+---
+
+<svg
+  class:list={['logo', classe]}
+  viewBox="88 68 888 168"
+  role="img"
+  aria-label={titre}
+  style={`height:${hauteur}`}
+>
+  <polyline points="100,220 100,80 180,170 260,80 260,220" class="logo__terre" />
+  <path d="M 300,80 L 300,160 A 60,60 0 0,0 420,160 L 420,80" class="logo__petrole" />
+  <circle cx="360" cy="145" r="14" class="logo__pt" />
+  <path d="M 530,105 C 530,80 460,80 460,115 C 460,150 530,150 530,185 C 530,225 460,225 460,195" class="logo__petrole" />
+  <line x1="580" y1="80" x2="580" y2="220" class="logo__or" />
+  <polyline points="630,220 630,80 710,170 790,80 790,220" class="logo__terre" />
+  <polyline points="820,220 890,80 960,220" class="logo__petrole" />
+  <circle cx="890" cy="150" r="14" class="logo__pt" />
+</svg>
+
+<style>
+  .logo {
+    --logo-terre: var(--marque-terre);
+    --logo-petrole: var(--encre);
+    --logo-or: var(--marque-or);
+    width: auto;
+    overflow: visible;
+  }
+  .logo :is(polyline, path, line) {
+    fill: none;
+    stroke-width: 14;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .logo__terre { stroke: var(--logo-terre); }
+  .logo__petrole { stroke: var(--logo-petrole); }
+  .logo__or { stroke: var(--logo-or); }
+  .logo__pt { fill: var(--logo-or); }
+</style>

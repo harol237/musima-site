@@ -1,0 +1,33 @@
+---
+import FilDAriane from './FilDAriane.astro';
+
+interface Props {
+  surtitre?: string;
+  titre: string;
+  chapo?: string;
+  ariane?: { libelle: string; url?: string }[];
+  /** `scene` = fond profond (défaut), `papier` = fond clair. */
+  registre?: 'scene' | 'papier';
+}
+const { surtitre, titre, chapo, ariane, registre = 'scene' } = Astro.props;
+---
+<section class:list={['entete-page', registre === 'scene' && 'scene']}>
+  <div class="conteneur entete-page__interieur">
+    {ariane && <FilDAriane elements={ariane} />}
+    {surtitre && <p class="surtitre">{surtitre}</p>}
+    <h1 class="t-page">{titre}</h1>
+    {chapo && <p class="chapo">{chapo}</p>}
+    <slot />
+  </div>
+</section>
+<style>
+  .entete-page { border-bottom: 1px solid var(--trait); }
+  .entete-page__interieur {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--e-4);
+    padding-block: clamp(2.5rem, 6vw, 5rem) clamp(2.5rem, 5vw, 4rem);
+    max-width: 52rem;
+  }
+</style>

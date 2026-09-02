@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import ARemplir from './ARemplir.astro';
+import BadgeModele from './BadgeModele.astro';
+
+interface Props {
+  projet: CollectionEntry<'projets'>;
+}
+const { projet } = Astro.props;
+const { data } = projet;
+const teinteStatut = data.statut === 'Réalisé' ? 'puce--sourde' : data.statut === 'En cours' ? 'puce--terre' : 'puce--or';
+---
+<article class="carte projet">
+  {data.modele && <BadgeModele />}
+
+  <div class="carte__visuel ratio-3-2">
+    {data.image ? (
+      <Image
+        src={data.image}
+        alt={data.image_alt ?? ''}
+        widths={[400, 700, 1000]}
+        sizes="(min-width: 64rem) 22rem, (min-width: 40rem) 45vw, 90vw"
+      />
+    ) : (
+      <ARemplir type="photo" forme="visuel" />
+    )}
+  </div>
+
+  <div class="rang">
+    <span class:list={['puce', teinteStatut]}>{data.statut}</span>
+    {data.annee && <span class="meta">{data.annee}</span>}
+  </div>
+
+  <h3 class="t-carte">
+    <a href={`/projets/${projet.id}`} class="carte__lien">{data.titre}</a>
+  </h3>
+
+  {data.resume ? (
+    <p class="projet__resume">{data.resume}</p>
+  ) : (
+    <ARemplir type="texte" forme="ligne" />
+  )}
+
+  {data.territoire && <p class="meta">{data.territoire}</p>}
+</article>
+
+<style>
+  .projet__resume { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.6; text-wrap: pretty; }
+</style>

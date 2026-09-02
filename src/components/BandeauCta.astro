@@ -1,0 +1,40 @@
+---
+interface Props {
+  surtitre?: string;
+  titre: string;
+  texte?: string;
+  actions?: { url: string; libelle: string; variante?: 'plein' | 'fantome' }[];
+}
+const { surtitre, titre, texte, actions = [] } = Astro.props;
+---
+<section class="section bandeau scene">
+  <div class="conteneur bandeau__interieur">
+    <div>
+      {surtitre && <p class="surtitre">{surtitre}</p>}
+      <h2 class="t-section">{titre}</h2>
+      {texte && <p class="chapo bandeau__texte">{texte}</p>}
+    </div>
+    {actions.length > 0 && (
+      <div class="rang bandeau__actions">
+        {actions.map((action) => (
+          <a
+            href={action.url}
+            class:list={['bouton', action.variante === 'fantome' && 'bouton--fantome']}
+          >{action.libelle}</a>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+<style>
+  .bandeau__interieur {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--e-6);
+  }
+  .bandeau__interieur > div:first-child { max-width: 40rem; }
+  .bandeau__texte { margin-top: var(--e-4); }
+  .bandeau__actions { flex: none; }
+</style>

@@ -1,0 +1,52 @@
+---
+import Base from '~/layouts/Base.astro';
+import EntetePage from '~/components/EntetePage.astro';
+import CarteProjet from '~/components/CarteProjet.astro';
+import Filtres from '~/components/Filtres.astro';
+import EtatVide from '~/components/EtatVide.astro';
+import BandeauCta from '~/components/BandeauCta.astro';
+import { chargerProjets } from '~/lib/contenu';
+
+const projets = await chargerProjets();
+const statuts = [...new Set(projets.map((p) => p.data.statut))];
+---
+
+<Base
+  titre="Projets"
+  description="Les projets portés ou accompagnés par MUSIMA : intention, avancement et partenaires."
+>
+  <EntetePage
+    surtitre="Projets"
+    titre="Ce que l’association construit"
+    chapo="Au-delà des rencontres, MUSIMA porte et accompagne des projets. Chacun est documenté : son intention, où il en est, et comment y contribuer."
+    ariane={[{ libelle: 'Projets' }]}
+  />
+
+  <section class="section conteneur">
+    {projets.length > 0 ? (
+      <>
+        <Filtres legende="Filtrer par état" options={statuts} cible=".carte-projet" />
+        <ul class="grille grille--2 liste-nue">
+          {projets.map((projet) => (
+            <li class="carte-projet" data-etiquettes={projet.data.statut}>
+              <CarteProjet projet={projet} />
+            </li>
+          ))}
+        </ul>
+      </>
+    ) : (
+      <EtatVide titre="Les projets seront présentés ici" texte="Chaque projet porté ou accompagné par MUSIMA sera documenté." />
+    )}
+  </section>
+
+  <BandeauCta
+    surtitre="Collaborer"
+    titre="Un projet à construire ensemble ?"
+    actions={[{ url: '/contact', libelle: 'Nous écrire' }]}
+  />
+</Base>
+
+<style>
+  .liste-nue { list-style: none; margin: 0; padding: 0; }
+  .liste-nue li[hidden] { display: none; }
+</style>

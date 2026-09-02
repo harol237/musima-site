@@ -1,0 +1,64 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import ARemplir from './ARemplir.astro';
+import BadgeModele from './BadgeModele.astro';
+
+interface Props {
+  intervenant: CollectionEntry<'intervenants'>;
+}
+const { intervenant } = Astro.props;
+const { data } = intervenant;
+const sousTitre = [data.fonction, data.organisation].filter(Boolean).join(' · ');
+---
+<article class="carte fiche">
+  {data.modele && <BadgeModele />}
+
+  <div class="carte__visuel ratio-4-5">
+    {data.photo ? (
+      <Image
+        src={data.photo}
+        alt={data.photo_alt ?? `Portrait de ${data.nom}`}
+        widths={[240, 400, 640]}
+        sizes="(min-width: 64rem) 17rem, (min-width: 40rem) 40vw, 85vw"
+      />
+    ) : (
+      <ARemplir type="photo" forme="visuel" />
+    )}
+  </div>
+
+  <h3 class="t-petit">
+    <a href={`/intervenants/${intervenant.id}`} class="carte__lien">{data.nom}</a>
+  </h3>
+
+  {sousTitre ? (
+    <p class="fiche__role">{sousTitre}</p>
+  ) : (
+    <ARemplir libelle="FONCTION À AJOUTER" forme="ligne" />
+  )}
+
+  {data.territoire && <p class="meta fiche__lieu">{data.territoire}</p>}
+
+  {data.domaines.length > 0 && (
+    <ul class="fiche__domaines">
+      {data.domaines.slice(0, 3).map((domaine) => (
+        <li><span class="puce puce--sourde">{domaine}</span></li>
+      ))}
+    </ul>
+  )}
+</article>
+
+<style>
+  .fiche { gap: var(--e-2); padding: var(--e-4); }
+  .fiche .carte__visuel { margin: calc(var(--e-4) * -1) calc(var(--e-4) * -1) var(--e-3); }
+  .fiche__role { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.45; }
+  .fiche__lieu { font-size: var(--t-100); }
+  .fiche__domaines {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-2);
+    list-style: none;
+    margin: var(--e-2) 0 0;
+    padding: 0;
+  }
+</style>

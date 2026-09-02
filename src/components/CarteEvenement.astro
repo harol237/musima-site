@@ -1,0 +1,109 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import ARemplir from './ARemplir.astro';
+import BadgeModele from './BadgeModele.astro';
+import { formaterJourMois, formaterPlage, dateISO, estAVenir } from '~/lib/contenu';
+
+interface Props {
+  evenement: CollectionEntry<'evenements'>;
+  /** `mise-en-avant` affiche le visuel en grand. */
+  variante?: 'liste' | 'mise-en-avant';
+}
+const { evenement, variante = 'liste' } = Astro.props;
+const { data } = evenement;
+const { jour, mois, annee } = formaterJourMois(data.date_debut);
+const aVenir = estAVenir(evenement);
+const lieu = [data.lieu?.nom, data.lieu?.ville].filter(Boolean).join(', ');
+---
+<article class:list={['carte', 'evenement', variante === 'mise-en-avant' && 'evenement--large']}>
+  {data.modele && <BadgeModele />}
+
+  {variante === 'mise-en-avant' && (
+    <div class="carte__visuel ratio-16-9">
+      {data.image ? (
+        <Image
+          src={data.image}
+          alt={data.image_alt ?? ''}
+          widths={[480, 800, 1200]}
+          sizes="(min-width: 64rem) 46rem, 100vw"
+        />
+      ) : (
+        <ARemplir type="photo" forme="visuel" />
+      )}
+    </div>
+  )}
+
+  <div class="evenement__entete">
+    <time class="date-bloc" datetime={dateISO(data.date_debut)}>
+      <span class="date-bloc__jour">{jour}</span>
+      <span class="date-bloc__mois">{mois}</span>
+      <span class="date-bloc__annee">{annee}</span>
+    </time>
+
+    <div class="evenement__texte">
+      <div class="rang">
+        <span class="puce puce--sourde">{data.format}</span>
+        {!aVenir && <span class="puce">Passé</span>}
+        {data.complet && <span class="puce puce--terre">Complet</span>}
+        {data.lieu?.en_ligne && <span class="puce">En ligne</span>}
+      </div>
+
+      <h3 class="t-carte">
+        <a href={`/evenements/${evenement.id}`} class="carte__lien">{data.titre}</a>
+      </h3>
+
+      <p class="meta evenement__quand">
+        {formaterPlage(data.date_debut, data.date_fin)}
+        {data.heure && <> · {data.heure}</>}
+      </p>
+
+      <p class="evenement__ou">
+        {lieu ? lieu : <ARemplir libelle="LIEU À CONFIRMER" forme="ligne" />}
+      </p>
+
+      {data.resume && <p class="evenement__resume">{data.resume}</p>}
+    </div>
+  </div>
+</article>
+
+<style>
+  .evenement { gap: var(--e-4); }
+  .evenement__entete { display: flex; gap: var(--e-5); align-items: flex-start; }
+  .evenement__texte { display: flex; flex-direction: column; gap: var(--e-2); min-width: 0; }
+
+  .date-bloc {
+    flex: none;
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 1px;
+    width: 4.25rem;
+    padding-block: var(--e-3);
+    border: 1px solid var(--trait);
+    border-radius: var(--r-carte);
+    background: var(--papier);
+    font-family: var(--f-titre);
+    font-variant-numeric: tabular-nums;
+  }
+  .date-bloc__jour { font-size: var(--t-600); font-weight: 700; line-height: 1; letter-spacing: -0.03em; }
+  .date-bloc__mois {
+    font-size: var(--t-200);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--terre);
+  }
+  .date-bloc__annee { font-size: var(--t-100); color: var(--encre-faible); }
+
+  .evenement__quand { color: var(--encre-douce); }
+  .evenement__ou { font-size: var(--t-300); color: var(--encre-douce); }
+  .evenement__resume {
+    font-size: var(--t-300);
+    color: var(--encre-douce);
+    line-height: 1.6;
+    margin-top: var(--e-1);
+    text-wrap: pretty;
+  }
+  .evenement--large .t-carte { font-size: var(--t-700); }
+</style>

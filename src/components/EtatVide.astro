@@ -1,0 +1,28 @@
+---
+interface Props {
+  titre: string;
+  texte?: string;
+  action?: { url: string; libelle: string };
+}
+const { titre, texte, action } = Astro.props;
+---
+<div class="vide">
+  <p class="vide__titre">{titre}</p>
+  {texte && <p class="vide__texte">{texte}</p>}
+  {action && <a href={action.url} class="bouton bouton--fantome">{action.libelle}</a>}
+</div>
+<style>
+  .vide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--e-3);
+    text-align: center;
+    padding: var(--e-9) var(--e-5);
+    border: 1px dashed var(--trait-fort);
+    border-radius: var(--r-carte);
+  }
+  .vide__titre { font-family: var(--f-titre); font-size: var(--t-500); font-weight: 600; }
+  .vide__texte { color: var(--encre-douce); max-width: 32rem; text-wrap: pretty; }
+  .vide .bouton { margin-top: var(--e-2); }
+</style>

@@ -1,0 +1,54 @@
+---
+interface Props {
+  elements: { libelle: string; url?: string }[];
+}
+const { elements } = Astro.props;
+const complet = [{ libelle: 'Accueil', url: '/' }, ...elements];
+
+const donnees = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: complet.map((element, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: element.libelle,
+    ...(element.url ? { item: new URL(element.url, Astro.site).href } : {}),
+  })),
+};
+---
+<nav class="ariane" aria-label="Fil d'Ariane">
+  <ol>
+    {complet.map((element, index) => (
+      <li>
+        {element.url && index < complet.length - 1 ? (
+          <a href={element.url}>{element.libelle}</a>
+        ) : (
+          <span aria-current="page">{element.libelle}</span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>
+<script type="application/ld+json" set:html={JSON.stringify(donnees)} is:inline />
+<style>
+  .ariane ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: var(--f-titre);
+    font-size: var(--t-200);
+    color: var(--encre-douce);
+  }
+  .ariane li + li::before {
+    content: '/';
+    margin-right: var(--e-2);
+    color: var(--trait-fort);
+  }
+  .ariane a { text-decoration: none; }
+  .ariane a:hover { color: var(--terre); text-decoration: underline; text-underline-offset: 0.2em; }
+  .ariane [aria-current='page'] { color: var(--encre); }
+</style>
