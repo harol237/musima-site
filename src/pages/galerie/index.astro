@@ -5,7 +5,7 @@ import EntetePage from '~/components/EntetePage.astro';
 import EtatVide from '~/components/EtatVide.astro';
 import ARemplir from '~/components/ARemplir.astro';
 import BadgeModele from '~/components/BadgeModele.astro';
-import { chargerAlbums, formaterDate, enChantier } from '~/lib/contenu';
+import { chargerAlbums, formaterDate, enChantier, pret } from '~/lib/contenu';
 
 const albums = await chargerAlbums();
 ---
@@ -32,7 +32,7 @@ const albums = await chargerAlbums();
               {(album.data.couverture || enChantier) && (
               <div class="carte__visuel ratio-3-2">
                 {album.data.couverture ? (
-                  <Image src={album.data.couverture} alt={album.data.couverture_alt ?? ''} widths={[400, 700, 1000]} sizes="(min-width: 64rem) 22rem, 90vw" />
+                  <Image src={album.data.couverture} alt={pret(album.data.couverture_alt) ?? ''} widths={[400, 700, 1000]} sizes="(min-width: 64rem) 22rem, 90vw" />
                 ) : (
                   <ARemplir type="photo" forme="visuel" />
                 )}

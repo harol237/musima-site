@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import ARemplir from './ARemplir.astro';
 import BadgeModele from './BadgeModele.astro';
-import { formaterDate, dateISO, enChantier } from '~/lib/contenu';
+import { formaterDate, dateISO, enChantier, pret } from '~/lib/contenu';
 
 interface Props {
   recit: CollectionEntry<'recits'>;
@@ -20,7 +20,7 @@ const { data } = recit;
     {data.image ? (
       <Image
         src={data.image}
-        alt={data.image_alt ?? ''}
+        alt={pret(data.image_alt) ?? ''}
         widths={[400, 800, 1200]}
         sizes={variante === 'mise-en-avant' ? '(min-width: 64rem) 46rem, 100vw' : '(min-width: 64rem) 22rem, 90vw'}
       />

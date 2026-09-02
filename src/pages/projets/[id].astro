@@ -6,7 +6,7 @@ import EntetePage from '~/components/EntetePage.astro';
 import EnteteSection from '~/components/EnteteSection.astro';
 import CarteIntervenant from '~/components/CarteIntervenant.astro';
 import ARemplir from '~/components/ARemplir.astro';
-import { estPublie } from '~/lib/contenu';
+import { estPublie, pret } from '~/lib/contenu';
 
 export async function getStaticPaths() {
   const projets = (await getCollection('projets')).filter(estPublie);
@@ -42,7 +42,7 @@ const intervenants = data.intervenants.length ? await getEntries(data.intervenan
     <article>
       <div class="visuel-principal ratio-3-2">
         {data.image ? (
-          <Image src={data.image} alt={data.image_alt ?? ''} widths={[640, 1000, 1400]} sizes="(min-width: 64rem) 46rem, 100vw" />
+          <Image src={data.image} alt={pret(data.image_alt) ?? ''} widths={[640, 1000, 1400]} sizes="(min-width: 64rem) 46rem, 100vw" />
         ) : (
           <ARemplir type="photo" forme="visuel" />
         )}

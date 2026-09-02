@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import ARemplir from './ARemplir.astro';
 import BadgeModele from './BadgeModele.astro';
-import { enChantier } from '~/lib/contenu';
+import { enChantier, pret } from '~/lib/contenu';
 
 interface Props {
   projet: CollectionEntry<'projets'>;
@@ -20,7 +20,7 @@ const teinteStatut = data.statut === 'Réalisé' ? 'puce--sourde' : data.statut 
     {data.image ? (
       <Image
         src={data.image}
-        alt={data.image_alt ?? ''}
+        alt={pret(data.image_alt) ?? ''}
         widths={[400, 700, 1000]}
         sizes="(min-width: 64rem) 22rem, (min-width: 40rem) 45vw, 90vw"
       />

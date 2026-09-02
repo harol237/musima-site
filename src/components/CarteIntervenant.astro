@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import ARemplir from './ARemplir.astro';
 import BadgeModele from './BadgeModele.astro';
-import { enChantier } from '~/lib/contenu';
+import { enChantier, pret } from '~/lib/contenu';
 
 interface Props {
   intervenant: CollectionEntry<'intervenants'>;
@@ -20,7 +20,7 @@ const sousTitre = [data.fonction, data.organisation].filter(Boolean).join(' · '
     {data.photo ? (
       <Image
         src={data.photo}
-        alt={data.photo_alt ?? `Portrait de ${data.nom}`}
+        alt={pret(data.photo_alt) ?? `Portrait de ${data.nom}`}
         widths={[240, 400, 640]}
         sizes="(min-width: 64rem) 17rem, (min-width: 40rem) 40vw, 85vw"
       />

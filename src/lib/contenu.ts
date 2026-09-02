@@ -16,6 +16,18 @@ import { navigationPrincipale, navigationSecondaire } from '~/data/navigation';
  */
 export const enChantier = import.meta.env.DEV;
 
+/**
+ * Neutralise un champ encore à remplir.
+ *
+ * Les gabarits affichent certaines valeurs du frontmatter telles quelles —
+ * un crédit photo, un texte alternatif. Si la personne qui édite laisse le
+ * marqueur, « [CRÉDIT PHOTO À AJOUTER] » se retrouve à l'écran, ou pire :
+ * lu à voix haute par un lecteur d'écran. En production, un champ de cette
+ * forme est donc traité comme vide, et le gabarit affiche son repli.
+ */
+export const pret = (valeur?: string) =>
+  valeur && (enChantier || !/^\[.+\]$/.test(valeur.trim())) ? valeur : undefined;
+
 type AvecBrouillon = { data: { brouillon?: boolean } };
 
 /** Masque les brouillons en production, les garde en développement. */
