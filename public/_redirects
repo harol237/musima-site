@@ -1,0 +1,4 @@
+# Cloudflare Pages applique ces règles avant de servir un fichier.
+# L'adresse officielle du site est l'apex : www renvoie dessus en 301.
+# Prérequis : ajouter www.musima.org comme domaine personnalisé dans Pages.
+https://www.musima.org/*  https://musima.org/:splat  301

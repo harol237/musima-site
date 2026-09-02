@@ -2,9 +2,10 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// [DOMAINE À CONFIRMER] — remplacer par le domaine définitif de MUSIMA.
+// Domaine officiel de l'association, enregistré chez Cloudflare.
 // Alimente le sitemap, le flux RSS et les URLs canoniques.
-const SITE = 'https://www.musima.org';
+// www.musima.org redirige ici (voir public/_redirects).
+const SITE = 'https://musima.org';
 
 export default defineConfig({
   site: SITE,

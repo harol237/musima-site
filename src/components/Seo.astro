@@ -19,7 +19,17 @@ const {
   noindex = false,
 } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname, Astro.site).href;
+/* Le site est construit en `format: 'file'` : Astro.url.pathname vaut
+   « /association.html », alors que l'adresse publique — celle du sitemap,
+   des liens internes et de la barre d'adresse — est « /association ».
+   Sans ce nettoyage, on déclarerait aux moteurs une URL canonique que
+   personne ne visite. */
+const cheminPublic =
+  Astro.url.pathname
+    .replace(/index\.html$/, '')
+    .replace(/\.html$/, '')
+    .replace(/(.)\/$/, '$1') || '/';
+const canonical = new URL(cheminPublic, Astro.site).href;
 const titreComplet = titre === site.nom ? `${site.nom} — ${site.baseline}` : `${titre} — ${site.nom}`;
 // [IMAGE DE PARTAGE À AJOUTER] : déposer un visuel 1200×630 dans public/
 // et renseigner son chemin ici pour les aperçus sur les réseaux sociaux.
