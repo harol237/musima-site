@@ -15,7 +15,10 @@ export default defineConfig({
   integrations: [
     sitemap({
       i18n: { defaultLocale: 'fr', locales: { fr: 'fr-FR' } },
-      filter: (page) => !page.includes('/admin'),
+      // Hors du plan du site : l'admin, et les fiches de démonstration
+      // encore à remplir — elles portent toutes « -modele- » dans leur
+      // nom de fichier et sont déjà en noindex.
+      filter: (page) => !page.includes('/admin') && !page.includes('-modele-'),
     }),
   ],
 

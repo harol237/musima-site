@@ -19,7 +19,11 @@ const { Content } = await render(projet);
 const intervenants = data.intervenants.length ? await getEntries(data.intervenants) : [];
 ---
 
-<Base titre={data.meta_titre ?? data.titre} description={data.meta_description ?? data.resume}>
+<Base
+  titre={data.meta_titre ?? data.titre}
+  description={data.meta_description ?? data.resume}
+  noindex={data.modele}
+>
   <EntetePage
     surtitre="Projet"
     titre={data.titre}
