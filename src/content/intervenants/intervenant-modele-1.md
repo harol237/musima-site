@@ -4,7 +4,8 @@ fonction: "[FONCTION À AJOUTER — ce que la personne fait, en trois ou quatre 
 organisation: "[ORGANISATION À AJOUTER]"
 territoire: "Barcelone, Espagne"
 domaines: ["[DOMAINE 1 À AJOUTER]", "[DOMAINE 2 À AJOUTER]"]
-photo_alt: "[DESCRIPTION DE LA PHOTO À AJOUTER]"
+photo: ../../assets/uploads/intervenant1.jpg
+photo_alt: "[DESCRIPTION DE LA PHOTO À AJOUTER — décrire la personne pour les lecteurs d'écran]"
 credit_photo: "[CRÉDIT PHOTO À AJOUTER]"
 accroche: "[UNE PHRASE D'ACCROCHE À FINALISER — ce que cette personne a construit, dit simplement]"
 liens:
