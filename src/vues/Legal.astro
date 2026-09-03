@@ -2,6 +2,8 @@
 import Base from '~/layouts/Base.astro';
 import EntetePage from '~/components/EntetePage.astro';
 import site from '~/data/site.json';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
 
 /* Un champ encore vide se reconnaît à son crochet ouvrant. On n'affiche
    jamais le marqueur au public : on dit explicitement que la donnée est
@@ -12,10 +14,16 @@ const { juridique: j, hebergeur: h, contact: c } = site;
 const maj = new Intl.DateTimeFormat('fr-FR', {
   day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid',
 }).format(new Date('2026-09-02'));
+
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+const t = traducteur(langue);
 ---
 <Base
   titre="Mentions légales"
   description="Éditeur, hébergeur, conditions d'utilisation et informations légales du site MUSIMA."
+  langue={langue}
+  alternatives={alternatives}
 >
   <EntetePage
     surtitre="Informations légales"

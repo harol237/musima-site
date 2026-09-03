@@ -1,5 +1,5 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from '~/layouts/Base.astro';
 import FilDAriane from '~/components/FilDAriane.astro';
@@ -8,16 +8,16 @@ import CarteEvenement from '~/components/CarteEvenement.astro';
 import CarteRecit from '~/components/CarteRecit.astro';
 import ARemplir from '~/components/ARemplir.astro';
 import { estPublie, pret } from '~/lib/contenu';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
 
-export async function getStaticPaths() {
-  const intervenants = (await getCollection('intervenants')).filter(estPublie);
-  return intervenants.map((intervenant) => ({
-    params: { id: intervenant.id },
-    props: { intervenant },
-  }));
+interface Props {
+  langue: Langue;
+  alternatives: Record<Langue, string>;
+  intervenant: CollectionEntry<'intervenants'>;
 }
-
-const { intervenant } = Astro.props;
+const { intervenant, langue, alternatives } = Astro.props;
+const t = traducteur(langue);
 const { data } = intervenant;
 const { Content } = await render(intervenant);
 
@@ -48,6 +48,8 @@ const donnees = {
   description={data.meta_description ?? data.accroche}
   type="profile"
   noindex={data.modele}
+  langue={langue}
+  alternatives={alternatives}
 >
   <section class="entete-profil scene">
     <div class="conteneur">

@@ -3,7 +3,10 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import ARemplir from './ARemplir.astro';
 import BadgeModele from './BadgeModele.astro';
-import { formaterDate, dateISO, enChantier, pret } from '~/lib/contenu';
+import { formaterDate } from '~/i18n/utils';
+import { chemin, type Langue } from '~/i18n/config';
+import { categoriesRecit, traduireValeur } from '~/i18n/utils';
+import { dateISO, enChantier, pret, slugDe } from '~/lib/contenu';
 
 interface Props {
   langue: Langue;

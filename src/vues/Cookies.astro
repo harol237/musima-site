@@ -2,15 +2,23 @@
 import Base from '~/layouts/Base.astro';
 import EntetePage from '~/components/EntetePage.astro';
 import site from '~/data/site.json';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
 
 const c = site.contact;
 const verif = new Intl.DateTimeFormat('fr-FR', {
   day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid',
 }).format(new Date(site.cookies.verifie_le));
+
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+const t = traducteur(langue);
 ---
 <Base
   titre="Cookies"
   description="Ce site ne dépose aucun cookie. Cette page explique ce qui est stocké sur votre appareil, pourquoi, et comment le supprimer."
+  langue={langue}
+  alternatives={alternatives}
 >
   <EntetePage
     surtitre="Vos données"

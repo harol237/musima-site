@@ -2,51 +2,47 @@
 import Base from '~/layouts/Base.astro';
 import EntetePage from '~/components/EntetePage.astro';
 import CarteProjet from '~/components/CarteProjet.astro';
-import Filtres from '~/components/Filtres.astro';
 import EtatVide from '~/components/EtatVide.astro';
 import BandeauCta from '~/components/BandeauCta.astro';
 import { chargerProjets } from '~/lib/contenu';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
 
-const projets = await chargerProjets();
-const statuts = [...new Set(projets.map((p) => p.data.statut))];
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+const t = traducteur(langue);
+const projets = await chargerProjets(langue);
 ---
-
 <Base
-  titre="Projets"
-  description="Les projets portés ou accompagnés par MUSIMA : intention, avancement et partenaires."
+  titre={t('navProjets')}
+  description={t('projetsChapo')}
+  langue={langue}
+  alternatives={alternatives}
+  noindex={projets.length === 0}
 >
   <EntetePage
-    surtitre="Projets"
-    titre="Ce que l’association construit"
-    chapo="Au-delà des rencontres, MUSIMA porte et accompagne des projets. Chacun est documenté : son intention, où il en est, et comment y contribuer."
-    ariane={[{ libelle: 'Projets' }]}
+    surtitre={t('navProjets')}
+    titre={t('ceQueLAssociationConstruit')}
+    chapo={t('projetsChapo')}
+    ariane={[{ libelle: t('navProjets') }]}
   />
-
   <section class="section conteneur">
     {projets.length > 0 ? (
-      <>
-        <Filtres legende="Filtrer par état" options={statuts} cible=".carte-projet" />
-        <ul class="grille grille--2 liste-nue">
-          {projets.map((projet) => (
-            <li class="carte-projet" data-etiquettes={projet.data.statut}>
-              <CarteProjet projet={projet} />
-            </li>
-          ))}
-        </ul>
-      </>
+      <ul class="grille grille--2 liste-nue">
+        {projets.map((projet) => <li><CarteProjet projet={projet} langue={langue} /></li>)}
+      </ul>
     ) : (
-      <EtatVide titre="Les projets seront présentés ici" texte="Chaque projet porté ou accompagné par MUSIMA sera documenté." />
+      <EtatVide titre={t('aucunProjetTitre')} texte={t('aucunProjetTexte')} />
     )}
   </section>
-
   <BandeauCta
-    surtitre="Collaborer"
-    titre="Un projet à construire ensemble ?"
-    actions={[{ url: '/contact', libelle: 'Nous écrire' }]}
+    surtitre={t('ctaParticiperSurtitre')}
+    titre={t('ctaParticiperTitre')}
+    texte={t('ctaParticiperTexte')}
+    actions={[
+      { url: chemin(langue, 'engagement'), libelle: t('ctaVoirEngagement') },
+      { url: chemin(langue, 'contact'), libelle: t('ctaNousEcrire'), variante: 'fantome' },
+    ]}
   />
 </Base>
-
-<style>
-  .liste-nue { list-style: none; margin: 0; padding: 0; }
-  .liste-nue li[hidden] { display: none; }
-</style>
+<style>.liste-nue { list-style: none; margin: 0; padding: 0; }</style>

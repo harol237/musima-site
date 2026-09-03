@@ -1,17 +1,21 @@
 ---
-import { getCollection, getEntry, render } from 'astro:content';
+import { getEntry, render, type CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from '~/layouts/Base.astro';
 import EntetePage from '~/components/EntetePage.astro';
 import ARemplir from '~/components/ARemplir.astro';
-import { estPublie, formaterDate } from '~/lib/contenu';
+import { estPublie } from '~/lib/contenu';
+import { formaterDate } from '~/i18n/utils';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
 
-export async function getStaticPaths() {
-  const albums = (await getCollection('albums')).filter(estPublie);
-  return albums.map((album) => ({ params: { id: album.id }, props: { album } }));
+interface Props {
+  langue: Langue;
+  alternatives: Record<Langue, string>;
+  album: CollectionEntry<'albums'>;
 }
-
-const { album } = Astro.props;
+const { album, langue, alternatives } = Astro.props;
+const t = traducteur(langue);
 const { data } = album;
 const { Content } = await render(album);
 const evenement = data.evenement ? await getEntry(data.evenement) : undefined;

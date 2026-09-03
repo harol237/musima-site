@@ -2,13 +2,17 @@ import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
 import site from '~/data/site.json';
 import { chargerRecits } from '~/lib/contenu';
-import { chemin, langueDefaut } from '~/i18n/config';
+import { chemin, langues, langueDefaut, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
 
-/* Flux de la langue par défaut, servi à la racine. Les autres langues
-   ont le leur sous /fr/rss.xml, /en/rss.xml, /ca/rss.xml. */
+export function getStaticPaths() {
+  return langues
+    .filter((l) => l !== langueDefaut)
+    .map((langue) => ({ params: { langue }, props: { langue } }));
+}
+
 export async function GET(context: APIContext) {
-  const langue = langueDefaut;
+  const langue = context.props.langue as Langue;
   const t = traducteur(langue);
   const recits = await chargerRecits(langue);
 

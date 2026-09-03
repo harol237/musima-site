@@ -3,7 +3,9 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import ARemplir from './ARemplir.astro';
 import BadgeModele from './BadgeModele.astro';
-import { enChantier, pret } from '~/lib/contenu';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
+import { enChantier, pret, slugDe } from '~/lib/contenu';
 
 interface Props {
   langue: Langue;

@@ -13,12 +13,21 @@ import {
   chargerEvenements,
   chargerIntervenants,
   chargerProjets,
-  chargerRecits, enChantier } from '~/lib/contenu';
+  chargerRecits,
+  enChantier,
+} from '~/lib/contenu';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
+import { intentionsPar } from '~/i18n/intentions';
 
-const { aVenir, passes } = await chargerEvenements();
-const intervenants = await chargerIntervenants();
-const projets = await chargerProjets();
-const recits = await chargerRecits();
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+const t = traducteur(langue);
+
+const { aVenir } = await chargerEvenements(langue);
+const intervenants = await chargerIntervenants(langue);
+const projets = await chargerProjets(langue);
+const recits = await chargerRecits(langue);
 
 const prochaine = aVenir[0];
 const suivants = aVenir.slice(1, 4);
@@ -31,7 +40,12 @@ const enAvant = <T extends { data: { en_avant: boolean } }>(liste: T[], nombre: 
 const intentions = intentionsPar[langue];
 ---
 
-<Base titre={site.nom} description={t('heroChapo')} langue={langue}>
+<Base
+  titre={site.nom}
+  description={site.description_courte}
+  langue={langue}
+  alternatives={alternatives}
+>
   <!-- ================= HÉROS ================= -->
   <section class="heros scene">
     <svg class="heros__trait" viewBox="0 0 1200 400" aria-hidden="true" preserveAspectRatio="none">

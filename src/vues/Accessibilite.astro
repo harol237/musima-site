@@ -2,10 +2,18 @@
 import Base from '~/layouts/Base.astro';
 import EntetePage from '~/components/EntetePage.astro';
 import site from '~/data/site.json';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
+
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+const t = traducteur(langue);
 ---
 <Base
   titre="Accessibilité"
   description="Les choix d’accessibilité faits sur le site MUSIMA et comment signaler un problème."
+  langue={langue}
+  alternatives={alternatives}
 >
   <EntetePage
     surtitre="Engagement"

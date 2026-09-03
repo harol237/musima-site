@@ -2,16 +2,24 @@
 import Base from '~/layouts/Base.astro';
 import EntetePage from '~/components/EntetePage.astro';
 import site from '~/data/site.json';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
 
 const aRemplir = (valeur: string) => valeur.startsWith('[');
 const { juridique: j, hebergeur: h, contact: c } = site;
 const maj = new Intl.DateTimeFormat('fr-FR', {
   day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid',
 }).format(new Date('2026-09-02'));
+
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+const t = traducteur(langue);
 ---
 <Base
   titre="Politique de confidentialité"
   description="Quelles données personnelles MUSIMA collecte, pourquoi, combien de temps, et comment exercer vos droits."
+  langue={langue}
+  alternatives={alternatives}
 >
   <EntetePage
     surtitre="Vos données"

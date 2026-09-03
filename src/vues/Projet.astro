@@ -1,5 +1,5 @@
 ---
-import { getCollection, getEntries, render } from 'astro:content';
+import { getEntries, render, type CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from '~/layouts/Base.astro';
 import EntetePage from '~/components/EntetePage.astro';
@@ -7,13 +7,16 @@ import EnteteSection from '~/components/EnteteSection.astro';
 import CarteIntervenant from '~/components/CarteIntervenant.astro';
 import ARemplir from '~/components/ARemplir.astro';
 import { estPublie, pret } from '~/lib/contenu';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
 
-export async function getStaticPaths() {
-  const projets = (await getCollection('projets')).filter(estPublie);
-  return projets.map((projet) => ({ params: { id: projet.id }, props: { projet } }));
+interface Props {
+  langue: Langue;
+  alternatives: Record<Langue, string>;
+  projet: CollectionEntry<'projets'>;
 }
-
-const { projet } = Astro.props;
+const { projet, langue, alternatives } = Astro.props;
+const t = traducteur(langue);
 const { data } = projet;
 const { Content } = await render(projet);
 const intervenants = data.intervenants.length ? await getEntries(data.intervenants) : [];
@@ -23,6 +26,8 @@ const intervenants = data.intervenants.length ? await getEntries(data.intervenan
   titre={data.meta_titre ?? data.titre}
   description={data.meta_description ?? data.resume}
   noindex={data.modele}
+  langue={langue}
+  alternatives={alternatives}
 >
   <EntetePage
     surtitre="Projet"

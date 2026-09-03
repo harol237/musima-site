@@ -4,6 +4,8 @@ import EntetePage from '~/components/EntetePage.astro';
 import ARemplir from '~/components/ARemplir.astro';
 import site from '~/data/site.json';
 import { enChantier } from '~/lib/contenu';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
 
 const aRemplir = (valeur: string) => valeur.startsWith('[');
 const reseaux = site.reseaux.filter((r) => enChantier || !aRemplir(r.url));
@@ -15,11 +17,17 @@ const sujets = [
   'Presse',
   'Autre',
 ];
+
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+const t = traducteur(langue);
 ---
 
 <Base
   titre="Contact"
   description="Écrire à MUSIMA : proposer une intervention, un sujet, un partenariat, ou poser une question."
+  langue={langue}
+  alternatives={alternatives}
 >
   <EntetePage
     surtitre="Contact"

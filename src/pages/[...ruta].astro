@@ -1,0 +1,139 @@
+---
+/* ==================================================================
+   ROUTEUR
+   ------------------------------------------------------------------
+   Une seule route génère tout le site : les pages statiques dans les
+   langues où leur texte existe, et les pages de détail des cinq
+   collections. Tout est produit à la construction — aucune détection
+   de langue côté serveur, aucun service extérieur.
+
+   L'alternative : 60 fichiers de route quasi identiques. Ici, ajouter
+   une langue ou une rubrique se fait dans src/i18n/, pas en dupliquant
+   des fichiers.
+   ================================================================== */
+import { chemin, langues, segments, type CleSegment, type Langue } from '~/i18n/config';
+import { pagesStatiques, type Vue } from '~/i18n/pages';
+import { estPublie, decouper, slugDe } from '~/lib/contenu';
+import { getCollection } from 'astro:content';
+
+import Accueil from '~/vues/Accueil.astro';
+import Association from '~/vues/Association.astro';
+import Equipe from '~/vues/Equipe.astro';
+import Evenements from '~/vues/Evenements.astro';
+import Evenement from '~/vues/Evenement.astro';
+import Intervenants from '~/vues/Intervenants.astro';
+import Intervenant from '~/vues/Intervenant.astro';
+import Projets from '~/vues/Projets.astro';
+import Projet from '~/vues/Projet.astro';
+import Recits from '~/vues/Recits.astro';
+import Recit from '~/vues/Recit.astro';
+import Galerie from '~/vues/Galerie.astro';
+import Album from '~/vues/Album.astro';
+import Engagement from '~/vues/Engagement.astro';
+import Contact from '~/vues/Contact.astro';
+import Legal from '~/vues/Legal.astro';
+import Confidentialite from '~/vues/Confidentialite.astro';
+import Cookies from '~/vues/Cookies.astro';
+import Accessibilite from '~/vues/Accessibilite.astro';
+
+export async function getStaticPaths() {
+  /* Les collections qui produisent une page de détail, et leur segment
+     d'URL. Déclarée ici : Astro isole `getStaticPaths` et elle n'y verrait
+     pas une constante définie au niveau du module. */
+  const collections = [
+    { nom: 'evenements', vue: 'evenement', segment: 'evenements' },
+    { nom: 'intervenants', vue: 'intervenant', segment: 'intervenants' },
+    { nom: 'projets', vue: 'projet', segment: 'projets' },
+    { nom: 'recits', vue: 'recit', segment: 'recits' },
+    { nom: 'albums', vue: 'album', segment: 'galerie' },
+  ] as const;
+
+  const routes: any[] = [];
+
+  const enUrl = (url: string) => url.replace(/^\//, '') || undefined;
+
+  /* ---- Pages statiques ---- */
+  for (const page of pagesStatiques) {
+    const alternatives = Object.fromEntries(
+      langues.map((code) => [
+        code,
+        page.disponible.includes(code)
+          ? chemin(code, page.segment, page.sous ? segments[page.sous][code] : undefined)
+          : chemin(code),
+      ]),
+    ) as Record<Langue, string>;
+
+    for (const langue of page.disponible) {
+      routes.push({
+        params: {
+          ruta: enUrl(
+            chemin(langue, page.segment, page.sous ? segments[page.sous][langue] : undefined),
+          ),
+        },
+        props: { vue: page.vue as Vue, langue, alternatives, entree: undefined },
+      });
+    }
+  }
+
+  /* ---- Pages de détail : une par contenu publié ---- */
+  for (const { nom, vue, segment } of collections) {
+    const entrees = (await getCollection(nom as any)).filter(estPublie);
+
+    for (const entree of entrees) {
+      const { langue, slug } = decouper(entree.id);
+
+      // Les traductions du même contenu, pour que le sélecteur de langue
+      // emmène le lecteur sur la même page et non sur l'accueil.
+      const alternatives = Object.fromEntries(
+        langues.map((code) => {
+          const jumelle = entrees.find(
+            (e) => e.data.cle === entree.data.cle && decouper(e.id).langue === code,
+          );
+          return [
+            code,
+            jumelle
+              ? chemin(code, segment as CleSegment, slugDe(jumelle.id))
+              : chemin(code, segment as CleSegment),
+          ];
+        }),
+      ) as Record<Langue, string>;
+
+      routes.push({
+        params: { ruta: enUrl(chemin(langue, segment as CleSegment, slug)) },
+        props: { vue: vue as Vue, langue, alternatives, entree },
+      });
+    }
+  }
+
+  return routes;
+}
+
+const { vue, langue, alternatives, entree } = Astro.props as {
+  vue: Vue | 'evenement' | 'intervenant' | 'projet' | 'recit' | 'album';
+  langue: Langue;
+  alternatives: Record<Langue, string>;
+  entree: any;
+};
+const commun = { langue, alternatives };
+---
+
+{vue === 'accueil' && <Accueil {...commun} />}
+{vue === 'association' && <Association {...commun} />}
+{vue === 'equipe' && <Equipe {...commun} />}
+{vue === 'evenements' && <Evenements {...commun} />}
+{vue === 'intervenants' && <Intervenants {...commun} />}
+{vue === 'projets' && <Projets {...commun} />}
+{vue === 'recits' && <Recits {...commun} />}
+{vue === 'galerie' && <Galerie {...commun} />}
+{vue === 'engagement' && <Engagement {...commun} />}
+{vue === 'contact' && <Contact {...commun} />}
+{vue === 'legal' && <Legal {...commun} />}
+{vue === 'confidentialite' && <Confidentialite {...commun} />}
+{vue === 'cookies' && <Cookies {...commun} />}
+{vue === 'accessibilite' && <Accessibilite {...commun} />}
+
+{vue === 'evenement' && <Evenement {...commun} evenement={entree} />}
+{vue === 'intervenant' && <Intervenant {...commun} intervenant={entree} />}
+{vue === 'projet' && <Projet {...commun} projet={entree} />}
+{vue === 'recit' && <Recit {...commun} recit={entree} />}
+{vue === 'album' && <Album {...commun} album={entree} />}

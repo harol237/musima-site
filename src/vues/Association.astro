@@ -6,6 +6,8 @@ import BandeauCta from '~/components/BandeauCta.astro';
 import ARemplir from '~/components/ARemplir.astro';
 import site from '~/data/site.json';
 import { enChantier } from '~/lib/contenu';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
 
 const publics = [
   'Les Africains et les personnes issues des diasporas africaines',
@@ -45,11 +47,17 @@ const tons = [
   'Ambitieux mais simple',
   'Concret',
 ];
+
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+const t = traducteur(langue);
 ---
 
 <Base
   titre="L’association"
   description="MUSIMA met en lumière des personnes, des parcours et des initiatives d’Africains qui entreprennent, créent et innovent. Mission, public, territoire et démarche."
+  langue={langue}
+  alternatives={alternatives}
 >
   <EntetePage
     surtitre="L’association"

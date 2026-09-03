@@ -5,7 +5,7 @@ fonction: "Direction commerciale"
 organisation: "Empresa Group Pirineo"
 territoire: "Barcelone, Espagne"
 domaines: ["Développement commercial", "Europe & Afrique"]
-photo: ../../assets/uploads/intervenant1.jpg
+photo: ../../../assets/uploads/intervenant1.jpg
 photo_alt: "Portrait en noir et blanc de Sebastien Richnel, en chemise blanche, les bras croisés, sur fond gris"
 credit_photo: "[CRÉDIT PHOTO À AJOUTER]"
 accroche: "Dirige le développement commercial d'un groupe barcelonais sur deux continents, avec des équipes qui viennent d'un peu partout."

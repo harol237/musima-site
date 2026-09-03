@@ -4,60 +4,50 @@ import EntetePage from '~/components/EntetePage.astro';
 import CarteRecit from '~/components/CarteRecit.astro';
 import Filtres from '~/components/Filtres.astro';
 import EtatVide from '~/components/EtatVide.astro';
-import BandeauCta from '~/components/BandeauCta.astro';
 import { chargerRecits } from '~/lib/contenu';
+import { categoriesRecit, traduireValeur } from '~/i18n/utils';
+import type { Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
 
-const recits = await chargerRecits();
-const categories = [...new Set(recits.map((r) => r.data.categorie))];
-const [premier, ...suite] = recits;
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+const t = traducteur(langue);
+const recits = await chargerRecits(langue);
+const categories = [
+  ...new Set(recits.map((r) => traduireValeur(categoriesRecit, r.data.categorie, langue))),
+];
 ---
-
 <Base
-  titre="Récits"
-  description="Portraits, retours de rencontres, idées et actualités : les contenus publiés par MUSIMA pour enrichir le récit sur ce que les Africains construisent."
+  titre={t('navRecits')}
+  description={t('recitsChapo')}
+  langue={langue}
+  alternatives={alternatives}
+  noindex={recits.length === 0}
 >
   <EntetePage
-    surtitre="Récits"
-    titre="Enrichir le récit"
-    chapo="Donner davantage à voir ce qui se construit, ce qui se crée, ce qui évolue et ce que les Africains apportent."
-    ariane={[{ libelle: 'Récits' }]}
+    surtitre={t('navRecits')}
+    titre={t('portraitsRetoursIdees')}
+    chapo={t('recitsChapo')}
+    ariane={[{ libelle: t('navRecits') }]}
   />
-
   <section class="section conteneur">
     {recits.length > 0 ? (
       <>
-        <Filtres legende="Filtrer par catégorie" options={categories} cible=".carte-recit" />
-        <ul class="pile pile-8 liste-nue">
-          <li class="carte-recit" data-etiquettes={premier.data.categorie}>
-            <CarteRecit recit={premier} variante="mise-en-avant" />
-          </li>
-          {suite.length > 0 && (
-            <li>
-              <ul class="grille grille--2 liste-nue">
-                {suite.map((recit) => (
-                  <li class="carte-recit" data-etiquettes={recit.data.categorie}>
-                    <CarteRecit recit={recit} />
-                  </li>
-                ))}
-              </ul>
+        <Filtres legende={t('filtrerParDomaine')} options={categories} cible=".carte-recit" langue={langue} />
+        <ul class="grille grille--2 liste-nue">
+          {recits.map((recit) => (
+            <li
+              class="carte-recit"
+              data-etiquettes={traduireValeur(categoriesRecit, recit.data.categorie, langue)}
+            >
+              <CarteRecit recit={recit} langue={langue} />
             </li>
-          )}
+          ))}
         </ul>
       </>
     ) : (
-      <EtatVide titre="Les premiers récits sont à venir" texte="Portraits, retours de rencontres et analyses apparaîtront ici." />
+      <EtatVide titre={t('aucunRecitTitre')} texte={t('aucunRecitTexte')} />
     )}
   </section>
-
-  <BandeauCta
-    surtitre="Contribuer"
-    titre="Un parcours ou une initiative à faire connaître ?"
-    texte="MUSIMA publie des portraits et des récits de ce qui se construit. Les propositions sont les bienvenues."
-    actions={[{ url: '/contact', libelle: 'Proposer un sujet' }]}
-  />
 </Base>
-
-<style>
-  .liste-nue { list-style: none; margin: 0; padding: 0; }
-  .liste-nue li[hidden] { display: none; }
-</style>
+<style>.liste-nue { list-style: none; margin: 0; padding: 0; }</style>

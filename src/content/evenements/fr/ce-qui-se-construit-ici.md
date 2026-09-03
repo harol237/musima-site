@@ -11,7 +11,7 @@ lieu:
 resume: "La première rencontre MUSIMA. On a invité des personnes qui ont monté quelque chose à Barcelone — une activité, un projet, une pratique — et on leur a demandé de raconter comment ça s'est passé pour de vrai. Pas les versions retouchées : ce qui a marché, ce qui a coincé, ce qu'elles referaient autrement."
 intervenants:
   - fr/sebastien-richnel
-  - intervenant-modele-2
+  - fr/intervenant-modele-2
 lien_inscription: ""
 en_avant: true
 meta_description: "Première rencontre MUSIMA à Barcelone, le samedi 26 septembre 2026 à partir de 17h. Des personnes qui ont construit quelque chose ici racontent comment."
