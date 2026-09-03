@@ -351,6 +351,15 @@ export const ui = {
     ca: 'Toca una foto per veure-la en gran.',
   },
 
+  /* Décrit l'image de partage pour qui ne la voit pas : certains
+     lecteurs de flux et messageries lisent cette description. */
+  partageAlt: {
+    es: 'Nueve personas posan juntas al final de un encuentro de MUSIMA; una de ellas sostiene un ramo de flores.',
+    fr: 'Neuf personnes posent ensemble à la fin d’une rencontre MUSIMA ; l’une d’elles tient un bouquet de fleurs.',
+    en: 'Nine people posing together at the end of a MUSIMA gathering; one of them holds a bunch of flowers.',
+    ca: 'Nou persones posen juntes al final d’una trobada de MUSIMA; una d’elles sosté un ram de flors.',
+  },
+
   /* ---------------- Visionneuse ---------------- */
   visionneuseTitre: {
     es: 'Visor de fotos', fr: 'Visionneuse', en: 'Photo viewer', ca: 'Visor de fotos',

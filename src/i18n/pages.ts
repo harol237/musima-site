@@ -53,7 +53,9 @@ export const pagesStatiques: PageStatique[] = [
   { vue: 'legal',           segment: 'legal', disponible: esFr },
   { vue: 'confidentialite', segment: 'confidentialite', disponible: esFr },
   { vue: 'cookies',         segment: 'cookies', disponible: esFr },
-  { vue: 'accessibilite',   segment: 'accessibilite', disponible: esFr },
+  /* La page accessibilité n'est plus publiée : ses adresses sont
+     redirigées vers l'accueil dans public/_redirects. La vue reste dans
+     le dépôt, il suffit de remettre une ligne ici pour la republier. */
 ];
 
 export const languesDe = (vue: Vue) =>

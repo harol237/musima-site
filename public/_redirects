@@ -26,4 +26,12 @@ https://www.musima.org/*  https://musima.org/:splat  301
 /contact                /fr/contact                301
 /mentions-legales       /fr/mentions-legales       301
 /confidentialite        /fr/confidentialite        301
-/accessibilite          /fr/accessibilite          301
+
+# --- Page accessibilité retirée du site.
+#     Les adresses continuent de répondre : un lien déjà partagé, ou
+#     déjà indexé, mène à l'accueil de sa langue plutôt qu'à une erreur.
+#     L'ancienne adresse française part directement à la bonne place,
+#     sans passer par une redirection intermédiaire.
+/accessibilite          /fr                        301
+/accesibilidad          /                          301
+/fr/accessibilite       /fr                        301
