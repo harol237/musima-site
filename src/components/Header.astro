@@ -1,23 +1,35 @@
 ---
 import Logo from './Logo.astro';
-import { actionPrincipale } from '~/data/navigation';
-import { chargerMenu } from '~/lib/contenu';
+import SelecteurLangue from './SelecteurLangue.astro';
+import { navigationPrincipale, actionPrincipale } from '~/data/navigation';
+import { rubriquesRemplies } from '~/lib/contenu';
+import { traducteur } from '~/i18n/ui';
+import type { Langue } from '~/i18n/config';
 
-const { principale: navigationPrincipale } = await chargerMenu();
+interface Props {
+  langue: Langue;
+  alternatives: Record<Langue, string>;
+}
+const { langue, alternatives } = Astro.props;
+const t = traducteur(langue);
 
-const chemin = Astro.url.pathname.replace(/\/$/, '') || '/';
-const estActif = (url: string) => chemin === url || chemin.startsWith(url + '/');
+const remplies = await rubriquesRemplies(langue);
+const entrees = navigationPrincipale(langue).filter((e) => !e.rubrique || remplies.has(e.rubrique));
+const action = actionPrincipale(langue);
+
+const cheminActuel = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+const estActif = (url: string) => cheminActuel === url || cheminActuel.startsWith(url + '/');
 ---
 
 <header class="entete" data-entete>
   <div class="conteneur entete__interieur">
-    <a href="/" class="entete__marque" aria-label="MUSIMA — accueil">
+    <a href={alternatives[langue]} class="entete__marque" aria-label={t('accueilAria')}>
       <Logo hauteur="1.9rem" />
     </a>
 
-    <nav class="entete__nav" aria-label="Navigation principale">
+    <nav class="entete__nav" aria-label={t('navPrincipale')}>
       <ul class="entete__liste">
-        {navigationPrincipale.map((entree) => (
+        {entrees.map((entree) => (
           <li>
             <a
               href={entree.url}
@@ -34,7 +46,7 @@ const estActif = (url: string) => chemin === url || chemin.startsWith(url + '/')
         type="button"
         class="bascule-theme"
         data-bascule-theme
-        aria-label="Changer de thème clair ou sombre"
+        aria-label={t('basculeTheme')}
       >
         <svg viewBox="0 0 24 24" aria-hidden="true" class="bascule-theme__icone bascule-theme__icone--clair">
           <circle cx="12" cy="12" r="4.5" />
@@ -45,25 +57,29 @@ const estActif = (url: string) => chemin === url || chemin.startsWith(url + '/')
         </svg>
       </button>
 
-      <a href={actionPrincipale.url} class="bouton entete__cta">{actionPrincipale.libelle}</a>
+      <SelecteurLangue langue={langue} alternatives={alternatives} class="entete__langues" />
+
+      <a href={action.url} class="bouton entete__cta">{action.libelle}</a>
 
       <button
         type="button"
         class="entete__bascule"
         data-bascule-menu
+        data-ouvrir={t('ouvrirMenu')}
+        data-fermer={t('fermerMenu')}
         aria-expanded="false"
         aria-controls="menu-mobile"
       >
         <span class="entete__bascule-traits" aria-hidden="true"><span></span><span></span></span>
-        <span class="visuellement-cache">Ouvrir le menu</span>
+        <span class="visuellement-cache">{t('ouvrirMenu')}</span>
       </button>
     </div>
   </div>
 
   <div class="menu-mobile" id="menu-mobile" data-menu-mobile hidden>
-    <nav class="conteneur menu-mobile__interieur" aria-label="Navigation principale (mobile)">
+    <nav class="conteneur menu-mobile__interieur" aria-label={t('navPrincipaleMobile')}>
       <ul class="menu-mobile__liste">
-        {navigationPrincipale.map((entree) => (
+        {entrees.map((entree) => (
           <li>
             <a href={entree.url} aria-current={estActif(entree.url) ? 'page' : undefined}>
               <span class="menu-mobile__libelle">{entree.libelle}</span>
@@ -72,7 +88,8 @@ const estActif = (url: string) => chemin === url || chemin.startsWith(url + '/')
           </li>
         ))}
       </ul>
-      <a href={actionPrincipale.url} class="bouton menu-mobile__cta">{actionPrincipale.libelle}</a>
+      <a href={action.url} class="bouton menu-mobile__cta">{action.libelle}</a>
+      <SelecteurLangue langue={langue} alternatives={alternatives} class="langues--mobile" />
     </nav>
   </div>
 </header>
@@ -209,6 +226,8 @@ const estActif = (url: string) => chemin === url || chemin.startsWith(url + '/')
        le minimum confortable sur mobile et tablette. */
     .bascule-theme,
     .entete__bascule { width: 2.75rem; height: 2.75rem; }
+    /* Le sélecteur de langue vit dans le panneau mobile, pas dans la barre. */
+    .entete__langues { display: none; }
   }
 </style>
 
@@ -221,9 +240,8 @@ const estActif = (url: string) => chemin === url || chemin.startsWith(url + '/')
     const definirEtat = (ouvert: boolean) => {
       bascule.setAttribute('aria-expanded', String(ouvert));
       panneau.hidden = !ouvert;
-      bascule.querySelector('.visuellement-cache')!.textContent = ouvert
-        ? 'Fermer le menu'
-        : 'Ouvrir le menu';
+      bascule.querySelector('.visuellement-cache')!.textContent =
+        bascule.dataset[ouvert ? 'fermer' : 'ouvrir'] ?? '';
     };
 
     bascule.addEventListener('click', () =>

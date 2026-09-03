@@ -1,5 +1,6 @@
 ---
 import site from '~/data/site.json';
+import { etiquettes, langueDefaut, langues, type Langue } from '~/i18n/config';
 
 interface Props {
   titre: string;
@@ -9,6 +10,9 @@ interface Props {
   type?: 'website' | 'article' | 'profile' | 'event';
   publieLe?: Date;
   noindex?: boolean;
+  langue: Langue;
+  /** URL de cette page dans chaque langue, pour les balises hreflang. */
+  versions: Record<Langue, string>;
 }
 const {
   titre,
@@ -17,6 +21,8 @@ const {
   type = 'website',
   publieLe,
   noindex = false,
+  langue,
+  versions,
 } = Astro.props;
 
 /* Le site est construit en `format: 'file'` : Astro.url.pathname vaut
@@ -58,10 +64,23 @@ const organisation = {
 <title>{titreComplet}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
+
+{/* Déclare les quatre versions les unes aux autres, plus `x-default`
+    pour le visiteur dont la langue ne correspond à aucune des nôtres :
+    il atterrit sur l'espagnol, la langue par défaut du site. */}
+{!noindex && langues.map((code) => (
+  <link rel="alternate" hreflang={etiquettes[code].balise} href={new URL(versions[code], Astro.site).href} />
+))}
+{!noindex && (
+  <link rel="alternate" hreflang="x-default" href={new URL(versions[langueDefaut], Astro.site).href} />
+)}
 {noindex && <meta name="robots" content="noindex, follow" />}
 
 <meta property="og:site_name" content={site.nom} />
-<meta property="og:locale" content="fr_FR" />
+<meta property="og:locale" content={etiquettes[langue].balise.replace('-', '_')} />
+{langues.filter((c) => c !== langue).map((c) => (
+  <meta property="og:locale:alternate" content={etiquettes[c].balise.replace('-', '_')} />
+))}
 <meta property="og:type" content={type === 'event' ? 'website' : type} />
 <meta property="og:title" content={titreComplet} />
 <meta property="og:description" content={description} />

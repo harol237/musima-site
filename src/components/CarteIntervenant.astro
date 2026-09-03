@@ -6,10 +6,12 @@ import BadgeModele from './BadgeModele.astro';
 import { enChantier, pret } from '~/lib/contenu';
 
 interface Props {
+  langue: Langue;
   intervenant: CollectionEntry<'intervenants'>;
 }
-const { intervenant } = Astro.props;
+const { intervenant, langue } = Astro.props;
 const { data } = intervenant;
+const t = traducteur(langue);
 const sousTitre = [data.fonction, data.organisation].filter(Boolean).join(' · ');
 ---
 <article class="carte fiche">
@@ -20,7 +22,7 @@ const sousTitre = [data.fonction, data.organisation].filter(Boolean).join(' · '
     {data.photo ? (
       <Image
         src={data.photo}
-        alt={pret(data.photo_alt) ?? `Portrait de ${data.nom}`}
+        alt={pret(data.photo_alt) ?? `${t('portraitDe')} ${data.nom}`}
         widths={[240, 400, 640]}
         sizes="(min-width: 64rem) 17rem, (min-width: 40rem) 40vw, 85vw"
       />
@@ -31,7 +33,7 @@ const sousTitre = [data.fonction, data.organisation].filter(Boolean).join(' · '
   )}
 
   <h3 class="t-petit">
-    <a href={`/intervenants/${intervenant.id}`} class="carte__lien">{data.nom}</a>
+    <a href={chemin(langue, 'intervenants', slugDe(intervenant.id))} class="carte__lien">{data.nom}</a>
   </h3>
 
   {sousTitre ? (

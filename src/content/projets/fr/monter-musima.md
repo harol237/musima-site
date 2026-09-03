@@ -1,4 +1,5 @@
 ---
+cle: monter-musima
 titre: "Monter MUSIMA"
 statut: En cours
 annee: "2026"

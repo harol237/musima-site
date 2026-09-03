@@ -1,0 +1,139 @@
+---
+import { langues, etiquettes, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
+
+interface Props {
+  langue: Langue;
+  /** URL équivalente dans chaque langue. Défaut : l'accueil de la langue. */
+  alternatives: Record<Langue, string>;
+  class?: string;
+}
+const { langue, alternatives, class: classe = '' } = Astro.props;
+const t = traducteur(langue);
+---
+
+{/* <details> plutôt qu'un menu en JavaScript : le sélecteur s'ouvre au
+    clavier et fonctionne même si le script ne se charge pas. */}
+<details class:list={['langues', classe]} data-selecteur-langue>
+  <summary class="langues__bouton" title={t('choisirLangue')}>
+    <span class="visuellement-cache">{t('choisirLangue')} — {t('langueActuelle')} : {etiquettes[langue].nom}</span>
+    <span aria-hidden="true" class="langues__code">{etiquettes[langue].court}</span>
+    <svg viewBox="0 0 12 8" aria-hidden="true" class="langues__fleche"><path d="M1 1.5 6 6.5l5-5" /></svg>
+  </summary>
+
+  <ul class="langues__liste">
+    {langues.map((code) => (
+      <li>
+        <a
+          href={alternatives[code]}
+          hreflang={etiquettes[code].balise}
+          lang={etiquettes[code].balise}
+          data-langue={code}
+          aria-current={code === langue ? 'true' : undefined}
+        >
+          <span class="langues__code">{etiquettes[code].court}</span>
+          <span class="langues__nom">{etiquettes[code].nom}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</details>
+
+<style>
+  .langues { position: relative; flex: none; }
+
+  .langues__bouton {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    height: 2.375rem;
+    padding-inline: 0.7rem;
+    border: 1px solid var(--trait);
+    border-radius: var(--r-pilule);
+    color: var(--encre-douce);
+    cursor: pointer;
+    list-style: none;
+    transition: color var(--transition), border-color var(--transition);
+  }
+  .langues__bouton::-webkit-details-marker { display: none; }
+  .langues__bouton:hover { color: var(--terre); border-color: var(--terre); }
+  .langues[open] .langues__bouton { color: var(--terre); border-color: var(--terre); }
+
+  .langues__code {
+    font-family: var(--f-titre);
+    font-size: var(--t-200);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+  .langues__fleche {
+    width: 0.6rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform var(--transition);
+  }
+  .langues[open] .langues__fleche { transform: rotate(180deg); }
+
+  .langues__liste {
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    right: 0;
+    z-index: 60;
+    min-width: 10rem;
+    list-style: none;
+    margin: 0;
+    padding: 0.35rem;
+    border: 1px solid var(--trait);
+    border-radius: var(--r-carte);
+    background: var(--surface);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.10);
+  }
+  .langues__liste a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: calc(var(--r-carte) - 3px);
+    text-decoration: none;
+    color: var(--encre-douce);
+  }
+  .langues__liste a:hover { background: var(--surface-2); color: var(--encre); }
+  .langues__liste a[aria-current] { color: var(--terre); }
+  .langues__liste a[aria-current] .langues__nom { font-weight: 600; }
+  .langues__nom { font-size: var(--t-300); }
+
+  /* Dans le panneau mobile, la liste s'affiche à plat : pas de survol au doigt. */
+  .langues--mobile { width: 100%; }
+  .langues--mobile .langues__bouton { width: 100%; justify-content: space-between; height: 2.75rem; }
+  .langues--mobile .langues__liste { position: static; margin-top: 0.4rem; box-shadow: none; }
+  .langues--mobile .langues__liste a { padding-block: 0.7rem; }
+</style>
+
+<script>
+  // Le choix de langue est mémorisé dans le stockage local — une seule
+  // clé, aucun cookie, conformément à ce qu'annonce la page /cookies.
+  for (const lien of document.querySelectorAll<HTMLAnchorElement>('[data-selecteur-langue] a[data-langue]')) {
+    lien.addEventListener('click', () => {
+      try {
+        localStorage.setItem('musima-langue', lien.dataset.langue!);
+      } catch {
+        /* navigation privée : le choix vaut pour la visite en cours */
+      }
+    });
+  }
+
+  // Fermeture au clic extérieur et à la touche Échap.
+  const selecteurs = document.querySelectorAll<HTMLDetailsElement>('[data-selecteur-langue]');
+  const fermerTout = (sauf?: Element) =>
+    selecteurs.forEach((s) => s !== sauf && s.removeAttribute('open'));
+
+  selecteurs.forEach((s) =>
+    s.addEventListener('toggle', () => s.open && fermerTout(s)),
+  );
+  document.addEventListener('click', (e) => {
+    if (!(e.target as Element).closest?.('[data-selecteur-langue]')) fermerTout();
+  });
+  document.addEventListener('keydown', (e) => e.key === 'Escape' && fermerTout());
+</script>

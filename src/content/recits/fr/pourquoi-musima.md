@@ -1,4 +1,5 @@
 ---
+cle: pourquoi-musima
 titre: "Pourquoi MUSIMA"
 date: 2026-09-02
 categorie: "Idées & analyses"

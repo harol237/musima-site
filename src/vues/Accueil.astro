@@ -28,33 +28,10 @@ const enAvant = <T extends { data: { en_avant: boolean } }>(liste: T[], nombre: 
   return (mis.length ? mis : liste).slice(0, nombre);
 };
 
-/* Les quatre intentions sont issues mot pour mot de la mission de
-   l'association : elles ne sont pas rédigées pour remplir la page. */
-const intentions = [
-  {
-    titre: 'Mettre en lumière',
-    texte:
-      'Des personnes, des parcours, des projets et des initiatives d’Africains qui entreprennent, créent, innovent et apportent de la valeur dans leurs domaines.',
-  },
-  {
-    titre: 'Faire circuler',
-    texte:
-      'Un espace où les expériences, les savoir-faire, les idées et les initiatives peuvent se rencontrer et circuler.',
-  },
-  {
-    titre: 'Ouvrir le champ des possibles',
-    texte:
-      'Donner à voir des trajectoires et des réalisations qui permettent de se dire que certaines choses sont possibles, et qu’il est possible d’aller plus loin.',
-  },
-  {
-    titre: 'Enrichir le récit',
-    texte:
-      'Donner davantage à voir ce qui se construit, ce qui se crée, ce qui évolue et ce que les Africains apportent.',
-  },
-];
+const intentions = intentionsPar[langue];
 ---
 
-<Base titre={site.nom} description={site.description_courte}>
+<Base titre={site.nom} description={t('heroChapo')} langue={langue}>
   <!-- ================= HÉROS ================= -->
   <section class="heros scene">
     <svg class="heros__trait" viewBox="0 0 1200 400" aria-hidden="true" preserveAspectRatio="none">
@@ -63,18 +40,14 @@ const intentions = [
 
     <div class="conteneur heros__interieur">
       <div class="heros__texte">
-        <p class="surtitre">Association · {site.contact.ville}, {site.contact.region}</p>
+        <p class="surtitre">{t('heroSurtitre')}</p>
         <h1 class="t-hero heros__titre">
-          Mettre en lumière ce que les <em>Africains</em> construisent.
+          {t('heroTitre1')} <em>{t('heroTitreAccent')}</em> {t('heroTitre2')}
         </h1>
-        <p class="chapo heros__chapo">
-          MUSIMA met en lumière des personnes, des parcours, des projets et des initiatives
-          d’Africains qui entreprennent, créent, innovent et apportent de la valeur dans leurs
-          domaines.
-        </p>
+        <p class="chapo heros__chapo">{t('heroChapo')}</p>
         <div class="rang heros__actions">
-          <a href="/evenements" class="bouton">Voir les rencontres</a>
-          <a href="/association" class="bouton bouton--fantome">Découvrir l’association</a>
+          <a href={chemin(langue, 'evenements')} class="bouton">{t('heroBoutonEvenements')}</a>
+          <a href={chemin(langue, 'association')} class="bouton bouton--fantome">{t('heroBoutonAssociation')}</a>
         </div>
       </div>
 
@@ -96,8 +69,8 @@ const intentions = [
   <!-- ================= INTENTIONS ================= -->
   <section class="section conteneur">
     <EnteteSection
-      surtitre="Ce que fait MUSIMA"
-      titre="Quatre choses, concrètement"
+      surtitre={t('intentionsSurtitre')}
+      titre={t('intentionsTitre')}
     />
     <ul class="grille grille--2 intentions">
       {intentions.map((intention) => (
@@ -113,27 +86,23 @@ const intentions = [
   <!-- ================= PROCHAINE RENCONTRE ================= -->
   <section class="section conteneur">
     <EnteteSection
-      surtitre="Rencontres"
-      titre="Prochaine rencontre"
-      lien={{ url: '/evenements', libelle: 'Tous les événements' }}
+      surtitre={t('sectionRencontres')}
+      titre={t('prochaineRencontre')}
+      lien={{ url: chemin(langue, 'evenements'), libelle: t('tousLesEvenements') }}
     />
     {prochaine ? (
       <div class="grille prochaine">
-        <CarteEvenement evenement={prochaine} variante="mise-en-avant" />
+        <CarteEvenement evenement={prochaine} variante="mise-en-avant" langue={langue} />
         {suivants.length > 0 && (
           <ul class="pile pile-4 prochaine__suite">
             {suivants.map((evenement) => (
-              <li><CarteEvenement evenement={evenement} /></li>
+              <li><CarteEvenement evenement={evenement} langue={langue} /></li>
             ))}
           </ul>
         )}
       </div>
     ) : (
-      <EtatVide
-        titre="Aucune rencontre programmée pour le moment"
-        texte="Les prochaines conférences et rencontres seront annoncées ici dès qu’elles seront fixées."
-        action={passes.length > 0 ? { url: '/evenements', libelle: 'Voir les rencontres passées' } : undefined}
-      />
+      <EtatVide titre={t('aucuneRencontreTitre')} texte={t('aucuneRencontreTexte')} />
     )}
   </section>
 
@@ -141,21 +110,18 @@ const intentions = [
   {(intervenants.length > 0 || enChantier) && (
   <section class="section conteneur">
     <EnteteSection
-      surtitre="Les voix"
-      titre="Celles et ceux qui prennent la parole"
-      lien={{ url: '/intervenants', libelle: 'Tous les intervenants' }}
+      surtitre={t('sectionVoix')}
+      titre={t('ceuxQuiParlent')}
+      lien={{ url: chemin(langue, 'intervenants'), libelle: t('tousLesIntervenants') }}
     />
     {intervenants.length > 0 ? (
       <ul class="grille grille--4 liste-nue">
         {enAvant(intervenants, 4).map((intervenant) => (
-          <li><CarteIntervenant intervenant={intervenant} /></li>
+          <li><CarteIntervenant intervenant={intervenant} langue={langue} /></li>
         ))}
       </ul>
     ) : (
-      <EtatVide
-        titre="Les premières fiches d’intervenants arrivent"
-        texte="Chaque personne invitée par MUSIMA aura sa fiche : parcours, domaines et rencontres auxquelles elle a participé."
-      />
+      <EtatVide titre={t('aucunIntervenantTitre')} texte={t('aucunIntervenantTexte')} />
     )}
   </section>
 
@@ -165,21 +131,18 @@ const intentions = [
   {(projets.length > 0 || enChantier) && (
   <section class="section conteneur">
     <EnteteSection
-      surtitre="Projets"
-      titre="Ce que l’association construit"
-      lien={{ url: '/projets', libelle: 'Tous les projets' }}
+      surtitre={t('navProjets')}
+      titre={t('ceQueLAssociationConstruit')}
+      lien={{ url: chemin(langue, 'projets'), libelle: t('tousLesProjets') }}
     />
     {projets.length > 0 ? (
       <ul class="grille grille--2 liste-nue">
         {enAvant(projets, 3).map((projet) => (
-          <li><CarteProjet projet={projet} /></li>
+          <li><CarteProjet projet={projet} langue={langue} /></li>
         ))}
       </ul>
     ) : (
-      <EtatVide
-        titre="Les projets seront présentés ici"
-        texte="Chaque projet porté ou accompagné par MUSIMA sera documenté : intention, avancement, partenaires."
-      />
+      <EtatVide titre={t('aucunProjetTitre')} texte={t('aucunProjetTexte')} />
     )}
   </section>
 
@@ -189,33 +152,30 @@ const intentions = [
   {(recits.length > 0 || enChantier) && (
   <section class="section conteneur">
     <EnteteSection
-      surtitre="Récits"
-      titre="Portraits, retours et idées"
-      lien={{ url: '/recits', libelle: 'Tous les récits' }}
+      surtitre={t('navRecits')}
+      titre={t('portraitsRetoursIdees')}
+      lien={{ url: chemin(langue, 'recits'), libelle: t('tousLesRecits') }}
     />
     {recits.length > 0 ? (
       <ul class="grille grille--2 liste-nue">
         {enAvant(recits, 3).map((recit) => (
-          <li><CarteRecit recit={recit} /></li>
+          <li><CarteRecit recit={recit} langue={langue} /></li>
         ))}
       </ul>
     ) : (
-      <EtatVide
-        titre="Les premiers récits sont à venir"
-        texte="Portraits, retours de rencontres et analyses : les contenus publiés par MUSIMA apparaîtront ici."
-      />
+      <EtatVide titre={t('aucunRecitTitre')} texte={t('aucunRecitTexte')} />
     )}
   </section>
 
   )}
 
   <BandeauCta
-    surtitre="Participer"
-    titre="Vous avez une expérience, un savoir-faire ou un projet à partager ?"
-    texte="MUSIMA se construit avec celles et ceux qui font. Intervenir, adhérer, devenir bénévole ou partenaire : il y a plusieurs façons de contribuer."
+    surtitre={t('ctaParticiperSurtitre')}
+    titre={t('ctaParticiperTitre')}
+    texte={t('ctaParticiperTexte')}
     actions={[
-      { url: '/s-engager', libelle: 'Voir comment s’engager' },
-      { url: '/contact', libelle: 'Nous écrire', variante: 'fantome' },
+      { url: chemin(langue, 'engagement'), libelle: t('ctaVoirEngagement') },
+      { url: chemin(langue, 'contact'), libelle: t('ctaNousEcrire'), variante: 'fantome' },
     ]}
   />
 </Base>

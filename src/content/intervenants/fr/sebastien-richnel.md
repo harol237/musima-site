@@ -1,4 +1,5 @@
 ---
+cle: sebastien-richnel
 nom: "Sebastien Richnel"
 fonction: "Direction commerciale"
 organisation: "Empresa Group Pirineo"

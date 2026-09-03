@@ -6,10 +6,11 @@ import BadgeModele from './BadgeModele.astro';
 import { formaterDate, dateISO, enChantier, pret } from '~/lib/contenu';
 
 interface Props {
+  langue: Langue;
   recit: CollectionEntry<'recits'>;
   variante?: 'liste' | 'mise-en-avant';
 }
-const { recit, variante = 'liste' } = Astro.props;
+const { recit, variante = 'liste', langue } = Astro.props;
 const { data } = recit;
 ---
 <article class:list={['carte', 'recit', variante === 'mise-en-avant' && 'recit--large']}>
@@ -31,12 +32,12 @@ const { data } = recit;
   )}
 
   <div class="rang">
-    <span class="puce puce--sourde">{data.categorie}</span>
-    <time class="meta" datetime={dateISO(data.date)}>{formaterDate(data.date)}</time>
+    <span class="puce puce--sourde">{traduireValeur(categoriesRecit, data.categorie, langue)}</span>
+    <time class="meta" datetime={dateISO(data.date)}>{formaterDate(data.date, langue)}</time>
   </div>
 
   <h3 class={variante === 'mise-en-avant' ? 't-section' : 't-carte'}>
-    <a href={`/recits/${recit.id}`} class="carte__lien">{data.titre}</a>
+    <a href={chemin(langue, 'recits', slugDe(recit.id))} class="carte__lien">{data.titre}</a>
   </h3>
 
   {data.resume ? (

@@ -6,13 +6,15 @@ import BadgeModele from './BadgeModele.astro';
 import { formaterJourMois, formaterPlage, dateISO, estAVenir, enChantier, pret } from '~/lib/contenu';
 
 interface Props {
+  langue: Langue;
   evenement: CollectionEntry<'evenements'>;
   /** `mise-en-avant` affiche le visuel en grand. */
   variante?: 'liste' | 'mise-en-avant';
 }
-const { evenement, variante = 'liste' } = Astro.props;
+const { evenement, variante = 'liste', langue } = Astro.props;
 const { data } = evenement;
-const { jour, mois, annee } = formaterJourMois(data.date_debut);
+const t = traducteur(langue);
+const { jour, mois, annee } = formaterJourMois(data.date_debut, langue);
 const aVenir = estAVenir(evenement);
 const lieu = [data.lieu?.nom, data.lieu?.ville].filter(Boolean).join(', ');
 ---
@@ -43,18 +45,18 @@ const lieu = [data.lieu?.nom, data.lieu?.ville].filter(Boolean).join(', ');
 
     <div class="evenement__texte">
       <div class="rang">
-        <span class="puce puce--sourde">{data.format}</span>
-        {!aVenir && <span class="puce">Passé</span>}
-        {data.complet && <span class="puce puce--terre">Complet</span>}
-        {data.lieu?.en_ligne && <span class="puce">En ligne</span>}
+        <span class="puce puce--sourde">{traduireValeur(formatsEvenement, data.format, langue)}</span>
+        {!aVenir && <span class="puce">{t('passe')}</span>}
+        {data.complet && <span class="puce puce--terre">{t('complet')}</span>}
+        {data.lieu?.en_ligne && <span class="puce">{t('enLigne')}</span>}
       </div>
 
       <h3 class="t-carte">
-        <a href={`/evenements/${evenement.id}`} class="carte__lien">{data.titre}</a>
+        <a href={chemin(langue, 'evenements', slugDe(evenement.id))} class="carte__lien">{data.titre}</a>
       </h3>
 
       <p class="meta evenement__quand">
-        {formaterPlage(data.date_debut, data.date_fin)}
+        {formaterPlage(data.date_debut, data.date_fin, langue)}
         {data.heure && <> · {data.heure}</>}
       </p>
 

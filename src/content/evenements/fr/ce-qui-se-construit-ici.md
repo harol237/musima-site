@@ -1,4 +1,5 @@
 ---
+cle: rencontre-inaugurale
 titre: "Ce qui se construit ici"
 format: Rencontre
 date_debut: 2026-09-26
@@ -9,7 +10,7 @@ lieu:
   en_ligne: false
 resume: "La première rencontre MUSIMA. On a invité des personnes qui ont monté quelque chose à Barcelone — une activité, un projet, une pratique — et on leur a demandé de raconter comment ça s'est passé pour de vrai. Pas les versions retouchées : ce qui a marché, ce qui a coincé, ce qu'elles referaient autrement."
 intervenants:
-  - sebastien-richnel
+  - fr/sebastien-richnel
   - intervenant-modele-2
 lien_inscription: ""
 en_avant: true

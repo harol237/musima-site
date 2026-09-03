@@ -1,4 +1,5 @@
 ---
+cle: intervenant-2
 nom: "[NOM DE L'INTERVENANT·E 2 À AJOUTER]"
 fonction: "[FONCTION À AJOUTER — ce que la personne fait, en trois ou quatre mots]"
 organisation: "[ORGANISATION À AJOUTER]"

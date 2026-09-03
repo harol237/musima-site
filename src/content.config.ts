@@ -18,6 +18,13 @@ const base = {
   brouillon: z.boolean().default(false),
   /** Marque une fiche de démonstration : badge visible, à supprimer. */
   modele: z.boolean().default(false),
+  /**
+   * Identifiant partagé par les quatre versions linguistiques d'un même
+   * contenu. C'est lui qui permet au sélecteur de langue d'emmener le
+   * visiteur sur la traduction de la page qu'il lit, et non sur l'accueil.
+   * La langue, elle, se déduit du dossier : evenements/es/... est en espagnol.
+   */
+  cle: z.string(),
 };
 
 const seo = {

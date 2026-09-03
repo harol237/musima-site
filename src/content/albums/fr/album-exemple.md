@@ -1,4 +1,5 @@
 ---
+cle: album-exemple
 titre: "[TITRE DE L'ALBUM À FINALISER]"
 lieu: "Barcelone"
 couverture_alt: "[DESCRIPTION DE LA PHOTO DE COUVERTURE À AJOUTER]"
