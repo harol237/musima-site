@@ -5,140 +5,179 @@ import ARemplir from '~/components/ARemplir.astro';
 import site from '~/data/site.json';
 import { enChantier } from '~/lib/contenu';
 import { chemin, type Langue } from '~/i18n/config';
-import { traducteur } from '~/i18n/ui';
-
-const aRemplir = (valeur: string) => valeur.startsWith('[');
-const reseaux = site.reseaux.filter((r) => enChantier || !aRemplir(r.url));
-const sujets = [
-  'Proposer une intervention',
-  'Proposer un sujet ou un portrait',
-  'Devenir partenaire',
-  'Devenir bénévole',
-  'Presse',
-  'Autre',
-];
+import { champ } from '~/i18n/site';
 
 interface Props { langue: Langue; alternatives: Record<Langue, string> }
 const { langue, alternatives } = Astro.props;
-const t = traducteur(langue);
+
+const aRemplir = (valeur: string) => valeur.startsWith('[');
+const reseaux = site.reseaux.filter((r) => enChantier || !aRemplir(r.url));
+
+/* Textes propres à cette page. Assez courts pour vivre ici plutôt que
+   dans le dictionnaire général, qui sert les chaînes vues partout. */
+const textes = {
+  es: {
+    titre: 'Escríbenos',
+    surtitre: 'Contacto',
+    chapo: 'Una propuesta, una duda, ganas de aportar algo: lo más sencillo sigue siendo escribir.',
+    meta: 'Escribir a MUSIMA: proponer una intervención, un tema, una colaboración, o hacer una pregunta.',
+    formulaire: 'Formulario',
+    note: 'Este formulario abre tu programa de correo con el mensaje ya redactado: no hay intermediario, tu mensaje llega directamente a nuestro buzón. Si prefieres escribir por tu cuenta, la dirección está aquí al lado.',
+    nom: 'Nombre y apellidos',
+    email: 'Dirección de correo',
+    sujet: 'Asunto',
+    message: 'Mensaje',
+    envoyer: 'Enviar',
+    rgpd: 'No se guarda nada en esta web: lo que escribes sale directamente por correo y solo sirve para responderte. Consulta la',
+    rgpdLien: 'política de privacidad',
+    sansJs: 'El formulario necesita JavaScript para preparar el mensaje. Escríbenos directamente a',
+    coordonnees: 'Datos de contacto',
+    labelEmail: 'Correo',
+    labelOu: 'Dónde',
+    labelAdresse: 'Dirección',
+    reseaux: 'Redes',
+    presse: 'Prensa',
+    pressseTexte: 'Periodistas y medios: aquí se pondrá a disposición un dossier de prensa y material gráfico en alta resolución.',
+    sujets: [
+      'Proponer una intervención',
+      'Proponer un tema o un retrato',
+      'Colaborar con la asociación',
+      'Echar una mano',
+      'Prensa',
+      'Otro',
+    ],
+  },
+  fr: {
+    titre: 'Nous écrire',
+    surtitre: 'Contact',
+    chapo: 'Une proposition, une question, une envie de contribuer : le plus simple est encore d’écrire.',
+    meta: 'Écrire à MUSIMA : proposer une intervention, un sujet, un partenariat, ou poser une question.',
+    formulaire: 'Formulaire',
+    note: 'Ce formulaire ouvre votre logiciel de messagerie avec le message déjà rédigé — il n’y a aucun intermédiaire, votre message arrive directement dans notre boîte. Si vous préférez écrire vous-même, l’adresse est juste à côté.',
+    nom: 'Nom et prénom',
+    email: 'Adresse e-mail',
+    sujet: 'Sujet',
+    message: 'Message',
+    envoyer: 'Envoyer',
+    rgpd: 'Rien n’est enregistré sur ce site : les informations saisies partent directement par e-mail et servent uniquement à répondre à votre message. Voir la',
+    rgpdLien: 'politique de confidentialité',
+    sansJs: 'Le formulaire a besoin de JavaScript pour préparer le message. Écrivez-nous directement à',
+    coordonnees: 'Coordonnées',
+    labelEmail: 'E-mail',
+    labelOu: 'Où',
+    labelAdresse: 'Adresse',
+    reseaux: 'Réseaux',
+    presse: 'Presse',
+    pressseTexte: 'Journalistes et médias : un dossier de presse et des visuels en haute définition seront mis à disposition ici.',
+    sujets: [
+      'Proposer une intervention',
+      'Proposer un sujet ou un portrait',
+      'Devenir partenaire',
+      'Devenir bénévole',
+      'Presse',
+      'Autre',
+    ],
+  },
+} as const;
+const x = textes[langue as 'es' | 'fr'] ?? textes.fr;
 ---
 
-<Base
-  titre="Contact"
-  description="Écrire à MUSIMA : proposer une intervention, un sujet, un partenariat, ou poser une question."
-  langue={langue}
-  alternatives={alternatives}
->
+<Base titre={x.titre} description={x.meta} langue={langue} alternatives={alternatives}>
   <EntetePage
-    surtitre="Contact"
-    titre="Nous écrire"
-    chapo="Une proposition, une question, une envie de contribuer : le plus simple est encore d’écrire."
-    ariane={[{ libelle: 'Contact' }]}
+    surtitre={x.surtitre}
+    titre={x.titre}
+    chapo={x.chapo}
+    ariane={[{ libelle: x.surtitre }]}
   />
 
   <section class="section conteneur contact">
     <div class="contact__form">
-      <h2 class="t-section">Formulaire</h2>
-      <p class="note">
-        Ce formulaire ouvre votre logiciel de messagerie avec le message déjà rédigé — il n'y a
-        aucun intermédiaire, votre message arrive directement dans notre boîte. Si vous préférez
-        écrire vous-même, l'adresse est juste à côté.
-      </p>
+      <h2 class="t-section">{x.formulaire}</h2>
+      <p class="note">{x.note}</p>
 
       <form class="formulaire" data-formulaire-mailto data-destinataire={site.contact.email}>
         <div class="champ">
-          <label for="nom">Nom et prénom</label>
+          <label for="nom">{x.nom}</label>
           <input id="nom" name="nom" type="text" autocomplete="name" required />
         </div>
 
         <div class="champ">
-          <label for="email">Adresse e-mail</label>
+          <label for="email">{x.email}</label>
           <input id="email" name="email" type="email" autocomplete="email" required />
         </div>
 
         <div class="champ">
-          <label for="sujet">Sujet</label>
+          <label for="sujet">{x.sujet}</label>
           <select id="sujet" name="sujet">
-            {sujets.map((sujet) => <option value={sujet}>{sujet}</option>)}
+            {x.sujets.map((sujet) => <option value={sujet}>{sujet}</option>)}
           </select>
         </div>
 
         <div class="champ">
-          <label for="message">Message</label>
+          <label for="message">{x.message}</label>
           <textarea id="message" name="message" rows="6" required></textarea>
         </div>
 
         <p class="champ__aide" id="aide-rgpd">
-          Rien n'est enregistré sur ce site : les informations saisies partent directement par
-          e-mail et servent uniquement à répondre à votre message. Voir la
-          <a href="/confidentialite" class="lien">politique de confidentialité</a>.
+          {x.rgpd}{' '}
+          <a href={chemin(langue, 'confidentialite')} class="lien">{x.rgpdLien}</a>.
         </p>
 
-        <button type="submit" class="bouton" aria-describedby="aide-rgpd">Envoyer</button>
+        <button type="submit" class="bouton" aria-describedby="aide-rgpd">{x.envoyer}</button>
 
         <noscript>
           <p class="champ__aide">
-            Le formulaire a besoin de JavaScript pour préparer le message. Écrivez-nous
-            directement à <a href={`mailto:${site.contact.email}`} class="lien">{site.contact.email}</a>.
+            {x.sansJs}{' '}
+            <a href={`mailto:${site.contact.email}`} class="lien">{site.contact.email}</a>.
           </p>
         </noscript>
       </form>
     </div>
 
-    <aside class="contact__infos" aria-label="Coordonnées">
+    <aside class="contact__infos" aria-label={x.coordonnees}>
       <div class="encart">
-        <h2 class="encart__titre">Coordonnées</h2>
+        <h2 class="encart__titre">{x.coordonnees}</h2>
         <dl class="infos">
           <div>
-            <dt>E-mail</dt>
-            <dd>
-              {aRemplir(site.contact.email)
-                ? <ARemplir libelle="EMAIL À AJOUTER" forme="ligne" />
-                : <a href={`mailto:${site.contact.email}`} class="lien">{site.contact.email}</a>}
-            </dd>
+            <dt>{x.labelEmail}</dt>
+            <dd><a href={`mailto:${site.contact.email}`} class="lien">{site.contact.email}</a></dd>
           </div>
           <div>
-            <dt>Où</dt>
-            <dd>{site.contact.ville_siege}, {site.contact.region}, {site.contact.pays}</dd>
+            <dt>{x.labelOu}</dt>
+            <dd>{site.contact.ville_siege}, {champ(site.contact.region, langue)}, {champ(site.contact.pays, langue)}</dd>
           </div>
-          {(!aRemplir(site.contact.adresse) || enChantier) && (
           <div>
-            <dt>Adresse</dt>
-            <dd>
-              {aRemplir(site.contact.adresse)
-                ? <ARemplir libelle="ADRESSE À AJOUTER" forme="ligne" />
-                : site.contact.adresse}
-            </dd>
+            <dt>{x.labelAdresse}</dt>
+            <dd>{site.contact.adresse}</dd>
           </div>
-          )}
         </dl>
       </div>
 
-      <div class="encart">
-        <h2 class="encart__titre">Réseaux</h2>
-        <ul class="encart__liste">
-          {reseaux.map((reseau) => (
-            <li>
-              {aRemplir(reseau.url)
-                ? <span>{reseau.nom} <ARemplir type="lien" forme="ligne" /></span>
-                : <a href={reseau.url} class="lien" rel="me noopener">{reseau.nom}</a>}
-            </li>
-          ))}
-        </ul>
-      </div>
+      {reseaux.length > 0 && (
+        <div class="encart">
+          <h2 class="encart__titre">{x.reseaux}</h2>
+          <ul class="encart__liste">
+            {reseaux.map((reseau) => (
+              <li>
+                {aRemplir(reseau.url)
+                  ? <span>{reseau.nom} <ARemplir type="lien" forme="ligne" /></span>
+                  : <a href={reseau.url} class="lien" rel="me noopener">{reseau.nom}</a>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {enChantier && (
-      <div class="encart">
-        <h2 class="encart__titre">Presse</h2>
-        <p class="encart__texte">
-          Journalistes et médias : un dossier de presse et des visuels en haute définition seront
-          mis à disposition ici.
-        </p>
-        <ARemplir libelle="DOSSIER DE PRESSE À AJOUTER" />
-      </div>
+        <div class="encart">
+          <h2 class="encart__titre">{x.presse}</h2>
+          <p class="encart__texte">{x.pressseTexte}</p>
+          <ARemplir libelle="DOSSIER DE PRESSE À AJOUTER" />
+        </div>
       )}
     </aside>
   </section>
+
   <script>
     // Le formulaire n'envoie rien lui-même : il compose un e-mail et laisse
     // la personne l'envoyer depuis sa propre messagerie. Zéro donnée stockée,
@@ -189,7 +228,6 @@ const t = traducteur(langue);
   }
   .champ textarea { resize: vertical; }
   .champ__aide { font-size: var(--t-200); color: var(--encre-faible); line-height: 1.5; }
-  .formulaire .bouton:disabled { opacity: 0.45; cursor: not-allowed; }
 
   .contact__infos { display: flex; flex-direction: column; gap: var(--e-4); }
   .encart { border: 1px solid var(--trait); border-radius: var(--r-carte); background: var(--surface); padding: var(--e-5); }

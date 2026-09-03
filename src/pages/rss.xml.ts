@@ -1,6 +1,7 @@
 import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
 import site from '~/data/site.json';
+import { champ } from '~/i18n/site';
 import { chargerRecits } from '~/lib/contenu';
 import { chemin, langueDefaut } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
@@ -14,7 +15,7 @@ export async function GET(context: APIContext) {
 
   return rss({
     title: `${t('navRecits')} — ${site.nom}`,
-    description: site.description_courte,
+    description: champ(site.description_courte, langue),
     site: context.site!,
     customData: `<language>${langue}</language>`,
     items: recits.map((recit) => ({

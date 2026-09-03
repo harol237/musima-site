@@ -1,6 +1,7 @@
 ---
 import site from '~/data/site.json';
 import { etiquettes, langueDefaut, langues, type Langue } from '~/i18n/config';
+import { champ } from '~/i18n/site';
 
 interface Props {
   titre: string;
@@ -16,7 +17,7 @@ interface Props {
 }
 const {
   titre,
-  description = site.description_courte,
+  description: descriptionFournie,
   image,
   type = 'website',
   publieLe,
@@ -24,6 +25,7 @@ const {
   langue,
   versions,
 } = Astro.props;
+const description = descriptionFournie ?? champ(site.description_courte, langue);
 
 /* Le site est construit en `format: 'file'` : Astro.url.pathname vaut
    « /association.html », alors que l'adresse publique — celle du sitemap,
@@ -36,7 +38,7 @@ const cheminPublic =
     .replace(/\.html$/, '')
     .replace(/(.)\/$/, '$1') || '/';
 const canonical = new URL(cheminPublic, Astro.site).href;
-const titreComplet = titre === site.nom ? `${site.nom} — ${site.baseline}` : `${titre} — ${site.nom}`;
+const titreComplet = titre === site.nom ? `${site.nom} — ${champ(site.baseline, langue)}` : `${titre} — ${site.nom}`;
 // [IMAGE DE PARTAGE À AJOUTER] : déposer un visuel 1200×630 dans public/
 // et renseigner son chemin ici pour les aperçus sur les réseaux sociaux.
 const imagePartage = image ? new URL(image, Astro.site).href : undefined;
@@ -45,9 +47,9 @@ const organisation = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: site.nom,
-  description: site.description_courte,
+  description: champ(site.description_courte, langue),
   url: Astro.site?.href,
-  areaServed: [site.contact.pays, 'Europe', 'Afrique'],
+  areaServed: [champ(site.contact.pays, langue), 'Europe', 'Africa'],
   address: {
     '@type': 'PostalAddress',
     streetAddress: site.contact.rue,
@@ -55,7 +57,7 @@ const organisation = {
     /* La commune du siège, et non « Barcelone » : les moteurs consomment
        cette adresse comme une donnée administrative. */
     addressLocality: site.contact.ville_siege,
-    addressRegion: site.contact.province,
+    addressRegion: champ(site.contact.province, langue),
     addressCountry: 'ES',
   },
 };

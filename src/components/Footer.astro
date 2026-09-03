@@ -10,6 +10,7 @@ import {
 } from '~/data/navigation';
 import { rubriquesRemplies, enChantier } from '~/lib/contenu';
 import { chemin } from '~/i18n/config';
+import { champ } from '~/i18n/site';
 import { traducteur } from '~/i18n/ui';
 import type { Langue } from '~/i18n/config';
 
@@ -36,7 +37,7 @@ const infolettrePrete = !aRemplir(site.infolettre.action);
   <div class="conteneur pied__interieur">
     <div class="pied__marque">
       <Logo hauteur="2.5rem" />
-      <p class="pied__phrase">{site.phrase}</p>
+      <p class="pied__phrase">{champ(site.phrase, langue)}</p>
       <a href={action.url} class="bouton">{action.libelle}</a>
     </div>
 
@@ -61,7 +62,7 @@ const infolettrePrete = !aRemplir(site.infolettre.action);
               ? <ARemplir libelle="EMAIL À AJOUTER" forme="ligne" />
               : <a href={`mailto:${site.contact.email}`} class="lien-pied">{site.contact.email}</a>}
           </li>
-          <li class="pied__lieu">{site.contact.ville}, {site.contact.region} — {site.contact.pays}</li>
+          <li class="pied__lieu">{champ(site.contact.ville, langue)}, {champ(site.contact.region, langue)} — {champ(site.contact.pays, langue)}</li>
         </ul>
 
         {reseaux.length > 0 && <h2 class="pied__titre pied__titre--espace">{t('piedSuivre')}</h2>}

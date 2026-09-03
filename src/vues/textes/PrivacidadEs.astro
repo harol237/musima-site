@@ -1,0 +1,189 @@
+---
+import EntetePage from '~/components/EntetePage.astro';
+import FicheLegale from '~/components/FicheLegale.astro';
+import site from '~/data/site.json';
+import { champ } from '~/i18n/site';
+
+const { hebergeur: h, contact: c } = site;
+const maj = new Intl.DateTimeFormat('es-ES', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid',
+}).format(new Date('2026-09-03'));
+---
+<EntetePage
+  surtitre="Tus datos"
+  titre="Política de privacidad"
+  chapo="Esta web recoge lo mínimo imprescindible: una dirección de correo, y solo si te suscribes al boletín. Aquí tienes el detalle, y cómo pedir que borremos lo que te concierne."
+  ariane={[{ libelle: 'Privacidad' }]}
+  registre="papier"
+/>
+<section class="section conteneur">
+  <div class="prose">
+
+    <h2>1. En una frase</h2>
+    <p>
+      La web en sí no recoge nada: ninguna cookie, ningún rastreador, ninguna medición de
+      audiencia. El único dato personal que conservamos es tu dirección de correo, si te suscribes
+      al boletín, y solo en ese caso.
+    </p>
+
+    <h2>2. Quién es el responsable del tratamiento</h2>
+    <FicheLegale langue="es" variante="court" />
+    <p>
+      No se ha designado delegado de protección de datos: la asociación no se encuentra en ninguno
+      de los supuestos que lo hacen obligatorio según el artículo 37 del RGPD. Las solicitudes se
+      atienden en la dirección indicada arriba.
+    </p>
+    <p class="note-encadree">
+      La asociación está en trámite de inscripción ante la Generalitat de Catalunya. El NIF y el
+      número de inscripción se añadirán aquí en cuanto se asignen. Eso no cambia nada respecto a
+      tus derechos: se ejercen desde hoy en la dirección de contacto indicada.
+    </p>
+
+    <h2>3. Qué tratamos, y para qué</h2>
+
+    <h3>Boletín</h3>
+    <table class="tableau-traitement">
+      <tbody>
+        <tr><th>Datos</th><td>Tu dirección de correo y la fecha de tu suscripción. Nada más: ni nombre, ni seguimiento individual de aperturas, ni elaboración de perfiles.</td></tr>
+        <tr><th>Finalidad</th><td>Enviarte las novedades de la asociación: próximos encuentros, nuevas publicaciones. Unos pocos envíos al año.</td></tr>
+        <tr><th>Base jurídica</th><td>Tu consentimiento — artículo 6.1.a del RGPD — otorgado al marcar la casilla en el momento de la suscripción. La casilla nunca viene marcada de antemano.</td></tr>
+        <tr><th>Conservación</th><td>Hasta que te des de baja, o pasados tres años sin ninguna interacción por tu parte. Tu dirección se suprime entonces.</td></tr>
+        <tr><th>Destinatario</th><td>{site.infolettre.fournisseur} (véase el apartado 4).</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Formulario de contacto</h3>
+    <table class="tableau-traitement">
+      <tbody>
+        <tr><th>Datos</th><td>El nombre, la dirección de correo y el mensaje que escribes.</td></tr>
+        <tr><th>Particularidad</th><td>El formulario no envía nada a un servidor: prepara un correo en tu propio programa de mensajería, y eres tú quien lo envía. Nada pasa por esta web, nada se registra en ella. Puedes escribirnos directamente si lo prefieres.</td></tr>
+        <tr><th>Finalidad</th><td>Responder a tu mensaje.</td></tr>
+        <tr><th>Base jurídica</th><td>Nuestro interés legítimo en responder a quien nos escribe — artículo 6.1.f del RGPD.</td></tr>
+        <tr><th>Conservación</th><td>El tiempo necesario para atender tu solicitud, y como máximo tres años desde nuestro último intercambio.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Registros de conexión del proveedor de alojamiento</h3>
+    <table class="tableau-traitement">
+      <tbody>
+        <tr><th>Datos</th><td>Dirección IP, página solicitada, marca de tiempo, tipo de navegador — registrados por el proveedor de alojamiento, no por nosotros.</td></tr>
+        <tr><th>Finalidad</th><td>Servir las páginas y proteger la web de ataques.</td></tr>
+        <tr><th>Base jurídica</th><td>Interés legítimo en garantizar la seguridad y el buen funcionamiento de la web — artículo 6.1.f del RGPD.</td></tr>
+        <tr><th>Conservación</th><td>Un periodo breve, fijado por el proveedor. No tenemos acceso a estos registros ni extraemos de ellos ninguna estadística.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Fotografías de los encuentros</h3>
+    <p>
+      Los encuentros se fotografían en ocasiones. Las imágenes publicadas lo son con el acuerdo de
+      las personas reconocibles — base jurídica: el consentimiento. Si apareces en una foto y
+      quieres que desaparezca de la web, escríbenos: la retiramos, sin discusión y sin demora.
+    </p>
+
+    <h2>4. A quién se comunican tus datos</h2>
+    <p>No vendemos, no intercambiamos y no cedemos ningún dato. Solo intervienen dos proveedores, cada uno en un ámbito preciso:</p>
+    <table class="tableau-traitement">
+      <tbody>
+        <tr>
+          <th>{site.infolettre.fournisseur}</th>
+          <td>
+            Brevo SAS, 106 boulevard Haussmann, 75008 París, Francia. Se encarga del envío del
+            boletín. Datos alojados en la Unión Europea. Un contrato de encargo de tratamiento
+            conforme al artículo 28 del RGPD regula esta subcontratación.
+          </td>
+        </tr>
+        <tr>
+          <th>{h.nom}</th>
+          <td>
+            {champ(h.adresse, 'es')}. Aloja y distribuye la web. Es una sociedad establecida en Estados Unidos:
+            las eventuales transferencias fuera de la Unión Europea se amparan en las cláusulas
+            contractuales tipo de la Comisión Europea y, en su caso, en el marco de protección de
+            datos UE—Estados Unidos.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>5. Tus derechos</h2>
+    <p>
+      El Reglamento General de Protección de Datos y la Ley Orgánica 3/2018 (LOPDGDD) te reconocen
+      los siguientes derechos:
+    </p>
+    <ul>
+      <li><strong>Acceso</strong> — saber si tratamos datos que te conciernen, y cuáles.</li>
+      <li><strong>Rectificación</strong> — que corrijamos un dato inexacto.</li>
+      <li><strong>Supresión</strong> — que borremos tus datos.</li>
+      <li><strong>Limitación</strong> — pedir que se congele un tratamiento.</li>
+      <li><strong>Oposición</strong> — oponerte a un tratamiento basado en el interés legítimo.</li>
+      <li><strong>Portabilidad</strong> — recuperar tus datos en un formato legible por máquina.</li>
+      <li><strong>Retirada del consentimiento</strong> — en cualquier momento, sin justificarte, y sin que ello afecte a lo hecho anteriormente. Para el boletín, el enlace de baja figura en cada envío; también basta con un correo.</li>
+    </ul>
+    <p>
+      <strong>Cómo ejercerlos:</strong> escribe a
+      {' '}<a href={`mailto:${c.email}`} class="lien">{c.email}</a>. Respondemos en el plazo de un
+      mes. No se te pide ninguna justificación, y una solicitud de supresión se atiende de
+      inmediato. Es gratuito.
+    </p>
+    <p>
+      <strong>Si nuestra respuesta no te satisface,</strong> puedes dirigirte a la autoridad de
+      control española: la <em>Agencia Española de Protección de Datos</em> (AEPD), C/ Jorge Juan 6,
+      28001 Madrid — <a href="https://www.aepd.es" class="lien" rel="noopener">www.aepd.es</a>.
+    </p>
+
+    <h2>6. Cookies</h2>
+    <p>
+      Esta web no deposita ninguna cookie. El detalle —incluido el único valor guardado en tu
+      dispositivo y la razón por la que no hay banner de consentimiento— está en la
+      {' '}<a href="/cookies" class="lien">página dedicada a las cookies</a>.
+    </p>
+
+    <h2>7. Menores</h2>
+    <p>
+      El boletín no está dirigido a menores de catorce años, edad fijada por el artículo 7 de la
+      LOPDGDD para consentir por sí mismos el tratamiento de sus datos. Si detectas que un menor
+      se ha suscrito sin el acuerdo de sus responsables legales, avísanos: suprimiremos la
+      dirección.
+    </p>
+
+    <h2>8. Seguridad</h2>
+    <p>
+      La web se sirve exclusivamente por HTTPS. No tiene base de datos, ni cuentas de usuario, ni
+      espacio de almacenamiento accesible desde el exterior: la superficie de ataque se ha reducido
+      deliberadamente al mínimo. El acceso a la interfaz de administración de contenidos está
+      restringido a las personas autorizadas de la asociación.
+    </p>
+
+    <h2>9. Actualización de esta política</h2>
+    <p>
+      Última actualización: {maj}. Si esta política cambia de forma sustancial, la nueva versión se
+      publicará en esta página y se informará por correo a las personas suscritas al boletín.
+    </p>
+  </div>
+</section>
+
+<style>
+  .tableau-traitement { width: 100%; border-collapse: collapse; font-size: var(--t-300); }
+  .tableau-traitement th,
+  .tableau-traitement td {
+    text-align: left;
+    vertical-align: top;
+    padding: var(--e-3);
+    border-bottom: 1px solid var(--trait);
+    line-height: 1.55;
+  }
+  .tableau-traitement th {
+    font-family: var(--f-titre);
+    font-size: var(--t-100);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--encre-faible);
+    white-space: nowrap;
+  }
+  @media (max-width: 34rem) { .tableau-traitement th { white-space: normal; } }
+  .note-encadree {
+    border-left: var(--epaisseur-trait) solid var(--or);
+    padding-left: var(--e-5);
+    font-size: var(--t-300);
+    color: var(--encre-douce);
+  }
+</style>

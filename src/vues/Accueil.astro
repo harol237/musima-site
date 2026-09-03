@@ -9,6 +9,7 @@ import BandeauCta from '~/components/BandeauCta.astro';
 import EtatVide from '~/components/EtatVide.astro';
 import ARemplir from '~/components/ARemplir.astro';
 import site from '~/data/site.json';
+import { champ } from '~/i18n/site';
 import {
   chargerEvenements,
   chargerIntervenants,
@@ -42,7 +43,7 @@ const intentions = intentionsPar[langue];
 
 <Base
   titre={site.nom}
-  description={site.description_courte}
+  description={champ(site.description_courte, langue)}
   langue={langue}
   alternatives={alternatives}
 >

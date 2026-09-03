@@ -57,7 +57,7 @@ const estActif = (url: string) => cheminActuel === url || cheminActuel.startsWit
         </svg>
       </button>
 
-      <SelecteurLangue langue={langue} alternatives={alternatives} class="entete__langues" />
+      <SelecteurLangue langue={langue} alternatives={alternatives} />
 
       <a href={action.url} class="bouton entete__cta">{action.libelle}</a>
 
@@ -89,7 +89,7 @@ const estActif = (url: string) => cheminActuel === url || cheminActuel.startsWit
         ))}
       </ul>
       <a href={action.url} class="bouton menu-mobile__cta">{action.libelle}</a>
-      <SelecteurLangue langue={langue} alternatives={alternatives} class="langues--mobile" />
+      <SelecteurLangue langue={langue} alternatives={alternatives} variante="mobile" />
     </nav>
   </div>
 </header>
@@ -226,8 +226,6 @@ const estActif = (url: string) => cheminActuel === url || cheminActuel.startsWit
        le minimum confortable sur mobile et tablette. */
     .bascule-theme,
     .entete__bascule { width: 2.75rem; height: 2.75rem; }
-    /* Le sélecteur de langue vit dans le panneau mobile, pas dans la barre. */
-    .entete__langues { display: none; }
   }
 </style>
 

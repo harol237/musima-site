@@ -56,6 +56,24 @@ const versions = Object.fromEntries(
         /* stockage indisponible : on suit simplement le thème du système */
       }
     </script>
+
+    <script is:inline define:vars={{ versions }}>
+      // Préférence de langue : uniquement depuis l'accueil espagnol, qui est
+      // la page d'atterrissage par défaut. Un visiteur qui a déjà choisi une
+      // langue y est renvoyé ; les autres restent en espagnol. On n'intervient
+      // jamais sur une adresse choisie explicitement, et `replace` préserve le
+      // bouton retour.
+      try {
+        if (location.pathname === '/' || location.pathname === '/index.html') {
+          const choix = localStorage.getItem('musima-langue');
+          if (choix && choix !== 'es' && versions[choix]) {
+            location.replace(versions[choix]);
+          }
+        }
+      } catch (e) {
+        /* stockage indisponible : on reste sur la langue par défaut */
+      }
+    </script>
   </head>
 
   <body>

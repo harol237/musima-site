@@ -36,6 +36,7 @@ const toutes = langues;
  * Ajouter 'es' ici dès que la version espagnole est écrite suffit à la
  * publier — route, menu, sélecteur et hreflang suivent.
  */
+const esFr = ['es', 'fr'] as const;
 const frSeul = ['fr'] as const;
 
 export const pagesStatiques: PageStatique[] = [
@@ -48,10 +49,10 @@ export const pagesStatiques: PageStatique[] = [
   { vue: 'recits',          segment: 'recits', disponible: toutes },
   { vue: 'galerie',         segment: 'galerie', disponible: toutes },
   { vue: 'engagement',      segment: 'engagement', disponible: frSeul },
-  { vue: 'contact',         segment: 'contact', disponible: frSeul },
-  { vue: 'legal',           segment: 'legal', disponible: frSeul },
-  { vue: 'confidentialite', segment: 'confidentialite', disponible: frSeul },
-  { vue: 'cookies',         segment: 'cookies', disponible: frSeul },
+  { vue: 'contact',         segment: 'contact', disponible: esFr },
+  { vue: 'legal',           segment: 'legal', disponible: esFr },
+  { vue: 'confidentialite', segment: 'confidentialite', disponible: esFr },
+  { vue: 'cookies',         segment: 'cookies', disponible: esFr },
   { vue: 'accessibilite',   segment: 'accessibilite', disponible: frSeul },
 ];
 

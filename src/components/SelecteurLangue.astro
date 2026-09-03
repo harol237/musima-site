@@ -6,9 +6,11 @@ interface Props {
   langue: Langue;
   /** URL équivalente dans chaque langue. Défaut : l'accueil de la langue. */
   alternatives: Record<Langue, string>;
-  class?: string;
+  /** `entete` disparaît sous 60rem, où le panneau mobile prend le relais. */
+  variante?: 'entete' | 'mobile';
 }
-const { langue, alternatives, class: classe = '' } = Astro.props;
+const { langue, alternatives, variante = 'entete' } = Astro.props;
+const classe = variante === 'mobile' ? 'langues--mobile' : 'langues--entete';
 const t = traducteur(langue);
 ---
 
@@ -103,6 +105,12 @@ const t = traducteur(langue);
   .langues__liste a[aria-current] { color: var(--terre); }
   .langues__liste a[aria-current] .langues__nom { font-weight: 600; }
   .langues__nom { font-size: var(--t-300); }
+
+  /* Sous 60rem, la barre d'en-tête n'a plus la place : le sélecteur passe
+     dans le panneau mobile, qui a le sien. */
+  @media (max-width: 60rem) {
+    .langues--entete { display: none; }
+  }
 
   /* Dans le panneau mobile, la liste s'affiche à plat : pas de survol au doigt. */
   .langues--mobile { width: 100%; }

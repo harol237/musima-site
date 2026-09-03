@@ -1,4 +1,29 @@
-# Cloudflare Pages applique ces règles avant de servir un fichier.
-# L'adresse officielle du site est l'apex : www renvoie dessus en 301.
-# Prérequis : ajouter www.musima.org comme domaine personnalisé dans Pages.
+# Cloudflare Pages applique ces règles AVANT de servir un fichier statique.
+# Conséquence : ne jamais y faire figurer une adresse qui existe désormais
+# en espagnol, sinon la règle masquerait la vraie page.
+
+# --- www vers l'apex ---
 https://www.musima.org/*  https://musima.org/:splat  301
+
+# --- Anciennes URL françaises, en place jusqu'au passage au multilingue.
+#     L'espagnol occupe maintenant la racine ; le français passe sous /fr.
+#     « / » n'est pas redirigé : c'est désormais l'accueil espagnol.
+#     « /cookies » non plus : le segment est identique dans les deux
+#     langues, la page espagnole occupe légitimement cette adresse.
+/association            /fr/association            301
+/association/equipe     /fr/association/equipe     301
+/evenements             /fr/evenements             301
+/evenements/*           /fr/evenements/:splat      301
+/intervenants           /fr/intervenants           301
+/intervenants/*         /fr/intervenants/:splat    301
+/projets                /fr/projets                301
+/projets/*              /fr/projets/:splat         301
+/recits                 /fr/recits                 301
+/recits/*               /fr/recits/:splat          301
+/galerie                /fr/galerie                301
+/galerie/*              /fr/galerie/:splat         301
+/s-engager              /fr/s-engager              301
+/contact                /fr/contact                301
+/mentions-legales       /fr/mentions-legales       301
+/confidentialite        /fr/confidentialite        301
+/accessibilite          /fr/accessibilite          301

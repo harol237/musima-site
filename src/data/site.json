@@ -1,13 +1,28 @@
 {
   "nom": "MUSIMA",
-  "baseline": "Mettre en lumière ce que les Africains construisent",
+  "baseline": {
+    "es": "Dar luz a lo que los africanos construyen",
+    "fr": "Mettre en lumière ce que les Africains construisent",
+    "en": "Shining a light on what Africans are building",
+    "ca": "Donar llum al que els africans construeixen"
+  },
   "verbes": [
     "Connecter",
     "Bâtir",
     "Impacter"
   ],
-  "phrase": "MUSIMA met en lumière ce que les Africains construisent : des personnes, des parcours, des projets. On organise des rencontres où celles et ceux qui font déjà racontent comment ils s'y sont pris, et on fait circuler ce qui s'y dit.",
-  "description_courte": "Association basée à Barcelone. Des rencontres où des Africains qui entreprennent, créent et innovent racontent ce qu'ils construisent — et comment.",
+  "phrase": {
+    "es": "MUSIMA da luz a lo que los africanos construyen: personas, trayectorias, proyectos. Organizamos encuentros donde quienes ya hacen cuentan cómo se las arreglaron, y hacemos circular lo que allí se dice.",
+    "fr": "MUSIMA met en lumière ce que les Africains construisent : des personnes, des parcours, des projets. On organise des rencontres où celles et ceux qui font déjà racontent comment ils s’y sont pris, et on fait circuler ce qui s’y dit.",
+    "en": "MUSIMA shines a light on what Africans are building: people, paths, projects. We run gatherings where the people already doing it explain how they went about it, and we pass on what gets said.",
+    "ca": "MUSIMA dona llum al que els africans construeixen: persones, trajectòries, projectes. Organitzem trobades on qui ja ho fa explica com se les va manegar, i fem circular el que s’hi diu."
+  },
+  "description_courte": {
+    "es": "Asociación con sede en Barcelona. Encuentros donde africanos que emprenden, crean e innovan cuentan qué están construyendo — y cómo.",
+    "fr": "Association basée à Barcelone. Des rencontres où des Africains qui entreprennent, créent et innovent racontent ce qu’ils construisent — et comment.",
+    "en": "A Barcelona-based association. Gatherings where Africans who start things, create and innovate talk about what they are building — and how.",
+    "ca": "Associació amb seu a Barcelona. Trobades on africans que emprenen, creen i innoven expliquen què estan construint — i com."
+  },
   "langue": "fr",
   "contact": {
     "email": "Musima.org@mail.com",
@@ -15,11 +30,31 @@
     "rue": "Carrer Musima 237",
     "code_postal": "08930",
     "ville_siege": "Sant Adrià de Besòs",
-    "province": "Barcelone",
-    "ville": "Barcelone",
-    "region": "Catalogne",
-    "pays": "Espagne",
-    "adresse": "Carrer Musima 237, 08930 Sant Adrià de Besòs (Barcelone)"
+    "province": {
+      "es": "Barcelona",
+      "fr": "Barcelone",
+      "en": "Barcelona",
+      "ca": "Barcelona"
+    },
+    "ville": {
+      "es": "Barcelona",
+      "fr": "Barcelone",
+      "en": "Barcelona",
+      "ca": "Barcelona"
+    },
+    "region": {
+      "es": "Cataluña",
+      "fr": "Catalogne",
+      "en": "Catalonia",
+      "ca": "Catalunya"
+    },
+    "pays": {
+      "es": "España",
+      "fr": "Espagne",
+      "en": "Spain",
+      "ca": "Espanya"
+    },
+    "adresse": "Carrer Musima 237, 08930 Sant Adrià de Besòs (Barcelona)"
   },
   "reseaux": [
     {
@@ -45,9 +80,24 @@
     "champ_consentement": "OPT_IN"
   },
   "juridique": {
-    "forme": "Associació sense ànim de lucre — association sans but lucratif de droit espagnol",
-    "cadre": "Loi organique 1/2002 sur le droit d'association et livre troisième du Code civil de Catalogne",
-    "registre_nom": "Registre des associations de la Generalitat de Catalunya",
+    "forme": {
+      "es": "Asociación sin ánimo de lucro (associació sense ànim de lucre)",
+      "fr": "Association sans but lucratif de droit espagnol (associació sense ànim de lucre)",
+      "en": "Non-profit association under Spanish law (associació sense ànim de lucre)",
+      "ca": "Associació sense ànim de lucre"
+    },
+    "cadre": {
+      "es": "Ley Orgánica 1/2002, reguladora del derecho de asociación, y libro tercero del Código civil de Cataluña",
+      "fr": "Loi organique 1/2002 sur le droit d’association et livre troisième du Code civil de Catalogne",
+      "en": "Organic Law 1/2002 on the right of association, and book three of the Civil Code of Catalonia",
+      "ca": "Llei orgànica 1/2002, reguladora del dret d’associació, i llibre tercer del Codi civil de Catalunya"
+    },
+    "registre_nom": {
+      "es": "Registro de Asociaciones de la Generalitat de Catalunya",
+      "fr": "Registre des associations de la Generalitat de Catalunya",
+      "en": "Register of Associations of the Generalitat de Catalunya",
+      "ca": "Registre d’Associacions de la Generalitat de Catalunya"
+    },
     "enregistrement_en_cours": true,
     "nif": "[NIF À AJOUTER DÈS RÉCEPTION]",
     "numero_registre": "[NUMÉRO D'INSCRIPTION AU REGISTRE À AJOUTER DÈS RÉCEPTION]",
@@ -56,15 +106,21 @@
   },
   "hebergeur": {
     "nom": "Cloudflare, Inc.",
-    "adresse": "101 Townsend Street, San Francisco, CA 94107, États-Unis",
+    "adresse": {
+      "es": "101 Townsend Street, San Francisco, CA 94107, Estados Unidos",
+      "fr": "101 Townsend Street, San Francisco, CA 94107, États-Unis",
+      "en": "101 Townsend Street, San Francisco, CA 94107, United States",
+      "ca": "101 Townsend Street, San Francisco, CA 94107, Estats Units"
+    },
     "site": "https://www.cloudflare.com",
     "service": "Cloudflare Pages"
   },
   "cookies": {
     "aucun": true,
-    "verifie_le": "2026-09-02",
+    "verifie_le": "2026-09-03",
     "stockage_local": [
-      "musima-theme"
+      "musima-theme",
+      "musima-langue"
     ]
   }
 }

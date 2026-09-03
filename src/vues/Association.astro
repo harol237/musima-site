@@ -5,6 +5,7 @@ import EnteteSection from '~/components/EnteteSection.astro';
 import BandeauCta from '~/components/BandeauCta.astro';
 import ARemplir from '~/components/ARemplir.astro';
 import site from '~/data/site.json';
+import { champ } from '~/i18n/site';
 import { enChantier } from '~/lib/contenu';
 import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
@@ -62,7 +63,7 @@ const t = traducteur(langue);
   <EntetePage
     surtitre="L’association"
     titre="Ce qu’on fait, et pourquoi"
-    chapo={site.phrase}
+    chapo={champ(site.phrase, langue)}
     ariane={[{ libelle: 'Association' }]}
   />
 
@@ -153,7 +154,7 @@ const t = traducteur(langue);
       <div class="ancrages">
         <div class="ancrage">
           <span class="ancrage__etiquette">Aujourd’hui</span>
-          <span class="ancrage__valeur">{site.contact.region}, {site.contact.pays}</span>
+          <span class="ancrage__valeur">{champ(site.contact.region, langue)}, {champ(site.contact.pays, langue)}</span>
         </div>
         <div class="ancrage">
           <span class="ancrage__etiquette">Horizon</span>
