@@ -1,0 +1,53 @@
+---
+import Base from '~/layouts/Base.astro';
+import EntetePage from '~/components/EntetePage.astro';
+import CarteRecit from '~/components/CarteRecit.astro';
+import Filtres from '~/components/Filtres.astro';
+import EtatVide from '~/components/EtatVide.astro';
+import { chargerRecits } from '~/lib/contenu';
+import { categoriesRecit, traduireValeur } from '~/i18n/utils';
+import type { Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
+
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+const t = traducteur(langue);
+const recits = await chargerRecits(langue);
+const categories = [
+  ...new Set(recits.map((r) => traduireValeur(categoriesRecit, r.data.categorie, langue))),
+];
+---
+<Base
+  titre={t('navRecits')}
+  description={t('recitsChapo')}
+  langue={langue}
+  alternatives={alternatives}
+  noindex={recits.length === 0}
+>
+  <EntetePage
+    surtitre={t('navRecits')}
+    titre={t('portraitsRetoursIdees')}
+    chapo={t('recitsChapo')}
+    ariane={[{ libelle: t('navRecits') }]}
+  />
+  <section class="section conteneur">
+    {recits.length > 0 ? (
+      <>
+        <Filtres legende={t('filtrerParDomaine')} options={categories} cible=".carte-recit" langue={langue} />
+        <ul class="grille grille--2 liste-nue">
+          {recits.map((recit) => (
+            <li
+              class="carte-recit"
+              data-etiquettes={traduireValeur(categoriesRecit, recit.data.categorie, langue)}
+            >
+              <CarteRecit recit={recit} langue={langue} />
+            </li>
+          ))}
+        </ul>
+      </>
+    ) : (
+      <EtatVide titre={t('aucunRecitTitre')} texte={t('aucunRecitTexte')} />
+    )}
+  </section>
+</Base>
+<style>.liste-nue { list-style: none; margin: 0; padding: 0; }</style>

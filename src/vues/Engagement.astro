@@ -1,0 +1,127 @@
+---
+import Base from '~/layouts/Base.astro';
+import EntetePage from '~/components/EntetePage.astro';
+import EnteteSection from '~/components/EnteteSection.astro';
+import ARemplir from '~/components/ARemplir.astro';
+import BandeauCta from '~/components/BandeauCta.astro';
+import { enChantier } from '~/lib/contenu';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
+
+const voies = [
+  {
+    titre: 'Intervenir',
+    pour: 'Vous avez une expérience, un savoir-faire ou un parcours à partager.',
+    texte:
+      'MUSIMA invite des personnes de tous les domaines à venir raconter ce qu’elles construisent — pas seulement les réussites, mais aussi les chemins qui ont permis d’y arriver.',
+    action: 'Proposer une intervention',
+  },
+  {
+    titre: 'Adhérer',
+    pour: 'Vous voulez soutenir la démarche et faire partie de l’aventure.',
+    texte:
+      'L’adhésion permet à l’association de fonctionner et donne accès à la vie de MUSIMA : rencontres, échanges et assemblée générale.',
+    action: 'Adhérer à l’association',
+  },
+  {
+    titre: 'Donner du temps',
+    pour: 'Vous souhaitez contribuer concrètement à l’organisation.',
+    texte:
+      'Accueil des rencontres, photographie, captation vidéo, rédaction, traduction, communication, logistique : les besoins sont variés et évoluent avec les projets.',
+    action: 'Devenir bénévole',
+  },
+  {
+    titre: 'Accompagner',
+    pour: 'Vous représentez une association, une entreprise ou une institution.',
+    texte:
+      'Mise à disposition d’un lieu, soutien financier, co-organisation d’une rencontre, relais auprès de vos publics : les formes de partenariat se construisent au cas par cas.',
+    action: 'Devenir partenaire',
+  },
+];
+
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+const t = traducteur(langue);
+---
+
+<Base
+  titre="S’engager"
+  description="Intervenir, adhérer, donner du temps ou accompagner MUSIMA : les différentes façons de contribuer à l’association."
+  langue={langue}
+  alternatives={alternatives}
+>
+  <EntetePage
+    surtitre="Participer"
+    titre="S’engager auprès de MUSIMA"
+    chapo="MUSIMA se construit avec celles et ceux qui font. Il y a plusieurs façons d’en faire partie, selon ce que vous avez envie d’apporter."
+    ariane={[{ libelle: 'S’engager' }]}
+  />
+
+  <section class="section conteneur">
+    <ul class="voies">
+      {voies.map((voie) => (
+        <li class="voie apparait">
+          <div class="voie__entete">
+            <span class="voie__trait" aria-hidden="true"></span>
+            <h2 class="t-carte">{voie.titre}</h2>
+          </div>
+          <p class="voie__pour">{voie.pour}</p>
+          <p class="voie__texte">{voie.texte}</p>
+          {enChantier && (
+          <div class="voie__action">
+            <ARemplir libelle={`${voie.action.toUpperCase()} — LIEN OU FORMULAIRE À AJOUTER`} />
+          </div>
+          )}
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  {enChantier && (
+  <section class="section conteneur deux-colonnes">
+    <div>
+      <EnteteSection surtitre="Cadre" titre="Adhésion et cotisation" />
+    </div>
+    <div class="pile pile-4">
+      <p class="note">
+        Le montant de la cotisation, les modalités de paiement et les avantages liés à l’adhésion
+        seront précisés ici. Ces informations rassurent les personnes qui découvrent l’association.
+      </p>
+      <ARemplir libelle="MONTANT DE LA COTISATION À DÉFINIR" />
+      <ARemplir libelle="MODALITÉS DE PAIEMENT À DÉFINIR" />
+      <ARemplir libelle="BULLETIN D’ADHÉSION (PDF OU FORMULAIRE) À AJOUTER" />
+    </div>
+  </section>
+  )}
+
+  <BandeauCta
+    surtitre="Une question ?"
+    titre="Écrivez-nous, on vous répond"
+    texte="Si aucune de ces formes ne correspond à ce que vous avez en tête, dites-le simplement — beaucoup de choses se construisent à partir d’une première conversation."
+    actions={[{ url: '/contact', libelle: 'Nous écrire' }]}
+  />
+</Base>
+
+<style>
+  .voies { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--e-6); }
+  @media (min-width: 52rem) { .voies { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+  .voie {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-3);
+    padding: var(--e-6);
+    border: 1px solid var(--trait);
+    border-radius: var(--r-carte);
+    background: var(--surface);
+  }
+  .voie__entete { display: flex; align-items: center; gap: var(--e-3); }
+  .voie__trait { flex: none; width: 1.75rem; height: var(--epaisseur-trait); border-radius: var(--r-pilule); background: var(--terre); }
+  .voie__pour { font-family: var(--f-titre); font-size: var(--t-300); font-weight: 600; color: var(--encre); }
+  .voie__texte { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.65; text-wrap: pretty; }
+  .voie__action { margin-top: auto; padding-top: var(--e-3); }
+
+  .deux-colonnes { display: grid; gap: var(--e-6); align-items: start; }
+  @media (min-width: 60rem) { .deux-colonnes { grid-template-columns: minmax(0, 20rem) minmax(0, 1fr); gap: var(--e-10); } }
+  .note { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.65; max-width: var(--largeur-texte); }
+</style>

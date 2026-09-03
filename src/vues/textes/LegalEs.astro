@@ -1,0 +1,117 @@
+---
+import EntetePage from '~/components/EntetePage.astro';
+import FicheLegale from '~/components/FicheLegale.astro';
+import site from '~/data/site.json';
+import { champ } from '~/i18n/site';
+
+const { hebergeur: h, contact: c } = site;
+const maj = new Intl.DateTimeFormat('es-ES', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid',
+}).format(new Date('2026-09-03'));
+---
+<EntetePage
+  surtitre="Información legal"
+  titre="Aviso legal"
+  chapo="Quién edita esta web, quién la aloja y qué puedes hacer con ella. Es la información que exige el artículo 10 de la Ley 34/2002 (LSSI-CE)."
+  ariane={[{ libelle: 'Aviso legal' }]}
+  registre="papier"
+/>
+<section class="section conteneur">
+  <div class="prose">
+
+    <h2>1. Identificación del editor</h2>
+    <FicheLegale langue="es" />
+
+    <h2>2. Alojamiento</h2>
+    <p>
+      Esta web está alojada por <strong>{h.nom}</strong>, {champ(h.adresse, 'es')}
+      {' '}(<a href={h.site} class="lien" rel="noopener">{h.site.replace('https://', '')}</a>),
+      a través de su servicio {h.service}.
+    </p>
+    <p>
+      Se trata de un sitio estático: las páginas se generan previamente y se sirven tal cual, sin
+      base de datos ni procesamiento en el servidor.
+    </p>
+
+    <h2>3. Objeto de la web</h2>
+    <p>
+      Esta web presenta la actividad de {site.nom}: sus encuentros, las personas que toman la
+      palabra en ellos, sus proyectos y sus publicaciones. El acceso es libre y gratuito. No se
+      ofrece ninguna venta, ningún pago ni ninguna transacción comercial.
+    </p>
+
+    <h2>4. Condiciones de uso</h2>
+    <h3>Uso permitido</h3>
+    <p>
+      Puedes consultar esta web, citarla, compartir sus direcciones y reproducir fragmentos para
+      un uso privado, docente, asociativo o periodístico, siempre que cites a {site.nom} y no
+      desvirtúes el contenido. Para cualquier otro uso, en particular comercial, escríbenos:
+      contestamos.
+    </p>
+    <h3>Uso no permitido</h3>
+    <p>
+      Quedan prohibidos: la extracción sistemática o la reutilización de una parte sustancial del
+      contenido, cualquier intento de acceso no autorizado, cualquier acción dirigida a perturbar
+      el funcionamiento de la web, y el uso de las direcciones de contacto publicadas con fines de
+      prospección no solicitada.
+    </p>
+    <h3>Enlaces</h3>
+    <p>
+      Los enlaces salientes apuntan a sitios que no controlamos y de los que no respondemos.
+      Puedes enlazar a esta web sin pedirnos permiso, siempre que el enlace no induzca a error
+      sobre el origen del contenido.
+    </p>
+
+    <h2>5. Propiedad intelectual</h2>
+    <p>
+      Los textos publicados en esta web son propiedad de {site.nom}, salvo indicación en contrario.
+      Las fotografías siguen siendo propiedad de sus autores: cada imagen publicada lleva su
+      crédito cuando se nos ha facilitado. La identidad visual y el nombre {site.nom} pertenecen a
+      la asociación.
+    </p>
+    <p>
+      Los retratos, los relatos y las fotografías de personas se publican con el acuerdo de las
+      personas afectadas. Si apareces en una imagen o en un texto y quieres que se retire,
+      escríbenos: lo hacemos sin discutir y sin demora.
+    </p>
+
+    <h2>6. Responsabilidad</h2>
+    <p>
+      Procuramos publicar información exacta y actualizada, en particular las fechas y los lugares
+      de los encuentros. Un error sigue siendo posible: no puede comprometer la responsabilidad de
+      la asociación. Las fechas y los lugares anunciados pueden cambiar; la página del evento es
+      la que vale.
+    </p>
+    <p>
+      La web se ofrece tal cual. No garantizamos ni una disponibilidad continua, ni la ausencia de
+      interrupciones por mantenimiento o por causa del proveedor de alojamiento.
+    </p>
+
+    <h2>7. Protección de datos y cookies</h2>
+    <p>
+      El tratamiento de datos personales se describe en la
+      {' '}<a href="/privacidad" class="lien">política de privacidad</a>. El uso de cookies y de
+      almacenamiento local se describe en la
+      {' '}<a href="/cookies" class="lien">política de cookies</a>.
+    </p>
+
+    <h2>8. Legislación aplicable</h2>
+    <p>
+      Este aviso legal se rige por la legislación española, en particular por la Ley 34/2002, de
+      servicios de la sociedad de la información y de comercio electrónico (LSSI-CE). Cualquier
+      litigio corresponde a los tribunales competentes de Barcelona, sin perjuicio de las normas
+      de protección aplicables a los consumidores.
+    </p>
+
+    <h2>9. Avisarnos de algo</h2>
+    <p>
+      Un error, un contenido que no debería estar ahí, un enlace roto, una imagen que retirar:
+      escribe a <a href={`mailto:${c.email}`} class="lien">{c.email}</a>.
+    </p>
+
+    <p class="maj">Última actualización: {maj}.</p>
+  </div>
+</section>
+<style>
+  .maj { margin-top: var(--e-8); font-size: var(--t-200); color: var(--encre-faible); }
+</style>

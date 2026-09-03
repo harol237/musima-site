@@ -1,0 +1,24 @@
+---
+import Base from '~/layouts/Base.astro';
+import PrivacidadEs from './textes/PrivacidadEs.astro';
+import ConfidentialiteFr from './textes/ConfidentialiteFr.astro';
+import type { Langue } from '~/i18n/config';
+
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+
+const meta = {
+  es: {
+    titre: 'Política de privacidad',
+    description: 'Qué datos personales recoge MUSIMA, para qué, durante cuánto tiempo, y cómo ejercer tus derechos.',
+  },
+  fr: {
+    titre: 'Politique de confidentialité',
+    description: "Quelles données personnelles MUSIMA collecte, pourquoi, combien de temps, et comment exercer vos droits.",
+  },
+} as const;
+const { titre, description } = meta[langue as 'es' | 'fr'] ?? meta.fr;
+---
+<Base titre={titre} description={description} langue={langue} alternatives={alternatives}>
+  {langue === 'es' ? <PrivacidadEs /> : <ConfidentialiteFr />}
+</Base>

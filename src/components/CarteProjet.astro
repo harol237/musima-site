@@ -3,12 +3,15 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import ARemplir from './ARemplir.astro';
 import BadgeModele from './BadgeModele.astro';
-import { enChantier, pret } from '~/lib/contenu';
+import { chemin, type Langue } from '~/i18n/config';
+import { statutsProjet, traduireValeur } from '~/i18n/utils';
+import { enChantier, pret, slugDe } from '~/lib/contenu';
 
 interface Props {
+  langue: Langue;
   projet: CollectionEntry<'projets'>;
 }
-const { projet } = Astro.props;
+const { projet, langue } = Astro.props;
 const { data } = projet;
 const teinteStatut = data.statut === 'Réalisé' ? 'puce--sourde' : data.statut === 'En cours' ? 'puce--terre' : 'puce--or';
 ---
@@ -31,12 +34,12 @@ const teinteStatut = data.statut === 'Réalisé' ? 'puce--sourde' : data.statut 
   )}
 
   <div class="rang">
-    <span class:list={['puce', teinteStatut]}>{data.statut}</span>
+    <span class:list={['puce', teinteStatut]}>{traduireValeur(statutsProjet, data.statut, langue)}</span>
     {data.annee && <span class="meta">{data.annee}</span>}
   </div>
 
   <h3 class="t-carte">
-    <a href={`/projets/${projet.id}`} class="carte__lien">{data.titre}</a>
+    <a href={chemin(langue, 'projets', slugDe(projet.id))} class="carte__lien">{data.titre}</a>
   </h3>
 
   {data.resume ? (

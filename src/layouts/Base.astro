@@ -4,6 +4,8 @@ import Seo from '~/components/Seo.astro';
 import Header from '~/components/Header.astro';
 import Footer from '~/components/Footer.astro';
 import '~/styles/global.css';
+import { chemin, etiquettes, langues, langueDefaut, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
 
 interface Props {
   titre: string;
@@ -12,12 +14,24 @@ interface Props {
   type?: 'website' | 'article' | 'profile' | 'event';
   publieLe?: Date;
   noindex?: boolean;
+  langue: Langue;
+  /**
+   * URL équivalente de cette page dans chaque langue. Une page de détail
+   * la fournit à partir des traductions de son contenu ; à défaut, on
+   * renvoie vers l'accueil de la langue plutôt que vers une page absente.
+   */
+  alternatives?: Partial<Record<Langue, string>>;
 }
-const props = Astro.props;
+const { langue, alternatives, ...props } = Astro.props;
+const t = traducteur(langue);
+
+const versions = Object.fromEntries(
+  langues.map((code) => [code, alternatives?.[code] ?? chemin(code)]),
+) as Record<Langue, string>;
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang={etiquettes[langue].balise}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -28,7 +42,7 @@ const props = Astro.props;
     <Font cssVariable="--font-display" preload />
     <Font cssVariable="--font-read" preload />
 
-    <Seo {...props} />
+    <Seo {...props} langue={langue} versions={versions} />
 
     <script is:inline>
       // Applique le thème mémorisé avant le premier rendu : évite tout
@@ -42,15 +56,33 @@ const props = Astro.props;
         /* stockage indisponible : on suit simplement le thème du système */
       }
     </script>
+
+    <script is:inline define:vars={{ versions }}>
+      // Préférence de langue : uniquement depuis l'accueil espagnol, qui est
+      // la page d'atterrissage par défaut. Un visiteur qui a déjà choisi une
+      // langue y est renvoyé ; les autres restent en espagnol. On n'intervient
+      // jamais sur une adresse choisie explicitement, et `replace` préserve le
+      // bouton retour.
+      try {
+        if (location.pathname === '/' || location.pathname === '/index.html') {
+          const choix = localStorage.getItem('musima-langue');
+          if (choix && choix !== 'es' && versions[choix]) {
+            location.replace(versions[choix]);
+          }
+        }
+      } catch (e) {
+        /* stockage indisponible : on reste sur la langue par défaut */
+      }
+    </script>
   </head>
 
   <body>
-    <a href="#contenu" class="saut-contenu">Aller au contenu</a>
-    <Header />
+    <a href="#contenu" class="saut-contenu">{t('sauterAuContenu')}</a>
+    <Header langue={langue} alternatives={versions} />
     <main id="contenu">
       <slot />
     </main>
-    <Footer />
+    <Footer langue={langue} />
 
     <script>
       // Révélation discrète au défilement. Sans JS ou avec animations

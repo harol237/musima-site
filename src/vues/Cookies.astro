@@ -1,0 +1,24 @@
+---
+import Base from '~/layouts/Base.astro';
+import CookiesEs from './textes/CookiesEs.astro';
+import CookiesFr from './textes/CookiesFr.astro';
+import type { Langue } from '~/i18n/config';
+
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+
+const meta = {
+  es: {
+    titre: 'Cookies',
+    description: 'Esta web no deposita ninguna cookie. Esta página explica qué se guarda en tu dispositivo, por qué, y cómo borrarlo.',
+  },
+  fr: {
+    titre: 'Cookies',
+    description: "Ce site ne dépose aucun cookie. Cette page explique ce qui est stocké sur votre appareil, pourquoi, et comment le supprimer.",
+  },
+} as const;
+const { titre, description } = meta[langue as 'es' | 'fr'] ?? meta.fr;
+---
+<Base titre={titre} description={description} langue={langue} alternatives={alternatives}>
+  {langue === 'es' ? <CookiesEs /> : <CookiesFr />}
+</Base>

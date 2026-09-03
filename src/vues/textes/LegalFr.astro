@@ -1,0 +1,118 @@
+---
+import EntetePage from '~/components/EntetePage.astro';
+import FicheLegale from '~/components/FicheLegale.astro';
+import site from '~/data/site.json';
+import { champ } from '~/i18n/site';
+
+const { hebergeur: h, contact: c } = site;
+const maj = new Intl.DateTimeFormat('fr-FR', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid',
+}).format(new Date('2026-09-03'));
+---
+  <EntetePage
+    surtitre="Informations légales"
+    titre="Mentions légales"
+    chapo="Qui édite ce site, qui l'héberge, ce que vous pouvez en faire. Ces informations sont celles qu'exige l'article 10 de la loi espagnole 34/2002 (LSSI-CE)."
+    ariane={[{ libelle: 'Mentions légales' }]}
+    registre="papier"
+  />
+  <section class="section conteneur">
+    <div class="prose">
+
+      <h2>1. Identification de l’éditeur</h2>
+      <FicheLegale langue="fr" />
+
+      <h2>2. Hébergement</h2>
+      <p>
+        Le site est hébergé par <strong>{h.nom}</strong>, {champ(h.adresse, 'fr')}
+        {' '}(<a href={h.site} class="lien" rel="noopener">{h.site.replace('https://', '')}</a>),
+        via son service {h.service}.
+      </p>
+      <p>
+        Il s'agit d'un site statique : les pages sont pré-générées et servies telles quelles, sans
+        base de données ni traitement côté serveur.
+      </p>
+
+      <h2>3. Objet du site</h2>
+      <p>
+        Ce site présente l'activité de {site.nom} : ses rencontres, les personnes qui y prennent la
+        parole, ses projets et ses publications. Il est d'accès libre et gratuit. Aucune vente,
+        aucun paiement et aucune transaction commerciale n'y sont proposés.
+      </p>
+
+      <h2>4. Conditions d'utilisation</h2>
+      <h3>Usage autorisé</h3>
+      <p>
+        Vous pouvez consulter ce site, le citer, en partager les adresses et en reproduire des
+        extraits pour un usage privé, pédagogique, associatif ou journalistique, à condition de
+        citer {site.nom} et de ne pas dénaturer le propos. Pour tout autre usage, notamment
+        commercial, demandez-nous : nous répondons.
+      </p>
+      <h3>Usage interdit</h3>
+      <p>
+        Sont interdits : l'extraction systématique ou la réutilisation d'une partie substantielle
+        du contenu, toute tentative d'accès non autorisé, toute action visant à perturber le
+        fonctionnement du site, et l'utilisation des adresses de contact publiées à des fins de
+        prospection non sollicitée.
+      </p>
+      <h3>Liens</h3>
+      <p>
+        Les liens sortants pointent vers des sites que nous ne contrôlons pas et dont nous ne
+        répondons pas. Vous pouvez créer un lien vers ce site sans nous demander l'autorisation,
+        dès lors que le lien n'induit pas en erreur sur l'origine du contenu.
+      </p>
+
+      <h2>5. Propriété intellectuelle</h2>
+      <p>
+        Les textes publiés sur ce site sont la propriété de {site.nom}, sauf mention contraire. Les
+        photographies restent la propriété de leurs auteurs : chaque image publiée porte son crédit
+        lorsqu'il nous a été communiqué. L'identité visuelle et le nom {site.nom} appartiennent à
+        l'association.
+      </p>
+      <p>
+        Les portraits, les récits et les photographies de personnes sont publiés avec l'accord des
+        personnes concernées. Si vous apparaissez sur une image ou dans un texte et souhaitez qu'il
+        soit retiré, écrivez-nous : nous le faisons sans discuter et sans délai.
+      </p>
+
+      <h2>6. Responsabilité</h2>
+      <p>
+        Nous nous efforçons de publier des informations exactes et à jour, en particulier les dates
+        et les lieux de rencontre. Une erreur reste possible : elle ne saurait engager la
+        responsabilité de l'association. Les dates et lieux annoncés peuvent changer ; la page de
+        l'événement fait foi.
+      </p>
+      <p>
+        Le site est fourni en l'état. Nous ne garantissons ni une disponibilité continue, ni
+        l'absence d'interruption liée à la maintenance ou à l'hébergeur.
+      </p>
+
+      <h2>7. Protection des données et cookies</h2>
+      <p>
+        Le traitement des données personnelles est décrit dans la
+        {' '}<a href="/fr/confidentialite" class="lien">politique de confidentialité</a>. L'usage des
+        cookies et du stockage local est décrit dans la
+        {' '}<a href="/fr/cookies" class="lien">politique relative aux cookies</a>.
+      </p>
+
+      <h2>8. Droit applicable</h2>
+      <p>
+        Ces mentions sont régies par le droit espagnol, notamment la loi 34/2002 relative aux
+        services de la société de l'information et au commerce électronique (LSSI-CE). Tout litige
+        relève des tribunaux compétents de Barcelone, sans préjudice des règles protectrices
+        applicables aux consommateurs.
+      </p>
+
+      <h2>9. Nous signaler quelque chose</h2>
+      <p>
+        Une erreur, un contenu qui ne devrait pas être là, un lien mort, une image à retirer :
+        écrivez à <a href={`mailto:${c.email}`} class="lien">{c.email}</a>.
+      </p>
+
+      <p class="maj">Dernière mise à jour : {maj}.</p>
+    </div>
+  </section>
+
+<style>
+  .maj { margin-top: var(--e-8); font-size: var(--t-200); color: var(--encre-faible); }
+</style>

@@ -2,10 +2,27 @@
 import Logo from './Logo.astro';
 import ARemplir from './ARemplir.astro';
 import site from '~/data/site.json';
-import { navigationLegale, actionPrincipale } from '~/data/navigation';
-import { chargerMenu, enChantier } from '~/lib/contenu';
+import {
+  navigationPrincipale,
+  navigationSecondaire,
+  navigationLegale,
+  actionPrincipale,
+} from '~/data/navigation';
+import { rubriquesRemplies, enChantier } from '~/lib/contenu';
+import { chemin } from '~/i18n/config';
+import { champ } from '~/i18n/site';
+import { traducteur } from '~/i18n/ui';
+import type { Langue } from '~/i18n/config';
 
-const { principale: navigationPrincipale, secondaire: navigationSecondaire } = await chargerMenu();
+interface Props { langue: Langue }
+const { langue } = Astro.props;
+const t = traducteur(langue);
+
+const remplies = await rubriquesRemplies(langue);
+const garder = (e: { rubrique?: string }) => !e.rubrique || remplies.has(e.rubrique);
+const entreesPrincipales = navigationPrincipale(langue).filter(garder);
+const entreesSecondaires = navigationSecondaire(langue).filter(garder);
+const action = actionPrincipale(langue);
 
 const annee = new Date().getFullYear();
 const aRemplir = (valeur: string) => valeur.startsWith('[');
@@ -20,35 +37,35 @@ const infolettrePrete = !aRemplir(site.infolettre.action);
   <div class="conteneur pied__interieur">
     <div class="pied__marque">
       <Logo hauteur="2.5rem" />
-      <p class="pied__phrase">{site.phrase}</p>
-      <a href={actionPrincipale.url} class="bouton">{actionPrincipale.libelle}</a>
+      <p class="pied__phrase">{champ(site.phrase, langue)}</p>
+      <a href={action.url} class="bouton">{action.libelle}</a>
     </div>
 
-    <nav class="pied__colonnes" aria-label="Pied de page">
+    <nav class="pied__colonnes" aria-label={t('navPied')}>
       <div class="pied__colonne">
-        <h2 class="pied__titre">Explorer</h2>
+        <h2 class="pied__titre">{t('piedExplorer')}</h2>
         <ul>
-          {navigationPrincipale.map((e) => (
+          {entreesPrincipales.map((e) => (
             <li><a href={e.url} class="lien-pied">{e.libelle}</a></li>
           ))}
-          {navigationSecondaire.map((e) => (
+          {entreesSecondaires.map((e) => (
             <li><a href={e.url} class="lien-pied">{e.libelle}</a></li>
           ))}
         </ul>
       </div>
 
       <div class="pied__colonne">
-        <h2 class="pied__titre">Contact</h2>
+        <h2 class="pied__titre">{t('piedContact')}</h2>
         <ul>
           <li>
             {aRemplir(site.contact.email)
               ? <ARemplir libelle="EMAIL À AJOUTER" forme="ligne" />
               : <a href={`mailto:${site.contact.email}`} class="lien-pied">{site.contact.email}</a>}
           </li>
-          <li class="pied__lieu">{site.contact.ville}, {site.contact.region} — {site.contact.pays}</li>
+          <li class="pied__lieu">{champ(site.contact.ville, langue)}, {champ(site.contact.region, langue)} — {champ(site.contact.pays, langue)}</li>
         </ul>
 
-        {reseaux.length > 0 && <h2 class="pied__titre pied__titre--espace">Suivre</h2>}
+        {reseaux.length > 0 && <h2 class="pied__titre pied__titre--espace">{t('piedSuivre')}</h2>}
         <ul>
           {reseaux.map((reseau) => (
             <li>
@@ -62,8 +79,8 @@ const infolettrePrete = !aRemplir(site.infolettre.action);
 
       {(infolettrePrete || enChantier) && (
       <div class="pied__colonne pied__colonne--large">
-        <h2 class="pied__titre">{site.infolettre.titre}</h2>
-        <p class="pied__texte">{site.infolettre.texte}</p>
+        <h2 class="pied__titre">{t('infolettreTitre')}</h2>
+        <p class="pied__texte">{t('infolettreTexte')}</p>
         <form
           class="pied__form"
           action={aRemplir(site.infolettre.action) ? undefined : site.infolettre.action}
@@ -72,7 +89,7 @@ const infolettrePrete = !aRemplir(site.infolettre.action);
           rel="noopener"
         >
           <div class="pied__form-ligne">
-            <label for="courriel-infolettre" class="visuellement-cache">Adresse e-mail</label>
+            <label for="courriel-infolettre" class="visuellement-cache">{t('infolettreChamp')}</label>
             <input
               id="courriel-infolettre"
               type="email"
@@ -83,7 +100,7 @@ const infolettrePrete = !aRemplir(site.infolettre.action);
               disabled={aRemplir(site.infolettre.action)}
             />
             <button type="submit" class="bouton" disabled={aRemplir(site.infolettre.action)}>
-              S'inscrire
+              {t('infolettreBouton')}
             </button>
           </div>
 
@@ -97,8 +114,8 @@ const infolettrePrete = !aRemplir(site.infolettre.action);
               disabled={aRemplir(site.infolettre.action)}
             />
             <span>
-              J'accepte de recevoir les actualités de {site.nom}. Désinscription en un clic dans
-              chaque envoi. <a href="/confidentialite" class="lien-pied">En savoir plus</a>.
+              {t('infolettreConsentement')}{' '}
+              <a href={chemin(langue, 'confidentialite')} class="lien-pied">{t('enSavoirPlus')}</a>.
             </span>
           </label>
 
@@ -112,9 +129,9 @@ const infolettrePrete = !aRemplir(site.infolettre.action);
   </div>
 
   <div class="conteneur pied__bas">
-    <p class="pied__droits">© {annee} {site.nom}. Tous droits réservés.</p>
+    <p class="pied__droits">© {annee} {site.nom}. {t('piedDroits')}</p>
     <ul class="pied__legal">
-      {navigationLegale.map((e) => (
+      {navigationLegale(langue).map((e) => (
         <li><a href={e.url} class="lien-pied">{e.libelle}</a></li>
       ))}
     </ul>

@@ -1,0 +1,66 @@
+---
+import Base from '~/layouts/Base.astro';
+import EntetePage from '~/components/EntetePage.astro';
+import CarteIntervenant from '~/components/CarteIntervenant.astro';
+import Filtres from '~/components/Filtres.astro';
+import EtatVide from '~/components/EtatVide.astro';
+import BandeauCta from '~/components/BandeauCta.astro';
+import { chargerIntervenants } from '~/lib/contenu';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
+
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+const t = traducteur(langue);
+const intervenants = await chargerIntervenants(langue);
+const domaines = [...new Set(intervenants.flatMap((i) => i.data.domaines))].sort((a, b) =>
+  a.localeCompare(b, langue),
+);
+---
+<Base
+  titre={t('navIntervenants')}
+  description={t('intervenantsChapo')}
+  langue={langue}
+  alternatives={alternatives}
+  noindex={intervenants.length === 0}
+>
+  <EntetePage
+    surtitre={t('sectionVoix')}
+    titre={t('navIntervenants')}
+    chapo={t('intervenantsChapo')}
+    ariane={[{ libelle: t('navIntervenants') }]}
+  />
+
+  <section class="section conteneur">
+    {intervenants.length > 0 ? (
+      <>
+        <Filtres
+          legende={t('filtrerParDomaine')}
+          options={domaines}
+          cible=".carte-intervenant"
+          langue={langue}
+        />
+        <ul class="grille grille--3 liste-nue">
+          {intervenants.map((intervenant) => (
+            <li class="carte-intervenant" data-etiquettes={intervenant.data.domaines.join('|')}>
+              <CarteIntervenant intervenant={intervenant} langue={langue} />
+            </li>
+          ))}
+        </ul>
+      </>
+    ) : (
+      <EtatVide titre={t('aucunIntervenantTitre')} texte={t('aucunIntervenantTexte')} />
+    )}
+  </section>
+
+  <BandeauCta
+    surtitre={t('ctaProposerSurtitre')}
+    titre={t('ctaProposerTitre')}
+    texte={t('ctaProposerTexte')}
+    actions={[{ url: chemin(langue, 'engagement'), libelle: t('ctaProposerBouton') }]}
+  />
+</Base>
+
+<style>
+  .liste-nue { list-style: none; margin: 0; padding: 0; }
+</style>

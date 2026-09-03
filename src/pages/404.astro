@@ -1,30 +1,29 @@
 ---
 import Base from '~/layouts/Base.astro';
-import { navigationPrincipale } from '~/data/navigation';
+import EntetePage from '~/components/EntetePage.astro';
+import { chemin, langues, etiquettes, langueDefaut } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
+
+/* Une seule page d'erreur, servie par l'hébergeur quelle que soit
+   l'URL demandée. Elle est donc dans la langue par défaut, avec un
+   retour vers l'accueil de chacune des quatre. */
+const langue = langueDefaut;
+const t = traducteur(langue);
 ---
-<Base titre="Page introuvable" noindex>
-  <section class="section conteneur erreur scene">
-    <p class="surtitre">Erreur 404</p>
-    <h1 class="t-page">Cette page n’existe pas — ou plus.</h1>
-    <p class="chapo">
-      Le lien est peut-être ancien, ou l’adresse comporte une erreur. Voici par où reprendre.
-    </p>
-    <ul class="erreur__liens">
-      <li><a href="/" class="bouton">Retour à l’accueil</a></li>
-      {navigationPrincipale.map((entree) => (
-        <li><a href={entree.url} class="bouton bouton--fantome">{entree.libelle}</a></li>
+<Base titre={t('erreurTitre')} description={t('erreurTexte')} noindex langue={langue}>
+  <EntetePage surtitre={t('erreurSurtitre')} titre={t('erreurTitre')} chapo={t('erreurTexte')} />
+  <section class="section conteneur">
+    <ul class="retours">
+      {langues.map((code) => (
+        <li>
+          <a href={chemin(code)} class="bouton bouton--fantome" lang={etiquettes[code].balise}>
+            {etiquettes[code].court} · {traducteur(code)('retourAccueil')}
+          </a>
+        </li>
       ))}
     </ul>
   </section>
 </Base>
 <style>
-  .erreur {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--e-4);
-    min-height: 60vh;
-    justify-content: center;
-  }
-  .erreur__liens { display: flex; flex-wrap: wrap; gap: var(--e-3); list-style: none; margin: var(--e-4) 0 0; padding: 0; }
+  .retours { display: flex; flex-wrap: wrap; gap: var(--e-3); list-style: none; margin: 0; padding: 0; }
 </style>

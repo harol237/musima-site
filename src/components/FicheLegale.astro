@@ -1,0 +1,108 @@
+---
+import site from '~/data/site.json';
+import { champ } from '~/i18n/site';
+import type { Langue } from '~/i18n/config';
+
+/* ==================================================================
+   Fiche d'identification de l'article 10 de la LSSI-CE.
+   ------------------------------------------------------------------
+   Un seul composant pour toutes les langues : la règle qui décide
+   d'afficher « en cours d'attribution » plutôt qu'un numéro vit ici
+   et nulle part ailleurs. Deux versions linguistiques de cette logique
+   finiraient par diverger, et c'est un document légal.
+   ================================================================== */
+
+interface Props {
+  langue: Langue;
+  /** `complet` pour les mentions légales, `court` pour la confidentialité. */
+  variante?: 'complet' | 'court';
+}
+const { langue, variante = 'complet' } = Astro.props;
+
+const aRemplir = (valeur: string) => valeur.startsWith('[');
+const { juridique: j, contact: c } = site;
+const registre = champ(j.registre_nom, langue);
+
+const libelles = {
+  es: {
+    denomination: 'Denominación', forme: 'Forma jurídica', cadre: 'Marco legal',
+    siege: 'Domicilio social', courriel: 'Correo electrónico', nif: 'NIF',
+    registre: 'Inscripción', responsable: 'Responsable de la publicación',
+    enAttente: 'En trámite de asignación',
+    enAttenteNif: 'En trámite de asignación — véase «Inscripción» más abajo.',
+    instruction: `Solicitud de inscripción <strong>en tramitación</strong> ante el ${registre}. El número de inscripción y el NIF se publicarán en esta página en cuanto se asignen. Mientras tanto, la asociación es localizable e identificable a través de los datos anteriores.`,
+    inscrite: (n: string) => `Inscrita en el ${registre} con el número ${n}.`,
+  },
+  fr: {
+    denomination: 'Dénomination', forme: 'Forme juridique', cadre: 'Cadre légal',
+    siege: 'Siège social', courriel: 'Adresse électronique', nif: 'NIF',
+    registre: 'Enregistrement', responsable: 'Responsable de la publication',
+    enAttente: 'En cours d’attribution',
+    enAttenteNif: 'En cours d’attribution — voir « Enregistrement » ci-dessous.',
+    instruction: `Demande d’inscription <strong>en cours d’instruction</strong> auprès du ${registre}. Le numéro d’inscription et le NIF seront publiés sur cette page dès leur attribution. Dans l’intervalle, l’association est joignable et identifiable par les coordonnées ci-dessus.`,
+    inscrite: (n: string) => `Inscrite au ${registre} sous le numéro ${n}.`,
+  },
+  en: null,
+  ca: null,
+} as const;
+
+const l = (libelles[langue] ?? libelles.fr)!;
+const adresse = `${c.adresse}, ${champ(c.region, langue)}, ${champ(c.pays, langue)}`;
+---
+
+<dl class="fiche-legale">
+  {variante === 'complet' && (
+    <>
+      <div><dt>{l.denomination}</dt><dd>{site.nom}</dd></div>
+      <div><dt>{l.forme}</dt><dd>{champ(j.forme, langue)}</dd></div>
+      <div><dt>{l.cadre}</dt><dd>{champ(j.cadre, langue)}</dd></div>
+    </>
+  )}
+  <div><dt>{l.siege}</dt><dd>{adresse}</dd></div>
+  <div>
+    <dt>{l.courriel}</dt>
+    <dd><a href={`mailto:${c.email}`} class="lien">{c.email}</a></dd>
+  </div>
+  <div>
+    <dt>{l.nif}</dt>
+    <dd>{aRemplir(j.nif) ? <em>{variante === 'complet' ? l.enAttenteNif : l.enAttente}</em> : j.nif}</dd>
+  </div>
+  <div>
+    <dt>{l.registre}</dt>
+    <dd>
+      {aRemplir(j.numero_registre)
+        ? <Fragment set:html={l.instruction} />
+        : l.inscrite(j.numero_registre)}
+    </dd>
+  </div>
+  {variante === 'complet' && (
+    <div><dt>{l.responsable}</dt><dd>{j.responsable_publication}</dd></div>
+  )}
+</dl>
+
+<style>
+  .fiche-legale { display: flex; flex-direction: column; margin: 0; }
+  .fiche-legale > div {
+    display: grid;
+    gap: 0.25rem;
+    padding-block: var(--e-4);
+    border-bottom: 1px solid var(--trait);
+  }
+  .fiche-legale > div:first-child { border-top: 1px solid var(--trait); }
+  .fiche-legale dt {
+    font-family: var(--f-titre);
+    font-size: var(--t-100);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--encre-faible);
+  }
+  .fiche-legale dd { margin: 0; font-size: var(--t-300); line-height: 1.6; }
+  @media (min-width: 44rem) {
+    .fiche-legale > div {
+      grid-template-columns: 14rem minmax(0, 1fr);
+      gap: var(--e-4);
+      align-items: baseline;
+    }
+  }
+</style>

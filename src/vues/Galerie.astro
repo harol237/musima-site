@@ -1,0 +1,70 @@
+---
+import { Image } from 'astro:assets';
+import Base from '~/layouts/Base.astro';
+import EntetePage from '~/components/EntetePage.astro';
+import EtatVide from '~/components/EtatVide.astro';
+import BadgeModele from '~/components/BadgeModele.astro';
+import { chargerAlbums, pret, slugDe, enChantier } from '~/lib/contenu';
+import { formaterDate } from '~/i18n/utils';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
+
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+const t = traducteur(langue);
+const albums = await chargerAlbums(langue);
+---
+<Base
+  titre={t('navGalerie')}
+  description={t('galerieChapo')}
+  langue={langue}
+  alternatives={alternatives}
+  noindex={albums.length === 0}
+>
+  <EntetePage
+    surtitre={t('navGalerie')}
+    titre={t('navGalerie')}
+    chapo={t('galerieChapo')}
+    ariane={[{ libelle: t('navGalerie') }]}
+  />
+  <section class="section conteneur">
+    {albums.length > 0 ? (
+      <ul class="grille grille--2 liste-nue">
+        {albums.map((album) => (
+          <li>
+            <article class="carte album">
+              {album.data.modele && <BadgeModele />}
+              {(album.data.couverture || enChantier) && (
+                <div class="carte__visuel ratio-3-2">
+                  {album.data.couverture && (
+                    <Image
+                      src={album.data.couverture}
+                      alt={pret(album.data.couverture_alt) ?? ''}
+                      widths={[400, 700, 1000]}
+                      sizes="(min-width: 64rem) 22rem, 90vw"
+                    />
+                  )}
+                </div>
+              )}
+              <h2 class="t-carte">
+                <a href={chemin(langue, 'galerie', slugDe(album.id))} class="carte__lien">
+                  {album.data.titre}
+                </a>
+              </h2>
+              <p class="meta">
+                {album.data.date && formaterDate(album.data.date, langue)}
+                {album.data.lieu && <> · {album.data.lieu}</>}
+              </p>
+            </article>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <EtatVide titre={t('aucunAlbumTitre')} texte={t('aucunAlbumTexte')} />
+    )}
+  </section>
+</Base>
+<style>
+  .liste-nue { list-style: none; margin: 0; padding: 0; }
+  .album { gap: var(--e-3); }
+</style>

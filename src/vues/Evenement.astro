@@ -1,0 +1,206 @@
+---
+import { getEntries, render, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '~/layouts/Base.astro';
+import EntetePage from '~/components/EntetePage.astro';
+import EnteteSection from '~/components/EnteteSection.astro';
+import CarteIntervenant from '~/components/CarteIntervenant.astro';
+import ARemplir from '~/components/ARemplir.astro';
+import BadgeModele from '~/components/BadgeModele.astro';
+import { dateISO, estAVenir, estPublie, enChantier, pret } from '~/lib/contenu';
+import { formaterPlage, formatsEvenement, traduireValeur } from '~/i18n/utils';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
+
+interface Props {
+  langue: Langue;
+  alternatives: Record<Langue, string>;
+  evenement: CollectionEntry<'evenements'>;
+}
+const { evenement, langue, alternatives } = Astro.props;
+const t = traducteur(langue);
+const { data } = evenement;
+const { Content } = await render(evenement);
+
+/* Les fiches d'intervenants encore en brouillon ne remontent pas sur la
+   page publique : `getEntries` ne filtre pas les brouillons lui-même. */
+const intervenants = (
+  data.intervenants.length ? await getEntries(data.intervenants) : []
+).filter(estPublie);
+const aVenir = estAVenir(evenement);
+const lieuComplet = [data.lieu?.nom, data.lieu?.adresse, data.lieu?.ville, data.lieu?.pays]
+  .filter(Boolean)
+  .join(', ');
+
+const donnees = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: data.titre,
+  startDate: data.date_debut.toISOString(),
+  ...(data.date_fin ? { endDate: data.date_fin.toISOString() } : {}),
+  eventAttendanceMode: data.lieu?.en_ligne
+    ? 'https://schema.org/OnlineEventAttendanceMode'
+    : 'https://schema.org/OfflineEventAttendanceMode',
+  eventStatus: 'https://schema.org/EventScheduled',
+  organizer: { '@type': 'Organization', name: 'MUSIMA' },
+  ...(lieuComplet
+    ? { location: { '@type': 'Place', name: data.lieu?.nom ?? lieuComplet, address: lieuComplet } }
+    : {}),
+  ...(data.resume ? { description: data.resume } : {}),
+};
+---
+
+<Base
+  titre={data.meta_titre ?? data.titre}
+  description={data.meta_description ?? data.resume}
+  type="event"
+  noindex={data.modele}
+  langue={langue}
+  alternatives={alternatives}
+>
+  <EntetePage
+    surtitre={traduireValeur(formatsEvenement, data.format, langue)}
+    titre={data.titre}
+    chapo={data.resume}
+    ariane={[{ libelle: t('navEvenements'), url: chemin(langue, 'evenements') }, { libelle: data.titre }]}
+  >
+    {enChantier && data.modele && <p class="rappel-modele">Fiche de démonstration — à remplacer ou supprimer dans le CMS.</p>}
+    <div class="rang">
+      {!aVenir && <span class="puce">{t('rencontrePassee')}</span>}
+      {data.complet && <span class="puce puce--terre">{t('complet')}</span>}
+      {data.lieu?.en_ligne && <span class="puce">{t('enLigne')}</span>}
+    </div>
+  </EntetePage>
+
+  <div class="conteneur page-evenement">
+    <article class="page-evenement__corps">
+      {(data.image || enChantier) && (
+      <div class="visuel-principal ratio-16-9">
+        {data.image ? (
+          <Image src={data.image} alt={pret(data.image_alt) ?? ''} widths={[640, 1000, 1400]} sizes="(min-width: 64rem) 46rem, 100vw" />
+        ) : (
+          <ARemplir type="photo" forme="visuel" />
+        )}
+      </div>
+      )}
+      {pret(data.credit_photo) && <p class="credit">{t('photoCredit')} : {data.credit_photo}</p>}
+
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+
+    <aside class="page-evenement__infos" aria-label="Informations pratiques">
+      <div class="encart">
+        {data.modele && <BadgeModele />}
+        <h2 class="encart__titre">{t('infosPratiques')}</h2>
+
+        <dl class="infos">
+          <div>
+            <dt>{t('labelDate')}</dt>
+            <dd><time datetime={dateISO(data.date_debut)}>{formaterPlage(data.date_debut, data.date_fin, langue)}</time></dd>
+          </div>
+          {(data.heure || enChantier) && (
+          <div>
+            <dt>{t('labelHoraire')}</dt>
+            <dd>{data.heure ?? <ARemplir libelle="HORAIRE À AJOUTER" forme="ligne" />}</dd>
+          </div>
+          )}
+          <div>
+            <dt>{t('labelLieu')}</dt>
+            <dd>{lieuComplet ? lieuComplet : <ARemplir libelle="LIEU À AJOUTER" forme="ligne" />}</dd>
+          </div>
+          <div>
+            <dt>{t('labelFormat')}</dt>
+            <dd>{traduireValeur(formatsEvenement, data.format, langue)}</dd>
+          </div>
+          {(data.tarif || enChantier) && (
+          <div>
+            <dt>{t('labelTarif')}</dt>
+            <dd>{data.tarif ?? <ARemplir libelle="TARIF À PRÉCISER" forme="ligne" />}</dd>
+          </div>
+          )}
+        </dl>
+
+        {aVenir && (
+          data.lien_inscription
+            ? <a href={data.lien_inscription} class="bouton encart__action" rel="noopener">{t('sInscrire')}</a>
+            : <ARemplir libelle="LIEN D’INSCRIPTION À AJOUTER" />
+        )}
+      </div>
+    </aside>
+  </div>
+
+  {intervenants.length > 0 && (
+    <section class="section conteneur">
+      <EnteteSection surtitre={t('surScene')} titre={intervenants.length > 1 ? t('lesIntervenants') : t('lIntervenant')} />
+      <ul class="grille grille--4 liste-nue">
+        {intervenants.map((intervenant) => (
+          <li><CarteIntervenant intervenant={intervenant} langue={langue} /></li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <script type="application/ld+json" set:html={JSON.stringify(donnees)} is:inline />
+</Base>
+
+<style>
+  .page-evenement {
+    display: grid;
+    gap: var(--e-8);
+    align-items: start;
+    padding-block: var(--e-8);
+  }
+  @media (min-width: 62rem) {
+    .page-evenement { grid-template-columns: minmax(0, 1fr) 20rem; gap: var(--e-9); }
+    .page-evenement__infos { position: sticky; top: 6.5rem; }
+  }
+
+  .visuel-principal {
+    border-radius: var(--r-image);
+    overflow: hidden;
+    background: var(--surface-2);
+    margin-bottom: var(--e-6);
+  }
+  .visuel-principal :global(img) { width: 100%; height: 100%; object-fit: cover; }
+
+  .credit { font-family: var(--f-titre); font-size: var(--t-100); color: var(--encre-faible); margin: calc(var(--e-5) * -1) 0 var(--e-6); }
+
+  .encart {
+    position: relative;
+    border: 1px solid var(--trait);
+    border-radius: var(--r-carte);
+    background: var(--surface);
+    padding: var(--e-5);
+  }
+  .encart__titre {
+    font-size: var(--t-200);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--terre);
+    margin-bottom: var(--e-4);
+  }
+  .encart__action { width: 100%; justify-content: center; margin-top: var(--e-5); }
+
+  .infos { display: flex; flex-direction: column; gap: var(--e-4); margin: 0; }
+  .infos div { display: flex; flex-direction: column; gap: 2px; }
+  .infos dt {
+    font-family: var(--f-titre);
+    font-size: var(--t-100);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--encre-faible);
+  }
+  .infos dd { margin: 0; font-size: var(--t-300); line-height: 1.5; }
+
+  .rappel-modele {
+    font-family: var(--f-titre);
+    font-size: var(--t-200);
+    color: var(--or);
+  }
+
+  .liste-nue { list-style: none; margin: 0; padding: 0; }
+</style>

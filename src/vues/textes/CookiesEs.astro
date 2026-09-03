@@ -1,0 +1,127 @@
+---
+import EntetePage from '~/components/EntetePage.astro';
+import site from '~/data/site.json';
+
+const c = site.contact;
+const verif = new Intl.DateTimeFormat('es-ES', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid',
+}).format(new Date(site.cookies.verifie_le));
+---
+<EntetePage
+  surtitre="Tus datos"
+  titre="Cookies"
+  chapo="Esta web no deposita ninguna cookie. Ninguna. Esta página explica qué se guarda realmente en tu dispositivo, y por qué no hay ningún banner de consentimiento que aceptar."
+  ariane={[{ libelle: 'Cookies' }]}
+  registre="papier"
+/>
+<section class="section conteneur">
+  <div class="prose">
+
+    <h2>Lo que esta web no hace</h2>
+    <ul>
+      <li>No se deposita ninguna cookie, ni nuestra ni de terceros.</li>
+      <li>No hay ninguna herramienta de medición de audiencia — ni Google Analytics ni equivalente. No sabemos cuánta gente visita esta web.</li>
+      <li>No hay ningún script externo, ningún botón para compartir, ningún vídeo incrustado.</li>
+      <li>Las tipografías están alojadas en nuestro propio dominio: tu navegador no contacta con ningún servidor ajeno para mostrar una página.</li>
+    </ul>
+    <p>
+      Comprobado el {verif} cargando varias páginas del sitio en un navegador limpio: ninguna
+      cabecera <code>Set-Cookie</code>, ninguna cookie registrada, ninguna petición saliente hacia
+      otro dominio.
+    </p>
+
+    <h2>Lo único que se guarda en tu dispositivo</h2>
+    <p>
+      Si pulsas el botón claro/oscuro de la parte superior, o si eliges un idioma, esa preferencia
+      se guarda en el almacenamiento local de tu navegador. Nada más.
+    </p>
+    <table class="tableau-stockage">
+      <thead>
+        <tr><th>Clave</th><th>Contenido</th><th>Se crea cuando</th><th>Duración</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>musima-theme</code></td>
+          <td>La palabra <code>light</code> u <code>dark</code></td>
+          <td>Solo si pulsas el botón de tema</td>
+          <td>Hasta que borres los datos del sitio</td>
+        </tr>
+        <tr>
+          <td><code>musima-langue</code></td>
+          <td>Un código de idioma: <code>es</code>, <code>fr</code>, <code>en</code> o <code>ca</code></td>
+          <td>Solo si eliges un idioma en el selector</td>
+          <td>Hasta que borres los datos del sitio</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Estos valores no salen nunca de tu dispositivo: no se transmiten a ningún servidor, ni
+      siquiera al nuestro. No permiten identificarte ni seguirte de un sitio a otro.
+    </p>
+    <p>
+      <strong>Por qué no hay ningún banner que aceptar.</strong> El artículo 22.2 de la Ley
+      34/2002 (LSSI-CE) exime de consentimiento los dispositivos estrictamente necesarios para un
+      servicio expresamente solicitado por el usuario. Recordar un ajuste de visualización o un
+      idioma que acabas de elegir tú entra en esa excepción, tal como la interpreta la Agencia
+      Española de Protección de Datos en su guía sobre el uso de cookies. Pedirte permiso para eso
+      no tendría ningún sentido: el guardado solo ocurre si haces clic.
+    </p>
+
+    <h2>Cómo borrarlo</h2>
+    <p>
+      Borra los datos de sitio de <code>musima.org</code> en los ajustes de tu navegador, o usa una
+      ventana de navegación privada. La web funciona exactamente igual sin esos valores: sigue
+      entonces el tema claro u oscuro de tu sistema, y el idioma de la dirección que visitas.
+    </p>
+
+    <h2>El boletín</h2>
+    <p>
+      La suscripción al boletín pasa por {site.infolettre.fournisseur}, nuestro proveedor de envío.
+      El formulario transmite tu dirección directamente a ese proveedor: no se deposita ninguna
+      cookie en {site.nom} al hacerlo. En cambio, las páginas de confirmación y de baja alojadas
+      por el proveedor se rigen por su propia política de cookies.
+    </p>
+
+    <h2>Los registros del proveedor de alojamiento</h2>
+    <p>
+      Como toda web, esta pasa por un proveedor de alojamiento —Cloudflare— que registra
+      técnicamente las conexiones entrantes para servir las páginas y protegerse de ataques. Son
+      registros de servidor, no cookies: no se escribe nada en tu dispositivo. Véase la
+      {' '}<a href="/privacidad" class="lien">política de privacidad</a>.
+    </p>
+
+    <h2>Si esto cambia algún día</h2>
+    <p>
+      El día que añadiéramos una herramienta de estadísticas, un vídeo incrustado o cualquier otro
+      servicio de terceros capaz de depositar una cookie, ocurrirían dos cosas <em>antes</em> de
+      ponerlo en marcha: se instalaría un banner de consentimiento que permitiría aceptar o
+      rechazar, y esta página se actualizaría. Mientras leas la frase de apertura, es que no hay
+      nada que consentir.
+    </p>
+
+    <h2>Una duda</h2>
+    <p>
+      Escribe a <a href={`mailto:${c.email}`} class="lien">{c.email}</a>. Si detectas una cookie en
+      esta web, dínoslo: sería un fallo, y lo corregiríamos.
+    </p>
+  </div>
+</section>
+
+<style>
+  .tableau-stockage { width: 100%; border-collapse: collapse; font-size: var(--t-200); }
+  .tableau-stockage :is(th, td) {
+    text-align: left;
+    padding: var(--e-3);
+    border-bottom: 1px solid var(--trait);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .tableau-stockage th {
+    font-family: var(--f-titre);
+    font-size: var(--t-100);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--encre-faible);
+    border-bottom-color: var(--trait-fort);
+  }
+</style>

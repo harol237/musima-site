@@ -1,0 +1,99 @@
+---
+import { getEntries, render, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '~/layouts/Base.astro';
+import EntetePage from '~/components/EntetePage.astro';
+import EnteteSection from '~/components/EnteteSection.astro';
+import CarteIntervenant from '~/components/CarteIntervenant.astro';
+import ARemplir from '~/components/ARemplir.astro';
+import { estPublie, pret } from '~/lib/contenu';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
+
+interface Props {
+  langue: Langue;
+  alternatives: Record<Langue, string>;
+  projet: CollectionEntry<'projets'>;
+}
+const { projet, langue, alternatives } = Astro.props;
+const t = traducteur(langue);
+const { data } = projet;
+const { Content } = await render(projet);
+const intervenants = data.intervenants.length ? await getEntries(data.intervenants) : [];
+---
+
+<Base
+  titre={data.meta_titre ?? data.titre}
+  description={data.meta_description ?? data.resume}
+  noindex={data.modele}
+  langue={langue}
+  alternatives={alternatives}
+>
+  <EntetePage
+    surtitre="Projet"
+    titre={data.titre}
+    chapo={data.resume}
+    ariane={[{ libelle: 'Projets', url: '/projets' }, { libelle: data.titre }]}
+  >
+    {data.modele && <p class="rappel-modele">Fiche de démonstration — à remplacer ou supprimer dans le CMS.</p>}
+    <div class="rang">
+      <span class="puce puce--or">{data.statut}</span>
+      {data.annee && <span class="puce puce--sourde">{data.annee}</span>}
+      {data.territoire && <span class="puce puce--sourde">{data.territoire}</span>}
+    </div>
+  </EntetePage>
+
+  <div class="conteneur page-projet">
+    <article>
+      <div class="visuel-principal ratio-3-2">
+        {data.image ? (
+          <Image src={data.image} alt={pret(data.image_alt) ?? ''} widths={[640, 1000, 1400]} sizes="(min-width: 64rem) 46rem, 100vw" />
+        ) : (
+          <ARemplir type="photo" forme="visuel" />
+        )}
+      </div>
+      <div class="prose"><Content /></div>
+    </article>
+
+    <aside aria-label="Informations sur le projet">
+      <div class="encart">
+        <h2 class="encart__titre">Partenaires</h2>
+        {data.partenaires.length > 0 ? (
+          <ul class="encart__liste">{data.partenaires.map((p) => <li>{p}</li>)}</ul>
+        ) : (
+          <ARemplir libelle="PARTENAIRES À AJOUTER" />
+        )}
+        {data.lien ? (
+          <a href={data.lien} class="bouton encart__action" rel="noopener">Voir le projet</a>
+        ) : (
+          <div class="encart__action"><ARemplir type="lien" /></div>
+        )}
+      </div>
+    </aside>
+  </div>
+
+  {intervenants.length > 0 && (
+    <section class="section conteneur">
+      <EnteteSection surtitre="Impliqués" titre="Les personnes du projet" />
+      <ul class="grille grille--4 liste-nue">
+        {intervenants.map((intervenant) => <li><CarteIntervenant intervenant={intervenant} /></li>)}
+      </ul>
+    </section>
+  )}
+</Base>
+
+<style>
+  .page-projet { display: grid; gap: var(--e-8); align-items: start; padding-block: var(--e-8); }
+  @media (min-width: 62rem) {
+    .page-projet { grid-template-columns: minmax(0, 1fr) 18rem; gap: var(--e-9); }
+    .page-projet aside { position: sticky; top: 6.5rem; }
+  }
+  .visuel-principal { border-radius: var(--r-image); overflow: hidden; background: var(--surface-2); margin-bottom: var(--e-6); }
+  .visuel-principal :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .encart { border: 1px solid var(--trait); border-radius: var(--r-carte); background: var(--surface); padding: var(--e-5); }
+  .encart__titre { font-size: var(--t-200); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terre); margin-bottom: var(--e-4); }
+  .encart__liste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--e-2); font-size: var(--t-300); }
+  .encart__action { margin-top: var(--e-5); width: 100%; justify-content: center; }
+  .rappel-modele { font-family: var(--f-titre); font-size: var(--t-200); color: var(--or); }
+  .liste-nue { list-style: none; margin: 0; padding: 0; }
+</style>

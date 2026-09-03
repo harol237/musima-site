@@ -1,0 +1,62 @@
+---
+import Base from '~/layouts/Base.astro';
+import EntetePage from '~/components/EntetePage.astro';
+import site from '~/data/site.json';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
+
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+const t = traducteur(langue);
+---
+<Base
+  titre="Accessibilité"
+  description="Les choix d’accessibilité faits sur le site MUSIMA et comment signaler un problème."
+  langue={langue}
+  alternatives={alternatives}
+>
+  <EntetePage
+    surtitre="Engagement"
+    titre="Accessibilité"
+    chapo="Un site qui ouvre le champ des possibles doit être utilisable par tout le monde. Voici ce qui a été fait, et ce qui reste à vérifier."
+    ariane={[{ libelle: 'Accessibilité' }]}
+    registre="papier"
+  />
+  <section class="section conteneur">
+    <div class="prose">
+      <h2>Ce qui est en place</h2>
+      <ul>
+        <li>Contrastes de couleur vérifiés : le texte courant atteint au minimum le niveau AA (4,5:1), dans le thème clair comme dans le thème sombre.</li>
+        <li>Navigation complète au clavier, avec un indicateur de focus visible sur chaque élément interactif.</li>
+        <li>Lien « Aller au contenu » en début de page.</li>
+        <li>Structure de titres hiérarchisée et repères de page (en-tête, navigation, contenu, pied de page) correctement balisés.</li>
+        <li>Description obligatoire pour chaque photo ajoutée dans la galerie.</li>
+        <li>Animations désactivées automatiquement si votre système demande une réduction des mouvements.</li>
+        <li>Contenu entièrement lisible sans JavaScript ; les filtres sont un confort supplémentaire, pas une condition d’accès.</li>
+        <li>Textes redimensionnables jusqu’à 200 % sans perte d’information.</li>
+      </ul>
+
+      <h2>Ce qui reste à faire</h2>
+      <ul>
+        <li>Audit complet par une personne tierce, idéalement avec des utilisateurs de lecteurs d’écran.</li>
+        <li>Sous-titrage des captations vidéo publiées.</li>
+        <li>Vérification de l’accessibilité physique des lieux de rencontre, indiquée sur chaque fiche événement.</li>
+        <li>Traduction du site en espagnol, en anglais et en catalan : pouvoir lire dans sa langue fait aussi partie de l’accessibilité.</li>
+      </ul>
+      <p>
+        Pour être clairs : aucun audit externe n’a encore été réalisé. Ce qui est listé plus haut
+        a été vérifié pendant la conception du site, pas certifié par un tiers. Le jour où un
+        audit sera fait, son résultat — bon ou mauvais — sera publié ici.
+      </p>
+
+      <h2>Signaler un problème</h2>
+      <p>
+        Si une page vous pose une difficulté, dites-le nous : c’est le retour le plus utile qu’on
+        puisse recevoir. Écrivez à
+        {' '}<a href={`mailto:${site.contact.email}`}>{site.contact.email}</a> ou passez par la
+        {' '}<a href="/contact">page contact</a>. Précisez si vous le pouvez la page concernée et
+        ce que vous utilisez pour naviguer — c’est ce qui nous permet de corriger vite.
+      </p>
+    </div>
+  </section>
+</Base>

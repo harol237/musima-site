@@ -1,0 +1,48 @@
+---
+import Base from '~/layouts/Base.astro';
+import EntetePage from '~/components/EntetePage.astro';
+import CarteProjet from '~/components/CarteProjet.astro';
+import EtatVide from '~/components/EtatVide.astro';
+import BandeauCta from '~/components/BandeauCta.astro';
+import { chargerProjets } from '~/lib/contenu';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
+
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+const t = traducteur(langue);
+const projets = await chargerProjets(langue);
+---
+<Base
+  titre={t('navProjets')}
+  description={t('projetsChapo')}
+  langue={langue}
+  alternatives={alternatives}
+  noindex={projets.length === 0}
+>
+  <EntetePage
+    surtitre={t('navProjets')}
+    titre={t('ceQueLAssociationConstruit')}
+    chapo={t('projetsChapo')}
+    ariane={[{ libelle: t('navProjets') }]}
+  />
+  <section class="section conteneur">
+    {projets.length > 0 ? (
+      <ul class="grille grille--2 liste-nue">
+        {projets.map((projet) => <li><CarteProjet projet={projet} langue={langue} /></li>)}
+      </ul>
+    ) : (
+      <EtatVide titre={t('aucunProjetTitre')} texte={t('aucunProjetTexte')} />
+    )}
+  </section>
+  <BandeauCta
+    surtitre={t('ctaParticiperSurtitre')}
+    titre={t('ctaParticiperTitre')}
+    texte={t('ctaParticiperTexte')}
+    actions={[
+      { url: chemin(langue, 'engagement'), libelle: t('ctaVoirEngagement') },
+      { url: chemin(langue, 'contact'), libelle: t('ctaNousEcrire'), variante: 'fantome' },
+    ]}
+  />
+</Base>
+<style>.liste-nue { list-style: none; margin: 0; padding: 0; }</style>

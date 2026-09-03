@@ -1,21 +1,28 @@
 import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
 import site from '~/data/site.json';
+import { champ } from '~/i18n/site';
 import { chargerRecits } from '~/lib/contenu';
+import { chemin, langueDefaut } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
 
+/* Flux de la langue par défaut, servi à la racine. Les autres langues
+   ont le leur sous /fr/rss.xml, /en/rss.xml, /ca/rss.xml. */
 export async function GET(context: APIContext) {
-  const recits = await chargerRecits();
+  const langue = langueDefaut;
+  const t = traducteur(langue);
+  const recits = await chargerRecits(langue);
 
   return rss({
-    title: `Récits — ${site.nom}`,
-    description: site.description_courte,
+    title: `${t('navRecits')} — ${site.nom}`,
+    description: champ(site.description_courte, langue),
     site: context.site!,
-    customData: '<language>fr-FR</language>',
+    customData: `<language>${langue}</language>`,
     items: recits.map((recit) => ({
       title: recit.data.titre,
       description: recit.data.resume ?? '',
       pubDate: recit.data.date,
-      link: `/recits/${recit.id}`,
+      link: chemin(langue, 'recits', recit.id.split('/').slice(1).join('/')),
       categories: [recit.data.categorie, ...recit.data.mots_cles],
       ...(recit.data.auteur ? { author: recit.data.auteur } : {}),
     })),
