@@ -14,6 +14,8 @@ resume: "La première rencontre MUSIMA. On a invité des personnes qui ont mont�
 intervenants:
   - fr/sebastien-richnel
   - fr/intervenant-modele-2
+tarif: "Entrée libre et gratuite"
+gratuit: true
 lien_inscription: ""
 en_avant: true
 meta_description: "Première rencontre MUSIMA à Barcelone, le samedi 26 septembre 2026 à partir de 17h. Des personnes qui ont construit quelque chose ici racontent comment."
@@ -43,7 +45,7 @@ Pour vous aussi, si vous n'avez rien monté du tout mais que ça vous travaille,
 
 Et pour vous encore, si vous n'êtes pas africain·e et que vous avez juste envie d'écouter. Ça se passe en français, avec des passages en espagnol quand les intervenant·es sont plus à l'aise comme ça.
 
-Pas besoin d'être adhérent·e. Pas besoin de connaître quelqu'un. Vous venez, c'est tout.
+C'est gratuit. Pas besoin d'être adhérent·e. Pas besoin de connaître quelqu'un. Vous venez, c'est tout.
 
 ## Comment venir
 
@@ -52,4 +54,4 @@ La rencontre a lieu au **Casal de Barri Besòs**, Rambla Prim 87-89. C'est un é
 <!-- À COMPLÉTER — à confirmer auprès du casal et à ajouter ici : l'arrêt de
      métro ou de bus le plus proche, et si l'accès se fait de plain-pied ou
      par ascenseur. Ce sont les deux informations que les gens cherchent
-     avant de venir. Il manque aussi le tarif (`tarif:` en tête de fichier). -->
+     avant de venir. -->

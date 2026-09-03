@@ -61,6 +61,9 @@ const evenements = defineCollection({
       projets: z.array(reference('projets')).default([]),
       lien_inscription: z.string().optional(),
       tarif: z.string().optional(),
+      /** Alimente les données structurées : Google veut un prix chiffré,
+          pas la formule libre saisie dans `tarif`. */
+      gratuit: z.boolean().default(false),
       complet: z.boolean().default(false),
       en_avant: z.boolean().default(false),
       ...base,

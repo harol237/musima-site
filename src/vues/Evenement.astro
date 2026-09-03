@@ -63,6 +63,21 @@ const donnees = {
       }
     : {}),
   ...(data.resume ? { description: data.resume } : {}),
+  /* Une rencontre gratuite le déclare : sans `offers`, Google ne peut
+     pas afficher « Gratuit » dans son résultat enrichi. */
+  ...(data.gratuit
+    ? {
+        offers: {
+          '@type': 'Offer',
+          price: 0,
+          priceCurrency: 'EUR',
+          availability: data.complet
+            ? 'https://schema.org/SoldOut'
+            : 'https://schema.org/InStock',
+          url: new URL(Astro.url.pathname.replace(/\.html$/, ''), Astro.site).href,
+        },
+      }
+    : {}),
 };
 ---
 

@@ -13,6 +13,8 @@ lieu:
 resume: "La primera trobada de MUSIMA. Hem convidat persones que han muntat alguna cosa a Barcelona —una activitat, un projecte, un ofici— i els hem demanat que expliquessin com va anar de debò. Res de versions retocades: què va funcionar, què es va encallar, què farien diferent."
 intervenants:
   - ca/sebastien-richnel
+tarif: "Entrada lliure i gratuïta"
+gratuit: true
 lien_inscription: ""
 en_avant: true
 meta_description: "Primera trobada de MUSIMA a Barcelona, el dissabte 26 de setembre de 2026 a partir de les 17:00. Persones que han construït alguna cosa aquí expliquen com."
@@ -42,7 +44,7 @@ També per a tu, si no has muntat res però la idea et ronda, i tens ganes de ve
 
 I per a tu igualment, si no ets africà i simplement vols escoltar. La trobada és en francès, amb estones en castellà quan els ponents s'hi troben més còmodes.
 
-No cal ser-ne soci. No cal conèixer ningú. Vens i ja està.
+És gratuït. No cal ser-ne soci. No cal conèixer ningú. Vens i ja està.
 
 ## Com arribar-hi
 
@@ -50,5 +52,4 @@ La trobada és al **Casal de Barri Besòs**, a la Rambla Prim 87-89. És un equi
 
 <!-- A COMPLETAR — confirmar amb el casal i afegir aquí: la parada de metro o
      bus més propera, i si l'accés és a nivell de carrer o hi ha ascensor. Són
-     les dues dades que la gent busca abans de venir. També falta el preu
-     (`tarif:` a la capçalera de l'arxiu). -->
+     les dues dades que la gent busca abans de venir. -->

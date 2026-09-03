@@ -13,6 +13,8 @@ lieu:
 resume: "MUSIMA's first gathering. We invited people who have built something in Barcelona — a business, a project, a craft — and asked them to tell us how it actually went. Not the polished version: what worked, what stalled, what they would do differently."
 intervenants:
   - en/sebastien-richnel
+tarif: "Free entry"
+gratuit: true
 lien_inscription: ""
 en_avant: true
 meta_description: "MUSIMA's first gathering in Barcelona, Saturday 26 September 2026 from 5pm. People who have built something here talk about how."
@@ -42,7 +44,7 @@ Also for you, if you have built nothing at all but the idea keeps nagging, and y
 
 And for you too, if you are not African and simply want to listen. The gathering runs in French, with stretches in Spanish where speakers are more comfortable that way.
 
-You do not need to be a member. You do not need to know anyone. You just come.
+It is free. You do not need to be a member. You do not need to know anyone. You just come.
 
 ## Getting there
 
@@ -50,5 +52,4 @@ The gathering is at the **Casal de Barri Besòs**, Rambla Prim 87-89. It is a mu
 
 <!-- TO COMPLETE — check with the casal and add here: the nearest metro or bus
      stop, and whether access is step-free or by lift. Those are the two things
-     people look for before coming. The price is also still missing
-     (`tarif:` at the top of this file). -->
+     people look for before coming. -->
