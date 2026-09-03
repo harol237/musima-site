@@ -5,6 +5,8 @@ format: Rencontre
 date_debut: 2026-09-26
 heure: "From 5pm"
 lieu:
+  nom: "Casal de Barri Besòs"
+  adresse: "Rambla Prim 87-89"
   ville: Barcelona
   pays: Spain
   en_ligne: false
@@ -42,7 +44,11 @@ And for you too, if you are not African and simply want to listen. The gathering
 
 You do not need to be a member. You do not need to know anyone. You just come.
 
-<!-- TO COMPLETE once the venue is confirmed: restore the `lieu:` block
-     (name, address) and `tarif:` at the top of this file, then add a
-     "Getting there" section here with the nearest metro and step-free
-     access details. -->
+## Getting there
+
+The gathering is at the **Casal de Barri Besòs**, Rambla Prim 87-89. It is a municipal neighbourhood centre: you walk in, that's it — there is no reception desk to get past.
+
+<!-- TO COMPLETE — check with the casal and add here: the nearest metro or bus
+     stop, and whether access is step-free or by lift. Those are the two things
+     people look for before coming. The price is also still missing
+     (`tarif:` at the top of this file). -->

@@ -5,6 +5,8 @@ format: Rencontre
 date_debut: 2026-09-26
 heure: "À partir de 17h00"
 lieu:
+  nom: "Casal de Barri Besòs"
+  adresse: "Rambla Prim 87-89"
   ville: Barcelone
   pays: Espagne
   en_ligne: false
@@ -43,7 +45,11 @@ Et pour vous encore, si vous n'êtes pas africain·e et que vous avez juste envi
 
 Pas besoin d'être adhérent·e. Pas besoin de connaître quelqu'un. Vous venez, c'est tout.
 
-<!-- À COMPLÉTER dès que le lieu est confirmé : rétablir le bloc `lieu:`
-     (nom, adresse) et `tarif:` en tête de fichier, puis ajouter ici une
-     section « Informations pratiques » avec le métro le plus proche et
-     l'accessibilité de la salle. -->
+## Comment venir
+
+La rencontre a lieu au **Casal de Barri Besòs**, Rambla Prim 87-89. C'est un équipement municipal de quartier : on entre, c'est tout, il n'y a pas d'accueil à passer.
+
+<!-- À COMPLÉTER — à confirmer auprès du casal et à ajouter ici : l'arrêt de
+     métro ou de bus le plus proche, et si l'accès se fait de plain-pied ou
+     par ascenseur. Ce sont les deux informations que les gens cherchent
+     avant de venir. Il manque aussi le tarif (`tarif:` en tête de fichier). -->

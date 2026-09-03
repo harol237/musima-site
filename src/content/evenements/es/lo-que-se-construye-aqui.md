@@ -5,6 +5,8 @@ format: Rencontre
 date_debut: 2026-09-26
 heure: "A partir de las 17:00"
 lieu:
+  nom: "Casal de Barri Besòs"
+  adresse: "Rambla Prim 87-89"
   ville: Barcelona
   pays: España
   en_ligne: false
@@ -42,7 +44,11 @@ Y para ti igualmente, si no eres africano y simplemente quieres escuchar. El enc
 
 No hace falta ser socio. No hace falta conocer a nadie. Vienes y ya.
 
-<!-- A COMPLETAR en cuanto se confirme el local: restablecer el bloque `lieu:`
-     (nombre, dirección) y `tarif:` en la cabecera del archivo, y añadir aquí
-     un apartado «Cómo llegar» con el metro más cercano y la accesibilidad
-     de la sala. -->
+## Cómo llegar
+
+El encuentro es en el **Casal de Barri Besòs**, en la Rambla Prim 87-89. Es un equipamiento municipal de barrio: entras y ya está, no hay recepción que pasar.
+
+<!-- A COMPLETAR — confirmar con el casal y añadir aquí: la parada de metro o
+     bus más cercana, y si el acceso es a nivel de calle o hay ascensor. Son
+     los dos datos que la gente busca antes de venir. También falta el precio
+     (`tarif:` en la cabecera del archivo). -->

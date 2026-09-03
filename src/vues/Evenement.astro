@@ -36,15 +36,31 @@ const donnees = {
   '@context': 'https://schema.org',
   '@type': 'Event',
   name: data.titre,
-  startDate: data.date_debut.toISOString(),
-  ...(data.date_fin ? { endDate: data.date_fin.toISOString() } : {}),
+  /* Date seule, pas un horodatage : l'heure est saisie en texte libre
+     (« A partir de las 17:00 ») et n'est donc pas analysable. Annoncer
+     minuit UTC serait faux ; schema.org accepte la date nue. */
+  startDate: dateISO(data.date_debut),
+  ...(data.date_fin ? { endDate: dateISO(data.date_fin) } : {}),
   eventAttendanceMode: data.lieu?.en_ligne
     ? 'https://schema.org/OnlineEventAttendanceMode'
     : 'https://schema.org/OfflineEventAttendanceMode',
   eventStatus: 'https://schema.org/EventScheduled',
   organizer: { '@type': 'Organization', name: 'MUSIMA' },
+  /* Adresse structurée plutôt qu'une chaîne : c'est ce que Google lit
+     pour proposer un événement dans ses résultats enrichis. */
   ...(lieuComplet
-    ? { location: { '@type': 'Place', name: data.lieu?.nom ?? lieuComplet, address: lieuComplet } }
+    ? {
+        location: {
+          '@type': 'Place',
+          name: data.lieu?.nom ?? lieuComplet,
+          address: {
+            '@type': 'PostalAddress',
+            ...(data.lieu?.adresse ? { streetAddress: data.lieu.adresse } : {}),
+            ...(data.lieu?.ville ? { addressLocality: data.lieu.ville } : {}),
+            addressCountry: 'ES',
+          },
+        },
+      }
     : {}),
   ...(data.resume ? { description: data.resume } : {}),
 };
