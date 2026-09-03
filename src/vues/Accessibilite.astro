@@ -8,54 +8,97 @@ import { traducteur } from '~/i18n/ui';
 interface Props { langue: Langue; alternatives: Record<Langue, string> }
 const { langue, alternatives } = Astro.props;
 const t = traducteur(langue);
+
+const textes = {
+  es: {
+    meta: 'Las decisiones de accesibilidad tomadas en la web de MUSIMA y cómo avisarnos de un problema.',
+    surtitre: 'Compromiso',
+    titre: 'Accesibilidad',
+    chapo: 'Una web que quiere abrir el campo de lo posible tiene que poder usarla todo el mundo. Esto es lo que está hecho, y lo que queda por comprobar.',
+    faitTitre: 'Lo que ya está',
+    fait: [
+      'Contrastes de color verificados: el texto corriente alcanza como mínimo el nivel AA (4,5:1), tanto en tema claro como en oscuro.',
+      'Navegación completa con teclado, con un indicador de foco visible en cada elemento interactivo.',
+      'Enlace «Ir al contenido» al principio de cada página.',
+      'Estructura de encabezados jerarquizada y regiones de página (cabecera, navegación, contenido, pie) correctamente marcadas.',
+      'Descripción obligatoria para cada foto añadida a la galería.',
+      'Animaciones desactivadas automáticamente si tu sistema pide reducir el movimiento.',
+      'Contenido completamente legible sin JavaScript; los filtros y el selector de idioma son una comodidad añadida, no una condición de acceso.',
+      'Textos redimensionables hasta el 200 % sin pérdida de información.',
+      'Web disponible en español, francés, inglés y catalán: poder leer en tu idioma también es accesibilidad.',
+    ],
+    resteTitre: 'Lo que queda por hacer',
+    reste: [
+      'Auditoría completa por parte de un tercero, idealmente con personas usuarias de lectores de pantalla.',
+      'Subtitulado de las grabaciones de vídeo publicadas.',
+      'Comprobación de la accesibilidad física de los locales de encuentro, indicada en cada ficha de evento.',
+      'Traducción de las páginas que todavía solo existen en francés.',
+    ],
+    aucunAudit: 'Para ser claros: todavía no se ha realizado ninguna auditoría externa. Lo que aparece más arriba se verificó durante el diseño de la web, no lo ha certificado un tercero. El día que se haga una auditoría, su resultado —bueno o malo— se publicará aquí.',
+    signalerTitre: 'Avisarnos de un problema',
+    signalerAvant: 'Si una página te da problemas, dínoslo: es el comentario más útil que podemos recibir. Escribe a',
+    signalerMilieu: 'o pasa por la',
+    signalerLien: 'página de contacto',
+    signalerApres: 'Indícanos si puedes la página en cuestión y qué usas para navegar — es lo que nos permite corregir rápido.',
+  },
+  fr: {
+    meta: 'Les choix d’accessibilité faits sur le site MUSIMA et comment signaler un problème.',
+    surtitre: 'Engagement',
+    titre: 'Accessibilité',
+    chapo: 'Un site qui ouvre le champ des possibles doit être utilisable par tout le monde. Voici ce qui a été fait, et ce qui reste à vérifier.',
+    faitTitre: 'Ce qui est en place',
+    fait: [
+      'Contrastes de couleur vérifiés : le texte courant atteint au minimum le niveau AA (4,5:1), dans le thème clair comme dans le thème sombre.',
+      'Navigation complète au clavier, avec un indicateur de focus visible sur chaque élément interactif.',
+      'Lien « Aller au contenu » en début de page.',
+      'Structure de titres hiérarchisée et repères de page (en-tête, navigation, contenu, pied de page) correctement balisés.',
+      'Description obligatoire pour chaque photo ajoutée dans la galerie.',
+      'Animations désactivées automatiquement si votre système demande une réduction des mouvements.',
+      'Contenu entièrement lisible sans JavaScript ; les filtres et le sélecteur de langue sont un confort supplémentaire, pas une condition d’accès.',
+      'Textes redimensionnables jusqu’à 200 % sans perte d’information.',
+      'Site disponible en espagnol, français, anglais et catalan : pouvoir lire dans sa langue fait aussi partie de l’accessibilité.',
+    ],
+    resteTitre: 'Ce qui reste à faire',
+    reste: [
+      'Audit complet par une personne tierce, idéalement avec des utilisateurs de lecteurs d’écran.',
+      'Sous-titrage des captations vidéo publiées.',
+      'Vérification de l’accessibilité physique des lieux de rencontre, indiquée sur chaque fiche événement.',
+      'Traduction des pages qui n’existent encore qu’en français.',
+    ],
+    aucunAudit: 'Pour être clairs : aucun audit externe n’a encore été réalisé. Ce qui est listé plus haut a été vérifié pendant la conception du site, pas certifié par un tiers. Le jour où un audit sera fait, son résultat — bon ou mauvais — sera publié ici.',
+    signalerTitre: 'Signaler un problème',
+    signalerAvant: 'Si une page vous pose une difficulté, dites-le nous : c’est le retour le plus utile qu’on puisse recevoir. Écrivez à',
+    signalerMilieu: 'ou passez par la',
+    signalerLien: 'page contact',
+    signalerApres: 'Précisez si vous le pouvez la page concernée et ce que vous utilisez pour naviguer — c’est ce qui nous permet de corriger vite.',
+  },
+} as const;
+const x = textes[langue as 'es' | 'fr'] ?? textes.fr;
 ---
-<Base
-  titre="Accessibilité"
-  description="Les choix d’accessibilité faits sur le site MUSIMA et comment signaler un problème."
-  langue={langue}
-  alternatives={alternatives}
->
+
+<Base titre={x.titre} description={x.meta} langue={langue} alternatives={alternatives}>
   <EntetePage
-    surtitre="Engagement"
-    titre="Accessibilité"
-    chapo="Un site qui ouvre le champ des possibles doit être utilisable par tout le monde. Voici ce qui a été fait, et ce qui reste à vérifier."
-    ariane={[{ libelle: 'Accessibilité' }]}
+    surtitre={x.surtitre}
+    titre={x.titre}
+    chapo={x.chapo}
+    ariane={[{ libelle: x.titre }]}
     registre="papier"
   />
   <section class="section conteneur">
     <div class="prose">
-      <h2>Ce qui est en place</h2>
-      <ul>
-        <li>Contrastes de couleur vérifiés : le texte courant atteint au minimum le niveau AA (4,5:1), dans le thème clair comme dans le thème sombre.</li>
-        <li>Navigation complète au clavier, avec un indicateur de focus visible sur chaque élément interactif.</li>
-        <li>Lien « Aller au contenu » en début de page.</li>
-        <li>Structure de titres hiérarchisée et repères de page (en-tête, navigation, contenu, pied de page) correctement balisés.</li>
-        <li>Description obligatoire pour chaque photo ajoutée dans la galerie.</li>
-        <li>Animations désactivées automatiquement si votre système demande une réduction des mouvements.</li>
-        <li>Contenu entièrement lisible sans JavaScript ; les filtres sont un confort supplémentaire, pas une condition d’accès.</li>
-        <li>Textes redimensionnables jusqu’à 200 % sans perte d’information.</li>
-      </ul>
+      <h2>{x.faitTitre}</h2>
+      <ul>{x.fait.map((element) => <li>{element}</li>)}</ul>
 
-      <h2>Ce qui reste à faire</h2>
-      <ul>
-        <li>Audit complet par une personne tierce, idéalement avec des utilisateurs de lecteurs d’écran.</li>
-        <li>Sous-titrage des captations vidéo publiées.</li>
-        <li>Vérification de l’accessibilité physique des lieux de rencontre, indiquée sur chaque fiche événement.</li>
-        <li>Traduction du site en espagnol, en anglais et en catalan : pouvoir lire dans sa langue fait aussi partie de l’accessibilité.</li>
-      </ul>
-      <p>
-        Pour être clairs : aucun audit externe n’a encore été réalisé. Ce qui est listé plus haut
-        a été vérifié pendant la conception du site, pas certifié par un tiers. Le jour où un
-        audit sera fait, son résultat — bon ou mauvais — sera publié ici.
-      </p>
+      <h2>{x.resteTitre}</h2>
+      <ul>{x.reste.map((element) => <li>{element}</li>)}</ul>
+      <p>{x.aucunAudit}</p>
 
-      <h2>Signaler un problème</h2>
+      <h2>{x.signalerTitre}</h2>
       <p>
-        Si une page vous pose une difficulté, dites-le nous : c’est le retour le plus utile qu’on
-        puisse recevoir. Écrivez à
-        {' '}<a href={`mailto:${site.contact.email}`}>{site.contact.email}</a> ou passez par la
-        {' '}<a href="/contact">page contact</a>. Précisez si vous le pouvez la page concernée et
-        ce que vous utilisez pour naviguer — c’est ce qui nous permet de corriger vite.
+        {x.signalerAvant}{' '}
+        <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>{' '}
+        {x.signalerMilieu}{' '}
+        <a href={chemin(langue, 'contact')}>{x.signalerLien}</a>. {x.signalerApres}
       </p>
     </div>
   </section>

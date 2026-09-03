@@ -42,18 +42,18 @@ const frSeul = ['fr'] as const;
 export const pagesStatiques: PageStatique[] = [
   { vue: 'accueil',         disponible: toutes },
   { vue: 'association',     segment: 'association', disponible: esFr },
-  { vue: 'equipe',          segment: 'association', sous: 'equipe', disponible: frSeul },
+  { vue: 'equipe',          segment: 'association', sous: 'equipe', disponible: esFr },
   { vue: 'evenements',      segment: 'evenements', disponible: toutes },
   { vue: 'intervenants',    segment: 'intervenants', disponible: toutes },
   { vue: 'projets',         segment: 'projets', disponible: toutes },
   { vue: 'recits',          segment: 'recits', disponible: toutes },
   { vue: 'galerie',         segment: 'galerie', disponible: toutes },
-  { vue: 'engagement',      segment: 'engagement', disponible: frSeul },
+  { vue: 'engagement',      segment: 'engagement', disponible: esFr },
   { vue: 'contact',         segment: 'contact', disponible: esFr },
   { vue: 'legal',           segment: 'legal', disponible: esFr },
   { vue: 'confidentialite', segment: 'confidentialite', disponible: esFr },
   { vue: 'cookies',         segment: 'cookies', disponible: esFr },
-  { vue: 'accessibilite',   segment: 'accessibilite', disponible: frSeul },
+  { vue: 'accessibilite',   segment: 'accessibilite', disponible: esFr },
 ];
 
 export const languesDe = (vue: Vue) =>

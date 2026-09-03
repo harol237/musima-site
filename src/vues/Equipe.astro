@@ -8,40 +8,72 @@ import { enChantier } from '~/lib/contenu';
 import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
 
-/* Les rôles listés correspondent à la structure minimale d'une
-   association. Les noms se saisiront quand le bureau sera constitué. */
-const roles = ['Présidence', 'Trésorerie', 'Secrétariat', 'Membre du bureau'];
-
 interface Props { langue: Langue; alternatives: Record<Langue, string> }
 const { langue, alternatives } = Astro.props;
 const t = traducteur(langue);
+
+const textes = {
+  es: {
+    meta: 'Las personas que llevan MUSIMA: junta directiva, miembros activos y voluntariado.',
+    surtitre: 'El marco',
+    titre: 'El equipo',
+    chapo: 'MUSIMA la sostiene un grupo de personas voluntarias. Esta página las hace visibles — es lo que vuelve legible y creíble a una asociación.',
+    bureauSurtitre: 'Junta directiva',
+    bureauTitre: 'Quién sostiene la asociación',
+    roles: ['Presidencia', 'Tesorería', 'Secretaría', 'Vocalía'],
+    nomAAjouter: 'NOMBRE POR AÑADIR',
+    autourSurtitre: 'Alrededor',
+    autourTitre: 'Voluntariado y colaboraciones',
+    autourNote: 'Fotografía, grabación, redacción, traducción, acogida, logística: muchas cosas se sostienen sobre aportaciones puntuales. Este apartado las reconoce.',
+    ctaSurtitre: 'Sumarte',
+    ctaTitre: '¿Te apetece formar parte del equipo?',
+    ctaBouton: 'Echar una mano',
+  },
+  fr: {
+    meta: 'Les personnes qui portent MUSIMA : bureau, membres actifs et bénévoles.',
+    surtitre: 'Le cadre',
+    titre: 'L’équipe',
+    chapo: 'MUSIMA est portée par un collectif de personnes bénévoles. Cette page les rend visibles — c’est ce qui rend une association lisible et crédible.',
+    bureauSurtitre: 'Bureau',
+    bureauTitre: 'Qui porte l’association',
+    roles: ['Présidence', 'Trésorerie', 'Secrétariat', 'Membre du bureau'],
+    nomAAjouter: 'NOM À AJOUTER',
+    autourSurtitre: 'Autour',
+    autourTitre: 'Bénévoles et contributeurs',
+    autourNote: 'Photographie, captation, rédaction, traduction, accueil, logistique : beaucoup de choses reposent sur des contributions ponctuelles. Cette section les reconnaît.',
+    ctaSurtitre: 'Rejoindre',
+    ctaTitre: 'Envie de faire partie de l’équipe ?',
+    ctaBouton: 'Devenir bénévole',
+  },
+} as const;
+const x = textes[langue as 'es' | 'fr'] ?? textes.fr;
 ---
 
 <Base
-  titre="L’équipe"
-  description="Les personnes qui portent MUSIMA : bureau, membres actifs et bénévoles."
-  noindex={!enChantier}
+  titre={x.titre}
+  description={x.meta}
   langue={langue}
   alternatives={alternatives}
+  noindex={!enChantier}
 >
   <EntetePage
-    surtitre="Le cadre"
-    titre="L’équipe"
-    chapo="MUSIMA est portée par un collectif de personnes bénévoles. Cette page les rend visibles — c’est ce qui rend une association lisible et crédible."
-    ariane={[{ libelle: 'Association', url: '/association' }, { libelle: 'Équipe' }]}
+    surtitre={x.surtitre}
+    titre={x.titre}
+    chapo={x.chapo}
+    ariane={[{ libelle: t('navAssociation'), url: chemin(langue, 'association') }, { libelle: x.titre }]}
   />
 
   <section class="section conteneur">
-    <EnteteSection surtitre="Bureau" titre="Qui porte l’association" />
+    <EnteteSection surtitre={x.bureauSurtitre} titre={x.bureauTitre} />
     <ul class="grille grille--4 liste-nue">
-      {roles.map((role) => (
+      {x.roles.map((role) => (
         <li>
           <article class="carte membre">
             <div class="carte__visuel ratio-4-5">
               <ARemplir type="photo" forme="visuel" />
             </div>
             <p class="membre__role">{role}</p>
-            <p class="membre__nom"><ARemplir libelle="NOM À AJOUTER" forme="ligne" /></p>
+            <p class="membre__nom"><ARemplir libelle={x.nomAAjouter} forme="ligne" /></p>
           </article>
         </li>
       ))}
@@ -49,23 +81,19 @@ const t = traducteur(langue);
   </section>
 
   <section class="section conteneur">
-    <EnteteSection surtitre="Autour" titre="Bénévoles et contributeurs" />
+    <EnteteSection surtitre={x.autourSurtitre} titre={x.autourTitre} />
     <div class="pile pile-4 mesure">
-      <p class="note">
-        Photographie, captation, rédaction, traduction, accueil, logistique : beaucoup de choses
-        reposent sur des contributions ponctuelles. Cette section les reconnaît.
-      </p>
+      <p class="note">{x.autourNote}</p>
       <ARemplir libelle="LISTE DES BÉNÉVOLES ET CONTRIBUTEURS À AJOUTER" />
     </div>
   </section>
 
   <BandeauCta
-    surtitre="Rejoindre"
-    titre="Envie de faire partie de l’équipe ?"
-    actions={[{ url: '/s-engager', libelle: 'Devenir bénévole' }]}
+    surtitre={x.ctaSurtitre}
+    titre={x.ctaTitre}
+    actions={[{ url: chemin(langue, 'engagement'), libelle: x.ctaBouton }]}
   />
 </Base>
-
 <style>
   .liste-nue { list-style: none; margin: 0; padding: 0; }
   .membre { gap: var(--e-2); padding: var(--e-4); }

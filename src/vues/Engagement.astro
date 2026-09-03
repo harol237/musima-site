@@ -8,58 +8,107 @@ import { enChantier } from '~/lib/contenu';
 import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
 
-const voies = [
-  {
-    titre: 'Intervenir',
-    pour: 'Vous avez une expérience, un savoir-faire ou un parcours à partager.',
-    texte:
-      'MUSIMA invite des personnes de tous les domaines à venir raconter ce qu’elles construisent — pas seulement les réussites, mais aussi les chemins qui ont permis d’y arriver.',
-    action: 'Proposer une intervention',
-  },
-  {
-    titre: 'Adhérer',
-    pour: 'Vous voulez soutenir la démarche et faire partie de l’aventure.',
-    texte:
-      'L’adhésion permet à l’association de fonctionner et donne accès à la vie de MUSIMA : rencontres, échanges et assemblée générale.',
-    action: 'Adhérer à l’association',
-  },
-  {
-    titre: 'Donner du temps',
-    pour: 'Vous souhaitez contribuer concrètement à l’organisation.',
-    texte:
-      'Accueil des rencontres, photographie, captation vidéo, rédaction, traduction, communication, logistique : les besoins sont variés et évoluent avec les projets.',
-    action: 'Devenir bénévole',
-  },
-  {
-    titre: 'Accompagner',
-    pour: 'Vous représentez une association, une entreprise ou une institution.',
-    texte:
-      'Mise à disposition d’un lieu, soutien financier, co-organisation d’une rencontre, relais auprès de vos publics : les formes de partenariat se construisent au cas par cas.',
-    action: 'Devenir partenaire',
-  },
-];
-
 interface Props { langue: Langue; alternatives: Record<Langue, string> }
 const { langue, alternatives } = Astro.props;
 const t = traducteur(langue);
+
+const textes = {
+  es: {
+    meta: 'Intervenir, asociarse, echar una mano o acompañar a MUSIMA: las distintas maneras de aportar a la asociación.',
+    surtitre: 'Participar',
+    titre: 'Participar en MUSIMA',
+    chapo: 'MUSIMA se construye con quienes hacen. Hay varias maneras de formar parte, según lo que te apetezca aportar.',
+    voies: [
+      {
+        titre: 'Intervenir',
+        pour: 'Tienes una experiencia, un oficio o una trayectoria que compartir.',
+        texte: 'MUSIMA invita a personas de todos los ámbitos a contar qué están construyendo — no solo los logros, también los caminos que llevaron hasta ahí.',
+        action: 'Proponer una intervención',
+      },
+      {
+        titre: 'Asociarte',
+        pour: 'Quieres apoyar el proyecto y formar parte de la aventura.',
+        texte: 'La cuota permite que la asociación funcione y da acceso a la vida de MUSIMA: encuentros, intercambios y asamblea general.',
+        action: 'Hacerte socio',
+      },
+      {
+        titre: 'Dar tiempo',
+        pour: 'Quieres aportar algo concreto a la organización.',
+        texte: 'Acogida en los encuentros, fotografía, grabación de vídeo, redacción, traducción, comunicación, logística: las necesidades son variadas y cambian con los proyectos.',
+        action: 'Echar una mano',
+      },
+      {
+        titre: 'Acompañar',
+        pour: 'Representas a una asociación, una empresa o una institución.',
+        texte: 'Ceder un local, apoyar económicamente, coorganizar un encuentro, difundir entre tus públicos: las formas de colaboración se construyen caso por caso.',
+        action: 'Colaborar con MUSIMA',
+      },
+    ],
+    cadreSurtitre: 'Marco',
+    cadreTitre: 'Cuota y afiliación',
+    cadreNote: 'El importe de la cuota, las formas de pago y lo que da derecho la afiliación se detallarán aquí. Es la información que tranquiliza a quien descubre la asociación.',
+    ctaSurtitre: '¿Alguna duda?',
+    ctaTitre: 'Escríbenos, te contestamos',
+    ctaTexte: 'Si ninguna de estas formas encaja con lo que tienes en mente, dilo sin más: muchas cosas empiezan por una primera conversación.',
+  },
+  fr: {
+    meta: 'Intervenir, adhérer, donner du temps ou accompagner MUSIMA : les différentes façons de contribuer à l’association.',
+    surtitre: 'Participer',
+    titre: 'S’engager auprès de MUSIMA',
+    chapo: 'MUSIMA se construit avec celles et ceux qui font. Il y a plusieurs façons d’en faire partie, selon ce que vous avez envie d’apporter.',
+    voies: [
+      {
+        titre: 'Intervenir',
+        pour: 'Vous avez une expérience, un savoir-faire ou un parcours à partager.',
+        texte: 'MUSIMA invite des personnes de tous les domaines à venir raconter ce qu’elles construisent — pas seulement les réussites, mais aussi les chemins qui ont permis d’y arriver.',
+        action: 'Proposer une intervention',
+      },
+      {
+        titre: 'Adhérer',
+        pour: 'Vous voulez soutenir la démarche et faire partie de l’aventure.',
+        texte: 'L’adhésion permet à l’association de fonctionner et donne accès à la vie de MUSIMA : rencontres, échanges et assemblée générale.',
+        action: 'Adhérer à l’association',
+      },
+      {
+        titre: 'Donner du temps',
+        pour: 'Vous souhaitez contribuer concrètement à l’organisation.',
+        texte: 'Accueil des rencontres, photographie, captation vidéo, rédaction, traduction, communication, logistique : les besoins sont variés et évoluent avec les projets.',
+        action: 'Devenir bénévole',
+      },
+      {
+        titre: 'Accompagner',
+        pour: 'Vous représentez une association, une entreprise ou une institution.',
+        texte: 'Mise à disposition d’un lieu, soutien financier, co-organisation d’une rencontre, relais auprès de vos publics : les formes de partenariat se construisent au cas par cas.',
+        action: 'Devenir partenaire',
+      },
+    ],
+    cadreSurtitre: 'Cadre',
+    cadreTitre: 'Adhésion et cotisation',
+    cadreNote: 'Le montant de la cotisation, les modalités de paiement et les avantages liés à l’adhésion seront précisés ici. Ces informations rassurent les personnes qui découvrent l’association.',
+    ctaSurtitre: 'Une question ?',
+    ctaTitre: 'Écrivez-nous, on vous répond',
+    ctaTexte: 'Si aucune de ces formes ne correspond à ce que vous avez en tête, dites-le simplement — beaucoup de choses se construisent à partir d’une première conversation.',
+  },
+} as const;
+const x = textes[langue as 'es' | 'fr'] ?? textes.fr;
 ---
 
 <Base
-  titre="S’engager"
-  description="Intervenir, adhérer, donner du temps ou accompagner MUSIMA : les différentes façons de contribuer à l’association."
+  titre={x.titre}
+  description={x.meta}
   langue={langue}
   alternatives={alternatives}
 >
   <EntetePage
-    surtitre="Participer"
-    titre="S’engager auprès de MUSIMA"
-    chapo="MUSIMA se construit avec celles et ceux qui font. Il y a plusieurs façons d’en faire partie, selon ce que vous avez envie d’apporter."
-    ariane={[{ libelle: 'S’engager' }]}
+    surtitre={x.surtitre}
+    titre={x.titre}
+    chapo={x.chapo}
+    ariane={[{ libelle: x.surtitre }]}
   />
 
   <section class="section conteneur">
     <ul class="voies">
-      {voies.map((voie) => (
+      {x.voies.map((voie) => (
         <li class="voie apparait">
           <div class="voie__entete">
             <span class="voie__trait" aria-hidden="true"></span>
@@ -80,13 +129,10 @@ const t = traducteur(langue);
   {enChantier && (
   <section class="section conteneur deux-colonnes">
     <div>
-      <EnteteSection surtitre="Cadre" titre="Adhésion et cotisation" />
+      <EnteteSection surtitre={x.cadreSurtitre} titre={x.cadreTitre} />
     </div>
     <div class="pile pile-4">
-      <p class="note">
-        Le montant de la cotisation, les modalités de paiement et les avantages liés à l’adhésion
-        seront précisés ici. Ces informations rassurent les personnes qui découvrent l’association.
-      </p>
+      <p class="note">{x.cadreNote}</p>
       <ARemplir libelle="MONTANT DE LA COTISATION À DÉFINIR" />
       <ARemplir libelle="MODALITÉS DE PAIEMENT À DÉFINIR" />
       <ARemplir libelle="BULLETIN D’ADHÉSION (PDF OU FORMULAIRE) À AJOUTER" />
@@ -95,10 +141,10 @@ const t = traducteur(langue);
   )}
 
   <BandeauCta
-    surtitre="Une question ?"
-    titre="Écrivez-nous, on vous répond"
-    texte="Si aucune de ces formes ne correspond à ce que vous avez en tête, dites-le simplement — beaucoup de choses se construisent à partir d’une première conversation."
-    actions={[{ url: '/contact', libelle: 'Nous écrire' }]}
+    surtitre={x.ctaSurtitre}
+    titre={x.ctaTitre}
+    texte={x.ctaTexte}
+    actions={[{ url: chemin(langue, 'contact'), libelle: t('ctaNousEcrire') }]}
   />
 </Base>
 
