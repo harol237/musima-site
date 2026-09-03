@@ -220,6 +220,10 @@ export const ui = {
     en: 'Upcoming dates will appear here. To hear about them, sign up to the newsletter at the bottom of the page.',
     ca: 'Les properes dates es publicaran aquí. Per assabentar-te’n, subscriu-te al butlletí al peu de la pàgina.',
   },
+  infosProjet: {
+    es: 'Información del proyecto', fr: 'Informations sur le projet',
+    en: 'Project details', ca: 'Informació del projecte',
+  },
   infosPratiques: {
     es: 'Información práctica', fr: 'Informations pratiques', en: 'Practical details', ca: 'Informació pràctica',
   },
@@ -333,6 +337,34 @@ export const ui = {
     fr: 'Les photos de la première rencontre seront publiées ici.',
     en: 'Photos from the first gathering will be published here.',
     ca: 'Les fotos de la primera trobada es publicaran aquí.',
+  },
+
+  albumSurtitre: { es: 'Álbum', fr: 'Album', en: 'Album', ca: 'Àlbum' },
+  albumRencontre: {
+    es: 'Ver el encuentro', fr: 'Voir la rencontre associée',
+    en: 'See the related gathering', ca: 'Veure la trobada',
+  },
+  mosaiqueAide: {
+    es: 'Toca una foto para verla en grande.',
+    fr: 'Touchez une photo pour la voir en grand.',
+    en: 'Tap a photo to see it full size.',
+    ca: 'Toca una foto per veure-la en gran.',
+  },
+
+  /* ---------------- Visionneuse ---------------- */
+  visionneuseTitre: {
+    es: 'Visor de fotos', fr: 'Visionneuse', en: 'Photo viewer', ca: 'Visor de fotos',
+  },
+  visionneuseFermer: { es: 'Cerrar', fr: 'Fermer', en: 'Close', ca: 'Tanca' },
+  visionneusePrec: {
+    es: 'Foto anterior', fr: 'Photo précédente', en: 'Previous photo', ca: 'Foto anterior',
+  },
+  visionneuseSuiv: {
+    es: 'Foto siguiente', fr: 'Photo suivante', en: 'Next photo', ca: 'Foto següent',
+  },
+  /* {i} et {n} sont remplacés à l'affichage. */
+  visionneuseCompteur: {
+    es: 'Foto {i} de {n}', fr: 'Photo {i} sur {n}', en: 'Photo {i} of {n}', ca: 'Foto {i} de {n}',
   },
 
   /* ---------------- 404 ---------------- */

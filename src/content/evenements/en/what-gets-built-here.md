@@ -11,6 +11,9 @@ lieu:
   pays: Spain
   en_ligne: false
 resume: "MUSIMA's first gathering. We invited people who have built something in Barcelona — a business, a project, a craft — and asked them to tell us how it actually went. Not the polished version: what worked, what stalled, what they would do differently."
+image: ../../../assets/uploads/galerie-2025/inspire-bcn-4.jpg
+image_alt: "In a seated audience, a man in a suit and a printed headwrap raises a finger as he speaks into a microphone; around him, a dozen people listen."
+credit_photo: "Barcelona, 2025"
 intervenants:
   - en/sebastien-richnel
 tarif: "Free entry"

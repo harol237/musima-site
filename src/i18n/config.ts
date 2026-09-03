@@ -59,4 +59,15 @@ export function chemin(langue: Langue, cle?: CleSegment, ...suite: string[]) {
 }
 
 /** Fuseau et étiquettes de date : une seule source pour tout le site. */
+/**
+ * La langue d'une adresse : « /fr/evenements » → 'fr', « /eventos » → 'es'.
+ *
+ * Sert aux composants traversés par toutes les pages, qui n'ont pas de
+ * raison de recevoir la langue en propriété depuis une vingtaine de vues.
+ */
+export function langueDeChemin(adresse: string): Langue {
+  const tete = adresse.replace(/^\//, '').split('/')[0];
+  return (langues as readonly string[]).includes(tete) ? (tete as Langue) : langueDefaut;
+}
+
 export const fuseau = 'Europe/Madrid';

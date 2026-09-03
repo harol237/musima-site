@@ -161,6 +161,13 @@ const albums = defineCollection({
             /** Obligatoire : décrit l'image pour les lecteurs d'écran. */
             alt: z.string(),
             credit: z.string().optional(),
+            /**
+             * Place de la photo dans la mosaïque. Une grille où tout est
+             * au même format donne un damier ; on varie les hauteurs.
+             * `large` ne recadre pas — à réserver aux photos de groupe,
+             * où un recadrage couperait quelqu'un au bord du cadre.
+             */
+            cadrage: z.enum(['large', 'standard', 'portrait']).default('standard'),
           }),
         )
         .default([]),

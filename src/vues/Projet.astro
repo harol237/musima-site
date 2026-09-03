@@ -55,7 +55,7 @@ const intervenants = data.intervenants.length ? await getEntries(data.intervenan
       <div class="prose"><Content /></div>
     </article>
 
-    <aside aria-label="Informations sur le projet">
+    <aside aria-label={t('infosProjet')}>
       <div class="encart">
         <h2 class="encart__titre">Partenaires</h2>
         {data.partenaires.length > 0 ? (

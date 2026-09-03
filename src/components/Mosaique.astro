@@ -1,0 +1,381 @@
+---
+/* ==================================================================
+   MOSAÏQUE + VISIONNEUSE
+   ------------------------------------------------------------------
+   Les photos d'un album, en colonnes décalées, et l'agrandissement
+   au clic.
+
+   Deux partis pris :
+
+   1. Les colonnes CSS (`columns`) plutôt qu'une grille. Une grille
+      aligne les rangées : dès que les hauteurs varient, elle laisse
+      des trous. Les colonnes empilent, donc le décalage se fait tout
+      seul et il n'y a rien à calculer.
+
+   2. Chaque vignette est un vrai lien vers la photo en grand. Sans
+      JavaScript, le clic ouvre l'image ; avec, la visionneuse prend
+      la main. Rien n'est chargé depuis un domaine extérieur : la
+      visionneuse tient en une soixantaine de lignes ici même.
+   ================================================================== */
+import { Image, getImage } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { traducteur } from '~/i18n/ui';
+import type { Langue } from '~/i18n/config';
+
+interface Props {
+  photos: CollectionEntry<'albums'>['data']['photos'];
+  langue: Langue;
+}
+const { photos, langue } = Astro.props;
+const t = traducteur(langue);
+
+/* La version affichée dans la visionneuse — et la cible du lien quand
+   JavaScript ne s'exécute pas. */
+const grandes = await Promise.all(
+  photos.map((photo) => getImage({ src: photo.fichier, width: 1800, format: 'webp', quality: 80 })),
+);
+---
+
+<div class="galerie-photos">
+  <p class="mosaique__aide">{t('mosaiqueAide')}</p>
+
+  <ul class="mosaique" data-mosaique>
+    {photos.map((photo, i) => (
+      <li class:list={['tuile', `tuile--${photo.cadrage}`]}>
+        <a
+          class="tuile__lien"
+          href={grandes[i].src}
+          data-credit={photo.credit ?? ''}
+        >
+          <Image
+            src={photo.fichier}
+            alt={photo.alt}
+            widths={[400, 700, 1100]}
+            sizes="(min-width: 72rem) 22rem, (min-width: 40rem) 45vw, 92vw"
+            loading={i === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+          />
+        </a>
+      </li>
+    ))}
+  </ul>
+
+<dialog
+  class="visionneuse"
+  aria-label={t('visionneuseTitre')}
+  data-visionneuse
+  data-gabarit={t('visionneuseCompteur')}
+>
+  <div class="visionneuse__barre">
+    <p class="visionneuse__compteur" data-compteur aria-live="polite"></p>
+    <button type="button" class="visionneuse__bouton" data-fermer aria-label={t('visionneuseFermer')}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" /></svg>
+    </button>
+  </div>
+
+  <button type="button" class="visionneuse__fleche visionneuse__fleche--prec" data-prec aria-label={t('visionneusePrec')}>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4L7 12l8 8" /></svg>
+  </button>
+
+  <figure class="visionneuse__scene">
+    <img data-image alt="" draggable="false" />
+    <figcaption class="visionneuse__legende" data-legende hidden></figcaption>
+  </figure>
+
+  <button type="button" class="visionneuse__fleche visionneuse__fleche--suiv" data-suiv aria-label={t('visionneuseSuiv')}>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l8 8-8 8" /></svg>
+  </button>
+
+</dialog>
+</div>
+
+<style>
+  .mosaique__aide {
+    font-family: var(--f-titre);
+    font-size: var(--t-200);
+    color: var(--encre-faible);
+    margin-bottom: var(--e-4);
+  }
+
+  .mosaique {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    columns: 1;
+    column-gap: var(--e-4);
+  }
+  @media (min-width: 40rem) { .mosaique { columns: 2; } }
+  @media (min-width: 72rem) { .mosaique { columns: 3; } }
+
+  /* `break-inside` empêche une photo d'être coupée en deux entre
+     le bas d'une colonne et le haut de la suivante. */
+  .tuile {
+    break-inside: avoid;
+    margin-bottom: var(--e-4);
+  }
+
+  .tuile__lien {
+    display: block;
+    overflow: hidden;
+    border-radius: var(--r-image);
+    background: var(--surface);
+    height: 100%;
+  }
+  .tuile__lien :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  .tuile__lien:hover :global(img) { transform: scale(1.03); }
+
+  /* Toutes les photos d'une même série arrivent souvent au même format.
+     On varie la découpe pour que la page ne ressemble pas à un damier ;
+     `large` ne recadre rien, pour les photos de groupe. */
+  .tuile--large    .tuile__lien { aspect-ratio: 16 / 9; }
+  .tuile--standard .tuile__lien { aspect-ratio: 3 / 2; }
+  .tuile--portrait .tuile__lien { aspect-ratio: 4 / 5; }
+
+  /* ---------------- Visionneuse ---------------- */
+  .visionneuse {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #f4f1ea;
+    overflow: hidden;
+  }
+  .visionneuse::backdrop {
+    background: rgb(8 12 14 / 0.92);
+    backdrop-filter: blur(8px);
+  }
+  .visionneuse[open] {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-rows: auto minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .visionneuse__barre {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-4);
+    padding: var(--e-3) var(--e-4);
+  }
+  .visionneuse__compteur {
+    font-family: var(--f-titre);
+    font-size: var(--t-200);
+    letter-spacing: 0.14em;
+    color: #f4f1ea;
+    opacity: 0.7;
+  }
+
+  .visionneuse__bouton,
+  .visionneuse__fleche {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    color: #f4f1ea;
+    background: rgb(255 255 255 / 0.08);
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .visionneuse__bouton:hover,
+  .visionneuse__fleche:hover { background: rgb(255 255 255 / 0.18); }
+  .visionneuse__fleche { margin-inline: var(--e-3); }
+  .visionneuse__bouton svg,
+  .visionneuse__fleche svg {
+    width: 1.4rem;
+    height: 1.4rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .visionneuse :focus-visible { outline-color: #f4f1ea; }
+
+  .visionneuse__scene {
+    grid-row: 2;
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--e-3);
+    min-height: 0;
+    height: 100%;
+    padding: 0 var(--e-4) var(--e-4);
+  }
+  .visionneuse__scene img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: var(--r-image);
+    /* Le geste de balayage est géré en JavaScript : on empêche le
+       navigateur de démarrer un défilement horizontal — ou, à la souris,
+       le glisser-déposer natif de l'image — pendant le geste. */
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .visionneuse__legende {
+    font-family: var(--f-titre);
+    font-size: var(--t-100);
+    color: #f4f1ea;
+    opacity: 0.65;
+    text-align: center;
+  }
+
+  /* Sous 48rem, les flèches passeraient sur la photo : on les met en bas. */
+  @media (max-width: 48rem) {
+    .visionneuse[open] {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+    }
+    .visionneuse__scene { grid-row: 2; grid-column: 1 / -1; }
+    .visionneuse__fleche { grid-row: 3; margin-block: var(--e-4); }
+    .visionneuse__fleche--prec { grid-column: 1; justify-self: end; }
+    .visionneuse__fleche--suiv { grid-column: 2; justify-self: start; }
+  }
+
+  :global(html.visionneuse-ouverte) { overflow: hidden; }
+</style>
+
+<script>
+  const douceur = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  document.querySelectorAll<HTMLElement>('[data-mosaique]').forEach((mosaique) => {
+    const dialogue = mosaique
+      .closest('.galerie-photos')
+      ?.querySelector<HTMLDialogElement>('[data-visionneuse]');
+    if (!dialogue) return;
+
+    const liens = [...mosaique.querySelectorAll<HTMLAnchorElement>('.tuile__lien')];
+    const image = dialogue.querySelector<HTMLImageElement>('[data-image]')!;
+    const legende = dialogue.querySelector<HTMLElement>('[data-legende]')!;
+    const compteur = dialogue.querySelector<HTMLElement>('[data-compteur]')!;
+    const gabarit = dialogue.dataset.gabarit ?? '';
+
+    let position = 0;
+
+    const vignette = (i: number) => liens[i].querySelector('img')!;
+
+    /* Charge en avance les deux photos voisines : la navigation reste
+       instantanée sans imposer six images au premier affichage. */
+    const anticiper = (i: number) => {
+      for (const voisin of [i - 1, i + 1]) {
+        if (liens[voisin]) new Image().src = liens[voisin].href;
+      }
+    };
+
+    async function montrer(i: number, depuis?: HTMLImageElement) {
+      position = (i + liens.length) % liens.length;
+      const lien = liens[position];
+      const credit = lien.dataset.credit ?? '';
+
+      image.src = lien.href;
+      image.alt = vignette(position).alt;
+      legende.textContent = credit;
+      legende.hidden = !credit;
+
+      const numero = gabarit
+        .replace('{i}', String(position + 1))
+        .replace('{n}', String(liens.length));
+      compteur.textContent = `${position + 1} / ${liens.length}`;
+      compteur.setAttribute('aria-label', numero);
+
+      await image.decode().catch(() => {});
+      anticiper(position);
+
+      if (douceur.matches) return;
+
+      if (depuis) {
+        /* Ouverture : la photo part de la vignette cliquée et vient se
+           poser à sa place, au lieu d'apparaître d'un coup. */
+        const d = depuis.getBoundingClientRect();
+        const f = image.getBoundingClientRect();
+        if (!f.width || !f.height) return;
+        const echelle = Math.max(d.width / f.width, d.height / f.height);
+        const dx = d.left + d.width / 2 - (f.left + f.width / 2);
+        const dy = d.top + d.height / 2 - (f.top + f.height / 2);
+        image.animate(
+          [
+            { transform: `translate(${dx}px, ${dy}px) scale(${echelle})`, opacity: 0.5 },
+            { transform: 'none', opacity: 1 },
+          ],
+          { duration: 340, easing: 'cubic-bezier(0.2, 0.7, 0.3, 1)' },
+        );
+      } else {
+        image.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 180, easing: 'ease-out' });
+      }
+    }
+
+    function ouvrir(i: number, depuis: HTMLImageElement) {
+      document.documentElement.classList.add('visionneuse-ouverte');
+      dialogue.showModal();
+      if (!douceur.matches) {
+        dialogue.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: 'ease-out' });
+      }
+      montrer(i, depuis);
+    }
+
+    liens.forEach((lien, i) =>
+      lien.addEventListener('click', (e) => {
+        e.preventDefault();
+        ouvrir(i, vignette(i));
+      }),
+    );
+
+    dialogue.querySelector('[data-prec]')!.addEventListener('click', () => montrer(position - 1));
+    dialogue.querySelector('[data-suiv]')!.addEventListener('click', () => montrer(position + 1));
+    dialogue.querySelector('[data-fermer]')!.addEventListener('click', () => dialogue.close());
+
+    /* Un clic à côté de la photo ferme, comme partout ailleurs. */
+    dialogue.addEventListener('click', (e) => {
+      if (e.target === dialogue || (e.target as HTMLElement).classList.contains('visionneuse__scene')) {
+        dialogue.close();
+      }
+    });
+
+    /* Échap est géré par le navigateur ; restent les flèches. */
+    dialogue.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); montrer(position - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); montrer(position + 1); }
+    });
+
+    dialogue.addEventListener('close', () => {
+      document.documentElement.classList.remove('visionneuse-ouverte');
+      image.removeAttribute('src');
+      liens[position]?.focus();
+    });
+
+    /* Balayage au doigt. 45 px : assez pour ne pas déclencher sur un
+       appui un peu glissé, assez peu pour rester naturel. */
+    let departX = 0;
+    let departY = 0;
+    image.addEventListener('pointerdown', (e) => {
+      departX = e.clientX;
+      departY = e.clientY;
+      /* Capture le pointeur : sans ça, un doigt qui sort de l'image
+         pendant le geste emporte le `pointerup` avec lui. */
+      image.setPointerCapture(e.pointerId);
+    });
+    image.addEventListener('pointerup', (e) => {
+      const dx = e.clientX - departX;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(e.clientY - departY)) {
+        montrer(position + (dx < 0 ? 1 : -1));
+      }
+    });
+    image.addEventListener('dragstart', (e) => e.preventDefault());
+  });
+</script>

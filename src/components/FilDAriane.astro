@@ -1,9 +1,18 @@
 ---
+import { chemin, langueDeChemin } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
+
 interface Props {
   elements: { libelle: string; url?: string }[];
 }
 const { elements } = Astro.props;
-const complet = [{ libelle: 'Accueil', url: '/' }, ...elements];
+
+/* La langue vient de l'adresse : le fil d'Ariane traverse toutes les
+   pages du site, on évite de la faire descendre depuis chaque vue. */
+const langue = langueDeChemin(Astro.url.pathname);
+const t = traducteur(langue);
+
+const complet = [{ libelle: t('accueil'), url: chemin(langue) }, ...elements];
 
 const donnees = {
   '@context': 'https://schema.org',
@@ -16,7 +25,7 @@ const donnees = {
   })),
 };
 ---
-<nav class="ariane" aria-label="Fil d'Ariane">
+<nav class="ariane" aria-label={t('filDAriane')}>
   <ol>
     {complet.map((element, index) => (
       <li>

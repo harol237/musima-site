@@ -45,9 +45,11 @@ export const navigationSecondaire = (langue: Langue): Entree[] => [
   entree(langue, 'contact', 'navContact'),
 ];
 
+/* La page accessibilité n'est plus listée ici, à la demande de MUSIMA.
+   Elle reste servie à son adresse — un lien déjà partagé continue de
+   fonctionner — mais ne figure plus dans le pied de page. */
 export const navigationLegale = (langue: Langue): Entree[] => [
   entree(langue, 'legal', 'navLegal'),
   entree(langue, 'confidentialite', 'navConfidentialite'),
   entree(langue, 'cookies', 'navCookies'),
-  entree(langue, 'accessibilite', 'navAccessibilite'),
 ];

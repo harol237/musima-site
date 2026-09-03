@@ -11,6 +11,9 @@ lieu:
   pays: España
   en_ligne: false
 resume: "El primer encuentro de MUSIMA. Invitamos a personas que han montado algo en Barcelona —una actividad, un proyecto, un oficio— y les pedimos que contaran cómo fue de verdad. Nada de versiones retocadas: lo que funcionó, lo que se atascó, lo que harían distinto."
+image: ../../../assets/uploads/galerie-2025/inspire-bcn-4.jpg
+image_alt: "Entre el público sentado, un hombre con traje y pañuelo estampado en la cabeza levanta el índice mientras habla por el micrófono; a su alrededor, una decena de personas escuchan."
+credit_photo: "Barcelona, 2025"
 intervenants:
   - es/sebastien-richnel
 tarif: "Entrada libre y gratuita"

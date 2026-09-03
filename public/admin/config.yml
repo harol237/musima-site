@@ -208,6 +208,7 @@ collections:
           - { name: fichier, label: Photo, widget: image, choose_url: false }
           - { name: alt, label: Description, widget: string, hint: 'Obligatoire : décrit ce que montre la photo pour les personnes qui ne la voient pas.' }
           - { name: credit, label: Crédit, widget: string, required: false }
+          - { name: cadrage, label: Place dans la mosaïque, widget: select, default: standard, options: [{ label: 'Large (photo de groupe, non recadrée)', value: large }, { label: 'Standard', value: standard }, { label: 'Portrait (plus haute)', value: portrait }], hint: 'Varie les hauteurs de la mosaïque. « Large » ne recadre pas.' }
       - { name: brouillon, label: Brouillon (masqué du site), widget: boolean, default: false }
       - { name: modele, label: Fiche modèle (à supprimer), widget: boolean, default: false }
       - { name: meta_description, label: 'SEO — description', widget: text, required: false }
