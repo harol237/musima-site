@@ -10,89 +10,152 @@ import { enChantier } from '~/lib/contenu';
 import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
 
-const publics = [
-  'Les Africains et les personnes issues des diasporas africaines',
-  'Les jeunes et les adultes qui souhaitent découvrir d’autres parcours et d’autres possibilités',
-  'Les entrepreneurs et les porteurs de projets',
-  'Les professionnels et les personnes disposant d’un savoir-faire ou d’une expérience à partager',
-  'Les associations, entreprises, institutions et autres acteurs qui peuvent enrichir ces échanges',
-];
-
-/* Les trois verbes du positionnement, dans l'ordre où ils se produisent
-   pendant une rencontre. */
-const verbes = [
-  {
-    mot: 'Connecter',
-    texte:
-      'Mettre dans la même pièce des gens qui ne se seraient pas croisés autrement. C’est bête, mais presque tout part de là.',
-  },
-  {
-    mot: 'Bâtir',
-    texte:
-      'Passer de la conversation à quelque chose de concret : un projet, une collaboration, une compétence transmise. On s’intéresse à ce qui tient dans le temps.',
-  },
-  {
-    mot: 'Impacter',
-    texte:
-      'Faire en sorte que ça compte au-delà de la soirée — pour les personnes présentes, et pour celles qui liront ce qui s’y est dit.',
-  },
-];
-
-const tons = [
-  'Humain',
-  'Accessible',
-  'Positif sans être artificiellement motivant',
-  'Curieux',
-  'Contemporain',
-  'Ouvert',
-  'Ambitieux mais simple',
-  'Concret',
-];
-
 interface Props { langue: Langue; alternatives: Record<Langue, string> }
 const { langue, alternatives } = Astro.props;
 const t = traducteur(langue);
+
+/* La page a la même structure dans toutes les langues : seuls les textes
+   changent. Un dictionnaire vaut donc mieux ici que deux gabarits, qui
+   finiraient par diverger de mise en page. */
+const textes = {
+  es: {
+    meta: 'MUSIMA da luz a personas, trayectorias e iniciativas de africanos que emprenden, crean e innovan. Misión, público, territorio y manera de trabajar.',
+    surtitre: 'La asociación',
+    titre: 'Qué hacemos, y por qué',
+    missionSurtitre: 'Misión',
+    missionTitre: 'Por qué existe MUSIMA',
+    mission: [
+      'MUSIMA da luz a personas, trayectorias, proyectos e iniciativas de africanos que emprenden, crean, innovan y aportan valor en sus ámbitos.',
+      'A través de conferencias, encuentros, contenidos y proyectos, MUSIMA crea un espacio donde las experiencias, los oficios, las ideas y las iniciativas pueden encontrarse y circular.',
+      'El objetivo es también abrir el campo de lo posible: mostrar trayectorias y realizaciones que permiten descubrir otros caminos, otras referencias, y pensar que ciertas cosas son posibles y que se puede llegar más lejos.',
+      'MUSIMA quiere además enriquecer el relato sobre los africanos y sobre África, mostrando más de lo que se construye, lo que se crea, lo que evoluciona y lo que los africanos aportan.',
+    ],
+    boussoleSurtitre: 'Nuestra brújula',
+    boussoleTitre: 'Conectar · Construir · Impactar',
+    verbes: [
+      { mot: 'Conectar', texte: 'Poner en la misma sala a gente que no se habría cruzado de otro modo. Suena tonto, pero casi todo empieza ahí.' },
+      { mot: 'Construir', texte: 'Pasar de la conversación a algo concreto: un proyecto, una colaboración, un oficio transmitido. Nos interesa lo que aguanta en el tiempo.' },
+      { mot: 'Impactar', texte: 'Conseguir que cuente más allá de la tarde — para quienes están, y para quienes lean lo que allí se dijo.' },
+    ],
+    publicSurtitre: 'Público',
+    publicTitre: '¿Para quién?',
+    publics: [
+      'Los africanos y las personas de las diásporas africanas',
+      'Jóvenes y adultos con ganas de descubrir otras trayectorias y otras posibilidades',
+      'Emprendedores y personas con un proyecto entre manos',
+      'Profesionales y quienes tienen un oficio o una experiencia que compartir',
+      'Asociaciones, empresas, instituciones y demás agentes que puedan enriquecer estos intercambios',
+    ],
+    publicNote: 'MUSIMA no se dirige solo a un público africano. Si tienes ganas de descubrir, de aprender, de intercambiar o de echar una mano, tienes tu sitio aquí.',
+    territoireSurtitre: 'Territorio',
+    territoireTitre: 'Un punto de anclaje, no un límite',
+    territoire: [
+      'El punto de partida es la diáspora africana y lo que construye en su entorno. MUSIMA arranca en Cataluña, en España, sin definirse como una iniciativa limitada a un territorio.',
+      'Con el tiempo, la asociación puede dar luz a personas, proyectos e iniciativas en distintos territorios, en particular en Europa y en África.',
+    ],
+    aujourdhui: 'Hoy',
+    horizon: 'Horizonte',
+    horizonValeur: 'Europa y África',
+    particulariteSurtitre: 'Nuestra particularidad',
+    particulariteTitre: 'Demostrar que es posible',
+    particularite: [
+      'MUSIMA no se define ni como una simple organizadora de eventos, ni como una red profesional, ni como una plataforma que promete repartir oportunidades.',
+      'Su particularidad son tres cosas, y van juntas: dar luz a personas y a sus trayectorias, crear las ocasiones de encontrarse, y hacer que las ideas, las experiencias y los oficios circulen en lugar de quedarse en una cocina.',
+      'El diferencial es también esa voluntad de demostrar que es posible. No diciéndole a la gente que puede conseguirlo, sino mostrándole personas reales, trayectorias reales y realizaciones reales.',
+    ],
+    citation: 'Un encuentro de MUSIMA puede empezar por una conferencia, pero lo que sale de ahí va más lejos: un contacto nuevo, una idea, un aprendizaje, una colaboración, un proyecto, o simplemente una posibilidad que alguien no se había planteado.',
+    tonSurtitre: 'Nuestra manera de hablar',
+    tonTitre: 'Ni miserabilismo, ni escaparate',
+    tons: ['Humano', 'Accesible', 'Positivo sin motivación artificial', 'Curioso', 'Contemporáneo', 'Abierto', 'Ambicioso pero sencillo', 'Concreto'],
+    ton: [
+      'MUSIMA no habla de los africanos solo a través de sus dificultades. Tampoco busca presentar una imagen artificialmente perfecta.',
+      'Muestra lo que existe: trayectorias, experiencias, logros, proyectos, aprendizajes, iniciativas — y también los caminos que permitieron llegar hasta ahí.',
+    ],
+    cadreSurtitre: 'El marco',
+    cadreTitre: 'El equipo y el funcionamiento',
+    cadreNote: 'Forma jurídica, fecha de creación, composición de la junta y memoria de actividades: esta información es la que hace legible una asociación ante socios e instituciones.',
+  },
+  fr: {
+    meta: 'MUSIMA met en lumière des personnes, des parcours et des initiatives d’Africains qui entreprennent, créent et innovent. Mission, public, territoire et démarche.',
+    surtitre: 'L’association',
+    titre: 'Ce qu’on fait, et pourquoi',
+    missionSurtitre: 'Mission',
+    missionTitre: 'Pourquoi MUSIMA existe',
+    mission: [
+      'MUSIMA met en lumière des personnes, des parcours, des projets et des initiatives d’Africains qui entreprennent, créent, innovent et apportent de la valeur dans leurs domaines.',
+      'À travers des conférences, des rencontres, des contenus et des projets, MUSIMA crée un espace où les expériences, les savoir-faire, les idées et les initiatives peuvent se rencontrer et circuler.',
+      'L’objectif est aussi d’ouvrir le champ des possibles : donner à voir des parcours et des réalisations qui permettent de découvrir d’autres trajectoires, d’autres références et de se dire que certaines choses sont possibles, et qu’il est possible d’aller plus loin.',
+      'MUSIMA souhaite également contribuer à enrichir le récit sur les Africains et sur l’Afrique, en donnant davantage à voir ce qui se construit, ce qui se crée, ce qui évolue et ce que les Africains apportent.',
+    ],
+    boussoleSurtitre: 'Notre boussole',
+    boussoleTitre: 'Connecter · Bâtir · Impacter',
+    verbes: [
+      { mot: 'Connecter', texte: 'Mettre dans la même pièce des gens qui ne se seraient pas croisés autrement. C’est bête, mais presque tout part de là.' },
+      { mot: 'Bâtir', texte: 'Passer de la conversation à quelque chose de concret : un projet, une collaboration, une compétence transmise. On s’intéresse à ce qui tient dans le temps.' },
+      { mot: 'Impacter', texte: 'Faire en sorte que ça compte au-delà de la soirée — pour les personnes présentes, et pour celles qui liront ce qui s’y est dit.' },
+    ],
+    publicSurtitre: 'Public',
+    publicTitre: 'Pour qui ?',
+    publics: [
+      'Les Africains et les personnes issues des diasporas africaines',
+      'Les jeunes et les adultes qui souhaitent découvrir d’autres parcours et d’autres possibilités',
+      'Les entrepreneurs et les porteurs de projets',
+      'Les professionnels et les personnes disposant d’un savoir-faire ou d’une expérience à partager',
+      'Les associations, entreprises, institutions et autres acteurs qui peuvent enrichir ces échanges',
+    ],
+    publicNote: 'MUSIMA ne s’adresse pas qu’à un public africain. Si vous avez envie de découvrir, d’apprendre, d’échanger ou de donner un coup de main, vous êtes à votre place.',
+    territoireSurtitre: 'Territoire',
+    territoireTitre: 'Un point d’ancrage, pas une limite',
+    territoire: [
+      'Le point de départ est la diaspora africaine et ce qu’elle construit dans son environnement. MUSIMA démarre en Catalogne, en Espagne, sans se définir comme une initiative limitée à un territoire.',
+      'À terme, l’association peut mettre en lumière des personnes, des projets et des initiatives dans différents territoires, notamment en Europe et en Afrique.',
+    ],
+    aujourdhui: 'Aujourd’hui',
+    horizon: 'Horizon',
+    horizonValeur: 'Europe & Afrique',
+    particulariteSurtitre: 'Notre particularité',
+    particulariteTitre: 'Montrer que c’est possible',
+    particularite: [
+      'MUSIMA ne se définit ni comme une simple organisation d’événements, ni comme un réseau professionnel, ni comme une plateforme qui promet de distribuer des opportunités.',
+      'Sa particularité tient à trois choses, et elles vont ensemble : mettre en lumière des personnes et leurs parcours, créer les occasions de se rencontrer, et faire en sorte que les idées, les expériences et les savoir-faire circulent au lieu de rester dans une cuisine.',
+      'Le différenciateur est aussi cette volonté de montrer que c’est possible. Pas simplement en disant aux gens qu’ils peuvent réussir, mais en leur donnant à voir des personnes réelles, des parcours réels et des réalisations réelles.',
+    ],
+    citation: 'Une rencontre MUSIMA peut commencer par une conférence, mais ce qui peut en découler va plus loin : une nouvelle connaissance, une idée, un apprentissage, une collaboration, un projet, ou simplement une nouvelle possibilité que quelqu’un n’avait pas envisagée auparavant.',
+    tonSurtitre: 'Notre façon de parler',
+    tonTitre: 'Ni misérabilisme, ni vitrine',
+    tons: ['Humain', 'Accessible', 'Positif sans être artificiellement motivant', 'Curieux', 'Contemporain', 'Ouvert', 'Ambitieux mais simple', 'Concret'],
+    ton: [
+      'MUSIMA ne parle pas des Africains uniquement à travers leurs difficultés. Elle ne cherche pas non plus à présenter une image artificiellement parfaite.',
+      'Elle montre ce qui existe : des parcours, des expériences, des réussites, des projets, des apprentissages, des initiatives — et aussi les chemins qui ont permis d’y arriver.',
+    ],
+    cadreSurtitre: 'Le cadre',
+    cadreTitre: 'L’équipe et le fonctionnement',
+    cadreNote: 'Statut juridique, date de création, composition du bureau et rapport d’activité : ces informations rendent l’association lisible pour les partenaires et les institutions.',
+  },
+} as const;
+const x = textes[langue as 'es' | 'fr'] ?? textes.fr;
 ---
 
 <Base
-  titre="L’association"
-  description="MUSIMA met en lumière des personnes, des parcours et des initiatives d’Africains qui entreprennent, créent et innovent. Mission, public, territoire et démarche."
+  titre={x.titre}
+  description={x.meta}
   langue={langue}
   alternatives={alternatives}
 >
   <EntetePage
-    surtitre="L’association"
-    titre="Ce qu’on fait, et pourquoi"
+    surtitre={x.surtitre}
+    titre={x.titre}
     chapo={champ(site.phrase, langue)}
-    ariane={[{ libelle: 'Association' }]}
+    ariane={[{ libelle: x.surtitre }]}
   />
 
   <!-- ============ MISSION ============ -->
   <section class="section conteneur deux-colonnes">
     <div class="colonne-titre">
-      <EnteteSection surtitre="Mission" titre="Pourquoi MUSIMA existe" />
+      <EnteteSection surtitre={x.missionSurtitre} titre={x.missionTitre} />
     </div>
     <div class="prose">
-      <p>
-        MUSIMA met en lumière des personnes, des parcours, des projets et des initiatives
-        d’Africains qui entreprennent, créent, innovent et apportent de la valeur dans leurs
-        domaines.
-      </p>
-      <p>
-        À travers des conférences, des rencontres, des contenus et des projets, MUSIMA crée un
-        espace où les expériences, les savoir-faire, les idées et les initiatives peuvent se
-        rencontrer et circuler.
-      </p>
-      <p>
-        L’objectif est aussi d’ouvrir le champ des possibles : donner à voir des parcours et des
-        réalisations qui permettent de découvrir d’autres trajectoires, d’autres références et de
-        se dire que certaines choses sont possibles, et qu’il est possible d’aller plus loin.
-      </p>
-      <p>
-        MUSIMA souhaite également contribuer à enrichir le récit sur les Africains et sur
-        l’Afrique, en donnant davantage à voir ce qui se construit, ce qui se crée, ce qui évolue
-        et ce que les Africains apportent.
-      </p>
+      {x.mission.map((p) => <p>{p}</p>)}
     </div>
   </section>
 
@@ -101,10 +164,10 @@ const t = traducteur(langue);
   <!-- ============ LES TROIS VERBES ============ -->
   <section class="section conteneur deux-colonnes">
     <div class="colonne-titre">
-      <EnteteSection surtitre="Notre boussole" titre="Connecter · Bâtir · Impacter" />
+      <EnteteSection surtitre={x.boussoleSurtitre} titre={x.boussoleTitre} />
     </div>
     <ol class="verbes">
-      {verbes.map((verbe, index) => (
+      {x.verbes.map((verbe, index) => (
         <li class="verbe apparait">
           <span class="verbe__rang" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
           <h3 class="t-carte verbe__mot">{verbe.mot}</h3>
@@ -119,16 +182,13 @@ const t = traducteur(langue);
   <!-- ============ PUBLIC ============ -->
   <section class="section conteneur deux-colonnes">
     <div class="colonne-titre">
-      <EnteteSection surtitre="Public" titre="Pour qui ?" />
+      <EnteteSection surtitre={x.publicSurtitre} titre={x.publicTitre} />
     </div>
     <div class="pile pile-5">
       <ul class="liste-traits">
-        {publics.map((element) => <li>{element}</li>)}
+        {x.publics.map((element) => <li>{element}</li>)}
       </ul>
-      <p class="note">
-        MUSIMA ne s’adresse pas qu’à un public africain. Si vous avez envie de découvrir,
-        d’apprendre, d’échanger ou de donner un coup de main, vous êtes à votre place.
-      </p>
+      <p class="note">{x.publicNote}</p>
     </div>
   </section>
 
@@ -137,28 +197,20 @@ const t = traducteur(langue);
   <!-- ============ TERRITOIRE ============ -->
   <section class="section conteneur deux-colonnes">
     <div class="colonne-titre">
-      <EnteteSection surtitre="Territoire" titre="Un point d’ancrage, pas une limite" />
+      <EnteteSection surtitre={x.territoireSurtitre} titre={x.territoireTitre} />
     </div>
     <div class="pile pile-5">
       <div class="prose">
-        <p>
-          Le point de départ est la diaspora africaine et ce qu’elle construit dans son
-          environnement. MUSIMA démarre en Catalogne, en Espagne, sans se définir comme une
-          initiative limitée à un territoire.
-        </p>
-        <p>
-          À terme, l’association peut mettre en lumière des personnes, des projets et des
-          initiatives dans différents territoires, notamment en Europe et en Afrique.
-        </p>
-      </div>
+          {x.territoire.map((p) => <p>{p}</p>)}
+        </div>
       <div class="ancrages">
         <div class="ancrage">
-          <span class="ancrage__etiquette">Aujourd’hui</span>
+          <span class="ancrage__etiquette">{x.aujourdhui}</span>
           <span class="ancrage__valeur">{champ(site.contact.region, langue)}, {champ(site.contact.pays, langue)}</span>
         </div>
         <div class="ancrage">
-          <span class="ancrage__etiquette">Horizon</span>
-          <span class="ancrage__valeur">Europe &amp; Afrique</span>
+          <span class="ancrage__etiquette">{x.horizon}</span>
+          <span class="ancrage__valeur">{x.horizonValeur}</span>
         </div>
       </div>
     </div>
@@ -168,32 +220,13 @@ const t = traducteur(langue);
   <section class="section scene">
     <div class="conteneur deux-colonnes">
       <div class="colonne-titre">
-        <EnteteSection surtitre="Notre particularité" titre="Montrer que c’est possible" />
+        <EnteteSection surtitre={x.particulariteSurtitre} titre={x.particulariteTitre} />
       </div>
       <div class="pile pile-6">
         <div class="prose">
-          <p>
-            MUSIMA ne se définit ni comme une simple organisation d’événements, ni comme un réseau
-            professionnel, ni comme une plateforme qui promet de distribuer des opportunités.
-          </p>
-          <p>
-            Sa particularité tient à trois choses, et elles vont ensemble : mettre en lumière des
-            personnes et leurs parcours, créer les occasions de se rencontrer, et faire en sorte
-            que les idées, les expériences et les savoir-faire circulent au lieu de rester dans
-            une cuisine.
-          </p>
-          <p>
-            Le différenciateur est aussi cette volonté de montrer que c’est possible. Pas
-            simplement en disant aux gens qu’ils peuvent réussir, mais en leur donnant à voir des
-            personnes réelles, des parcours réels et des réalisations réelles.
-          </p>
+          {x.particularite.map((p) => <p>{p}</p>)}
         </div>
-        <blockquote class="citation">
-          Une rencontre MUSIMA peut commencer par une conférence, mais ce qui peut en découler va
-          plus loin : une nouvelle connaissance, une idée, un apprentissage, une collaboration, un
-          projet, ou simplement une nouvelle possibilité que quelqu’un n’avait pas envisagée
-          auparavant.
-        </blockquote>
+        <blockquote class="citation">{x.citation}</blockquote>
       </div>
     </div>
   </section>
@@ -201,22 +234,15 @@ const t = traducteur(langue);
   <!-- ============ TON ============ -->
   <section class="section conteneur deux-colonnes">
     <div class="colonne-titre">
-      <EnteteSection surtitre="Notre façon de parler" titre="Ni misérabilisme, ni vitrine" />
+      <EnteteSection surtitre={x.tonSurtitre} titre={x.tonTitre} />
     </div>
     <div class="pile pile-6">
       <ul class="tons">
-        {tons.map((ton) => <li><span class="puce puce--sourde">{ton}</span></li>)}
+        {x.tons.map((ton) => <li><span class="puce puce--sourde">{ton}</span></li>)}
       </ul>
       <div class="prose">
-        <p>
-          MUSIMA ne parle pas des Africains uniquement à travers leurs difficultés. Elle ne cherche
-          pas non plus à présenter une image artificiellement parfaite.
-        </p>
-        <p>
-          Elle montre ce qui existe : des parcours, des expériences, des réussites, des projets,
-          des apprentissages, des initiatives — et aussi les chemins qui ont permis d’y arriver.
-        </p>
-      </div>
+          {x.ton.map((p) => <p>{p}</p>)}
+        </div>
     </div>
   </section>
 
@@ -228,13 +254,10 @@ const t = traducteur(langue);
   {enChantier && (
   <section class="section conteneur deux-colonnes">
     <div class="colonne-titre">
-      <EnteteSection surtitre="Le cadre" titre="L’équipe et le fonctionnement" />
+      <EnteteSection surtitre={x.cadreSurtitre} titre={x.cadreTitre} />
     </div>
     <div class="pile pile-4">
-      <p class="note">
-        Statut juridique, date de création, composition du bureau et rapport d’activité : ces
-        informations rendent l’association lisible pour les partenaires et les institutions.
-      </p>
+      <p class="note">{x.cadreNote}</p>
       <ARemplir libelle="STATUT, DATE DE CRÉATION ET NUMÉRO D’ENREGISTREMENT À AJOUTER" />
       <ARemplir libelle="COMPOSITION DU BUREAU À AJOUTER" />
       <ARemplir libelle="STATUTS DE L’ASSOCIATION (PDF) À AJOUTER" />
@@ -244,11 +267,12 @@ const t = traducteur(langue);
   )}
 
   <BandeauCta
-    surtitre="Contribuer"
-    titre="MUSIMA se construit avec celles et ceux qui font"
+    surtitre={t('ctaParticiperSurtitre')}
+    titre={t('ctaParticiperTitre')}
+    texte={t('ctaParticiperTexte')}
     actions={[
-      { url: '/s-engager', libelle: 'Voir comment s’engager' },
-      { url: '/contact', libelle: 'Nous écrire', variante: 'fantome' },
+      { url: chemin(langue, 'engagement'), libelle: t('ctaVoirEngagement') },
+      { url: chemin(langue, 'contact'), libelle: t('ctaNousEcrire'), variante: 'fantome' },
     ]}
   />
 </Base>

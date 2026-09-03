@@ -41,7 +41,7 @@ const frSeul = ['fr'] as const;
 
 export const pagesStatiques: PageStatique[] = [
   { vue: 'accueil',         disponible: toutes },
-  { vue: 'association',     segment: 'association', disponible: frSeul },
+  { vue: 'association',     segment: 'association', disponible: esFr },
   { vue: 'equipe',          segment: 'association', sous: 'equipe', disponible: frSeul },
   { vue: 'evenements',      segment: 'evenements', disponible: toutes },
   { vue: 'intervenants',    segment: 'intervenants', disponible: toutes },
