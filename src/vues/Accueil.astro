@@ -96,7 +96,7 @@ const titreProchaine = prochaine
         {reperes.length > 0 && (
           <p class="heros__reperes">
             {reperes.map((repere, index) => (
-              <>{index > 0 && <span aria-hidden="true"> · </span>}<span>{repere}</span></>
+              <>{index > 0 && <span aria-hidden="true"> · </span>}<span class="heros__repere">{repere}</span></>
             ))}
           </p>
         )}
@@ -249,6 +249,14 @@ const titreProchaine = prochaine
   }
 
   /* Le trait continu du logo, déplié à travers le héros. */
+  /* `preserveAspectRatio: none` étire la courbe à la hauteur du bloc :
+     sur un héros étroit et haut elle devient une quasi-verticale qui
+     traverse le titre, et ne se lit plus comme le trait du logo. Elle
+     n'apparaît qu'à partir du moment où le héros est assez large. */
+  .heros__trait { display: none; }
+  @media (min-width: 52rem) {
+    .heros__trait { display: block; }
+  }
   .heros__trait {
     position: absolute;
     inset: 0;
@@ -301,6 +309,10 @@ const titreProchaine = prochaine
     font-variant-numeric: tabular-nums;
     color: var(--encre-douce);
   }
+  /* Chaque donnée reste d'un seul tenant : la ligne casse entre elles,
+     jamais au milieu de « Entrada libre y gratuita ». Le séparateur, lui,
+     garde ses espaces sécables — sinon la ligne n'aurait plus où casser. */
+  .heros__repere { white-space: nowrap; }
 
   .heros__visuel {
     position: relative;
