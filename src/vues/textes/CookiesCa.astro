@@ -1,0 +1,128 @@
+---
+import EntetePage from '~/components/EntetePage.astro';
+import site from '~/data/site.json';
+import { chemin } from '~/i18n/config';
+
+const c = site.contact;
+const verif = new Intl.DateTimeFormat('ca-ES', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid',
+}).format(new Date(site.cookies.verifie_le));
+---
+<EntetePage
+  surtitre="Les teves dades"
+  titre="Galetes"
+  chapo="Aquest web no diposita cap galeta. Cap. Aquesta pàgina explica què es guarda realment al teu dispositiu, i per què no hi ha cap bàner de consentiment per acceptar."
+  ariane={[{ libelle: 'Galetes' }]}
+  registre="papier"
+/>
+<section class="section conteneur">
+  <div class="prose">
+
+    <h2>El que aquest web no fa</h2>
+    <ul>
+      <li>No es diposita cap galeta, ni nostra ni de tercers.</li>
+      <li>No hi ha cap eina de mesura d’audiència — ni Google Analytics ni equivalent. No sabem quanta gent visita aquest web.</li>
+      <li>No hi ha cap script extern, cap botó per compartir, cap vídeo incrustat.</li>
+      <li>Les tipografies estan allotjades al nostre propi domini: el teu navegador no contacta cap servidor aliè per mostrar una pàgina.</li>
+    </ul>
+    <p>
+      Comprovat el {verif} carregant diverses pàgines del lloc en un navegador net: cap capçalera
+      <code>Set-Cookie</code>, cap galeta registrada, cap petició sortint cap a un altre domini.
+    </p>
+
+    <h2>L’única cosa que es guarda al teu dispositiu</h2>
+    <p>
+      Si prems el botó clar/fosc de la part superior, o si tries un idioma, aquesta preferència es
+      guarda a l’emmagatzematge local del teu navegador. Res més.
+    </p>
+    <table class="tableau-stockage">
+      <thead>
+        <tr><th>Clau</th><th>Contingut</th><th>Es crea quan</th><th>Durada</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>musima-theme</code></td>
+          <td>La paraula <code>light</code> o <code>dark</code></td>
+          <td>Només si prems el botó de tema</td>
+          <td>Fins que esborris les dades del lloc</td>
+        </tr>
+        <tr>
+          <td><code>musima-langue</code></td>
+          <td>Un codi d’idioma: <code>es</code>, <code>fr</code>, <code>en</code> o <code>ca</code></td>
+          <td>Només si tries un idioma al selector</td>
+          <td>Fins que esborris les dades del lloc</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Aquests valors no surten mai del teu dispositiu: no es transmeten a cap servidor, ni tan sols
+      al nostre. No permeten identificar-te ni seguir-te d’un lloc a un altre.
+    </p>
+    <p>
+      <strong>Per què no hi ha cap bàner per acceptar.</strong> L’article 22.2 de la Llei 34/2002
+      (LSSI-CE) eximeix de consentiment els dispositius estrictament necessaris per a un servei
+      expressament sol·licitat per l’usuari. Recordar un ajust de visualització o un idioma que
+      acabes de triar tu entra dins d’aquesta excepció, tal com la interpreta l’Agència Espanyola
+      de Protecció de Dades a la seva guia sobre l’ús de galetes. Demanar-te permís per això no
+      tindria cap sentit: el desament només passa si fas clic.
+    </p>
+
+    <h2>Com esborrar-ho</h2>
+    <p>
+      Esborra les dades de lloc de <code>musima.org</code> als ajustos del teu navegador, o fes
+      servir una finestra de navegació privada. El web funciona exactament igual sense aquests
+      valors: aleshores segueix el tema clar o fosc del teu sistema, i l’idioma de l’adreça que
+      visites.
+    </p>
+
+    <h2>El butlletí</h2>
+    <p>
+      La subscripció al butlletí passa per {site.infolettre.fournisseur}, el nostre proveïdor
+      d’enviament. El formulari transmet la teva adreça directament a aquest proveïdor: no es
+      diposita cap galeta a {site.nom} en fer-ho. En canvi, les pàgines de confirmació i de baixa
+      allotjades pel proveïdor es regeixen per la seva pròpia política de galetes.
+    </p>
+
+    <h2>Els registres del proveïdor d’allotjament</h2>
+    <p>
+      Com tot web, aquest passa per un proveïdor d’allotjament —Cloudflare— que registra
+      tècnicament les connexions entrants per servir les pàgines i protegir-se d’atacs. Són
+      registres de servidor, no galetes: no s’escriu res al teu dispositiu. Vegeu la
+      {' '}<a href={chemin('ca', 'confidentialite')} class="lien">política de privacitat</a>.
+    </p>
+
+    <h2>Si això canvia algun dia</h2>
+    <p>
+      El dia que hi afegíssim una eina d’estadístiques, un vídeo incrustat o qualsevol altre servei
+      de tercers capaç de dipositar una galeta, passarien dues coses <em>abans</em> de posar-ho en
+      marxa: s’instal·laria un bàner de consentiment que permetria acceptar o rebutjar, i aquesta
+      pàgina s’actualitzaria. Mentre llegeixis la frase d’obertura, és que no hi ha res a
+      consentir.
+    </p>
+
+    <h2>Un dubte</h2>
+    <p>
+      Escriu a <a href={`mailto:${c.email}`} class="lien">{c.email}</a>. Si detectes una galeta en
+      aquest web, digues-nos-ho: seria una errada, i la corregiríem.
+    </p>
+  </div>
+</section>
+
+<style>
+  .tableau-stockage { width: 100%; border-collapse: collapse; font-size: var(--t-200); }
+  .tableau-stockage :is(th, td) {
+    text-align: left;
+    padding: var(--e-3);
+    border-bottom: 1px solid var(--trait);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .tableau-stockage th {
+    font-family: var(--f-titre);
+    font-size: var(--t-100);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--encre-faible);
+    border-bottom-color: var(--trait-fort);
+  }
+</style>

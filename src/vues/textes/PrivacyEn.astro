@@ -1,0 +1,186 @@
+---
+import EntetePage from '~/components/EntetePage.astro';
+import FicheLegale from '~/components/FicheLegale.astro';
+import site from '~/data/site.json';
+import { champ } from '~/i18n/site';
+import { chemin } from '~/i18n/config';
+
+const { hebergeur: h, contact: c } = site;
+const maj = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid',
+}).format(new Date('2026-09-03'));
+---
+<EntetePage
+  surtitre="Your data"
+  titre="Privacy policy"
+  chapo="This site collects the bare minimum: an email address, and only if you sign up to the newsletter. Here is the detail, and how to ask us to delete what concerns you."
+  ariane={[{ libelle: 'Privacy' }]}
+  registre="papier"
+/>
+<section class="section conteneur">
+  <div class="prose">
+
+    <h2>1. In one sentence</h2>
+    <p>
+      The site itself collects nothing: no cookie, no tracker, no audience measurement. The only
+      personal data we keep is your email address, if you sign up to the newsletter, and only then.
+    </p>
+
+    <h2>2. Who the data controller is</h2>
+    <FicheLegale langue="en" variante="court" />
+    <p>
+      No data protection officer has been appointed: the association falls under none of the cases
+      that make one mandatory under article 37 of the GDPR. Requests are handled at the address
+      given above.
+    </p>
+    <p class="note-encadree">
+      The association’s registration with the Generalitat de Catalunya is under way. The NIF and the
+      registration number will be added here as soon as they are assigned. That changes nothing
+      about your rights: they apply from today, at the contact address given.
+    </p>
+
+    <h2>3. What we process, and what for</h2>
+
+    <h3>Newsletter</h3>
+    <table class="tableau-traitement">
+      <tbody>
+        <tr><th>Data</th><td>Your email address and the date you signed up. Nothing else: no name, no individual open tracking, no profiling.</td></tr>
+        <tr><th>Purpose</th><td>Sending you the association’s news: upcoming gatherings, new writing. A handful of emails a year.</td></tr>
+        <tr><th>Legal basis</th><td>Your consent — article 6.1.a of the GDPR — given by ticking the box when you sign up. The box is never pre-ticked.</td></tr>
+        <tr><th>Retention</th><td>Until you unsubscribe, or after three years with no interaction on your part. Your address is then deleted.</td></tr>
+        <tr><th>Recipient</th><td>{site.infolettre.fournisseur} (see section 4).</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Contact form</h3>
+    <table class="tableau-traitement">
+      <tbody>
+        <tr><th>Data</th><td>The name, email address and message you write.</td></tr>
+        <tr><th>The particular bit</th><td>The form sends nothing to a server: it prepares an email in your own mail app, and you are the one who sends it. Nothing passes through this site, nothing is recorded on it. You can write to us directly if you prefer.</td></tr>
+        <tr><th>Purpose</th><td>Answering your message.</td></tr>
+        <tr><th>Legal basis</th><td>Our legitimate interest in replying to people who write to us — article 6.1.f of the GDPR.</td></tr>
+        <tr><th>Retention</th><td>As long as needed to deal with your request, and at most three years from our last exchange.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>The host’s connection logs</h3>
+    <table class="tableau-traitement">
+      <tbody>
+        <tr><th>Data</th><td>IP address, page requested, timestamp, browser type — recorded by the host, not by us.</td></tr>
+        <tr><th>Purpose</th><td>Serving the pages and protecting the site from attacks.</td></tr>
+        <tr><th>Legal basis</th><td>Legitimate interest in the security and proper running of the site — article 6.1.f of the GDPR.</td></tr>
+        <tr><th>Retention</th><td>A short period, set by the host. We have no access to these logs and draw no statistics from them.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Photographs of gatherings</h3>
+    <p>
+      Gatherings are sometimes photographed. Published images are published with the agreement of
+      the recognisable people in them — legal basis: consent. If you appear in a photo and want it
+      gone from the site, write to us: we take it down, without argument and without delay.
+    </p>
+
+    <h2>4. Who your data is passed to</h2>
+    <p>We do not sell, swap or hand over any data. Only two providers are involved, each in a precise area:</p>
+    <table class="tableau-traitement">
+      <tbody>
+        <tr>
+          <th>{site.infolettre.fournisseur}</th>
+          <td>
+            Brevo SAS, 106 boulevard Haussmann, 75008 Paris, France. Handles sending the newsletter.
+            Data hosted in the European Union. A processing agreement under article 28 of the GDPR
+            governs this arrangement.
+          </td>
+        </tr>
+        <tr>
+          <th>{h.nom}</th>
+          <td>
+            {champ(h.adresse, 'en')}. Hosts and distributes the site. It is a company established in
+            the United States: any transfers outside the European Union are covered by the European
+            Commission’s standard contractual clauses and, where applicable, by the EU—US Data
+            Privacy Framework.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>5. Your rights</h2>
+    <p>
+      The General Data Protection Regulation and Spanish Organic Law 3/2018 (LOPDGDD) give you the
+      following rights:
+    </p>
+    <ul>
+      <li><strong>Access</strong> — to know whether we process data about you, and which.</li>
+      <li><strong>Rectification</strong> — to have an inaccurate detail corrected.</li>
+      <li><strong>Erasure</strong> — to have your data deleted.</li>
+      <li><strong>Restriction</strong> — to ask for a processing operation to be frozen.</li>
+      <li><strong>Objection</strong> — to object to processing based on legitimate interest.</li>
+      <li><strong>Portability</strong> — to get your data back in a machine-readable format.</li>
+      <li><strong>Withdrawal of consent</strong> — at any time, without justifying yourself, and without affecting what was done before. For the newsletter, the unsubscribe link is in every email; an email to us is enough too.</li>
+    </ul>
+    <p>
+      <strong>How to exercise them:</strong> write to
+      {' '}<a href={`mailto:${c.email}`} class="lien">{c.email}</a>. We answer within one month. No
+      justification is asked of you, and a deletion request is acted on straight away. It is free.
+    </p>
+    <p>
+      <strong>If our answer does not satisfy you,</strong> you can turn to the Spanish supervisory
+      authority: the <em>Agencia Española de Protección de Datos</em> (AEPD), C/ Jorge Juan 6,
+      28001 Madrid — <a href="https://www.aepd.es" class="lien" rel="noopener">www.aepd.es</a>.
+    </p>
+
+    <h2>6. Cookies</h2>
+    <p>
+      This site sets no cookies. The detail — including the only value stored on your device and why
+      there is no consent banner — is on the
+      {' '}<a href={chemin('en', 'cookies')} class="lien">page about cookies</a>.
+    </p>
+
+    <h2>7. Minors</h2>
+    <p>
+      The newsletter is not aimed at children under fourteen, the age set by article 7 of the
+      LOPDGDD for consenting to the processing of their own data. If you notice that a minor has
+      signed up without their guardians’ agreement, tell us: we will delete the address.
+    </p>
+
+    <h2>8. Security</h2>
+    <p>
+      The site is served over HTTPS only. It has no database, no user accounts and no storage space
+      reachable from outside: the attack surface has deliberately been kept to a minimum. Access to
+      the content management interface is restricted to authorised people in the association.
+    </p>
+
+    <h2>9. Updates to this policy</h2>
+    <p>
+      Last updated: {maj}. If this policy changes substantially, the new version will be published
+      on this page and newsletter subscribers will be told by email.
+    </p>
+  </div>
+</section>
+
+<style>
+  .tableau-traitement { width: 100%; border-collapse: collapse; font-size: var(--t-300); }
+  .tableau-traitement th,
+  .tableau-traitement td {
+    text-align: left;
+    vertical-align: top;
+    padding: var(--e-3);
+    border-bottom: 1px solid var(--trait);
+    line-height: 1.55;
+  }
+  .tableau-traitement th {
+    font-family: var(--f-titre);
+    font-size: var(--t-100);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--encre-faible);
+    white-space: nowrap;
+  }
+  @media (max-width: 34rem) { .tableau-traitement th { white-space: normal; } }
+  .note-encadree {
+    border-left: var(--epaisseur-trait) solid var(--or);
+    padding-left: var(--e-5);
+    font-size: var(--t-300);
+    color: var(--encre-douce);
+  }
+</style>

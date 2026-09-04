@@ -1,0 +1,126 @@
+---
+import EntetePage from '~/components/EntetePage.astro';
+import site from '~/data/site.json';
+import { chemin } from '~/i18n/config';
+
+const c = site.contact;
+const verif = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid',
+}).format(new Date(site.cookies.verifie_le));
+---
+<EntetePage
+  surtitre="Your data"
+  titre="Cookies"
+  chapo="This site sets no cookies. None. This page explains what is actually stored on your device, and why there is no consent banner to accept."
+  ariane={[{ libelle: 'Cookies' }]}
+  registre="papier"
+/>
+<section class="section conteneur">
+  <div class="prose">
+
+    <h2>What this site does not do</h2>
+    <ul>
+      <li>No cookie is set, neither ours nor anyone else’s.</li>
+      <li>There is no audience measurement tool — no Google Analytics, no equivalent. We do not know how many people visit this site.</li>
+      <li>There is no external script, no share button, no embedded video.</li>
+      <li>The fonts are hosted on our own domain: your browser contacts no outside server to display a page.</li>
+    </ul>
+    <p>
+      Checked on {verif} by loading several pages of the site in a clean browser: no
+      <code>Set-Cookie</code> header, no cookie recorded, no outgoing request to another domain.
+    </p>
+
+    <h2>The only thing stored on your device</h2>
+    <p>
+      If you press the light/dark button at the top, or if you pick a language, that preference is
+      saved in your browser’s local storage. Nothing else.
+    </p>
+    <table class="tableau-stockage">
+      <thead>
+        <tr><th>Key</th><th>Content</th><th>Created when</th><th>Lifetime</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>musima-theme</code></td>
+          <td>The word <code>light</code> or <code>dark</code></td>
+          <td>Only if you press the theme button</td>
+          <td>Until you clear the site’s data</td>
+        </tr>
+        <tr>
+          <td><code>musima-langue</code></td>
+          <td>A language code: <code>es</code>, <code>fr</code>, <code>en</code> or <code>ca</code></td>
+          <td>Only if you pick a language in the selector</td>
+          <td>Until you clear the site’s data</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      These values never leave your device: they are not sent to any server, not even ours. They
+      cannot identify you or follow you from one site to another.
+    </p>
+    <p>
+      <strong>Why there is no banner to accept.</strong> Article 22.2 of Spanish Law 34/2002
+      (LSSI-CE) exempts from consent anything strictly necessary for a service the user has
+      expressly asked for. Remembering a display setting or a language you have just chosen
+      yourself falls under that exception, as the Spanish Data Protection Agency reads it in its
+      guidance on the use of cookies. Asking your permission for that would make no sense: the
+      saving only happens if you click.
+    </p>
+
+    <h2>How to delete it</h2>
+    <p>
+      Clear the site data for <code>musima.org</code> in your browser settings, or use a private
+      browsing window. The site works exactly the same without those values: it then follows your
+      system’s light or dark theme, and the language of the address you are visiting.
+    </p>
+
+    <h2>The newsletter</h2>
+    <p>
+      Newsletter sign-up goes through {site.infolettre.fournisseur}, our sending provider. The form
+      passes your address straight to that provider: no cookie is set on {site.nom} in doing so.
+      The confirmation and unsubscribe pages hosted by the provider, on the other hand, are covered
+      by its own cookie policy.
+    </p>
+
+    <h2>The host’s logs</h2>
+    <p>
+      Like any site, this one goes through a host — Cloudflare — which technically records incoming
+      connections in order to serve the pages and protect itself from attacks. Those are server
+      logs, not cookies: nothing is written to your device. See the
+      {' '}<a href={chemin('en', 'confidentialite')} class="lien">privacy policy</a>.
+    </p>
+
+    <h2>If this ever changes</h2>
+    <p>
+      The day we add a statistics tool, an embedded video or any other third-party service capable
+      of setting a cookie, two things would happen <em>before</em> switching it on: a consent
+      banner would be put in place allowing you to accept or refuse, and this page would be
+      updated. As long as you can read the opening sentence, there is nothing to consent to.
+    </p>
+
+    <h2>A question</h2>
+    <p>
+      Write to <a href={`mailto:${c.email}`} class="lien">{c.email}</a>. If you spot a cookie on
+      this site, tell us: it would be a bug, and we would fix it.
+    </p>
+  </div>
+</section>
+
+<style>
+  .tableau-stockage { width: 100%; border-collapse: collapse; font-size: var(--t-200); }
+  .tableau-stockage :is(th, td) {
+    text-align: left;
+    padding: var(--e-3);
+    border-bottom: 1px solid var(--trait);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .tableau-stockage th {
+    font-family: var(--f-titre);
+    font-size: var(--t-100);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--encre-faible);
+    border-bottom-color: var(--trait-fort);
+  }
+</style>

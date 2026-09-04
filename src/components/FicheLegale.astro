@@ -42,11 +42,27 @@ const libelles = {
     instruction: `Demande d’inscription <strong>en cours d’instruction</strong> auprès du ${registre}. Le numéro d’inscription et le NIF seront publiés sur cette page dès leur attribution. Dans l’intervalle, l’association est joignable et identifiable par les coordonnées ci-dessus.`,
     inscrite: (n: string) => `Inscrite au ${registre} sous le numéro ${n}.`,
   },
-  en: null,
-  ca: null,
+  en: {
+    denomination: 'Name', forme: 'Legal form', cadre: 'Legal framework',
+    siege: 'Registered office', courriel: 'Email address', nif: 'Tax number (NIF)',
+    registre: 'Registration', responsable: 'Responsible for publication',
+    enAttente: 'Being assigned',
+    enAttenteNif: 'Being assigned — see “Registration” below.',
+    instruction: `Registration application <strong>under way</strong> with the ${registre}. The registration number and the NIF will be published on this page as soon as they are assigned. In the meantime, the association can be reached and identified through the details above.`,
+    inscrite: (n: string) => `Registered with the ${registre} under number ${n}.`,
+  },
+  ca: {
+    denomination: 'Denominació', forme: 'Forma jurídica', cadre: 'Marc legal',
+    siege: 'Domicili social', courriel: 'Adreça electrònica', nif: 'NIF',
+    registre: 'Inscripció', responsable: 'Responsable de la publicació',
+    enAttente: 'En tràmit d’assignació',
+    enAttenteNif: 'En tràmit d’assignació — vegeu «Inscripció» més avall.',
+    instruction: `Sol·licitud d’inscripció <strong>en tramitació</strong> davant el ${registre}. El número d’inscripció i el NIF es publicaran en aquesta pàgina tan bon punt s’assignin. Mentrestant, l’associació és localitzable i identificable a través de les dades anteriors.`,
+    inscrite: (n: string) => `Inscrita al ${registre} amb el número ${n}.`,
+  },
 } as const;
 
-const l = (libelles[langue] ?? libelles.fr)!;
+const l = libelles[langue];
 const adresse = `${c.adresse}, ${champ(c.region, langue)}, ${champ(c.pays, langue)}`;
 ---
 
