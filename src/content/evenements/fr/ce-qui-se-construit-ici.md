@@ -11,9 +11,6 @@ lieu:
   pays: Espagne
   en_ligne: false
 resume: "La première rencontre MUSIMA. On a invité des personnes qui ont monté quelque chose à Barcelone — une activité, un projet, une pratique — et on leur a demandé de raconter comment ça s'est passé pour de vrai. Pas les versions retouchées : ce qui a marché, ce qui a coincé, ce qu'elles referaient autrement."
-image: ../../../assets/uploads/galerie-2025/inspire-bcn-4.jpg
-image_alt: "Dans un public assis, un homme en costume et foulard de tête imprimé lève l’index en parlant au micro ; autour de lui, une dizaine de personnes écoutent."
-credit_photo: "Barcelone, 2025"
 intervenants:
   - fr/sebastien-richnel
   - fr/intervenant-modele-2

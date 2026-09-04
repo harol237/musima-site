@@ -9,10 +9,6 @@ import site from '~/data/site.json';
 import { champ } from '~/i18n/site';
 import { enChantier } from '~/lib/contenu';
 import { chemin, type Langue } from '~/i18n/config';
-
-/* Photo de salle, tirée de l'archive 2025 : une seule image dans toute
-   la page, posée là où la lecture commence à fatiguer. */
-import salle from '~/assets/uploads/galerie-2025/inspire-bcn-5.jpg';
 import { traducteur } from '~/i18n/ui';
 
 interface Props { langue: Langue; alternatives: Record<Langue, string> }
@@ -277,15 +273,6 @@ const x = textes[langue];
       {x.mission.map((p) => <p>{p}</p>)}
     </div>
   </section>
-
-  <figure class="salle tirage">
-    <Image
-      src={salle}
-      alt={t('salleAlt')}
-      widths={[720, 1100, 1600]}
-      sizes="100vw"
-    />
-  </figure>
 
   <!-- ============ LES TROIS VERBES ============ -->
   <section class="section conteneur colonnes colonnes--decale colonnes--collant">
