@@ -6,6 +6,7 @@ import EntetePage from '~/components/EntetePage.astro';
 import EnteteSection from '~/components/EnteteSection.astro';
 import CarteIntervenant from '~/components/CarteIntervenant.astro';
 import ARemplir from '~/components/ARemplir.astro';
+import FormulaireInscription from '~/components/FormulaireInscription.astro';
 import VisuelDeSecours from '~/components/VisuelDeSecours.astro';
 import BadgeModele from '~/components/BadgeModele.astro';
 import { dateISO, estAVenir, estPublie, enChantier, pret } from '~/lib/contenu';
@@ -121,6 +122,13 @@ const donnees = {
       <div class="prose">
         <Content />
       </div>
+
+      {/* Le formulaire vit sous le programme : on s'inscrit après avoir
+          lu ce qui va se passer, pas avant. Seulement pour une rencontre
+          encore à venir, et sans doublon si une billetterie existe. */}
+      {aVenir && !pret(data.lien_inscription) && (
+        <FormulaireInscription langue={langue} evenement={data.titre} />
+      )}
     </article>
 
     <aside class="page-evenement__infos" aria-label={t('infosPratiques')}>

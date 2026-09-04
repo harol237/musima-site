@@ -1,0 +1,171 @@
+---
+/**
+ * Inscription à une rencontre.
+ *
+ * Deux modes, comme l'infolettre. Tant que `site.inscription.action` ne
+ * contient pas d'URL, le formulaire compose un e-mail dans la messagerie
+ * de la personne — aucun service tiers, rien de stocké, et ça marche dès
+ * aujourd'hui. Dès qu'une URL de formulaire est collée dans site.json,
+ * les données y sont envoyées et la confirmation devient réelle.
+ *
+ * Le message de confirmation change avec le mode : par e-mail,
+ * l'inscription n'est faite qu'une fois le message parti, et on ne peut
+ * pas la déclarer confirmée avant.
+ */
+import site from '~/data/site.json';
+import { chemin, type Langue } from '~/i18n/config';
+import { traducteur } from '~/i18n/ui';
+import { pret } from '~/lib/contenu';
+
+interface Props {
+  langue: Langue;
+  /** Titre de la rencontre, repris dans l'objet du message. */
+  evenement: string;
+}
+const { langue, evenement } = Astro.props;
+const t = traducteur(langue);
+
+const action = pret(site.inscription.action);
+const destinataire = site.inscription.destinataire;
+---
+<section class="inscription" id="inscription">
+  <div class="inscription__texte">
+    <h2 class="t-carte">{t('inscriptionTitre')}</h2>
+    <p class="inscription__intro">{t('inscriptionTexte')}</p>
+  </div>
+
+  <form
+    class="inscription__form"
+    data-formulaire-inscription
+    data-destinataire={destinataire}
+    data-evenement={evenement}
+    data-merci={action ? t('inscriptionMerci') : t('inscriptionPrete')}
+    action={action}
+    method="post"
+  >
+    <div class="champ">
+      <label for="insc-nom">{t('inscriptionNom')}</label>
+      <input id="insc-nom" name="nom" type="text" autocomplete="name" required />
+    </div>
+    <div class="champ">
+      <label for="insc-email">{t('inscriptionEmail')}</label>
+      <input id="insc-email" name="email" type="email" autocomplete="email" required />
+    </div>
+    <div class="champ">
+      <label for="insc-tel">{t('inscriptionTelephone')}</label>
+      <input id="insc-tel" name="telephone" type="tel" autocomplete="tel" />
+    </div>
+
+    <label class="consentement">
+      <input type="checkbox" name="consentement" value="1" required />
+      <span>
+        {t('inscriptionConsentement')}{' '}
+        <a href={chemin(langue, 'confidentialite')} class="lien">{t('enSavoirPlus')}</a>.
+      </span>
+    </label>
+
+    <button type="submit" class="bouton">{t('inscriptionEnvoyer')}</button>
+
+    <noscript>
+      <p class="sans-js">
+        {t('inscriptionSansJs')}{' '}
+        <a href={`mailto:${destinataire}`} class="lien">{destinataire}</a>.
+      </p>
+    </noscript>
+  </form>
+
+  <p class="inscription__merci" data-merci-inscription hidden role="status"></p>
+</section>
+
+<style>
+  .inscription {
+    display: grid;
+    gap: var(--e-5);
+    padding: var(--e-6);
+    border: 1px solid var(--trait);
+    border-left: var(--epaisseur-trait) solid var(--terre);
+    border-radius: var(--r-carte);
+    background: var(--surface);
+  }
+  @media (min-width: 52rem) {
+    .inscription { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: var(--e-7); align-items: start; }
+    .inscription__merci { grid-column: 1 / -1; }
+  }
+  .inscription__texte { display: grid; gap: var(--e-3); align-content: start; }
+  .inscription__intro { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.6; }
+
+  .inscription__form { display: grid; gap: var(--e-4); }
+  .champ { display: grid; gap: var(--e-2); }
+  .champ label {
+    font-family: var(--f-titre);
+    font-size: var(--t-200);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--encre-douce);
+  }
+  .champ input {
+    padding: 0.7em 0.85em;
+    border: 1px solid var(--trait-fort);
+    border-radius: var(--r-carte);
+    background: var(--papier);
+    color: var(--encre);
+  }
+  .champ input:focus-visible { border-color: var(--terre); }
+
+  .consentement {
+    display: flex;
+    gap: var(--e-3);
+    align-items: flex-start;
+    font-size: var(--t-300);
+    line-height: 1.5;
+    color: var(--encre-douce);
+  }
+  .consentement input { margin-top: 0.3em; flex: none; }
+
+  .inscription__form .bouton { justify-self: start; }
+  .sans-js { font-size: var(--t-300); color: var(--encre-douce); }
+
+  .inscription__merci:not([hidden]) {
+    display: block;
+    font-family: var(--f-titre);
+    font-size: var(--t-500);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--encre);
+    border-left: var(--epaisseur-trait) solid var(--or);
+    padding-left: var(--e-4);
+  }
+</style>
+
+<script>
+  const formulaire = document.querySelector<HTMLFormElement>('[data-formulaire-inscription]');
+  const merci = document.querySelector<HTMLElement>('[data-merci-inscription]');
+
+  const confirmer = () => {
+    if (!formulaire || !merci) return;
+    merci.textContent = formulaire.dataset.merci ?? '';
+    merci.hidden = false;
+    formulaire.hidden = true;
+  };
+
+  formulaire?.addEventListener('submit', (evenement) => {
+    // Avec une URL d'action, on laisse le navigateur poster : le service
+    // tiers prend le relais. Sans URL, on compose l'e-mail nous-mêmes.
+    if (formulaire.action && !formulaire.action.endsWith(location.pathname)) return;
+
+    evenement.preventDefault();
+    const champs = new FormData(formulaire);
+    const destinataire = formulaire.dataset.destinataire ?? '';
+    const rencontre = formulaire.dataset.evenement ?? '';
+    const lignes = [
+      `${champs.get('nom')}`,
+      `${champs.get('email')}`,
+      champs.get('telephone') ? `${champs.get('telephone')}` : null,
+    ].filter(Boolean);
+
+    window.location.href =
+      `mailto:${destinataire}?subject=${encodeURIComponent(`[MUSIMA] Inscription — ${rencontre}`)}` +
+      `&body=${encodeURIComponent(lignes.join('\n'))}`;
+    confirmer();
+  });
+</script>

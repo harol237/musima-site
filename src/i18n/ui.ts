@@ -334,6 +334,55 @@ export const ui = {
   labelLieu: { es: 'Lugar', fr: 'Lieu', en: 'Venue', ca: 'Lloc' },
   labelFormat: { es: 'Formato', fr: 'Format', en: 'Format', ca: 'Format' },
   labelTarif: { es: 'Precio', fr: 'Tarif', en: 'Price', ca: 'Preu' },
+  /* ---------------- Inscription à une rencontre ---------------- */
+  inscriptionTitre: {
+    es: 'Apúntate a este encuentro', fr: 'Inscris-toi à cette rencontre',
+    en: 'Sign up for this gathering', ca: 'Apunta’t a aquesta trobada',
+  },
+  inscriptionTexte: {
+    es: 'La entrada es libre, pero saber cuántos seremos nos ayuda a preparar la sala.',
+    fr: 'L’entrée est libre, mais savoir combien on sera nous aide à préparer la salle.',
+    en: 'Entry is free, but knowing how many of us there will be helps us set the room up.',
+    ca: 'L’entrada és lliure, però saber quants serem ens ajuda a preparar la sala.',
+  },
+  inscriptionNom: { es: 'Nombre y apellidos', fr: 'Nom et prénom', en: 'Name', ca: 'Nom i cognoms' },
+  inscriptionEmail: { es: 'Dirección de correo', fr: 'Adresse e-mail', en: 'Email address', ca: 'Adreça electrònica' },
+  inscriptionTelephone: {
+    es: 'Teléfono (opcional)', fr: 'Téléphone (facultatif)',
+    en: 'Phone (optional)', ca: 'Telèfon (opcional)',
+  },
+  inscriptionConsentement: {
+    es: 'Acepto que mis datos se usen para contactarme sobre este encuentro.',
+    fr: 'J’accepte que mes données soient utilisées pour me contacter au sujet de cette rencontre.',
+    en: 'I agree that my details may be used to contact me about this gathering.',
+    ca: 'Accepto que les meves dades s’usin per contactar-me sobre aquesta trobada.',
+  },
+  inscriptionEnvoyer: { es: 'Apuntarme', fr: 'Je m’inscris', en: 'Sign me up', ca: 'Apuntar-m’hi' },
+  inscriptionMerci: {
+    es: '¡Gracias! Tu inscripción está confirmada.',
+    fr: 'Merci ! Votre inscription est confirmée.',
+    en: 'Thank you! Your registration is confirmed.',
+    ca: 'Gràcies! La teva inscripció està confirmada.',
+  },
+  /* Par e-mail, l'inscription n'est réelle qu'une fois le message parti :
+     on ne peut pas la déclarer confirmée avant. */
+  inscriptionPrete: {
+    es: '¡Gracias! Tu mensaje de inscripción está listo en tu programa de correo, solo falta enviarlo.',
+    fr: 'Merci ! Ton message d’inscription est prêt dans ta messagerie, il ne reste qu’à l’envoyer.',
+    en: 'Thank you! Your sign-up message is ready in your mail app, all that’s left is to send it.',
+    ca: 'Gràcies! El teu missatge d’inscripció és a punt al teu programa de correu, només falta enviar-lo.',
+  },
+  inscriptionSansJs: {
+    es: 'El formulario necesita JavaScript. Escríbenos directamente a',
+    fr: 'Le formulaire a besoin de JavaScript. Écris-nous directement à',
+    en: 'The form needs JavaScript. Write to us directly at',
+    ca: 'El formulari necessita JavaScript. Escriu-nos directament a',
+  },
+  infolettreNom: {
+    es: 'Nombre (opcional)', fr: 'Prénom (facultatif)',
+    en: 'First name (optional)', ca: 'Nom (opcional)',
+  },
+
   sInscrire: { es: 'Guarda tu sitio', fr: 'Garde ta place', en: 'Save your seat', ca: 'Guarda el teu lloc' },
   surScene: { es: 'En el escenario', fr: 'Sur scène', en: 'On stage', ca: 'A l’escenari' },
   lesIntervenants: { es: 'Los ponentes', fr: 'Les intervenants', en: 'The speakers', ca: 'Els ponents' },

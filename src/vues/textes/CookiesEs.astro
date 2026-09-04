@@ -8,9 +8,9 @@ const verif = new Intl.DateTimeFormat('es-ES', {
 }).format(new Date(site.cookies.verifie_le));
 ---
 <EntetePage
-  surtitre="Tus datos"
+  surtitre="Sus datos"
   titre="Cookies"
-  chapo="Esta web no deposita ninguna cookie. Ninguna. Esta página explica qué se guarda realmente en tu dispositivo, y por qué no hay ningún banner de consentimiento que aceptar."
+  chapo="Esta web no deposita ninguna cookie. Ninguna. Esta página explica qué se guarda realmente en su dispositivo, y por qué no hay ningún banner de consentimiento que aceptar."
   ariane={[{ libelle: 'Cookies' }]}
   registre="papier"
 />
@@ -22,7 +22,7 @@ const verif = new Intl.DateTimeFormat('es-ES', {
       <li>No se deposita ninguna cookie, ni nuestra ni de terceros.</li>
       <li>No hay ninguna herramienta de medición de audiencia — ni Google Analytics ni equivalente. No sabemos cuánta gente visita esta web.</li>
       <li>No hay ningún script externo, ningún botón para compartir, ningún vídeo incrustado.</li>
-      <li>Las tipografías están alojadas en nuestro propio dominio: tu navegador no contacta con ningún servidor ajeno para mostrar una página.</li>
+      <li>Las tipografías están alojadas en nuestro propio dominio: su navegador no contacta con ningún servidor ajeno para mostrar una página.</li>
     </ul>
     <p>
       Comprobado el {verif} cargando varias páginas del sitio en un navegador limpio: ninguna
@@ -30,10 +30,10 @@ const verif = new Intl.DateTimeFormat('es-ES', {
       otro dominio.
     </p>
 
-    <h2>Lo único que se guarda en tu dispositivo</h2>
+    <h2>Lo único que se guarda en su dispositivo</h2>
     <p>
-      Si pulsas el botón claro/oscuro de la parte superior, o si eliges un idioma, esa preferencia
-      se guarda en el almacenamiento local de tu navegador. Nada más.
+      Si pulsa el botón claro/oscuro de la parte superior, o si elige un idioma, esa preferencia
+      se guarda en el almacenamiento local de su navegador. Nada más.
     </p>
     <table class="tableau-stockage">
       <thead>
@@ -43,41 +43,41 @@ const verif = new Intl.DateTimeFormat('es-ES', {
         <tr>
           <td><code>musima-theme</code></td>
           <td>La palabra <code>light</code> u <code>dark</code></td>
-          <td>Solo si pulsas el botón de tema</td>
-          <td>Hasta que borres los datos del sitio</td>
+          <td>Solo si pulsa el botón de tema</td>
+          <td>Hasta que borre los datos del sitio</td>
         </tr>
         <tr>
           <td><code>musima-langue</code></td>
           <td>Un código de idioma: <code>es</code>, <code>fr</code>, <code>en</code> o <code>ca</code></td>
-          <td>Solo si eliges un idioma en el selector</td>
-          <td>Hasta que borres los datos del sitio</td>
+          <td>Solo si elige un idioma en el selector</td>
+          <td>Hasta que borre los datos del sitio</td>
         </tr>
       </tbody>
     </table>
     <p>
-      Estos valores no salen nunca de tu dispositivo: no se transmiten a ningún servidor, ni
-      siquiera al nuestro. No permiten identificarte ni seguirte de un sitio a otro.
+      Estos valores no salen nunca de su dispositivo: no se transmiten a ningún servidor, ni
+      siquiera al nuestro. No permiten identificarle ni seguirle de un sitio a otro.
     </p>
     <p>
       <strong>Por qué no hay ningún banner que aceptar.</strong> El artículo 22.2 de la Ley
       34/2002 (LSSI-CE) exime de consentimiento los dispositivos estrictamente necesarios para un
       servicio expresamente solicitado por el usuario. Recordar un ajuste de visualización o un
-      idioma que acabas de elegir tú entra en esa excepción, tal como la interpreta la Agencia
-      Española de Protección de Datos en su guía sobre el uso de cookies. Pedirte permiso para eso
-      no tendría ningún sentido: el guardado solo ocurre si haces clic.
+      idioma que acaba de elegir usted entra en esa excepción, tal como la interpreta la Agencia
+      Española de Protección de Datos en su guía sobre el uso de cookies. Pedirle permiso para eso
+      no tendría ningún sentido: el guardado solo ocurre si hace clic.
     </p>
 
     <h2>Cómo borrarlo</h2>
     <p>
-      Borra los datos de sitio de <code>musima.org</code> en los ajustes de tu navegador, o usa una
+      Borre los datos de sitio de <code>musima.org</code> en los ajustes de su navegador, o use una
       ventana de navegación privada. La web funciona exactamente igual sin esos valores: sigue
-      entonces el tema claro u oscuro de tu sistema, y el idioma de la dirección que visitas.
+      entonces el tema claro u oscuro de su sistema, y el idioma de la dirección que visita.
     </p>
 
     <h2>El boletín</h2>
     <p>
       La suscripción al boletín pasa por {site.infolettre.fournisseur}, nuestro proveedor de envío.
-      El formulario transmite tu dirección directamente a ese proveedor: no se deposita ninguna
+      El formulario transmite su dirección directamente a ese proveedor: no se deposita ninguna
       cookie en {site.nom} al hacerlo. En cambio, las páginas de confirmación y de baja alojadas
       por el proveedor se rigen por su propia política de cookies.
     </p>
@@ -86,7 +86,7 @@ const verif = new Intl.DateTimeFormat('es-ES', {
     <p>
       Como toda web, esta pasa por un proveedor de alojamiento —Cloudflare— que registra
       técnicamente las conexiones entrantes para servir las páginas y protegerse de ataques. Son
-      registros de servidor, no cookies: no se escribe nada en tu dispositivo. Véase la
+      registros de servidor, no cookies: no se escribe nada en su dispositivo. Véase la
       {' '}<a href="/privacidad" class="lien">política de privacidad</a>.
     </p>
 
@@ -101,8 +101,8 @@ const verif = new Intl.DateTimeFormat('es-ES', {
 
     <h2>Una duda</h2>
     <p>
-      Escribe a <a href={`mailto:${c.email}`} class="lien">{c.email}</a>. Si detectas una cookie en
-      esta web, dínoslo: sería un fallo, y lo corregiríamos.
+      Escriba a <a href={`mailto:${c.email}`} class="lien">{c.email}</a>. Si detecta una cookie en
+      esta web, díganoslo: sería un fallo, y lo corregiríamos.
     </p>
   </div>
 </section>

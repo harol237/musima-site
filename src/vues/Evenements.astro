@@ -46,10 +46,14 @@ const inscription = prochaine ? pret(prochaine.data.lien_inscription) : undefine
             <a href={inscription} class="bouton" rel="noopener">{t('sInscrire')}</a>
           ) : (
             <a
-              href={chemin(langue, 'evenements', slugDe(prochaine.id))}
+              href={`${chemin(langue, 'evenements', slugDe(prochaine.id))}#inscription`}
               class="bouton"
-            >{t('enSavoirPlus')}</a>
+            >{t('sInscrire')}</a>
           )}
+          <a
+            href={chemin(langue, 'evenements', slugDe(prochaine.id))}
+            class="bouton bouton--fantome"
+          >{t('enSavoirPlus')}</a>
         </div>
       </div>
     </section>
