@@ -95,7 +95,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .t-hero    { font-size: var(--t-900); line-height: var(--interligne-serre); letter-spacing: -0.04em; font-weight: 700; }
-.t-hero em { font-weight: 800; }
 .t-page    { font-size: var(--t-800); line-height: 1.05; letter-spacing: -0.03em; font-weight: 700; }
 .t-section { font-size: var(--t-700); letter-spacing: -0.024em; }
 .t-carte   { font-size: var(--t-600); letter-spacing: -0.02em; }

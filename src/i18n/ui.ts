@@ -127,14 +127,21 @@ export const ui = {
     es: 'Asociación · Barcelona, Cataluña', fr: 'Association · Barcelone, Catalogne',
     en: 'Association · Barcelona, Catalonia', ca: 'Associació · Barcelona, Catalunya',
   },
-  heroTitre1: { es: 'Dar luz a lo que los', fr: 'Mettre en lumière ce que les', en: 'Shining a light on what', ca: 'Donar llum al que els' },
-  heroTitreAccent: { es: 'africanos', fr: 'Africains', en: 'Africans', ca: 'africans' },
-  heroTitre2: { es: 'están construyendo.', fr: 'construisent.', en: 'are building.', ca: 'estan construint.' },
+  /* Deux phrases, en antithèse. Elles s'affichent l'une sous l'autre :
+     c'est la structure qui porte le propos, pas une couleur. */
+  heroTitreA: {
+    es: 'Se construye mucho.', fr: 'On construit beaucoup.',
+    en: 'A lot gets built.', ca: 'Es construeix molt.',
+  },
+  heroTitreB: {
+    es: 'Se cuenta poco.', fr: 'On en parle peu.',
+    en: 'Little gets told.', ca: 'Se’n parla poc.',
+  },
   heroChapo: {
-    es: 'MUSIMA da luz a personas, trayectorias, proyectos e iniciativas de africanos que emprenden, crean, innovan y aportan valor en sus ámbitos.',
-    fr: 'MUSIMA met en lumière des personnes, des parcours, des projets et des initiatives d’Africains qui entreprennent, créent, innovent et apportent de la valeur dans leurs domaines.',
-    en: 'MUSIMA shines a light on the people, paths, projects and initiatives of Africans who start things, create, innovate and add value in their fields.',
-    ca: 'MUSIMA dona llum a persones, trajectòries, projectes i iniciatives d’africans que emprenen, creen, innoven i aporten valor en els seus àmbits.',
+    es: 'Africanos que montan empresas, proyectos y oficios en Barcelona y en otros sitios. Lo hacen bien, y casi nadie se entera. MUSIMA existe para que eso deje de pasar.',
+    fr: 'Des Africains qui montent des entreprises, des projets, des métiers — à Barcelone et ailleurs. Ils le font bien, et presque personne ne le sait. MUSIMA existe pour que ça change.',
+    en: 'Africans who start businesses, projects and trades — in Barcelona and elsewhere. They do it well, and almost no one hears about it. MUSIMA exists to change that.',
+    ca: 'Africans que munten empreses, projectes i oficis a Barcelona i en altres llocs. Ho fan bé, i gairebé ningú se n’assabenta. MUSIMA existeix perquè això deixi de passar.',
   },
   heroBoutonEvenements: {
     es: 'Ver los encuentros', fr: 'Voir les rencontres', en: 'See the gatherings', ca: 'Veure les trobades',
@@ -166,8 +173,8 @@ export const ui = {
   },
   sectionVoix: { es: 'Las voces', fr: 'Les voix', en: 'The voices', ca: 'Les veus' },
   ceuxQuiParlent: {
-    es: 'Quienes ya lo están haciendo', fr: 'Celles et ceux qui font déjà',
-    en: 'The people already doing it', ca: 'Qui ja ho està fent',
+    es: 'Quienes ya pasaron por ahí', fr: 'Celles et ceux qui sont passés par là',
+    en: 'Those who’ve been through it', ca: 'Els qui ja hi han passat',
   },
   tousLesIntervenants: {
     es: 'Todos los ponentes', fr: 'Tous les intervenants', en: 'All speakers', ca: 'Tots els ponents',
@@ -186,16 +193,16 @@ export const ui = {
   /* ---------------- Bandeau d'appel ---------------- */
   ctaParticiperSurtitre: { es: 'Participar', fr: 'Participer', en: 'Take part', ca: 'Participar' },
   ctaParticiperTitre: {
-    es: '¿Tienes una experiencia, un oficio o un proyecto que compartir?',
-    fr: 'Vous avez une expérience, un savoir-faire ou un projet à partager ?',
-    en: 'Got experience, a craft or a project to share?',
-    ca: 'Tens una experiència, un ofici o un projecte per compartir?',
+    es: '¿Has construido algo?',
+    fr: 'Vous avez construit quelque chose ?',
+    en: 'Have you built something?',
+    ca: 'Has construït alguna cosa?',
   },
   ctaParticiperTexte: {
-    es: 'MUSIMA se construye con quienes hacen. Intervenir, asociarse, echar una mano o ser socio colaborador: hay varias maneras de aportar.',
-    fr: 'MUSIMA se construit avec celles et ceux qui font. Intervenir, adhérer, devenir bénévole ou partenaire : il y a plusieurs façons de contribuer.',
-    en: 'MUSIMA is built with the people who do things. Speaking, joining, volunteering, partnering — there is more than one way in.',
-    ca: 'MUSIMA es construeix amb qui fa coses. Intervenir, associar-s’hi, donar un cop de mà o ser-ne soci col·laborador: hi ha diverses maneres d’aportar-hi.',
+    es: 'Da igual el tamaño. Si has montado una actividad, un proyecto o un oficio y puedes contar cómo, hay sitio para ti en un encuentro. Y si prefieres estar del otro lado, también hacen falta manos.',
+    fr: 'Peu importe la taille. Si vous avez monté une activité, un projet ou un métier et que vous pouvez raconter comment, il y a une place pour vous dans une rencontre. Et si vous préférez être de l’autre côté, il faut aussi des bras.',
+    en: 'Size doesn’t matter. If you’ve started an activity, a project or a trade and can tell us how, there’s a place for you at a meeting. And if you’d rather be on the other side, we need hands too.',
+    ca: 'Tant se val la mida. Si has muntat una activitat, un projecte o un ofici i pots explicar com, hi ha lloc per a tu en una trobada. I si prefereixes ser a l’altra banda, també calen mans.',
   },
   ctaVoirEngagement: {
     es: 'Ver cómo participar', fr: 'Voir comment s’engager', en: 'See how to take part', ca: 'Veure com participar-hi',
