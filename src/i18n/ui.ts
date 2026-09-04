@@ -538,6 +538,28 @@ export const ui = {
     ca: 'Toca una foto per veure-la en gran.',
   },
 
+  /* Les trois images de l'accueil. Aucun visage : elles montrent un
+     geste, un lieu, une trace — jamais quelqu'un dont on laisserait
+     croire qu'il fait partie de MUSIMA. */
+  triptyqueMetierAlt: {
+    es: 'Manos oscuras dando forma a la parte superior de un zapato sobre un banco de trabajo, con un martillo envuelto en tela.',
+    fr: 'Des mains sombres façonnent l’empeigne d’une chaussure sur un établi, un marteau enveloppé de tissu à côté.',
+    en: 'Dark-skinned hands shaping the upper of a shoe on a workbench, a cloth-wrapped hammer beside them.',
+    ca: 'Mans fosques donant forma a la part superior d’una sabata sobre un banc de treball, amb un martell embolicat en tela.',
+  },
+  triptyqueSalleAlt: {
+    es: 'Un micrófono en primer plano y, detrás, desenfocadas, las filas de sillas vacías de una sala.',
+    fr: 'Un micro au premier plan et, derrière, floues, les rangées de chaises vides d’une salle.',
+    en: 'A microphone in the foreground and, behind it out of focus, the empty rows of chairs in a hall.',
+    ca: 'Un micròfon en primer pla i, al darrere desenfocades, les fileres de cadires buides d’una sala.',
+  },
+  triptyqueTraceAlt: {
+    es: 'Una mano oscura escribe con bolígrafo en un cuaderno abierto sobre una mesa oscura.',
+    fr: 'Une main sombre écrit au stylo dans un carnet ouvert, sur une table sombre.',
+    en: 'A dark-skinned hand writing with a pen in an open notebook on a dark table.',
+    ca: 'Una mà fosca escriu amb bolígraf en una llibreta oberta sobre una taula fosca.',
+  },
+
   /* Photo d'ouverture de l'accueil — tirée de l'archive 2025, en
      attendant un portrait fait pour cette place. */
   ouvertureAlt: {

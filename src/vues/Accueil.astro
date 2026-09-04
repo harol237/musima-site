@@ -22,6 +22,18 @@ import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
 import { intentionsPar } from '~/i18n/intentions';
 
+/* Les trois images de l'accueil, dans l'ordre du récit : le métier,
+   la salle avant que ça commence, ce qu'on en écrit. Aucun visage.
+   Source : Pexels, licence libre pour usage commercial.
+     metier — Kings Studio        · pexels.com/photo/33428733
+     salle  — Borta               · pexels.com/photo/4331578
+     trace  — cottonbro studio    · pexels.com/photo/6143818
+   À remplacer par des photos de MUSIMA dès qu'il y en aura : ces
+   trois-là illustrent le propos, elles ne montrent pas l'association. */
+import metier from '~/assets/uploads/metier.jpg';
+import salle from '~/assets/uploads/salle.jpg';
+import trace from '~/assets/uploads/trace.jpg';
+
 /* Photo d'ouverture : aucune pour l'instant. Le héros se replie alors
    sur une seule colonne plutôt que d'afficher un cadre vide.
    Pour en remettre une, deux lignes :
@@ -131,6 +143,24 @@ const titreProchaine = prochaine
         </li>
       ))}
     </ul>
+  </section>
+
+  <!-- ================= TRIPTYQUE ================= -->
+  <section class="triptyque">
+    <div class="conteneur triptyque__grille">
+      <figure class="tri tri--metier tirage">
+        <Image src={metier} alt={t('triptyqueMetierAlt')} widths={[420, 760, 1100]}
+               sizes="(min-width: 62rem) 34rem, 92vw" />
+      </figure>
+      <figure class="tri tri--salle tirage">
+        <Image src={salle} alt={t('triptyqueSalleAlt')} widths={[380, 700, 1000]}
+               sizes="(min-width: 62rem) 28rem, 92vw" />
+      </figure>
+      <figure class="tri tri--trace tirage">
+        <Image src={trace} alt={t('triptyqueTraceAlt')} widths={[400, 720, 1050]}
+               sizes="(min-width: 62rem) 30rem, 92vw" />
+      </figure>
+    </div>
   </section>
 
   <!-- ================= PROCHAINE RENCONTRE ================= -->
@@ -377,6 +407,62 @@ const titreProchaine = prochaine
   .intention__trait { max-width: 6rem; }
   .intention__mot { font-weight: 700; }
   .intention p { font-size: var(--t-300); line-height: 1.65; color: var(--encre-douce); text-wrap: pretty; }
+
+  /* ---------------- Triptyque ----------------
+     Trois images qui se chevauchent, chacune à sa profondeur. Ce qui
+     donne le vivant, ce n'est pas le mouvement de chaque image mais
+     l'écart entre elles : trois vitesses de dérive, trois amplitudes
+     de parallaxe. Une vidéo de fond ferait le même effet pour plusieurs
+     mégaoctets et une batterie vidée. */
+  /* Moins d'air en haut : le triptyque prolonge les quatre blocs,
+     il n'ouvre pas une nouvelle section. */
+  .triptyque { padding-block: var(--e-7) var(--e-section); overflow: clip; }
+  .triptyque__grille { display: grid; gap: var(--e-5); }
+
+  .tri { margin: 0; overflow: hidden; border-radius: var(--r-visuel); background: var(--surface-2); }
+  .tri :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .tri--metier { aspect-ratio: 4 / 3; }
+  .tri--salle { aspect-ratio: 16 / 9; }
+  .tri--trace { aspect-ratio: 3 / 2; }
+
+  @media (min-width: 62rem) {
+    .triptyque__grille {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--e-6);
+      row-gap: 0;
+      align-items: start;
+    }
+    .tri--metier { grid-column: 1 / 7;  grid-row: 1; margin-top: 3.5rem; }
+    .tri--salle  { grid-column: 8 / 13; grid-row: 1; }
+    .tri--trace  { grid-column: 5 / 11; grid-row: 2; margin-top: -5rem; z-index: 1; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* La dérive : lente, sans fin, jamais la même vitesse d'une image
+       à l'autre — sinon les trois respirent ensemble et ça se voit. */
+    .tri :global(img) {
+      animation: derive 28s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    .tri--salle :global(img) { animation-duration: 34s; animation-delay: -6s; }
+    .tri--trace :global(img) { animation-duration: 24s; animation-delay: -12s; }
+    @keyframes derive {
+      from { transform: scale(1.04) translate(-0.6%, 0.4%); }
+      to   { transform: scale(1.1) translate(0.8%, -0.7%); }
+    }
+
+    @supports (animation-timeline: view()) {
+      /* La profondeur : la grande bouge le moins. */
+      .tri { animation: flotte linear both; animation-timeline: view(); }
+      .tri--metier { --amplitude: 14px; }
+      .tri--salle { --amplitude: 34px; }
+      .tri--trace { --amplitude: 22px; }
+      @keyframes flotte {
+        from { translate: 0 calc(var(--amplitude) * 1); }
+        to   { translate: 0 calc(var(--amplitude) * -1); }
+      }
+    }
+  }
 
   /* ---------------- Rencontres suivantes ---------------- */
   .suite { display: flex; flex-direction: column; }
