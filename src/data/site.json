@@ -25,7 +25,7 @@
   },
   "langue": "fr",
   "contact": {
-    "email": "contact@musima.org",
+    "email": "Musima.org@mail.com",
     "telephone": "[TÉLÉPHONE À AJOUTER]",
     "rue": "Carrer Musima 237",
     "code_postal": "08930",
@@ -118,7 +118,6 @@
   },
   "inscription": {
     "actif": true,
-    "destinataire": "contact@musima.org",
     "action": "[URL DU FORMULAIRE (FORMSPREE, GETFORM…) — LAISSER TEL QUEL POUR ENVOYER PAR E-MAIL]"
   }
 }
