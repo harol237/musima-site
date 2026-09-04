@@ -37,6 +37,9 @@ const { hauteur = '2.25rem', class: classe = '', titre = 'MUSIMA' } = Astro.prop
     --logo-or: var(--marque-or);
     width: auto;
     overflow: visible;
+    /* La hauteur arrive d'une variable : quand l'en-tête se replie,
+       elle change et la transition suit. */
+    transition: height var(--mv-moyen) var(--courbe-arrivee);
   }
   .logo :is(polyline, path, line) {
     fill: none;

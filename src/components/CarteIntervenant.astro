@@ -6,6 +6,7 @@ import BadgeModele from './BadgeModele.astro';
 import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
 import { enChantier, pret, slugDe } from '~/lib/contenu';
+import { nomTransition } from '~/lib/transitions';
 
 interface Props {
   langue: Langue;
@@ -20,7 +21,7 @@ const sousTitre = [data.fonction, data.organisation].filter(Boolean).join(' · '
   {data.modele && <BadgeModele />}
 
   {(data.photo || enChantier) && (
-  <div class="carte__visuel ratio-4-5">
+  <div class="carte__visuel ratio-4-5" style={nomTransition('pt', slugDe(intervenant.id), !!data.photo)}>
     {data.photo ? (
       <Image
         src={data.photo}

@@ -1,8 +1,19 @@
 ---
+import { Image } from 'astro:assets';
 import Logo from './Logo.astro';
 import SelecteurLangue from './SelecteurLangue.astro';
+import site from '~/data/site.json';
+import { champ } from '~/i18n/site';
 import { navigationPrincipale, actionPrincipale } from '~/data/navigation';
-import { rubriquesRemplies } from '~/lib/contenu';
+import {
+  chargerEvenements,
+  chargerIntervenants,
+  chargerProjets,
+  chargerRecits,
+  pret,
+  rubriquesRemplies,
+} from '~/lib/contenu';
+import { formaterDate, statutsProjet, traduireValeur } from '~/i18n/utils';
 import { traducteur } from '~/i18n/ui';
 import type { Langue } from '~/i18n/config';
 
@@ -19,15 +30,86 @@ const action = actionPrincipale(langue);
 
 const cheminActuel = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
 const estActif = (url: string) => cheminActuel === url || cheminActuel.startsWith(url + '/');
+
+/* ------------------------------------------------------------------
+   Aperçus du menu plein écran.
+
+   Chaque rubrique montre son contenu le plus récent — une vraie date,
+   un vrai nom. Rien n'est inventé : quand une rubrique est vide, on
+   affiche le texte d'attente déjà écrit pour elle.
+   ------------------------------------------------------------------ */
+const [evenements, intervenants, projets, recits] = await Promise.all([
+  chargerEvenements(langue),
+  chargerIntervenants(langue),
+  chargerProjets(langue),
+  chargerRecits(langue),
+]);
+
+const prochain = evenements.aVenir[0] ?? evenements.passes[0];
+const voix = intervenants.find((i) => i.data.photo) ?? intervenants[0];
+const projet = projets[0];
+const recit = recits[0];
+
+type Apercu = {
+  etiquette: string;
+  titre: string;
+  detail?: string;
+  photo?: ImageMetadata;
+  alt?: string;
+};
+
+const apercus: Record<string, Apercu> = {
+  association: {
+    etiquette: t('navAssociation'),
+    titre: champ(site.baseline, langue),
+    detail: champ(site.description_courte, langue),
+  },
+  evenements: prochain
+    ? {
+        etiquette: evenements.aVenir[0] ? t('prochaineRencontre') : t('rencontrePassee'),
+        titre: prochain.data.titre,
+        detail: [formaterDate(prochain.data.date_debut, langue), prochain.data.lieu?.ville]
+          .filter(Boolean)
+          .join(' · '),
+      }
+    : { etiquette: t('sectionRencontres'), titre: t('aucuneRencontreTitre') },
+  intervenants: voix
+    ? {
+        etiquette: t('sectionVoix'),
+        titre: voix.data.nom,
+        detail: [voix.data.fonction, voix.data.organisation].filter(Boolean).join(' · '),
+        photo: voix.data.photo,
+        alt: pret(voix.data.photo_alt) ?? `${t('portraitDe')} ${voix.data.nom}`,
+      }
+    : { etiquette: t('sectionVoix'), titre: t('aucunIntervenantTitre') },
+  projets: projet
+    ? {
+        etiquette: t('labelProjet'),
+        titre: projet.data.titre,
+        detail: traduireValeur(statutsProjet, projet.data.statut, langue),
+      }
+    : { etiquette: t('navProjets'), titre: t('aucunProjetTitre') },
+  recits: recit
+    ? {
+        etiquette: t('navRecits'),
+        titre: recit.data.titre,
+        detail: formaterDate(recit.data.date, langue),
+      }
+    : { etiquette: t('navRecits'), titre: t('aucunRecitTitre') },
+};
+
+/** La clé d'aperçu d'une entrée de menu. « Association » n'a pas de collection. */
+const cleApercu = (rubrique?: string) => rubrique ?? 'association';
+const cleDefaut = cleApercu(entrees[0]?.rubrique);
 ---
 
 <header class="entete" data-entete>
   <div class="conteneur entete__interieur">
     <a href={alternatives[langue]} class="entete__marque" aria-label={t('accueilAria')}>
-      <Logo hauteur="1.9rem" />
+      <Logo hauteur="var(--logo-h, 1.9rem)" />
     </a>
 
-    <nav class="entete__nav" aria-label={t('navPrincipale')}>
+    <nav class="entete__nav" aria-label={t('navPrincipale')} data-nav>
       <ul class="entete__liste">
         {entrees.map((entree) => (
           <li>
@@ -39,6 +121,9 @@ const estActif = (url: string) => cheminActuel === url || cheminActuel.startsWit
           </li>
         ))}
       </ul>
+      {/* Filet unique qui se déplace d'un lien à l'autre. Sans script il
+          reste absent, et le soulignement individuel prend le relais. */}
+      <span class="entete__curseur" data-curseur aria-hidden="true" hidden></span>
     </nav>
 
     <div class="entete__actions">
@@ -68,50 +153,97 @@ const estActif = (url: string) => cheminActuel === url || cheminActuel.startsWit
         data-ouvrir={t('ouvrirMenu')}
         data-fermer={t('fermerMenu')}
         aria-expanded="false"
-        aria-controls="menu-mobile"
+        aria-controls="menu-plein"
       >
         <span class="entete__bascule-traits" aria-hidden="true"><span></span><span></span></span>
+        <span class="entete__bascule-mot" aria-hidden="true">{t('menuBouton')}</span>
         <span class="visuellement-cache">{t('ouvrirMenu')}</span>
       </button>
     </div>
   </div>
+</header>
 
-  <div class="menu-mobile" id="menu-mobile" data-menu-mobile hidden>
-    <nav class="conteneur menu-mobile__interieur" aria-label={t('navPrincipaleMobile')}>
-      <ul class="menu-mobile__liste">
-        {entrees.map((entree) => (
-          <li>
-            <a href={entree.url} aria-current={estActif(entree.url) ? 'page' : undefined}>
-              <span class="menu-mobile__libelle">{entree.libelle}</span>
-              {entree.description && <span class="menu-mobile__desc">{entree.description}</span>}
+<div class="menu-plein scene" id="menu-plein" data-menu-plein hidden>
+  <svg class="menu-plein__trait" viewBox="0 0 1200 400" aria-hidden="true" preserveAspectRatio="none">
+    <path d="M-40 330 C 180 330 200 90 400 90 C 600 90 620 310 820 310 C 1020 310 1040 120 1260 120" />
+  </svg>
+
+  <div class="conteneur menu-plein__interieur">
+    <nav class="menu-plein__nav" aria-label={t('navPrincipaleMobile')}>
+      <ul class="menu-plein__liste">
+        {entrees.map((entree, index) => (
+          <li style={`--i:${index}`}>
+            <a
+              href={entree.url}
+              data-apercu-cle={cleApercu(entree.rubrique)}
+              aria-current={estActif(entree.url) ? 'page' : undefined}
+            >
+              <span class="menu-plein__libelle">{entree.libelle}</span>
+              {entree.description && <span class="menu-plein__desc">{entree.description}</span>}
             </a>
           </li>
         ))}
       </ul>
-      <a href={action.url} class="bouton menu-mobile__cta">{action.libelle}</a>
-      <SelecteurLangue langue={langue} alternatives={alternatives} variante="mobile" />
     </nav>
+
+    {/* Volet d'aperçu : redit en image ce que le lien dit déjà en texte,
+        donc masqué aux technologies d'assistance. */}
+    <div class="menu-plein__apercu" aria-hidden="true">
+      {Object.entries(apercus).map(([cle, apercu]) => (
+        <figure class="apercu" data-apercu={cle} hidden={cle !== cleDefaut}>
+          {apercu.photo && (
+            <div class="apercu__visuel ratio-4-5">
+              <Image src={apercu.photo} alt={apercu.alt ?? ''} widths={[240, 420]} sizes="18rem" />
+            </div>
+          )}
+          <figcaption class="apercu__texte">
+            <span class="apercu__etiquette">{apercu.etiquette}</span>
+            <span class="apercu__titre">{apercu.titre}</span>
+            {apercu.detail && <span class="apercu__detail">{apercu.detail}</span>}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <div class="menu-plein__pied">
+      <a href={action.url} class="bouton menu-plein__cta">{action.libelle}</a>
+      <SelecteurLangue langue={langue} alternatives={alternatives} variante="pastilles" />
+    </div>
   </div>
-</header>
+</div>
 
 <style>
   .entete {
+    --logo-h: 1.9rem;
     position: sticky;
     top: 0;
     z-index: 50;
     background: color-mix(in oklab, var(--papier) 88%, transparent);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid transparent;
-    transition: border-color var(--transition);
+    transition: border-color var(--transition),
+                background var(--mv-moyen) var(--courbe-arrivee);
+    /* Reste immobile pendant une transition de page : les deux documents
+       ont le même en-tête, le navigateur ne le rejoue donc pas. */
+    view-transition-name: entete;
   }
   .entete[data-defile] { border-bottom-color: var(--trait); }
+
+  /* Passé le premier écran, l'en-tête se replie : il rend de la hauteur
+     à la lecture et signale qu'on est entré dans la page. */
+  .entete[data-compact] {
+    --logo-h: 1.5rem;
+    background: color-mix(in oklab, var(--papier) 96%, transparent);
+  }
 
   .entete__interieur {
     display: flex;
     align-items: center;
     gap: var(--e-5);
     min-height: 4.75rem;
+    transition: min-height var(--mv-moyen) var(--courbe-arrivee);
   }
+  .entete[data-compact] .entete__interieur { min-height: 3.75rem; }
 
   .entete__marque {
     display: flex;
@@ -120,7 +252,7 @@ const estActif = (url: string) => cheminActuel === url || cheminActuel.startsWit
     border-radius: 3px;
   }
 
-  .entete__nav { margin-inline: auto; }
+  .entete__nav { margin-inline: auto; position: relative; }
 
   .entete__liste {
     display: flex;
@@ -132,6 +264,24 @@ const estActif = (url: string) => cheminActuel === url || cheminActuel.startsWit
   }
 
   .entete__lien { font-size: var(--t-300); }
+
+  /* Le curseur remplace les soulignements individuels dès qu'il est actif. */
+  .entete__curseur {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: var(--w, 0);
+    height: var(--epaisseur-trait);
+    border-radius: var(--r-pilule);
+    background: var(--or-encre);
+    transform: translateX(var(--x, 0));
+    opacity: var(--o, 0);
+    pointer-events: none;
+    transition: transform var(--mv-moyen) var(--courbe-arrivee),
+                width var(--mv-moyen) var(--courbe-arrivee),
+                opacity var(--transition);
+  }
+  .entete__nav[data-curseur-actif] :global(.lien-trait::after) { opacity: 0; }
 
   .entete__actions {
     display: flex;
@@ -168,15 +318,32 @@ const estActif = (url: string) => cheminActuel === url || cheminActuel.startsWit
   :global(:root[data-theme='dark']) .bascule-theme__icone--clair { display: none; }
   :global(:root[data-theme='dark']) .bascule-theme__icone--sombre { display: block; }
 
-  /* --- Bascule mobile : deux traits, capuchons ronds (motif du logo) --- */
-  .entete__bascule { display: none; width: 2.375rem; height: 2.375rem; place-items: center; }
-  .entete__bascule-traits { display: grid; gap: 5px; width: 1.25rem; }
+  /* --- Bouton du menu : deux traits, capuchons ronds (motif du logo) --- */
+  .entete__bascule {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--e-2);
+    height: 2.375rem;
+    padding-inline: 0.7rem;
+    border: 1px solid var(--trait);
+    border-radius: var(--r-pilule);
+    color: var(--encre-douce);
+    transition: color var(--transition), border-color var(--transition);
+  }
+  .entete__bascule:hover { color: var(--terre); border-color: var(--terre); }
+  .entete__bascule-mot {
+    font-family: var(--f-titre);
+    font-size: var(--t-200);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+  .entete__bascule-traits { display: grid; gap: 5px; width: 1.05rem; }
   .entete__bascule-traits span {
     display: block;
     height: var(--epaisseur-trait);
     border-radius: var(--r-pilule);
-    background: var(--encre);
-    transition: transform var(--transition), opacity var(--transition);
+    background: currentColor;
+    transition: transform var(--mv-moyen) var(--courbe-arrivee);
   }
   .entete__bascule[aria-expanded='true'] .entete__bascule-traits span:first-child {
     transform: translateY(3.5px) rotate(45deg);
@@ -185,61 +352,203 @@ const estActif = (url: string) => cheminActuel === url || cheminActuel.startsWit
     transform: translateY(-3.5px) rotate(-45deg);
   }
 
-  /* --- Panneau mobile --- */
-  .menu-mobile {
-    display: none;
-    border-top: 1px solid var(--trait);
-    background: var(--papier);
-    max-height: calc(100dvh - 4.75rem);
+  /* ================================================================
+     MENU PLEIN ÉCRAN
+     ---------------------------------------------------------------
+     Le panneau se déplie comme un rideau : le masque descend, puis
+     les entrées arrivent en cascade. À la fermeture, tout repart plus
+     vite qu'à l'ouverture — une sortie qui traîne donne l'impression
+     d'attendre.
+     ================================================================ */
+  .menu-plein {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--scene-fond);
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path var(--mv-moyen) var(--courbe-arrivee);
   }
-  .menu-mobile__interieur { display: flex; flex-direction: column; gap: var(--e-5); padding-block: var(--e-5) var(--e-7); }
-  .menu-mobile__liste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
-  .menu-mobile__liste li + li { border-top: 1px solid var(--trait); }
-  .menu-mobile__liste a {
+  .menu-plein:not([hidden]) { display: block; }
+  .menu-plein[data-ouvert] {
+    clip-path: inset(0 0 0 0);
+    transition-duration: 480ms;
+  }
+
+  .menu-plein__trait {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: var(--scene-or);
+    stroke-width: 2;
+    stroke-linecap: round;
+    opacity: 0.14;
+    pointer-events: none;
+  }
+
+  .menu-plein__interieur {
+    position: relative;
+    min-height: 100%;
+    display: grid;
+    align-content: start;
+    gap: var(--e-7);
+    padding-block: calc(4.75rem + var(--e-6)) var(--e-7);
+  }
+
+  .menu-plein__liste { list-style: none; margin: 0; padding: 0; }
+  .menu-plein__liste li {
+    border-top: 1px solid var(--scene-trait);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity var(--mv-moyen) var(--courbe-arrivee),
+                transform var(--mv-moyen) var(--courbe-arrivee);
+    transition-delay: calc(140ms + var(--i, 0) * 45ms);
+  }
+  .menu-plein[data-ouvert] .menu-plein__liste li { opacity: 1; transform: none; }
+
+  .menu-plein__liste a {
     display: flex;
     flex-direction: column;
     gap: 2px;
     padding-block: var(--e-4);
     text-decoration: none;
   }
-  .menu-mobile__libelle {
+  .menu-plein__libelle {
     font-family: var(--f-titre);
-    font-size: var(--t-600);
+    font-size: var(--t-700);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    transition: color var(--transition);
+  }
+  .menu-plein__liste a:hover .menu-plein__libelle,
+  .menu-plein__liste a[aria-current='page'] .menu-plein__libelle { color: var(--terre); }
+  .menu-plein__desc { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.45; }
+
+  /* --- Volet d'aperçu --- */
+  .menu-plein__apercu { display: none; }
+  .apercu { margin: 0; display: grid; gap: var(--e-4); max-width: 18rem; }
+  .apercu__visuel {
+    overflow: hidden;
+    border-radius: var(--r-visuel);
+    background: var(--surface);
+  }
+  .apercu__visuel :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .apercu__texte { display: grid; gap: var(--e-2); }
+  .apercu__etiquette {
+    font-family: var(--f-titre);
+    font-size: var(--t-100);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--or-encre);
+  }
+  .apercu__titre {
+    font-family: var(--f-titre);
+    font-size: var(--t-500);
     font-weight: 600;
     letter-spacing: -0.02em;
+    line-height: 1.2;
+    text-wrap: balance;
   }
-  .menu-mobile__liste a[aria-current='page'] .menu-mobile__libelle { color: var(--terre); }
-  .menu-mobile__desc { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.4; }
-  .menu-mobile__cta { align-self: flex-start; }
+  .apercu__detail { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.5; }
+
+  .menu-plein__pied {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-5);
+    padding-top: var(--e-6);
+    border-top: 1px solid var(--scene-trait);
+  }
+
+  @media (min-width: 62rem) {
+    .menu-plein__interieur {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
+      column-gap: var(--e-10);
+      align-content: center;
+      padding-block: calc(4.75rem + var(--e-8)) var(--e-8);
+    }
+    .menu-plein__nav { grid-column: 1; }
+    .menu-plein__apercu { display: block; grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+    .menu-plein__pied { grid-column: 1; }
+    .menu-plein__libelle { font-size: var(--t-800); }
+  }
 
   @media (max-width: 60rem) {
     .entete__nav { display: none; }
     .entete__cta { display: none; }
-    .entete__bascule { display: grid; }
-    /* `:not([hidden])` est indispensable : une règle d'auteur `display: block`
-       l'emporte sur le `[hidden] { display: none }` du navigateur, et le
-       panneau resterait déplié en permanence sur mobile. */
-    .menu-mobile:not([hidden]) { display: block; }
-
-    /* Au doigt, 38px c'est petit : on passe les deux bascules à 44px,
-       le minimum confortable sur mobile et tablette. */
+    .entete__bascule-mot { display: none; }
+    /* Au doigt, 38px c'est petit : 44px est le minimum confortable. */
     .bascule-theme,
-    .entete__bascule { width: 2.75rem; height: 2.75rem; }
+    .entete__bascule { height: 2.75rem; }
+    .entete__bascule { padding-inline: 0.6rem; }
+
+    /* Le pied du menu reste atteignable au pouce. */
+    .menu-plein__interieur { min-height: 100dvh; grid-template-rows: auto 1fr auto; }
+    .menu-plein__pied { align-self: end; flex-direction: column; align-items: stretch; }
   }
 </style>
 
 <script>
   const entete = document.querySelector<HTMLElement>('[data-entete]');
   const bascule = document.querySelector<HTMLButtonElement>('[data-bascule-menu]');
-  const panneau = document.querySelector<HTMLElement>('[data-menu-mobile]');
+  const panneau = document.querySelector<HTMLElement>('[data-menu-plein]');
 
+  /* ---------------- Menu plein écran ---------------- */
   if (bascule && panneau) {
+    const apercus = panneau.querySelectorAll<HTMLElement>('[data-apercu]');
+    const liens = panneau.querySelectorAll<HTMLAnchorElement>('[data-apercu-cle]');
+
+    const montrerApercu = (cle: string) =>
+      apercus.forEach((a) => { a.hidden = a.dataset.apercu !== cle; });
+
+    for (const lien of liens) {
+      const cle = lien.dataset.apercuCle!;
+      lien.addEventListener('mouseenter', () => montrerApercu(cle));
+      lien.addEventListener('focus', () => montrerApercu(cle));
+    }
+
+    // Le focus ne doit pas s'échapper derrière le panneau. Le bouton
+    // d'ouverture fait partie du circuit : c'est par lui qu'on referme.
+    const circuit = () => [
+      bascule,
+      ...panneau.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), summary, [tabindex]:not([tabindex="-1"])',
+      ),
+    ];
+
     const definirEtat = (ouvert: boolean) => {
       bascule.setAttribute('aria-expanded', String(ouvert));
-      panneau.hidden = !ouvert;
       bascule.querySelector('.visuellement-cache')!.textContent =
         bascule.dataset[ouvert ? 'fermer' : 'ouvrir'] ?? '';
+      document.documentElement.style.overflow = ouvert ? 'hidden' : '';
+
+      if (ouvert) {
+        panneau.hidden = false;
+        // Force le calcul de style : sans ça, le masque n'a pas d'état
+        // de départ et le panneau apparaît d'un coup.
+        void panneau.offsetHeight;
+        panneau.setAttribute('data-ouvert', '');
+        panneau.querySelector<HTMLElement>('a[href]')?.focus();
+      } else {
+        panneau.removeAttribute('data-ouvert');
+        const masquer = (evenement?: Event) => {
+          // Les transitions des entrées remontent jusqu'ici : sans ce
+          // filtre, un survol en cours refermerait le panneau d'un coup
+          // avant la fin du masque.
+          const propriete = (evenement as TransitionEvent | undefined)?.propertyName;
+          if (evenement && (evenement.target !== panneau || propriete !== 'clip-path')) return;
+          panneau.removeEventListener('transitionend', masquer);
+          if (!panneau.hasAttribute('data-ouvert')) panneau.hidden = true;
+        };
+        panneau.addEventListener('transitionend', masquer);
+        // Filet : si la transition est coupée, l'événement ne vient pas.
+        setTimeout(masquer, 520);
+      }
     };
 
     bascule.addEventListener('click', () =>
@@ -247,26 +556,71 @@ const estActif = (url: string) => cheminActuel === url || cheminActuel.startsWit
     );
 
     document.addEventListener('keydown', (evenement) => {
-      if (evenement.key === 'Escape' && bascule.getAttribute('aria-expanded') === 'true') {
+      if (bascule.getAttribute('aria-expanded') !== 'true') return;
+
+      if (evenement.key === 'Escape') {
         definirEtat(false);
         bascule.focus();
+        return;
+      }
+
+      if (evenement.key === 'Tab') {
+        const cibles = circuit();
+        const premier = cibles[0];
+        const dernier = cibles[cibles.length - 1];
+        if (evenement.shiftKey && document.activeElement === premier) {
+          evenement.preventDefault();
+          dernier.focus();
+        } else if (!evenement.shiftKey && document.activeElement === dernier) {
+          evenement.preventDefault();
+          premier.focus();
+        }
       }
     });
-
-    // Le panneau mobile ne doit pas rester ouvert en passant sur grand écran.
-    const grandEcran = window.matchMedia('(min-width: 60.0625rem)');
-    grandEcran.addEventListener('change', (e) => e.matches && definirEtat(false));
   }
 
-  // Filet sous l'en-tête dès que la page défile.
+  /* ---------------- Curseur voyageur ---------------- */
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  const curseur = document.querySelector<HTMLElement>('[data-curseur]');
+
+  if (nav && curseur) {
+    const lienActif = () => nav.querySelector<HTMLElement>('[aria-current="page"]');
+
+    const placer = (cible: HTMLElement | null) => {
+      if (!cible) {
+        curseur.style.setProperty('--o', '0');
+        return;
+      }
+      const zone = nav.getBoundingClientRect();
+      const rect = cible.getBoundingClientRect();
+      curseur.style.setProperty('--x', `${rect.left - zone.left}px`);
+      curseur.style.setProperty('--w', `${rect.width}px`);
+      curseur.style.setProperty('--o', '1');
+    };
+
+    curseur.hidden = false;
+    nav.setAttribute('data-curseur-actif', '');
+    placer(lienActif());
+
+    for (const lien of nav.querySelectorAll<HTMLElement>('a')) {
+      lien.addEventListener('mouseenter', () => placer(lien));
+      lien.addEventListener('focus', () => placer(lien));
+    }
+    nav.addEventListener('mouseleave', () => placer(lienActif()));
+    window.addEventListener('resize', () => placer(lienActif()), { passive: true });
+  }
+
+  /* ---------------- État de défilement ---------------- */
   if (entete) {
-    const surDefilement = () =>
+    const surDefilement = () => {
       entete.toggleAttribute('data-defile', window.scrollY > 8);
+      entete.toggleAttribute('data-compact', window.scrollY > 120);
+    };
     surDefilement();
     window.addEventListener('scroll', surDefilement, { passive: true });
   }
 
-  // Bascule de thème : mémorisée d'une visite à l'autre.
+  /* ---------------- Bascule de thème ---------------- */
   document.querySelector('[data-bascule-theme]')?.addEventListener('click', () => {
     const racine = document.documentElement;
     const systemeSombre = window.matchMedia('(prefers-color-scheme: dark)').matches;
