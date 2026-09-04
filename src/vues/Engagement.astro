@@ -20,16 +20,16 @@ const t = traducteur(langue);
    d'entrée pour les quatre voies. */
 const textes = {
   es: {
-    meta: 'Intervenir, asociarse, echar una mano o acompañar a MUSIMA: las distintas maneras de aportar a la asociación.',
+    meta: 'Contar lo que has montado, asociarte, echar una mano o acompañar a MUSIMA: las maneras de formar parte.',
     surtitre: 'Participar',
     titre: 'Hay sitio para ti aquí',
-    chapo: 'MUSIMA se construye con quienes hacen. Hay varias maneras de formar parte, según lo que te apetezca aportar.',
+    chapo: 'MUSIMA se construye con quienes hacen. Hay varias maneras de formar parte, según lo que te apetezca aportar y el tiempo que tengas.',
     voies: [
       {
         titre: 'Contar lo que has montado',
-        pour: 'Tienes una experiencia, un oficio o una trayectoria que compartir.',
-        texte: 'MUSIMA invita a personas de todos los ámbitos a contar qué están construyendo — no solo los logros, también los caminos que llevaron hasta ahí.',
-        maintenant: 'Escríbenos dos líneas sobre lo que contarías. Con eso basta para empezar a hablar.',
+        pour: 'Tienes una experiencia, un oficio, una trayectoria.',
+        texte: 'MUSIMA invita a personas de todos los ámbitos a contar qué están construyendo, y no solo los logros: también los caminos que llevaron hasta ahí.',
+        maintenant: 'Escríbenos dos líneas sobre lo que contarías, con eso basta para empezar a hablar.',
         action: 'Proponer una intervención',
         via: 'intervenir',
       },
@@ -37,23 +37,23 @@ const textes = {
         titre: 'Asociarte',
         pour: 'Quieres apoyar el proyecto y formar parte de la aventura.',
         texte: 'La cuota permite que la asociación funcione y da acceso a la vida de MUSIMA: encuentros, intercambios y asamblea general.',
-        maintenant: 'La cuota se está fijando. Dinos que te interesa y te avisamos en cuanto esté.',
+        maintenant: 'La cuota se está fijando, dinos que te interesa y te avisamos en cuanto esté.',
         action: 'Hacerte socio',
         via: 'adherer',
       },
       {
         titre: 'Echar una mano un sábado',
         pour: 'Quieres aportar algo concreto a la organización.',
-        texte: 'Acogida en los encuentros, fotografía, grabación de vídeo, redacción, traducción, comunicación, logística: las necesidades son variadas y cambian con los proyectos.',
-        maintenant: 'Cuéntanos qué sabes hacer y cuándo puedes. No hace falta comprometerse a más.',
+        texte: 'Recibir a la gente, hacer fotos, grabar, escribir, traducir, mover sillas. Las necesidades son variadas y cambian con los proyectos.',
+        maintenant: 'Cuéntanos qué sabes hacer y cuándo puedes, no hace falta comprometerse a más.',
         action: 'Echar una mano',
         via: 'benevolat',
       },
       {
         titre: 'Acompañar',
-        pour: 'Representas a una asociación, una empresa o una institución.',
-        texte: 'Ceder un local, apoyar económicamente, coorganizar un encuentro, difundir entre tus públicos: las formas de colaboración se construyen caso por caso.',
-        maintenant: 'Escríbenos y lo hablamos. Cada colaboración se define en una conversación.',
+        pour: 'Representas a una asociación, una empresa, una institución.',
+        texte: 'Un local, un apoyo económico, un encuentro coorganizado, difusión entre tus públicos. Las formas de colaboración se construyen caso por caso.',
+        maintenant: 'Escríbenos y lo hablamos, cada colaboración se define en una conversación.',
         action: 'Colaborar con MUSIMA',
         via: 'partenariat',
       },
@@ -63,43 +63,43 @@ const textes = {
     cadreNote: 'El importe de la cuota, las formas de pago y lo que da derecho la afiliación se detallarán aquí. Es la información que tranquiliza a quien descubre la asociación.',
     ctaSurtitre: '¿Alguna duda?',
     ctaTitre: 'Escríbenos, te contestamos',
-    ctaTexte: 'Si ninguna de estas formas encaja con lo que tienes en mente, dilo sin más: muchas cosas empiezan por una primera conversación.',
+    ctaTexte: 'Si ninguna de estas formas encaja con lo que tienes en la cabeza, dilo sin más. Muchas cosas empiezan por una primera conversación.',
   },
   fr: {
-    meta: 'Intervenir, adhérer, donner du temps ou accompagner MUSIMA : les différentes façons de contribuer à l’association.',
+    meta: 'Raconter ce que tu as monté, adhérer, donner un coup de main ou accompagner MUSIMA : les façons d’en faire partie.',
     surtitre: 'Participer',
-    titre: 'Il y a de la place pour vous ici',
-    chapo: 'MUSIMA se construit avec celles et ceux qui font. Il y a plusieurs façons d’en faire partie, selon ce que vous avez envie d’apporter.',
+    titre: 'Il y a de la place pour toi ici',
+    chapo: 'MUSIMA se construit avec celles et ceux qui font. Il y a plusieurs façons d’en être, selon ce que tu as envie d’apporter et le temps dont tu disposes.',
     voies: [
       {
-        titre: 'Raconter ce que vous avez monté',
-        pour: 'Vous avez une expérience, un savoir-faire ou un parcours à partager.',
-        texte: 'MUSIMA invite des personnes de tous les domaines à venir raconter ce qu’elles construisent — pas seulement les réussites, mais aussi les chemins qui ont permis d’y arriver.',
-        maintenant: 'Écrivez-nous deux lignes sur ce que vous raconteriez. Ça suffit pour commencer à en parler.',
+        titre: 'Raconter ce que tu as monté',
+        pour: 'Tu as une expérience, un métier, un parcours.',
+        texte: 'MUSIMA invite des personnes de tous les domaines à venir raconter ce qu’elles construisent, et pas seulement les réussites : aussi les chemins qui ont permis d’y arriver.',
+        maintenant: 'Écris-nous deux lignes sur ce que tu raconterais, ça suffit pour commencer à en parler.',
         action: 'Proposer une intervention',
         via: 'intervenir',
       },
       {
         titre: 'Adhérer',
-        pour: 'Vous voulez soutenir la démarche et faire partie de l’aventure.',
+        pour: 'Tu veux soutenir la démarche et faire partie de l’aventure.',
         texte: 'L’adhésion permet à l’association de fonctionner et donne accès à la vie de MUSIMA : rencontres, échanges et assemblée générale.',
-        maintenant: 'Le montant est en cours de fixation. Dites-nous que ça vous intéresse, on vous prévient dès que c’est arrêté.',
+        maintenant: 'Le montant est en cours de fixation, dis-nous que ça t’intéresse et on te prévient dès que c’est arrêté.',
         action: 'Adhérer à l’association',
         via: 'adherer',
       },
       {
         titre: 'Donner un coup de main un samedi',
-        pour: 'Vous souhaitez contribuer concrètement à l’organisation.',
-        texte: 'Accueil des rencontres, photographie, captation vidéo, rédaction, traduction, communication, logistique : les besoins sont variés et évoluent avec les projets.',
-        maintenant: 'Dites-nous ce que vous savez faire et quand vous êtes disponible. Rien de plus à engager.',
+        pour: 'Tu veux apporter quelque chose de concret à l’organisation.',
+        texte: 'Accueillir, photographier, filmer, écrire, traduire, porter des chaises. Les besoins sont variés et évoluent avec les projets.',
+        maintenant: 'Dis-nous ce que tu sais faire et quand tu es libre, rien de plus à engager.',
         action: 'Devenir bénévole',
         via: 'benevolat',
       },
       {
         titre: 'Accompagner',
-        pour: 'Vous représentez une association, une entreprise ou une institution.',
-        texte: 'Mise à disposition d’un lieu, soutien financier, co-organisation d’une rencontre, relais auprès de vos publics : les formes de partenariat se construisent au cas par cas.',
-        maintenant: 'Écrivez-nous et on en discute. Chaque partenariat se définit dans une conversation.',
+        pour: 'Tu représentes une association, une entreprise, une institution.',
+        texte: 'Un lieu, un soutien financier, une rencontre co-organisée, un relais auprès de tes publics. Les formes de partenariat se construisent au cas par cas.',
+        maintenant: 'Écris-nous et on en discute, chaque partenariat se définit dans une conversation.',
         action: 'Devenir partenaire',
         via: 'partenariat',
       },
@@ -108,20 +108,20 @@ const textes = {
     cadreTitre: 'Adhésion et cotisation',
     cadreNote: 'Le montant de la cotisation, les modalités de paiement et les avantages liés à l’adhésion seront précisés ici. Ces informations rassurent les personnes qui découvrent l’association.',
     ctaSurtitre: 'Une question ?',
-    ctaTitre: 'Écrivez-nous, on vous répond',
-    ctaTexte: 'Si aucune de ces formes ne correspond à ce que vous avez en tête, dites-le simplement — beaucoup de choses se construisent à partir d’une première conversation.',
+    ctaTitre: 'Écris-nous, on répond',
+    ctaTexte: 'Si aucune de ces formes ne correspond à ce que tu as en tête, dis-le simplement. Beaucoup de choses commencent par une première conversation.',
   },
   en: {
-    meta: 'Speaking, joining, lending a hand or backing MUSIMA: the different ways of contributing to the association.',
+    meta: 'Telling us what you built, becoming a member, lending a hand or backing MUSIMA: the ways of being part of it.',
     surtitre: 'Take part',
     titre: 'There’s a place for you here',
-    chapo: 'MUSIMA is built with the people who do things. There are several ways in, depending on what you feel like bringing.',
+    chapo: 'MUSIMA is built with the people who do things. There are several ways in, depending on what you feel like bringing and how much time you have.',
     voies: [
       {
         titre: 'Tell us what you built',
-        pour: 'You have experience, a trade or a path worth sharing.',
-        texte: 'MUSIMA invites people from every field to come and say what they are building — not just the wins, but the roads that got them there.',
-        maintenant: 'Write us two lines about what you would talk about. That’s enough to start the conversation.',
+        pour: 'You have an experience, a trade, a path behind you.',
+        texte: 'MUSIMA invites people from every field to come and say what they are building, and not only the wins: the roads that got them there too.',
+        maintenant: 'Write us two lines about what you’d talk about, that’s enough to get started.',
         action: 'Propose a talk',
         via: 'intervenir',
       },
@@ -129,23 +129,23 @@ const textes = {
         titre: 'Become a member',
         pour: 'You want to back the project and be part of it.',
         texte: 'Membership keeps the association running and opens the door to MUSIMA’s life: gatherings, exchanges and the general assembly.',
-        maintenant: 'The fee is still being set. Tell us you’re interested and we’ll let you know as soon as it is.',
+        maintenant: 'The fee is still being set, tell us you’re interested and we’ll let you know as soon as it is.',
         action: 'Join the association',
         via: 'adherer',
       },
       {
         titre: 'Lend a hand on a Saturday',
         pour: 'You want to give the organising something concrete.',
-        texte: 'Welcoming people at gatherings, photography, filming, writing, translation, communication, logistics: the needs vary and change with the projects.',
-        maintenant: 'Tell us what you know how to do and when you’re free. Nothing more to commit to.',
+        texte: 'Welcoming people, photographs, filming, writing, translating, carrying chairs. The needs vary and change with the projects.',
+        maintenant: 'Tell us what you can do and when you’re free, nothing more to commit to.',
         action: 'Lend a hand',
         via: 'benevolat',
       },
       {
         titre: 'Back us',
-        pour: 'You represent an association, a company or an institution.',
-        texte: 'Lending a venue, financial support, co-hosting a gathering, passing the word to your audience: partnerships get built case by case.',
-        maintenant: 'Write to us and we’ll talk it through. Every partnership is defined in a conversation.',
+        pour: 'You speak for an association, a company, an institution.',
+        texte: 'A venue, financial support, a jointly run gathering, passing the word to your audience. Partnerships get built case by case.',
+        maintenant: 'Write to us and we’ll talk it through, every partnership is defined in a conversation.',
         action: 'Partner with MUSIMA',
         via: 'partenariat',
       },
@@ -155,19 +155,19 @@ const textes = {
     cadreNote: 'The fee, how to pay it and what membership gives you will be set out here. This is the information that reassures someone discovering the association.',
     ctaSurtitre: 'A question?',
     ctaTitre: 'Write to us, we answer',
-    ctaTexte: 'If none of these fits what you have in mind, just say so — a lot of things start from a first conversation.',
+    ctaTexte: 'If none of these fits what you have in mind, just say so. A lot of things start with a first conversation.',
   },
   ca: {
-    meta: 'Intervenir, associar-s’hi, donar un cop de mà o acompanyar MUSIMA: les diferents maneres d’aportar a l’associació.',
+    meta: 'Explicar el que has muntat, associar-t’hi, donar un cop de mà o acompanyar MUSIMA: les maneres de formar-ne part.',
     surtitre: 'Participar',
     titre: 'Hi ha lloc per a tu aquí',
-    chapo: 'MUSIMA es construeix amb qui fa coses. Hi ha diverses maneres de formar-ne part, segons què tinguis ganes d’aportar.',
+    chapo: 'MUSIMA es construeix amb qui fa coses. Hi ha diverses maneres de formar-ne part, segons què tinguis ganes d’aportar i el temps que tinguis.',
     voies: [
       {
         titre: 'Explicar el que has muntat',
-        pour: 'Tens una experiència, un ofici o una trajectòria per compartir.',
-        texte: 'MUSIMA convida persones de tots els àmbits a explicar què estan construint — no només els encerts, també els camins que hi van portar.',
-        maintenant: 'Escriu-nos dues línies sobre què explicaries. Amb això n’hi ha prou per començar a parlar-ne.',
+        pour: 'Tens una experiència, un ofici, una trajectòria.',
+        texte: 'MUSIMA convida persones de tots els àmbits a explicar què estan construint, i no només els encerts: també els camins que hi van portar.',
+        maintenant: 'Escriu-nos dues línies sobre què explicaries, amb això n’hi ha prou per començar.',
         action: 'Proposar una intervenció',
         via: 'intervenir',
       },
@@ -175,23 +175,23 @@ const textes = {
         titre: 'Associar-t’hi',
         pour: 'Vols donar suport al projecte i formar part de l’aventura.',
         texte: 'La quota permet que l’associació funcioni i dona accés a la vida de MUSIMA: trobades, intercanvis i assemblea general.',
-        maintenant: 'La quota s’està fixant. Digues-nos que t’interessa i t’avisem quan estigui.',
+        maintenant: 'La quota s’està fixant, digues-nos que t’interessa i t’avisem quan estigui.',
         action: 'Fer-te’n soci',
         via: 'adherer',
       },
       {
         titre: 'Donar un cop de mà un dissabte',
         pour: 'Vols aportar alguna cosa concreta a l’organització.',
-        texte: 'Acollida a les trobades, fotografia, gravació de vídeo, redacció, traducció, comunicació, logística: les necessitats són variades i canvien amb els projectes.',
-        maintenant: 'Explica’ns què saps fer i quan pots. No cal comprometre’s a res més.',
+        texte: 'Rebre la gent, fer fotos, gravar, escriure, traduir, moure cadires. Les necessitats són variades i canvien amb els projectes.',
+        maintenant: 'Explica’ns què saps fer i quan pots, no cal comprometre’s a res més.',
         action: 'Donar un cop de mà',
         via: 'benevolat',
       },
       {
         titre: 'Acompanyar',
-        pour: 'Representes una associació, una empresa o una institució.',
-        texte: 'Cedir un local, donar suport econòmic, coorganitzar una trobada, difondre entre els teus públics: les formes de col·laboració es construeixen cas per cas.',
-        maintenant: 'Escriu-nos i ho parlem. Cada col·laboració es defineix en una conversa.',
+        pour: 'Representes una associació, una empresa, una institució.',
+        texte: 'Un local, un suport econòmic, una trobada coorganitzada, difusió entre els teus públics. Les formes de col·laboració es construeixen cas per cas.',
+        maintenant: 'Escriu-nos i ho parlem, cada col·laboració es defineix en una conversa.',
         action: 'Col·laborar amb MUSIMA',
         via: 'partenariat',
       },
@@ -201,7 +201,7 @@ const textes = {
     cadreNote: 'L’import de la quota, les formes de pagament i el que dona dret l’afiliació es detallaran aquí. És la informació que tranquil·litza qui descobreix l’associació.',
     ctaSurtitre: 'Algun dubte?',
     ctaTitre: 'Escriu-nos, et contestem',
-    ctaTexte: 'Si cap d’aquestes formes encaixa amb el que tens al cap, digues-ho sense més: moltes coses comencen per una primera conversa.',
+    ctaTexte: 'Si cap d’aquestes formes encaixa amb el que tens al cap, digues-ho sense més. Moltes coses comencen per una primera conversa.',
   },
 } as const;
 const x = textes[langue];
@@ -272,6 +272,10 @@ const lienVoie = (via: string) => `${chemin(langue, 'contact')}?via=${via}`;
     </div>
   </section>
   )}
+
+  <section class="section--dense conteneur">
+    <p class="phrase-clef">{t('phraseClef')}</p>
+  </section>
 
   <BandeauCta
     surtitre={x.ctaSurtitre}
@@ -351,4 +355,17 @@ const lienVoie = (via: string) => `${chemin(langue, 'contact')}?via=${via}`;
   .voie__action { margin-top: auto; align-self: flex-start; }
 
   .note { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.65; max-width: var(--largeur-texte); }
+
+  /* La phrase qui résume la page, seule, au-dessus de l'appel final. */
+  .phrase-clef {
+    font-family: var(--f-lecture);
+    font-style: italic;
+    font-size: var(--t-600);
+    line-height: 1.45;
+    color: var(--encre);
+    max-width: 34ch;
+    border-left: var(--epaisseur-trait) solid var(--or);
+    padding-left: var(--e-5);
+    text-wrap: pretty;
+  }
 </style>

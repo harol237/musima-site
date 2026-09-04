@@ -31,7 +31,10 @@ const inscription = prochaine ? pret(prochaine.data.lien_inscription) : undefine
     chapo={t('evenementsChapo')}
     ariane={[{ libelle: t('navEvenements') }]}
     sansFilet={!!prochaine}
-  />
+  ><div class="prose entete-page__corps">
+    <p>{t('evenementsCorpsA')}</p>
+    <p>{t('evenementsCorpsB')}</p>
+  </div></EntetePage>
 
   {prochaine && (
     <section class="scene section--dense prochaine" id="a-venir">

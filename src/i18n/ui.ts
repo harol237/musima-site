@@ -99,7 +99,7 @@ export const ui = {
   },
   infolettreTexte: {
     es: 'Los próximos encuentros, los nuevos retratos, lo que se va construyendo alrededor de MUSIMA. Unos pocos envíos al año, no más: no tenemos tiempo ni ganas de llenarte el buzón.',
-    fr: 'Les prochaines rencontres, les nouveaux portraits, ce qui se construit autour de MUSIMA. Quelques envois par an, pas plus — on n’a ni le temps ni l’envie de vous encombrer.',
+    fr: 'Les prochaines rencontres, les nouveaux portraits, ce qui se construit autour de MUSIMA. Quelques envois par an, pas plus — on n’a ni le temps ni l’envie de t’encombrer.',
     en: 'Upcoming gatherings, new portraits, whatever is taking shape around MUSIMA. A handful of emails a year, no more — we have neither the time nor the wish to clutter your inbox.',
     ca: 'Les properes trobades, els nous retrats, el que es va construint al voltant de MUSIMA. Uns quants enviaments l’any, no més: no tenim ni temps ni ganes d’omplir-te la bústia.',
   },
@@ -129,25 +129,27 @@ export const ui = {
   },
   /* Deux phrases, en antithèse. Elles s'affichent l'une sous l'autre :
      c'est la structure qui porte le propos, pas une couleur. */
+  /* Une seule phrase, coupée après la virgule. La seconde moitié garde
+     l'encre pleine : le titre se lit en deux temps sans être haché. */
   heroTitreA: {
-    es: 'Se construye mucho.', fr: 'On construit beaucoup.',
-    en: 'A lot gets built.', ca: 'Es construeix molt.',
+    es: 'Se construye mucho,', fr: 'On construit beaucoup,',
+    en: 'A lot gets built,', ca: 'Es construeix molt,',
   },
   heroTitreB: {
-    es: 'Se cuenta poco.', fr: 'On en parle peu.',
-    en: 'Little gets told.', ca: 'Se’n parla poc.',
+    es: 'se cuenta poco.', fr: 'on en parle peu.',
+    en: 'and hardly any of it gets told.', ca: 'se’n parla poc.',
   },
   heroChapo: {
-    es: 'Africanos que montan empresas, proyectos y oficios en Barcelona y en otros sitios. Lo hacen bien, y casi nadie se entera. MUSIMA existe para que eso deje de pasar.',
-    fr: 'Des Africains qui montent des entreprises, des projets, des métiers — à Barcelone et ailleurs. Ils le font bien, et presque personne ne le sait. MUSIMA existe pour que ça change.',
-    en: 'Africans who start businesses, projects and trades — in Barcelona and elsewhere. They do it well, and almost no one hears about it. MUSIMA exists to change that.',
-    ca: 'Africans que munten empreses, projectes i oficis a Barcelona i en altres llocs. Ho fan bé, i gairebé ningú se n’assabenta. MUSIMA existeix perquè això deixi de passar.',
+    es: 'En Barcelona y en otros sitios hay africanos montando empresas, proyectos y oficios. Lo hacen bien, y casi nadie se entera. MUSIMA existe para que eso deje de pasar, y para que esas historias salgan por fin del círculo.',
+    fr: 'À Barcelone et ailleurs, des Africains montent des entreprises, des projets, des métiers. Ils le font bien, et presque personne ne le sait. MUSIMA existe pour que ça change, et pour que ces histoires sortent enfin du cercle.',
+    en: 'In Barcelona and elsewhere, Africans are starting businesses, projects and trades. They do it well, and almost nobody hears about it. MUSIMA exists to change that, and to get these stories out of the small circle that already knows them.',
+    ca: 'A Barcelona i en altres llocs hi ha africans muntant empreses, projectes i oficis. Ho fan bé, i gairebé ningú se n’assabenta. MUSIMA existeix perquè això deixi de passar, i perquè aquestes històries surtin per fi del cercle.',
   },
   heroBoutonEvenements: {
     es: 'Ver los encuentros', fr: 'Voir les rencontres', en: 'See the gatherings', ca: 'Veure les trobades',
   },
   heroBoutonProchain: {
-    es: 'Ven al próximo', fr: 'Venez à la prochaine',
+    es: 'Ven al próximo', fr: 'Viens à la prochaine',
     en: 'Come to the next one', ca: 'Vine a la propera',
   },
   heroBoutonAssociation: {
@@ -167,6 +169,32 @@ export const ui = {
   prochaineRencontreLe: {
     es: 'El próximo es el {date}', fr: 'La prochaine, c’est le {date}',
     en: 'The next one is on {date}', ca: 'La propera és el {date}',
+  },
+  /* Courtes introductions sous les titres de sections de l'accueil.
+     Passées en enfants de <EnteteSection>, qui a gagné un emplacement. */
+  introRencontres: {
+    es: 'Nos juntamos unas cuantas veces al año, en un sitio que nos acoge, alrededor de gente que tiene algo que contar.',
+    fr: 'On se réunit quelques fois par an, dans un lieu qui nous accueille, autour de gens qui ont quelque chose à raconter.',
+    en: 'We meet a few times a year, in a place that takes us in, around people who have something to tell.',
+    ca: 'Ens trobem unes quantes vegades l’any, en un lloc que ens acull, al voltant de gent que té alguna cosa a explicar.',
+  },
+  introVoix: {
+    es: 'Montaron una actividad, un proyecto, un oficio. Les pedimos el detalle, no la versión pulida.',
+    fr: 'Ils ont monté une activité, un projet, un métier. On leur a demandé le détail, pas la version lisse.',
+    en: 'They started an activity, a project, a trade. We asked them for the detail, not the tidy version.',
+    ca: 'Van muntar una activitat, un projecte, un ofici. Els vam demanar el detall, no la versió polida.',
+  },
+  introProjets: {
+    es: 'Lo que la asociación lleva adelante, con lo que está en marcha y lo que aún queda por montar.',
+    fr: 'Ce que l’association porte elle-même, avec ses chantiers en cours et ce qui reste à monter.',
+    en: 'What the association runs itself, with the work in progress and the parts still to build.',
+    ca: 'El que l’associació duu endavant, amb el que està en marxa i el que encara queda per muntar.',
+  },
+  introRecits: {
+    es: 'Los encuentros pasan. Lo que se dijo en ellos se queda aquí, escrito, a disposición de quien lo necesite.',
+    fr: 'Les rencontres passent. Ce qui s’y est dit reste ici, écrit, à disposition de qui en aura besoin.',
+    en: 'Gatherings pass. What was said at them stays here, written down, for whoever needs it.',
+    ca: 'Les trobades passen. El que s’hi va dir es queda aquí, escrit, a disposició de qui ho necessiti.',
   },
   tousLesEvenements: {
     es: 'Todos los encuentros', fr: 'Tous les événements', en: 'All events', ca: 'Totes les trobades',
@@ -194,15 +222,22 @@ export const ui = {
   ctaParticiperSurtitre: { es: 'Participar', fr: 'Participer', en: 'Take part', ca: 'Participar' },
   ctaParticiperTitre: {
     es: '¿Has construido algo?',
-    fr: 'Vous avez construit quelque chose ?',
+    fr: 'Tu as construit quelque chose ?',
     en: 'Have you built something?',
     ca: 'Has construït alguna cosa?',
   },
   ctaParticiperTexte: {
-    es: 'Da igual el tamaño. Si has montado una actividad, un proyecto o un oficio y puedes contar cómo, hay sitio para ti en un encuentro. Y si prefieres estar del otro lado, también hacen falta manos.',
-    fr: 'Peu importe la taille. Si vous avez monté une activité, un projet ou un métier et que vous pouvez raconter comment, il y a une place pour vous dans une rencontre. Et si vous préférez être de l’autre côté, il faut aussi des bras.',
-    en: 'Size doesn’t matter. If you’ve started an activity, a project or a trade and can tell us how, there’s a place for you at a meeting. And if you’d rather be on the other side, we need hands too.',
-    ca: 'Tant se val la mida. Si has muntat una activitat, un projecte o un ofici i pots explicar com, hi ha lloc per a tu en una trobada. I si prefereixes ser a l’altra banda, també calen mans.',
+    es: 'Da igual el tamaño. Si has montado una actividad, un proyecto o un oficio y puedes contar cómo, hay sitio para ti en un encuentro. Y si prefieres estar del otro lado, colocando sillas o haciendo las fotos, también hay sitio.',
+    fr: 'Peu importe la taille. Si tu as monté une activité, un projet ou un métier et que tu peux raconter comment, il y a une place pour toi dans une rencontre. Et si tu préfères être de l’autre côté, à installer les chaises ou à prendre les photos, il y a de la place aussi.',
+    en: 'Size doesn’t matter. If you’ve started an activity, a project or a trade and you can say how, there’s a place for you at a gathering. And if you’d rather be on the other side, setting out chairs or taking the photographs, there’s room for that too.',
+    ca: 'Tant se val la mida. Si has muntat una activitat, un projecte o un ofici i pots explicar com, hi ha lloc per a tu en una trobada. I si prefereixes ser a l’altra banda, posant cadires o fent les fotos, també hi ha lloc.',
+  },
+  /* Phrase clé, posée au pied de la page Participer. */
+  phraseClef: {
+    es: 'Si te reconoces en esta manera de hacer las cosas, hay un lugar para ti en MUSIMA.',
+    fr: 'Si tu te reconnais dans cette démarche, il y a une place pour toi à MUSIMA.',
+    en: 'If any of this sounds like you, there’s a place for you at MUSIMA.',
+    ca: 'Si et reconeixes en aquesta manera de fer les coses, hi ha un lloc per a tu a MUSIMA.',
   },
   ctaVoirEngagement: {
     es: 'Ver cómo participar', fr: 'Voir comment s’engager', en: 'See how to take part', ca: 'Veure com participar-hi',
@@ -211,11 +246,61 @@ export const ui = {
 
   /* ---------------- Événements ---------------- */
   evenementsChapo: {
-    es: 'Una tarde, gente que ya lo ha hecho, y sitio para preguntar. Eso es un encuentro de MUSIMA.',
-    fr: 'Une après-midi, des gens qui l’ont déjà fait, et de la place pour poser des questions. C’est ça, une rencontre MUSIMA.',
-    en: 'An afternoon, people who have already done it, and room to ask. That is a MUSIMA gathering.',
-    ca: 'Una tarda, gent que ja ho ha fet, i lloc per preguntar. Això és una trobada de MUSIMA.',
+    es: 'Una tarde, gente que ya lo ha hecho, y sitio para preguntar.',
+    fr: 'Une après-midi, des gens qui l’ont déjà fait, et de la place pour poser des questions.',
+    en: 'An afternoon, people who have already done it, and room to ask.',
+    ca: 'Una tarda, gent que ja ho ha fet, i lloc per preguntar.',
   },
+  /* Corps de texte des quatre pages de rubrique, sous le chapô. */
+  evenementsCorpsA: {
+    es: 'El formato es sencillo y no cambia demasiado. Invitamos a personas que han montado algo, cuentan su trayectoria durante unos veinte minutos, y después toma la palabra la sala. Ese es el momento que más nos gusta, cuando alguien se atreve con la pregunta que creía tonta y otros tres se dan cuenta de que también se la hacían.',
+    fr: 'Le format est simple et ne bouge pas beaucoup. On invite des personnes qui ont monté quelque chose, elles racontent leur parcours pendant une vingtaine de minutes, et ensuite la salle prend la main. C’est le moment qu’on préfère, celui où quelqu’un ose la question qu’il croyait bête et où trois autres se rendent compte qu’ils se la posaient aussi.',
+    en: 'The format is simple and doesn’t change much. We invite people who have built something, they talk through how they got there for twenty minutes or so, and then the room takes over. That’s the part we like best, when somebody risks the question they thought was stupid and three others realise they were wondering the same thing.',
+    ca: 'El format és senzill i no canvia gaire. Convidem persones que han muntat alguna cosa, expliquen la seva trajectòria durant uns vint minuts, i després pren la paraula la sala. És el moment que més ens agrada, quan algú s’atreveix amb la pregunta que creia ximple i tres més s’adonen que també se la feien.',
+  },
+  evenementsCorpsB: {
+    es: 'Nos quedamos después. Las conversaciones que cuentan suelen empezar ahí, con las sillas ya recogidas.',
+    fr: 'On reste après. Les conversations qui comptent commencent souvent là, une fois les chaises rangées.',
+    en: 'We stay afterwards. The conversations that matter often start there, once the chairs have been put away.',
+    ca: 'Ens quedem després. Les converses que compten solen començar aquí, amb les cadires ja recollides.',
+  },
+  intervenantsCorpsA: {
+    es: 'No son conferenciantes. Son personas que abrieron una tienda, arrancaron una actividad, aprendieron un oficio o sostuvieron una asociación, y que aceptan contar el detalle en lugar de la versión presentable.',
+    fr: 'Ce ne sont pas des conférenciers. Ce sont des gens qui ont ouvert une boutique, lancé une activité, appris un métier, tenu une association — et qui acceptent de raconter le détail plutôt que la version présentable.',
+    en: 'They aren’t public speakers. They’re people who opened a shop, started something up, learned a trade or held an association together, and who agree to give the detail rather than the presentable version.',
+    ca: 'No són conferenciants. Són persones que van obrir una botiga, van arrencar una activitat, van aprendre un ofici o van sostenir una associació, i que accepten explicar el detall en lloc de la versió presentable.',
+  },
+  intervenantsCorpsB: {
+    es: 'Les preguntamos siempre lo mismo: cómo lo hiciste, con qué dinero, quién te ayudó, qué no viste venir. Las respuestas no se parecen nunca entre sí, y eso es justo lo que las hace útiles.',
+    fr: 'On leur demande toujours la même chose : comment tu t’y es pris, avec quel argent, qui t’a aidé, qu’est-ce que tu n’avais pas vu venir. Les réponses ne se ressemblent jamais, et c’est précisément ce qui les rend utiles.',
+    en: 'We always ask them the same things: how did you go about it, with what money, who helped, what did you not see coming. The answers never resemble each other, and that is exactly what makes them useful.',
+    ca: 'Els preguntem sempre el mateix: com ho vas fer, amb quins diners, qui et va ajudar, què no vas veure venir. Les respostes no s’assemblen mai entre si, i això és justament el que les fa útils.',
+  },
+  projetsCorpsA: {
+    es: 'No está todo terminado, y no disimulamos. Cada proyecto dice en qué punto está, qué busca y qué le falta todavía.',
+    fr: 'Tout n’est pas terminé, et on ne fait pas semblant. Chaque projet dit où il en est, ce qu’il cherche, et ce qui lui manque encore.',
+    en: 'Not everything is finished, and we don’t pretend otherwise. Each project says where it stands, what it’s looking for, and what it still lacks.',
+    ca: 'No està tot acabat, i no ho dissimulem. Cada projecte diu en quin punt és, què busca i què li falta encara.',
+  },
+  projetsCorpsB: {
+    es: 'El primer proyecto de MUSIMA es la propia MUSIMA: montarla, encontrarle un local, reunir a las primeras personas alrededor de una mesa. Lo hacemos a la vista de todo el mundo, porque no hay ninguna razón para esconder cómo se hace.',
+    fr: 'Le premier projet de MUSIMA, c’est MUSIMA elle-même : la monter, lui trouver un lieu, réunir les premières personnes autour d’une table. On le fait à la vue de tout le monde, parce qu’il n’y a aucune raison de cacher comment on s’y prend.',
+    en: 'MUSIMA’s first project is MUSIMA itself: setting it up, finding it a room, getting the first people around a table. We do it in plain sight, because there’s no reason to hide how it’s done.',
+    ca: 'El primer projecte de MUSIMA és la mateixa MUSIMA: muntar-la, trobar-li un local, reunir les primeres persones al voltant d’una taula. Ho fem a la vista de tothom, perquè no hi ha cap raó per amagar com es fa.',
+  },
+  recitsCorpsA: {
+    es: 'Escribimos lo que escuchamos: retratos, crónicas de encuentros y, de vez en cuando, una idea que no conseguimos soltar. La intención es sencilla — alguien que no estaba en la sala tiene que poder sacar algo de aquí.',
+    fr: 'On écrit ce qu’on entend : des portraits, des retours de rencontres, parfois une idée qu’on n’arrive pas à lâcher. L’intention est simple — quelqu’un qui n’était pas dans la salle doit pouvoir en tirer quelque chose.',
+    en: 'We write down what we hear: portraits, write-ups of gatherings and, now and then, an idea we can’t let go of. The intention is simple — somebody who wasn’t in the room should be able to take something away.',
+    ca: 'Escrivim el que escoltem: retrats, cròniques de trobades i, de tant en tant, una idea que no aconseguim deixar anar. La intenció és senzilla — algú que no era a la sala ha de poder treure’n alguna cosa.',
+  },
+  recitsCorpsB: {
+    es: 'Son textos, no notas de prensa. Dejamos dentro las dudas y las contradicciones, porque suele ser ahí donde está la información que sirve.',
+    fr: 'Ce sont des textes, pas des communiqués. On y garde les hésitations et les contradictions, parce que c’est souvent là que se trouve l’information utile.',
+    en: 'These are pieces of writing, not press releases. We keep the hesitations and the contradictions in, because that’s often where the useful part hides.',
+    ca: 'Són textos, no notes de premsa. Hi deixem els dubtes i les contradiccions, perquè sol ser aquí on hi ha la informació que serveix.',
+  },
+
   aVenir: { es: 'Próximamente', fr: 'À venir', en: 'Upcoming', ca: 'Properament' },
   rencontresProgrammees: {
     es: 'encuentros programados', fr: 'rencontres programmées',
@@ -233,7 +318,7 @@ export const ui = {
   },
   aucuneRencontreTexte: {
     es: 'Las próximas fechas se publicarán aquí. Para enterarte, suscríbete al boletín al pie de la página.',
-    fr: 'Les prochaines dates seront publiées ici. Pour être prévenu, inscrivez-vous à l’infolettre en bas de page.',
+    fr: 'Les prochaines dates seront publiées ici. Pour être prévenu, inscris-toi à l’infolettre en bas de page.',
     en: 'Upcoming dates will appear here. To hear about them, sign up to the newsletter at the bottom of the page.',
     ca: 'Les properes dates es publicaran aquí. Per assabentar-te’n, subscriu-te al butlletí al peu de la pàgina.',
   },
@@ -249,7 +334,7 @@ export const ui = {
   labelLieu: { es: 'Lugar', fr: 'Lieu', en: 'Venue', ca: 'Lloc' },
   labelFormat: { es: 'Formato', fr: 'Format', en: 'Format', ca: 'Format' },
   labelTarif: { es: 'Precio', fr: 'Tarif', en: 'Price', ca: 'Preu' },
-  sInscrire: { es: 'Guardar mi sitio', fr: 'Garder ma place', en: 'Save my seat', ca: 'Guardar el meu lloc' },
+  sInscrire: { es: 'Guarda tu sitio', fr: 'Garde ta place', en: 'Save your seat', ca: 'Guarda el teu lloc' },
   surScene: { es: 'En el escenario', fr: 'Sur scène', en: 'On stage', ca: 'A l’escenari' },
   lesIntervenants: { es: 'Los ponentes', fr: 'Les intervenants', en: 'The speakers', ca: 'Els ponents' },
   lIntervenant: { es: 'El ponente', fr: 'L’intervenant·e', en: 'The speaker', ca: 'El ponent' },
@@ -324,10 +409,10 @@ export const ui = {
 
   /* ---------------- Projets ---------------- */
   projetsChapo: {
-    es: 'Lo que la asociación lleva adelante o acompaña: la intención, en qué punto está y cómo echar una mano.',
-    fr: 'Ce que l’association porte ou accompagne : l’intention, l’avancement, et comment y contribuer.',
-    en: 'What the association runs or supports: the intention, where it stands, and how to pitch in.',
-    ca: 'El que l’associació duu endavant o acompanya: la intenció, en quin punt és i com donar-hi un cop de mà.',
+    es: 'Lo que la asociación lleva o acompaña, con el estado real de las cosas.',
+    fr: 'Ce que l’association porte ou accompagne, avec l’état réel des choses.',
+    en: 'What the association runs or supports, with the real state of things.',
+    ca: 'El que l’associació duu o acompanya, amb l’estat real de les coses.',
   },
   aucunProjetTitre: {
     es: 'Los proyectos se presentarán aquí', fr: 'Les projets seront présentés ici',
@@ -357,10 +442,10 @@ export const ui = {
 
   /* ---------------- Récits ---------------- */
   recitsChapo: {
-    es: 'Retratos, crónicas de encuentros y análisis. Lo que se dijo, y lo que quedó después.',
-    fr: 'Portraits, retours de rencontres et analyses. Ce qui s’est dit, et ce qu’il en reste.',
-    en: 'Portraits, write-ups and analysis. What was said, and what stayed with us.',
-    ca: 'Retrats, cròniques de trobades i anàlisis. El que es va dir, i el que en va quedar.',
+    es: 'Un encuentro dura una tarde. Lo que se dice en él puede servir mucho más tiempo.',
+    fr: 'Une rencontre dure une après-midi. Ce qui s’y dit peut servir bien plus longtemps.',
+    en: 'A gathering lasts an afternoon. What gets said there can be useful for much longer.',
+    ca: 'Una trobada dura una tarda. El que s’hi diu pot servir molt més temps.',
   },
   aucunRecitTitre: {
     es: 'Los primeros relatos están por llegar', fr: 'Les premiers récits sont à venir',

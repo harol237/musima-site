@@ -25,6 +25,12 @@ const { surtitre, titre, chapo, ariane, registre = 'scene', sansFilet = false } 
 <style>
   .entete-page { border-bottom: 1px solid var(--trait); }
   .entete-page--sans-filet { border-bottom: 0; }
+  .entete-page__interieur :global(.entete-page__corps) {
+    margin-top: var(--e-3);
+    font-size: var(--t-400);
+  }
+  .entete-page__interieur :global(.entete-page__corps p + p) { margin-top: var(--e-4); }
+
   .entete-page__interieur {
     display: flex;
     flex-direction: column;

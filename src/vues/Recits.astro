@@ -29,7 +29,10 @@ const categories = [
     titre={t('portraitsRetoursIdees')}
     chapo={t('recitsChapo')}
     ariane={[{ libelle: t('navRecits') }]}
-  />
+  ><div class="prose entete-page__corps">
+    <p>{t('recitsCorpsA')}</p>
+    <p>{t('recitsCorpsB')}</p>
+  </div></EntetePage>
   <section class="section conteneur">
     {recits.length > 0 ? (
       <>
