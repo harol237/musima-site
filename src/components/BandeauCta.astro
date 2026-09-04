@@ -43,6 +43,21 @@ const { surtitre, titre, texte, actions = [] } = Astro.props;
     opacity: 0.14;
     pointer-events: none;
   }
+  /* Troisième occurrence du même défaut, après le héros et le menu :
+     `preserveAspectRatio: none` étire la courbe à la hauteur du bloc.
+     Sur une bande étroite et haute — 390 × 580 pour un viewBox de
+     1200 × 400 — elle est comprimée quatre fois et descend presque à la
+     verticale en travers des boutons. On lui rend le rapport de son
+     viewBox et on la pose en bande basse. */
+  @media (max-width: 51.99rem) {
+    .bandeau__trait {
+      inset: auto -20% 6% -20%;
+      width: 140%;
+      height: auto;
+      aspect-ratio: 3 / 1;
+    }
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     /* Défilement lié à la position de la bande : aucun écouteur de
        scroll, et rien ne bouge là où la règle n'est pas connue. */
