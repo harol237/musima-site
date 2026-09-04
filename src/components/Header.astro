@@ -164,7 +164,10 @@ const cleDefaut = cleApercu(entrees[0]?.rubrique);
 </header>
 
 <div class="menu-plein scene" id="menu-plein" data-menu-plein hidden>
-  <svg class="menu-plein__trait" viewBox="0 0 1200 400" aria-hidden="true" preserveAspectRatio="none">
+  {/* `meet` plutôt que `none` : le tracé garde son rapport 3/1 et se pose
+      en bandeau en bas du panneau. Étiré à la hauteur d'un écran de
+      téléphone, il devenait une sinusoïde en travers des cinq entrées. */}
+  <svg class="menu-plein__trait" viewBox="0 0 1200 400" aria-hidden="true" preserveAspectRatio="xMidYMax meet">
     <path d="M-40 330 C 180 330 200 90 400 90 C 600 90 620 310 820 310 C 1020 310 1040 120 1260 120" />
   </svg>
 
@@ -228,6 +231,29 @@ const cleDefaut = cleApercu(entrees[0]?.rubrique);
     view-transition-name: entete;
   }
   .entete[data-defile] { border-bottom-color: var(--trait); }
+
+  /* Menu ouvert : l'en-tête repasse au-dessus du panneau. Sans ça il est
+     recouvert, et comme le panneau occupe tout l'écran il ne reste plus
+     aucun moyen de refermer au doigt — Échap suppose un clavier.
+     Les jetons du registre scène prennent le relais pour que le logo et
+     la croix se lisent sur le fond profond. */
+  :global(:root[data-menu-ouvert]) .entete {
+    z-index: 70;
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom-color: transparent;
+    --papier: var(--scene-fond);
+    --encre: var(--scene-encre);
+    --encre-douce: var(--scene-encre-douce);
+    --trait: var(--scene-trait);
+    --trait-fort: var(--scene-encre-douce);
+    --terre: var(--scene-terre);
+    --sur-terre: #2a0f07;
+  }
+  /* Ce que le panneau redit déjà en plus grand. */
+  :global(:root[data-menu-ouvert]) .entete__nav,
+  :global(:root[data-menu-ouvert]) .entete__cta { display: none; }
+  :global(:root[data-menu-ouvert] .langues--entete) { display: none; }
 
   /* Passé le premier écran, l'en-tête se replie : il rend de la hauteur
      à la lecture et signale qu'on est entré dans la page. */
@@ -548,6 +574,9 @@ const cleDefaut = cleApercu(entrees[0]?.rubrique);
       bascule.querySelector('.visuellement-cache')!.textContent =
         bascule.dataset[ouvert ? 'fermer' : 'ouvrir'] ?? '';
       document.documentElement.style.overflow = ouvert ? 'hidden' : '';
+      // Fait remonter l'en-tête au-dessus du panneau : c'est par son
+      // bouton qu'on referme.
+      document.documentElement.toggleAttribute('data-menu-ouvert', ouvert);
 
       if (ouvert) {
         panneau.hidden = false;
