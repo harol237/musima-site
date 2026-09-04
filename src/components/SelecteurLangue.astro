@@ -6,16 +6,38 @@ interface Props {
   langue: Langue;
   /** URL équivalente dans chaque langue. Défaut : l'accueil de la langue. */
   alternatives: Record<Langue, string>;
-  /** `entete` disparaît sous 60rem, où le panneau mobile prend le relais. */
-  variante?: 'entete' | 'mobile';
+  /**
+   * `entete` disparaît sous 60rem. `mobile` déplie la liste à plat.
+   * `pastilles` affiche les quatre langues en ligne, sans repli : c'est
+   * la forme retenue dans le menu plein écran, où il y a la place.
+   */
+  variante?: 'entete' | 'mobile' | 'pastilles';
 }
 const { langue, alternatives, variante = 'entete' } = Astro.props;
 const classe = variante === 'mobile' ? 'langues--mobile' : 'langues--entete';
 const t = traducteur(langue);
 ---
 
-{/* <details> plutôt qu'un menu en JavaScript : le sélecteur s'ouvre au
-    clavier et fonctionne même si le script ne se charge pas. */}
+{variante === 'pastilles' ? (
+  <nav class="pastilles" aria-label={t('choisirLangue')}>
+    <ul class="pastilles__liste">
+      {langues.map((code) => (
+        <li>
+          <a
+            href={alternatives[code]}
+            hreflang={etiquettes[code].balise}
+            lang={etiquettes[code].balise}
+            data-langue={code}
+            aria-current={code === langue ? 'true' : undefined}
+          >
+            <span class="visuellement-cache">{etiquettes[code].nom}</span>
+            <span aria-hidden="true">{etiquettes[code].court}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+) : (
 <details class:list={['langues', classe]} data-selecteur-langue>
   <summary class="langues__bouton" title={t('choisirLangue')}>
     <span class="visuellement-cache">{t('choisirLangue')} — {t('langueActuelle')} : {etiquettes[langue].nom}</span>
@@ -40,6 +62,7 @@ const t = traducteur(langue);
     ))}
   </ul>
 </details>
+)}
 
 <style>
   .langues { position: relative; flex: none; }
@@ -112,6 +135,24 @@ const t = traducteur(langue);
     .langues--entete { display: none; }
   }
 
+  /* --- Variante pastilles : les quatre langues en ligne --- */
+  .pastilles__liste { display: flex; flex-wrap: wrap; gap: var(--e-2); list-style: none; margin: 0; padding: 0; }
+  .pastilles__liste a {
+    display: block;
+    padding: 0.5em 0.9em;
+    border: 1px solid var(--trait);
+    border-radius: var(--r-pilule);
+    font-family: var(--f-titre);
+    font-size: var(--t-200);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--encre-douce);
+    text-decoration: none;
+    transition: color var(--transition), border-color var(--transition);
+  }
+  .pastilles__liste a:hover { color: var(--terre); border-color: var(--terre); }
+  .pastilles__liste a[aria-current] { color: var(--sur-terre); background: var(--terre); border-color: var(--terre); }
+
   /* Dans le panneau mobile, la liste s'affiche à plat : pas de survol au doigt. */
   .langues--mobile { width: 100%; }
   .langues--mobile .langues__bouton { width: 100%; justify-content: space-between; height: 2.75rem; }
@@ -122,7 +163,7 @@ const t = traducteur(langue);
 <script>
   // Le choix de langue est mémorisé dans le stockage local — une seule
   // clé, aucun cookie, conformément à ce qu'annonce la page /cookies.
-  for (const lien of document.querySelectorAll<HTMLAnchorElement>('[data-selecteur-langue] a[data-langue]')) {
+  for (const lien of document.querySelectorAll<HTMLAnchorElement>('a[data-langue]')) {
     lien.addEventListener('click', () => {
       try {
         localStorage.setItem('musima-langue', lien.dataset.langue!);

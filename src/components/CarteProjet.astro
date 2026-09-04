@@ -6,6 +6,7 @@ import BadgeModele from './BadgeModele.astro';
 import { chemin, type Langue } from '~/i18n/config';
 import { statutsProjet, traduireValeur } from '~/i18n/utils';
 import { enChantier, pret, slugDe } from '~/lib/contenu';
+import { nomTransition } from '~/lib/transitions';
 
 interface Props {
   langue: Langue;
@@ -19,7 +20,7 @@ const teinteStatut = data.statut === 'Réalisé' ? 'puce--sourde' : data.statut 
   {data.modele && <BadgeModele />}
 
   {(data.image || enChantier) && (
-  <div class="carte__visuel ratio-3-2">
+  <div class="carte__visuel ratio-3-2" style={nomTransition('pj', slugDe(projet.id), !!data.image)}>
     {data.image ? (
       <Image
         src={data.image}

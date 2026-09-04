@@ -7,7 +7,8 @@ import EnteteSection from '~/components/EnteteSection.astro';
 import CarteRecit from '~/components/CarteRecit.astro';
 import CarteIntervenant from '~/components/CarteIntervenant.astro';
 import ARemplir from '~/components/ARemplir.astro';
-import { estPublie, dateISO, chargerRecits, pret } from '~/lib/contenu';
+import { estPublie, dateISO, chargerRecits, pret, slugDe } from '~/lib/contenu';
+import { nomTransition } from '~/lib/transitions';
 import { formaterDate } from '~/i18n/utils';
 import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
@@ -64,7 +65,7 @@ const donnees = {
 
     <div class="conteneur conteneur--etroit">
       <figure class="visuel-principal">
-        <div class="ratio-16-9 visuel-principal__cadre">
+        <div class="ratio-16-9 visuel-principal__cadre" style={nomTransition('rc', slugDe(recit.id), !!data.image)}>
           {data.image ? (
             <Image src={data.image} alt={pret(data.image_alt) ?? ''} widths={[640, 1000, 1400]} sizes="(min-width: 56rem) 52rem, 100vw" />
           ) : (

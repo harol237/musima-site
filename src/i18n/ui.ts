@@ -31,6 +31,8 @@ export const ui = {
   navPied: { es: 'Pie de página', fr: 'Pied de page', en: 'Footer', ca: 'Peu de pàgina' },
   ouvrirMenu: { es: 'Abrir el menú', fr: 'Ouvrir le menu', en: 'Open menu', ca: 'Obre el menú' },
   fermerMenu: { es: 'Cerrar el menú', fr: 'Fermer le menu', en: 'Close menu', ca: 'Tanca el menú' },
+  menuBouton: { es: 'Menú', fr: 'Menu', en: 'Menu', ca: 'Menú' },
+  menuApercu: { es: 'Vista previa', fr: 'Aperçu', en: 'Preview', ca: 'Vista prèvia' },
   basculeTheme: {
     es: 'Cambiar entre tema claro y oscuro', fr: 'Changer de thème clair ou sombre',
     en: 'Switch between light and dark theme', ca: 'Canvia entre tema clar i fosc',

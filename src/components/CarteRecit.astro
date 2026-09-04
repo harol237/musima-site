@@ -7,6 +7,7 @@ import { formaterDate } from '~/i18n/utils';
 import { chemin, type Langue } from '~/i18n/config';
 import { categoriesRecit, traduireValeur } from '~/i18n/utils';
 import { dateISO, enChantier, pret, slugDe } from '~/lib/contenu';
+import { nomTransition } from '~/lib/transitions';
 
 interface Props {
   langue: Langue;
@@ -20,7 +21,10 @@ const { data } = recit;
   {data.modele && <BadgeModele />}
 
   {(data.image || enChantier) && (
-  <div class:list={['carte__visuel', variante === 'mise-en-avant' ? 'ratio-16-9' : 'ratio-3-2']}>
+  <div
+    class:list={['carte__visuel', variante === 'mise-en-avant' ? 'ratio-16-9' : 'ratio-3-2']}
+    style={nomTransition('rc', slugDe(recit.id), !!data.image)}
+  >
     {data.image ? (
       <Image
         src={data.image}

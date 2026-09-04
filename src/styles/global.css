@@ -11,6 +11,9 @@ html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
   scroll-padding-top: 7rem;
+  /* Le menu plein écran verrouille le défilement : sans gouttière
+     réservée, la page saute de la largeur de la barre à l'ouverture. */
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -36,7 +39,9 @@ button { background: none; border: none; cursor: pointer; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    animation-delay: 0.01ms !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0.01ms !important;
   }
 }
 
@@ -497,3 +502,40 @@ a { color: inherit; }
   .apparait.est-visible { opacity: 1; transform: none; }
 }
 
+/* ==================================================================
+   12. TRANSITIONS DE PAGE
+   ------------------------------------------------------------------
+   Transitions natives d'un document à l'autre : aucune librairie,
+   aucun routeur côté client. Les pages se chargent normalement — donc
+   les scripts de chaque composant continuent de s'exécuter à chaque
+   navigation — et c'est le navigateur qui peint le passage.
+
+   Les navigateurs qui ne connaissent pas encore la règle chargent la
+   page comme avant : il n'y a rien à rattraper.
+   ================================================================== */
+@view-transition { navigation: auto; }
+
+::view-transition-group(*) {
+  animation-duration: var(--mv-moyen);
+  animation-timing-function: var(--courbe-arrivee);
+}
+
+::view-transition-old(root) { animation: page-sortie 180ms var(--courbe-sortie) both; }
+::view-transition-new(root) { animation: page-entree 260ms var(--courbe-arrivee) both; }
+
+@keyframes page-sortie { to { opacity: 0; } }
+@keyframes page-entree { from { opacity: 0; transform: translateY(8px); } }
+
+/* L'en-tête et le pied sont identiques d'une page à l'autre : on les
+   fige pendant le passage plutôt que de les faire clignoter. */
+::view-transition-old(entete), ::view-transition-new(entete),
+::view-transition-old(pied), ::view-transition-new(pied) { animation: none; }
+
+/* Le portrait d'une carte et celui de sa fiche portent le même nom :
+   le navigateur fait grandir l'un vers l'autre. Voir src/lib/transitions.ts. */
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+}
