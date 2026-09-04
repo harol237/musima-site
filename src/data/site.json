@@ -25,7 +25,7 @@
   },
   "langue": "fr",
   "contact": {
-    "email": "Musima.org@mail.com",
+    "email": "contact@musima.org",
     "telephone": "[TÉLÉPHONE À AJOUTER]",
     "rue": "Carrer Musima 237",
     "code_postal": "08930",
@@ -60,14 +60,6 @@
     {
       "nom": "Instagram",
       "url": "https://www.instagram.com/musima_official"
-    },
-    {
-      "nom": "LinkedIn",
-      "url": "[LIEN À AJOUTER]"
-    },
-    {
-      "nom": "YouTube",
-      "url": "[LIEN À AJOUTER]"
     }
   ],
   "infolettre": {
@@ -77,7 +69,8 @@
     "texte": "Les prochaines rencontres, les nouveaux portraits, ce qui se construit autour de MUSIMA. Quelques envois par an, pas plus — on n'a ni le temps ni l'envie de vous encombrer.",
     "action": "[URL DU FORMULAIRE BREVO À AJOUTER]",
     "champ_email": "EMAIL",
-    "champ_consentement": "OPT_IN"
+    "champ_consentement": "OPT_IN",
+    "champ_nom": "[NOM DU CHAMP PRÉNOM DANS BREVO, SI VOUS EN VOULEZ UN]"
   },
   "juridique": {
     "forme": {
@@ -122,5 +115,10 @@
       "musima-theme",
       "musima-langue"
     ]
+  },
+  "inscription": {
+    "actif": true,
+    "destinataire": "contact@musima.org",
+    "action": "[URL DU FORMULAIRE (FORMSPREE, GETFORM…) — LAISSER TEL QUEL POUR ENVOYER PAR E-MAIL]"
   }
 }

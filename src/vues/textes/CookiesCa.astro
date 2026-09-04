@@ -9,9 +9,9 @@ const verif = new Intl.DateTimeFormat('ca-ES', {
 }).format(new Date(site.cookies.verifie_le));
 ---
 <EntetePage
-  surtitre="Les teves dades"
+  surtitre="Les seves dades"
   titre="Galetes"
-  chapo="Aquest web no diposita cap galeta. Cap. Aquesta pàgina explica què es guarda realment al teu dispositiu, i per què no hi ha cap bàner de consentiment per acceptar."
+  chapo="Aquest web no diposita cap galeta. Cap. Aquesta pàgina explica què es guarda realment al seu dispositiu, i per què no hi ha cap bàner de consentiment per acceptar."
   ariane={[{ libelle: 'Galetes' }]}
   registre="papier"
 />
@@ -23,17 +23,17 @@ const verif = new Intl.DateTimeFormat('ca-ES', {
       <li>No es diposita cap galeta, ni nostra ni de tercers.</li>
       <li>No hi ha cap eina de mesura d’audiència — ni Google Analytics ni equivalent. No sabem quanta gent visita aquest web.</li>
       <li>No hi ha cap script extern, cap botó per compartir, cap vídeo incrustat.</li>
-      <li>Les tipografies estan allotjades al nostre propi domini: el teu navegador no contacta cap servidor aliè per mostrar una pàgina.</li>
+      <li>Les tipografies estan allotjades al nostre propi domini: el seu navegador no contacta cap servidor aliè per mostrar una pàgina.</li>
     </ul>
     <p>
       Comprovat el {verif} carregant diverses pàgines del lloc en un navegador net: cap capçalera
       <code>Set-Cookie</code>, cap galeta registrada, cap petició sortint cap a un altre domini.
     </p>
 
-    <h2>L’única cosa que es guarda al teu dispositiu</h2>
+    <h2>L’única cosa que es guarda al seu dispositiu</h2>
     <p>
-      Si prems el botó clar/fosc de la part superior, o si tries un idioma, aquesta preferència es
-      guarda a l’emmagatzematge local del teu navegador. Res més.
+      Si prem el botó clar/fosc de la part superior, o si tria un idioma, aquesta preferència es
+      guarda a l’emmagatzematge local del seu navegador. Res més.
     </p>
     <table class="tableau-stockage">
       <thead>
@@ -43,42 +43,42 @@ const verif = new Intl.DateTimeFormat('ca-ES', {
         <tr>
           <td><code>musima-theme</code></td>
           <td>La paraula <code>light</code> o <code>dark</code></td>
-          <td>Només si prems el botó de tema</td>
-          <td>Fins que esborris les dades del lloc</td>
+          <td>Només si prem el botó de tema</td>
+          <td>Fins que esborri les dades del lloc</td>
         </tr>
         <tr>
           <td><code>musima-langue</code></td>
           <td>Un codi d’idioma: <code>es</code>, <code>fr</code>, <code>en</code> o <code>ca</code></td>
-          <td>Només si tries un idioma al selector</td>
-          <td>Fins que esborris les dades del lloc</td>
+          <td>Només si tria un idioma al selector</td>
+          <td>Fins que esborri les dades del lloc</td>
         </tr>
       </tbody>
     </table>
     <p>
-      Aquests valors no surten mai del teu dispositiu: no es transmeten a cap servidor, ni tan sols
-      al nostre. No permeten identificar-te ni seguir-te d’un lloc a un altre.
+      Aquests valors no surten mai del seu dispositiu: no es transmeten a cap servidor, ni tan sols
+      al nostre. No permeten identificar-lo ni seguir-lo d’un lloc a un altre.
     </p>
     <p>
       <strong>Per què no hi ha cap bàner per acceptar.</strong> L’article 22.2 de la Llei 34/2002
       (LSSI-CE) eximeix de consentiment els dispositius estrictament necessaris per a un servei
       expressament sol·licitat per l’usuari. Recordar un ajust de visualització o un idioma que
-      acabes de triar tu entra dins d’aquesta excepció, tal com la interpreta l’Agència Espanyola
-      de Protecció de Dades a la seva guia sobre l’ús de galetes. Demanar-te permís per això no
-      tindria cap sentit: el desament només passa si fas clic.
+      acaba de triar vostè entra dins d’aquesta excepció, tal com la interpreta l’Agència Espanyola
+      de Protecció de Dades a la seva guia sobre l’ús de galetes. Demanar-li permís per això no
+      tindria cap sentit: el desament només passa si fa clic.
     </p>
 
     <h2>Com esborrar-ho</h2>
     <p>
-      Esborra les dades de lloc de <code>musima.org</code> als ajustos del teu navegador, o fes
+      Esborri les dades de lloc de <code>musima.org</code> als ajustos del seu navegador, o faci
       servir una finestra de navegació privada. El web funciona exactament igual sense aquests
-      valors: aleshores segueix el tema clar o fosc del teu sistema, i l’idioma de l’adreça que
-      visites.
+      valors: aleshores segueix el tema clar o fosc del seu sistema, i l’idioma de l’adreça que
+      visita.
     </p>
 
     <h2>El butlletí</h2>
     <p>
       La subscripció al butlletí passa per {site.infolettre.fournisseur}, el nostre proveïdor
-      d’enviament. El formulari transmet la teva adreça directament a aquest proveïdor: no es
+      d’enviament. El formulari transmet la seva adreça directament a aquest proveïdor: no es
       diposita cap galeta a {site.nom} en fer-ho. En canvi, les pàgines de confirmació i de baixa
       allotjades pel proveïdor es regeixen per la seva pròpia política de galetes.
     </p>
@@ -87,7 +87,7 @@ const verif = new Intl.DateTimeFormat('ca-ES', {
     <p>
       Com tot web, aquest passa per un proveïdor d’allotjament —Cloudflare— que registra
       tècnicament les connexions entrants per servir les pàgines i protegir-se d’atacs. Són
-      registres de servidor, no galetes: no s’escriu res al teu dispositiu. Vegeu la
+      registres de servidor, no galetes: no s’escriu res al seu dispositiu. Vegeu la
       {' '}<a href={chemin('ca', 'confidentialite')} class="lien">política de privacitat</a>.
     </p>
 
@@ -102,8 +102,8 @@ const verif = new Intl.DateTimeFormat('ca-ES', {
 
     <h2>Un dubte</h2>
     <p>
-      Escriu a <a href={`mailto:${c.email}`} class="lien">{c.email}</a>. Si detectes una galeta en
-      aquest web, digues-nos-ho: seria una errada, i la corregiríem.
+      Escrigui a <a href={`mailto:${c.email}`} class="lien">{c.email}</a>. Si detecta una galeta en
+      aquest web, digui’ns-ho: seria una errada, i la corregiríem.
     </p>
   </div>
 </section>

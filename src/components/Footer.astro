@@ -31,6 +31,7 @@ const aRemplir = (valeur: string) => valeur.startsWith('[');
    liens qui marchent qu'une liste qui promet des comptes inexistants. */
 const reseaux = site.reseaux.filter((r) => enChantier || !aRemplir(r.url));
 const infolettrePrete = !aRemplir(site.infolettre.action);
+const champNom = aRemplir(site.infolettre.champ_nom) ? undefined : site.infolettre.champ_nom;
 ---
 
 <footer class="pied scene">
@@ -88,6 +89,19 @@ const infolettrePrete = !aRemplir(site.infolettre.action);
           target="_blank"
           rel="noopener"
         >
+          {champNom && (
+            <div class="pied__form-ligne">
+              <label for="nom-infolettre" class="visuellement-cache">{t('infolettreNom')}</label>
+              <input
+                id="nom-infolettre"
+                type="text"
+                name={champNom}
+                autocomplete="given-name"
+                placeholder={t('infolettreNom')}
+              />
+            </div>
+          )}
+
           <div class="pied__form-ligne">
             <label for="courriel-infolettre" class="visuellement-cache">{t('infolettreChamp')}</label>
             <input
