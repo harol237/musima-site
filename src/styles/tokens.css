@@ -21,7 +21,7 @@
   --surface-2: #ece8e0;
   --encre: #12303f;          /* 10.6:1 sur --papier */
   --encre-douce: #4b6472;    /*  5.5:1 sur --papier */
-  --encre-faible: #6a808b;   /*  3.6:1 — métadonnées en gros corps seulement */
+  --encre-faible: #5a7080;   /*  4.6:1 — assombri : il sert en 12-13px partout */
   --trait: #ded8ce;
   --trait-fort: #c3bbae;
   --terre: #b8442a;          /*  4.8:1 sur --papier — liens, CTA */
@@ -31,7 +31,10 @@
   --sur-terre: #fffaf7;      /* texte posé sur --terre */
   --sur-or: #133d52;         /* texte posé sur --or — 4.6:1 */
   --focus: #b8442a;
+  --voile: rgba(18, 48, 63, 0.06);    /* superposition posée sur une photo */
+  --halo: rgba(216, 152, 45, 0.08);   /* halo derrière un grand titre */
   --ombre-carte: none;
+  --ombre-survol: 0 18px 40px -24px rgba(10, 33, 48, 0.55);
 
   /* --- Registre « scène » : toujours sombre, dans les deux thèmes.
          C'est la signature MUSIMA — le contenu mis en lumière sur
@@ -45,6 +48,8 @@
   --scene-terre: #e8825f;    /*  5.3:1 */
   --scene-or: #e3ac48;       /*  6.9:1 */
   --scene-focus: #e3ac48;
+  --scene-voile: rgba(10, 33, 48, 0.4);
+  --scene-halo: rgba(227, 172, 72, 0.09);
 
   /* --- Typographie ----------------------------------------------- */
   --f-titre: var(--font-display), 'Segoe UI', system-ui, sans-serif;
@@ -58,7 +63,11 @@
   --t-600: clamp(1.3125rem, 0.9vw + 1.05rem, 1.6875rem);
   --t-700: clamp(1.625rem, 1.8vw + 1.15rem, 2.375rem);
   --t-800: clamp(2.125rem, 3.4vw + 1.1rem, 3.625rem);
-  --t-900: clamp(2.5rem, 5.6vw + 0.9rem, 5.25rem);
+  --t-900: clamp(2.75rem, 6.2vw + 0.9rem, 6rem);
+
+  /* Corps de la prose longue : Newsreader respire mieux un cran au-dessus
+     de --t-400, qui reste la valeur des cartes et des listes. */
+  --t-prose: 1.09rem;
 
   --interligne-serre: 1.06;
   --interligne-titre: 1.14;
@@ -77,11 +86,11 @@
   --e-8: 3.5rem;
   --e-9: 4.5rem;
   --e-10: 6rem;
-  --e-section: clamp(3.5rem, 7vw, 7rem);
+  --e-section: clamp(4.5rem, 9vw, 9rem);
 
   /* --- Mise en page ---------------------------------------------- */
-  --largeur-page: 76rem;
-  --largeur-texte: 38rem;
+  --largeur-page: 78rem;
+  --largeur-texte: 36rem;
   --largeur-etroite: 52rem;
   --gouttiere: clamp(1.25rem, 5vw, 3rem);
 
@@ -91,10 +100,22 @@
          restent presque droites pour tenir la structure. ---------- */
   --r-carte: 3px;
   --r-image: 4px;
+  --r-visuel: 10px;          /* cartes portant une photo */
   --r-pilule: 999px;
   --epaisseur-trait: 2px;
 
-  --transition: 180ms cubic-bezier(0.2, 0, 0.13, 1);
+  /* --- Mouvement ---------------------------------------------------
+         Deux courbes seulement : « sortie » pour ce qui change tout de
+         suite (couleur, bordure, focus), « arrivée » pour tout ce qui
+         entre ou s'installe. Une seule courbe d'arrivée sur tout le
+         site : c'est ce qui fait tenir l'ensemble. ------------------ */
+  --courbe-sortie: cubic-bezier(0.2, 0, 0.13, 1);
+  --courbe-arrivee: cubic-bezier(0.16, 1, 0.3, 1);
+  --mv-rapide: 160ms;
+  --mv-moyen: 320ms;
+  --mv-lent: 620ms;
+  /* Raccourci historique, utilisé partout comme fin de `transition`. */
+  --transition: var(--mv-rapide) var(--courbe-sortie);
 
   color-scheme: light;
 }
@@ -117,7 +138,10 @@
     --sur-terre: #2a0f07;
     --sur-or: #133d52;
     --focus: #e3ac48;
+    --voile: rgba(10, 33, 48, 0.4);
+    --halo: rgba(227, 172, 72, 0.09);
     --ombre-carte: none;
+    --ombre-survol: 0 18px 40px -24px rgba(0, 0, 0, 0.62);
 
     --scene-fond: #0a2130;
     --scene-fond-2: #10354a;
@@ -143,7 +167,10 @@
   --sur-terre: #2a0f07;
   --sur-or: #133d52;
   --focus: #e3ac48;
+  --voile: rgba(10, 33, 48, 0.4);
+  --halo: rgba(227, 172, 72, 0.09);
   --ombre-carte: none;
+  --ombre-survol: 0 18px 40px -24px rgba(0, 0, 0, 0.62);
 
   --scene-fond: #0a2130;
   --scene-fond-2: #10354a;
