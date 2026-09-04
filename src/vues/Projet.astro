@@ -6,6 +6,7 @@ import EntetePage from '~/components/EntetePage.astro';
 import EnteteSection from '~/components/EnteteSection.astro';
 import CarteIntervenant from '~/components/CarteIntervenant.astro';
 import ARemplir from '~/components/ARemplir.astro';
+import VisuelDeSecours from '~/components/VisuelDeSecours.astro';
 import { estPublie, pret, slugDe } from '~/lib/contenu';
 import { nomTransition } from '~/lib/transitions';
 import { chemin, type Langue } from '~/i18n/config';
@@ -46,11 +47,14 @@ const intervenants = data.intervenants.length ? await getEntries(data.intervenan
 
   <div class="conteneur page-projet">
     <article>
-      <div class="visuel-principal ratio-3-2" style={nomTransition('pj', slugDe(projet.id), !!data.image)}>
+      <div class="visuel-principal tirage ratio-3-2" style={nomTransition('pj', slugDe(projet.id), !!data.image)}>
         {data.image ? (
           <Image src={data.image} alt={pret(data.image_alt) ?? ''} widths={[640, 1000, 1400]} sizes="(min-width: 64rem) 46rem, 100vw" />
         ) : (
-          <ARemplir type="photo" forme="visuel" />
+          <>
+            <VisuelDeSecours variante="titre" texte={data.titre} graine={projet.id} />
+            <ARemplir type="photo" forme="visuel" class="par-dessus" />
+          </>
         )}
       </div>
       <div class="prose"><Content /></div>

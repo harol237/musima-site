@@ -3,6 +3,7 @@ import Base from '~/layouts/Base.astro';
 import EntetePage from '~/components/EntetePage.astro';
 import EnteteSection from '~/components/EnteteSection.astro';
 import ARemplir from '~/components/ARemplir.astro';
+import VisuelDeSecours from '~/components/VisuelDeSecours.astro';
 import BandeauCta from '~/components/BandeauCta.astro';
 import { enChantier } from '~/lib/contenu';
 import { chemin, type Langue } from '~/i18n/config';
@@ -69,8 +70,9 @@ const x = textes[langue as 'es' | 'fr'] ?? textes.fr;
       {x.roles.map((role, index) => (
         <li class="apparait" style={`--i:${index}`}>
           <article class="carte membre">
-            <div class="carte__visuel ratio-4-5 membre__reserve">
-              <ARemplir type="photo" forme="visuel" />
+            <div class="carte__visuel ratio-4-5">
+              <VisuelDeSecours variante="trame" />
+              <ARemplir type="photo" forme="visuel" class="par-dessus" />
             </div>
             <p class="membre__role">{role}</p>
             <p class="membre__nom"><ARemplir libelle={x.nomAAjouter} forme="ligne" /></p>
@@ -98,18 +100,6 @@ const x = textes[langue as 'es' | 'fr'] ?? textes.fr;
   .liste-nue { list-style: none; margin: 0; padding: 0; }
   .membre { gap: var(--e-2); padding: var(--e-4); }
   .membre .carte__visuel { margin: calc(var(--e-4) * -1) calc(var(--e-4) * -1) var(--e-3); }
-  /* La trame se voit aussi en production, où le marqueur, lui, disparaît :
-     un emplacement réservé se lit comme une intention, un cadre gris
-     comme un oubli. */
-  .membre__reserve {
-    background:
-      repeating-linear-gradient(
-        -45deg,
-        color-mix(in oklab, var(--or) 14%, transparent) 0 2px,
-        transparent 2px 9px
-      ),
-      color-mix(in oklab, var(--or) 6%, transparent);
-  }
   .membre__role {
     font-family: var(--f-titre);
     font-size: var(--t-400);

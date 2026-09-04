@@ -395,6 +395,8 @@ a { color: inherit; }
 }
 
 .carte__visuel {
+  position: relative;
+  container-type: inline-size;
   margin: calc(var(--e-5) * -1) calc(var(--e-5) * -1) var(--e-2);
   border-radius: calc(var(--r-visuel) - 1px) calc(var(--r-visuel) - 1px) 0 0;
   overflow: hidden;
@@ -405,6 +407,39 @@ a { color: inherit; }
   .carte__visuel img { transition: transform var(--mv-lent) var(--courbe-arrivee); }
   .carte:has(a:hover) .carte__visuel img,
   .carte:has(a:focus-visible) .carte__visuel img { transform: scale(1.04); }
+}
+
+/* ------------------------------------------------------------------
+   Tirage : la correction commune (jeton --tirage) plus les noirs
+   relevés vers le pétrole de la marque, posé par-dessus l'image.
+   `container-type` sert aux visuels de secours, qui se dimensionnent
+   sur la largeur de leur cadre.
+   ------------------------------------------------------------------ */
+.tirage, .carte__visuel {
+  position: relative;
+  isolation: isolate;
+  container-type: inline-size;
+}
+.tirage img, .carte__visuel img { filter: var(--tirage); }
+.tirage:has(img)::after, .carte__visuel:has(img)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--marque-petrole);
+  mix-blend-mode: lighten;
+  opacity: 0.09;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Le marqueur de chantier se pose par-dessus le visuel de secours :
+   en local on voit qu'il manque une photo, en production c'est la
+   composition qui tient la place. */
+.a-remplir.par-dessus {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background-color: color-mix(in oklab, var(--papier) 72%, transparent);
 }
 
 .ratio-4-5 { aspect-ratio: 4 / 5; }

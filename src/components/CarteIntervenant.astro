@@ -3,9 +3,10 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import ARemplir from './ARemplir.astro';
 import BadgeModele from './BadgeModele.astro';
+import VisuelDeSecours from './VisuelDeSecours.astro';
 import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
-import { enChantier, pret, slugDe } from '~/lib/contenu';
+import { pret, slugDe } from '~/lib/contenu';
 import { nomTransition } from '~/lib/transitions';
 
 interface Props {
@@ -20,7 +21,6 @@ const sousTitre = [data.fonction, data.organisation].filter(Boolean).join(' · '
 <article class="carte fiche">
   {data.modele && <BadgeModele />}
 
-  {(data.photo || enChantier) && (
   <div class="carte__visuel ratio-4-5" style={nomTransition('pt', slugDe(intervenant.id), !!data.photo)}>
     {data.photo ? (
       <Image
@@ -30,10 +30,12 @@ const sousTitre = [data.fonction, data.organisation].filter(Boolean).join(' · '
         sizes="(min-width: 64rem) 20rem, (min-width: 40rem) 40vw, 85vw"
       />
     ) : (
-      <ARemplir type="photo" forme="visuel" />
+      <>
+        <VisuelDeSecours variante="initiales" texte={data.nom} graine={intervenant.id} />
+        <ARemplir type="photo" forme="visuel" class="par-dessus" />
+      </>
     )}
   </div>
-  )}
 
   {/* Quatre niveaux typographiques en quatre lignes : c'est là que se
       lit la hiérarchie, pas dans la taille des blocs. */}

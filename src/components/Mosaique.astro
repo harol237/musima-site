@@ -90,6 +90,9 @@ const grandes = await Promise.all(
 </div>
 
 <style>
+  /* Même tirage que le reste du site, sans toucher à la grille. */
+  .mosaique :global(img) { filter: var(--tirage); }
+
   .mosaique__aide {
     font-family: var(--f-titre);
     font-size: var(--t-200);

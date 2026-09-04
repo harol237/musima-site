@@ -117,6 +117,13 @@
   /* Raccourci historique, utilisé partout comme fin de `transition`. */
   --transition: var(--mv-rapide) var(--courbe-sortie);
 
+  /* --- Tirage photo -------------------------------------------------
+         Une seule correction pour toutes les images du site : saturation
+         retenue, contraste léger, une pointe de chaleur. Les photos
+         viennent de mains et de lumières différentes ; c'est cette unité
+         qui se lit comme « soigné », plus que chaque image prise seule. */
+  --tirage: saturate(0.94) contrast(1.04) sepia(0.06);
+
   color-scheme: light;
 }
 

@@ -6,6 +6,7 @@ import EntetePage from '~/components/EntetePage.astro';
 import EnteteSection from '~/components/EnteteSection.astro';
 import CarteIntervenant from '~/components/CarteIntervenant.astro';
 import ARemplir from '~/components/ARemplir.astro';
+import VisuelDeSecours from '~/components/VisuelDeSecours.astro';
 import BadgeModele from '~/components/BadgeModele.astro';
 import { dateISO, estAVenir, estPublie, enChantier, pret } from '~/lib/contenu';
 import { formaterPlage, formatsEvenement, traduireValeur } from '~/i18n/utils';
@@ -105,15 +106,16 @@ const donnees = {
 
   <div class="conteneur page-evenement">
     <article class="page-evenement__corps">
-      {(data.image || enChantier) && (
-      <div class="visuel-principal ratio-16-9">
+      <div class="visuel-principal tirage ratio-16-9">
         {data.image ? (
           <Image src={data.image} alt={pret(data.image_alt) ?? ''} widths={[640, 1000, 1400]} sizes="(min-width: 64rem) 46rem, 100vw" />
         ) : (
-          <ARemplir type="photo" forme="visuel" />
+          <>
+            <VisuelDeSecours variante="date" date={data.date_debut} langue={langue} graine={evenement.id} />
+            <ARemplir type="photo" forme="visuel" class="par-dessus" />
+          </>
         )}
       </div>
-      )}
       {pret(data.credit_photo) && <p class="credit">{t('photoCredit')} : {data.credit_photo}</p>}
 
       <div class="prose">
