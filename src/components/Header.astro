@@ -447,7 +447,12 @@ const cleDefaut = cleApercu(entrees[0]?.rubrique);
 
   /* --- Volet d'aperçu --- */
   .menu-plein__apercu { display: none; }
-  .apercu { margin: 0; display: grid; gap: var(--e-4); max-width: 18rem; }
+  /* `:not([hidden])` est indispensable, comme pour le panneau lui-même :
+     une règle d'auteur `display: grid` l'emporte sur le
+     `[hidden] { display: none }` du navigateur, et les cinq aperçus
+     s'empilaient tous en même temps au lieu de se relayer. */
+  .apercu { margin: 0; gap: var(--e-4); max-width: 18rem; }
+  .apercu:not([hidden]) { display: grid; }
   .apercu__visuel {
     overflow: hidden;
     border-radius: var(--r-visuel);
