@@ -1,0 +1,118 @@
+---
+import EntetePage from '~/components/EntetePage.astro';
+import FicheLegale from '~/components/FicheLegale.astro';
+import site from '~/data/site.json';
+import { champ } from '~/i18n/site';
+import { chemin } from '~/i18n/config';
+
+const { hebergeur: h, contact: c } = site;
+const maj = new Intl.DateTimeFormat('ca-ES', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid',
+}).format(new Date('2026-09-03'));
+---
+<EntetePage
+  surtitre="Informació legal"
+  titre="Avís legal"
+  chapo="Qui edita aquest web, qui l’allotja i què hi pots fer. És la informació que exigeix l’article 10 de la Llei 34/2002 (LSSI-CE)."
+  ariane={[{ libelle: 'Avís legal' }]}
+  registre="papier"
+/>
+<section class="section conteneur">
+  <div class="prose">
+
+    <h2>1. Identificació de l’editor</h2>
+    <FicheLegale langue="ca" />
+
+    <h2>2. Allotjament</h2>
+    <p>
+      Aquest web està allotjat per <strong>{h.nom}</strong>, {champ(h.adresse, 'ca')}
+      {' '}(<a href={h.site} class="lien" rel="noopener">{h.site.replace('https://', '')}</a>),
+      a través del seu servei {h.service}.
+    </p>
+    <p>
+      Es tracta d’un lloc estàtic: les pàgines es generen prèviament i se serveixen tal qual, sense
+      base de dades ni processament al servidor.
+    </p>
+
+    <h2>3. Objecte del web</h2>
+    <p>
+      Aquest web presenta l’activitat de {site.nom}: les seves trobades, les persones que hi prenen
+      la paraula, els seus projectes i les seves publicacions. L’accés és lliure i gratuït. No s’hi
+      ofereix cap venda, cap pagament ni cap transacció comercial.
+    </p>
+
+    <h2>4. Condicions d’ús</h2>
+    <h3>Ús permès</h3>
+    <p>
+      Pots consultar aquest web, citar-lo, compartir-ne les adreces i reproduir-ne fragments per a
+      un ús privat, docent, associatiu o periodístic, sempre que citis {site.nom} i no en
+      desvirtuïs el contingut. Per a qualsevol altre ús, en particular comercial, escriu-nos: et
+      contestem.
+    </p>
+    <h3>Ús no permès</h3>
+    <p>
+      Queden prohibits: l’extracció sistemàtica o la reutilització d’una part substancial del
+      contingut, qualsevol intent d’accés no autoritzat, qualsevol acció dirigida a pertorbar el
+      funcionament del web, i l’ús de les adreces de contacte publicades amb finalitats de
+      prospecció no sol·licitada.
+    </p>
+    <h3>Enllaços</h3>
+    <p>
+      Els enllaços sortints apunten a llocs que no controlem i dels quals no responem. Pots enllaçar
+      aquest web sense demanar-nos permís, sempre que l’enllaç no indueixi a error sobre l’origen
+      del contingut.
+    </p>
+
+    <h2>5. Propietat intel·lectual</h2>
+    <p>
+      Els textos publicats en aquest web són propietat de {site.nom}, llevat d’indicació en contra.
+      Les fotografies continuen sent propietat dels seus autors: cada imatge publicada duu el seu
+      crèdit quan se’ns ha facilitat. La identitat visual i el nom {site.nom} pertanyen a
+      l’associació.
+    </p>
+    <p>
+      Els retrats, els relats i les fotografies de persones es publiquen amb l’acord de les
+      persones afectades. Si surts en una imatge o en un text i vols que es retiri, escriu-nos: ho
+      fem sense discutir i sense demora.
+    </p>
+
+    <h2>6. Responsabilitat</h2>
+    <p>
+      Procurem publicar informació exacta i actualitzada, en particular les dates i els llocs de les
+      trobades. Un error continua sent possible: no pot comprometre la responsabilitat de
+      l’associació. Les dates i els llocs anunciats poden canviar; la pàgina de l’esdeveniment és la
+      que val.
+    </p>
+    <p>
+      El web s’ofereix tal qual. No garantim ni una disponibilitat contínua, ni l’absència
+      d’interrupcions per manteniment o per causa del proveïdor d’allotjament.
+    </p>
+
+    <h2>7. Protecció de dades i galetes</h2>
+    <p>
+      El tractament de dades personals es descriu a la
+      {' '}<a href={chemin('ca', 'confidentialite')} class="lien">política de privacitat</a>. L’ús
+      de galetes i d’emmagatzematge local es descriu a la
+      {' '}<a href={chemin('ca', 'cookies')} class="lien">política de galetes</a>.
+    </p>
+
+    <h2>8. Legislació aplicable</h2>
+    <p>
+      Aquest avís legal es regeix per la legislació espanyola, en particular per la Llei 34/2002, de
+      serveis de la societat de la informació i de comerç electrònic (LSSI-CE). Qualsevol litigi
+      correspon als tribunals competents de Barcelona, sens perjudici de les normes de protecció
+      aplicables als consumidors.
+    </p>
+
+    <h2>9. Avisar-nos d’alguna cosa</h2>
+    <p>
+      Un error, un contingut que no hi hauria de ser, un enllaç trencat, una imatge per retirar:
+      escriu a <a href={`mailto:${c.email}`} class="lien">{c.email}</a>.
+    </p>
+
+    <p class="maj">Darrera actualització: {maj}.</p>
+  </div>
+</section>
+<style>
+  .maj { margin-top: var(--e-8); font-size: var(--t-200); color: var(--encre-faible); }
+</style>

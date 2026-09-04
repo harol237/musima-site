@@ -46,8 +46,40 @@ const textes = {
     ctaTitre: 'Envie de faire partie de l’équipe ?',
     ctaBouton: 'Devenir bénévole',
   },
+  en: {
+    meta: 'The people who run MUSIMA: the board, active members and volunteers.',
+    surtitre: 'The frame',
+    titre: 'The team',
+    chapo: 'MUSIMA is held up by a group of volunteers. This page puts names to them — that is what makes an association legible, and worth trusting.',
+    bureauSurtitre: 'The board',
+    bureauTitre: 'Who holds the association up',
+    roles: ['Chair', 'Treasurer', 'Secretary', 'Board member'],
+    nomAAjouter: 'NAME TO ADD',
+    autourSurtitre: 'Around it',
+    autourTitre: 'Volunteers and contributors',
+    autourNote: 'Photography, filming, writing, translation, welcoming people, logistics: a lot of it rests on one-off contributions. This section names them.',
+    ctaSurtitre: 'Join in',
+    ctaTitre: 'Fancy being part of the team?',
+    ctaBouton: 'Lend a hand',
+  },
+  ca: {
+    meta: 'Les persones que duen MUSIMA: junta directiva, membres actius i voluntariat.',
+    surtitre: 'El marc',
+    titre: 'L’equip',
+    chapo: 'MUSIMA la sosté un grup de persones voluntàries. Aquesta pàgina les fa visibles — és el que fa que una associació sigui llegible i creïble.',
+    bureauSurtitre: 'Junta directiva',
+    bureauTitre: 'Qui sosté l’associació',
+    roles: ['Presidència', 'Tresoreria', 'Secretaria', 'Vocalia'],
+    nomAAjouter: 'NOM PER AFEGIR',
+    autourSurtitre: 'Al voltant',
+    autourTitre: 'Voluntariat i col·laboracions',
+    autourNote: 'Fotografia, gravació, redacció, traducció, acollida, logística: moltes coses se sostenen sobre aportacions puntuals. Aquest apartat les reconeix.',
+    ctaSurtitre: 'Sumar-t’hi',
+    ctaTitre: 'Tens ganes de formar part de l’equip?',
+    ctaBouton: 'Donar un cop de mà',
+  },
 } as const;
-const x = textes[langue as 'es' | 'fr'] ?? textes.fr;
+const x = textes[langue];
 ---
 
 <Base

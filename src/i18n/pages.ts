@@ -28,31 +28,25 @@ export type PageStatique = {
 };
 
 const toutes = langues;
-/**
- * Pages dont la prose longue n'est pas encore traduite. Elles ne sont
- * générées qu'en français : mieux vaut une rubrique absente d'un menu
- * qu'une page espagnole remplie de texte français.
- *
- * Ajouter 'es' ici dès que la version espagnole est écrite suffit à la
- * publier — route, menu, sélecteur et hreflang suivent.
- */
-const esFr = ['es', 'fr'] as const;
-const frSeul = ['fr'] as const;
+/* Toutes les pages existent désormais dans les quatre langues : prose
+   longue comprise, y compris les trois pages légales. Le mécanisme qui
+   permettait de n'en publier qu'une partie reste en place — il suffit de
+   remplacer `toutes` par une liste pour retirer une page d'une langue. */
 
 export const pagesStatiques: PageStatique[] = [
   { vue: 'accueil',         disponible: toutes },
-  { vue: 'association',     segment: 'association', disponible: esFr },
-  { vue: 'equipe',          segment: 'association', sous: 'equipe', disponible: esFr },
+  { vue: 'association',     segment: 'association', disponible: toutes },
+  { vue: 'equipe',          segment: 'association', sous: 'equipe', disponible: toutes },
   { vue: 'evenements',      segment: 'evenements', disponible: toutes },
   { vue: 'intervenants',    segment: 'intervenants', disponible: toutes },
   { vue: 'projets',         segment: 'projets', disponible: toutes },
   { vue: 'recits',          segment: 'recits', disponible: toutes },
   { vue: 'galerie',         segment: 'galerie', disponible: toutes },
-  { vue: 'engagement',      segment: 'engagement', disponible: esFr },
-  { vue: 'contact',         segment: 'contact', disponible: esFr },
-  { vue: 'legal',           segment: 'legal', disponible: esFr },
-  { vue: 'confidentialite', segment: 'confidentialite', disponible: esFr },
-  { vue: 'cookies',         segment: 'cookies', disponible: esFr },
+  { vue: 'engagement',      segment: 'engagement', disponible: toutes },
+  { vue: 'contact',         segment: 'contact', disponible: toutes },
+  { vue: 'legal',           segment: 'legal', disponible: toutes },
+  { vue: 'confidentialite', segment: 'confidentialite', disponible: toutes },
+  { vue: 'cookies',         segment: 'cookies', disponible: toutes },
   /* La page accessibilité n'est plus publiée : ses adresses sont
      redirigées vers l'accueil dans public/_redirects. La vue reste dans
      le dépôt, il suffit de remettre une ligne ici pour la republier. */

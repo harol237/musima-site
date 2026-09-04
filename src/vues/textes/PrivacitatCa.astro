@@ -1,0 +1,189 @@
+---
+import EntetePage from '~/components/EntetePage.astro';
+import FicheLegale from '~/components/FicheLegale.astro';
+import site from '~/data/site.json';
+import { champ } from '~/i18n/site';
+import { chemin } from '~/i18n/config';
+
+const { hebergeur: h, contact: c } = site;
+const maj = new Intl.DateTimeFormat('ca-ES', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid',
+}).format(new Date('2026-09-03'));
+---
+<EntetePage
+  surtitre="Les teves dades"
+  titre="Política de privacitat"
+  chapo="Aquest web recull el mínim imprescindible: una adreça de correu, i només si et subscrius al butlletí. Aquí tens el detall, i com demanar que esborrem el que et concerneix."
+  ariane={[{ libelle: 'Privacitat' }]}
+  registre="papier"
+/>
+<section class="section conteneur">
+  <div class="prose">
+
+    <h2>1. En una frase</h2>
+    <p>
+      El web en si no recull res: cap galeta, cap rastrejador, cap mesura d’audiència. L’única dada
+      personal que conservem és la teva adreça de correu, si et subscrius al butlletí, i només en
+      aquest cas.
+    </p>
+
+    <h2>2. Qui és el responsable del tractament</h2>
+    <FicheLegale langue="ca" variante="court" />
+    <p>
+      No s’ha designat delegat de protecció de dades: l’associació no es troba en cap dels supòsits
+      que ho fan obligatori segons l’article 37 del RGPD. Les sol·licituds s’atenen a l’adreça
+      indicada més amunt.
+    </p>
+    <p class="note-encadree">
+      L’associació està en tràmit d’inscripció davant la Generalitat de Catalunya. El NIF i el
+      número d’inscripció s’afegiran aquí tan bon punt s’assignin. Això no canvia res respecte als
+      teus drets: s’exerceixen des d’avui a l’adreça de contacte indicada.
+    </p>
+
+    <h2>3. Què tractem, i per a què</h2>
+
+    <h3>Butlletí</h3>
+    <table class="tableau-traitement">
+      <tbody>
+        <tr><th>Dades</th><td>La teva adreça de correu i la data de la teva subscripció. Res més: ni nom, ni seguiment individual d’obertures, ni elaboració de perfils.</td></tr>
+        <tr><th>Finalitat</th><td>Enviar-te les novetats de l’associació: properes trobades, noves publicacions. Uns quants enviaments l’any.</td></tr>
+        <tr><th>Base jurídica</th><td>El teu consentiment — article 6.1.a del RGPD — atorgat en marcar la casella en el moment de la subscripció. La casella no ve mai marcada per endavant.</td></tr>
+        <tr><th>Conservació</th><td>Fins que et donis de baixa, o passats tres anys sense cap interacció per part teva. La teva adreça se suprimeix aleshores.</td></tr>
+        <tr><th>Destinatari</th><td>{site.infolettre.fournisseur} (vegeu l’apartat 4).</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Formulari de contacte</h3>
+    <table class="tableau-traitement">
+      <tbody>
+        <tr><th>Dades</th><td>El nom, l’adreça de correu i el missatge que escrius.</td></tr>
+        <tr><th>Particularitat</th><td>El formulari no envia res a cap servidor: prepara un correu al teu propi programa de missatgeria, i ets tu qui l’envia. Res no passa per aquest web, res no s’hi registra. Pots escriure’ns directament si ho prefereixes.</td></tr>
+        <tr><th>Finalitat</th><td>Respondre al teu missatge.</td></tr>
+        <tr><th>Base jurídica</th><td>El nostre interès legítim a respondre a qui ens escriu — article 6.1.f del RGPD.</td></tr>
+        <tr><th>Conservació</th><td>El temps necessari per atendre la teva sol·licitud, i com a màxim tres anys des del nostre darrer intercanvi.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Registres de connexió del proveïdor d’allotjament</h3>
+    <table class="tableau-traitement">
+      <tbody>
+        <tr><th>Dades</th><td>Adreça IP, pàgina sol·licitada, marca de temps, tipus de navegador — registrats pel proveïdor d’allotjament, no per nosaltres.</td></tr>
+        <tr><th>Finalitat</th><td>Servir les pàgines i protegir el web d’atacs.</td></tr>
+        <tr><th>Base jurídica</th><td>Interès legítim a garantir la seguretat i el bon funcionament del web — article 6.1.f del RGPD.</td></tr>
+        <tr><th>Conservació</th><td>Un període breu, fixat pel proveïdor. No tenim accés a aquests registres ni n’extraiem cap estadística.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Fotografies de les trobades</h3>
+    <p>
+      Les trobades es fotografien de vegades. Les imatges publicades ho són amb l’acord de les
+      persones reconeixibles — base jurídica: el consentiment. Si surts en una foto i vols que
+      desaparegui del web, escriu-nos: la retirem, sense discussió i sense demora.
+    </p>
+
+    <h2>4. A qui es comuniquen les teves dades</h2>
+    <p>No venem, no intercanviem i no cedim cap dada. Només hi intervenen dos proveïdors, cadascun en un àmbit precís:</p>
+    <table class="tableau-traitement">
+      <tbody>
+        <tr>
+          <th>{site.infolettre.fournisseur}</th>
+          <td>
+            Brevo SAS, 106 boulevard Haussmann, 75008 París, França. S’encarrega de l’enviament del
+            butlletí. Dades allotjades a la Unió Europea. Un contracte d’encàrrec de tractament
+            conforme a l’article 28 del RGPD regula aquesta subcontractació.
+          </td>
+        </tr>
+        <tr>
+          <th>{h.nom}</th>
+          <td>
+            {champ(h.adresse, 'ca')}. Allotja i distribueix el web. És una societat establerta als
+            Estats Units: les eventuals transferències fora de la Unió Europea s’emparen en les
+            clàusules contractuals tipus de la Comissió Europea i, si escau, en el marc de protecció
+            de dades UE—Estats Units.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>5. Els teus drets</h2>
+    <p>
+      El Reglament General de Protecció de Dades i la Llei orgànica 3/2018 (LOPDGDD) et reconeixen
+      els drets següents:
+    </p>
+    <ul>
+      <li><strong>Accés</strong> — saber si tractem dades que et concerneixen, i quines.</li>
+      <li><strong>Rectificació</strong> — que corregim una dada inexacta.</li>
+      <li><strong>Supressió</strong> — que esborrem les teves dades.</li>
+      <li><strong>Limitació</strong> — demanar que es congeli un tractament.</li>
+      <li><strong>Oposició</strong> — oposar-te a un tractament basat en l’interès legítim.</li>
+      <li><strong>Portabilitat</strong> — recuperar les teves dades en un format llegible per màquina.</li>
+      <li><strong>Retirada del consentiment</strong> — en qualsevol moment, sense justificar-te, i sense que això afecti el que s’ha fet abans. Per al butlletí, l’enllaç de baixa figura a cada enviament; també n’hi ha prou amb un correu.</li>
+    </ul>
+    <p>
+      <strong>Com exercir-los:</strong> escriu a
+      {' '}<a href={`mailto:${c.email}`} class="lien">{c.email}</a>. Responem en el termini d’un
+      mes. No se’t demana cap justificació, i una sol·licitud de supressió s’atén immediatament. És
+      gratuït.
+    </p>
+    <p>
+      <strong>Si la nostra resposta no et satisfà,</strong> pots adreçar-te a l’autoritat de control
+      espanyola: l’<em>Agencia Española de Protección de Datos</em> (AEPD), C/ Jorge Juan 6,
+      28001 Madrid — <a href="https://www.aepd.es" class="lien" rel="noopener">www.aepd.es</a>.
+    </p>
+
+    <h2>6. Galetes</h2>
+    <p>
+      Aquest web no diposita cap galeta. El detall —inclòs l’únic valor guardat al teu dispositiu i
+      la raó per la qual no hi ha bàner de consentiment— és a la
+      {' '}<a href={chemin('ca', 'cookies')} class="lien">pàgina dedicada a les galetes</a>.
+    </p>
+
+    <h2>7. Menors</h2>
+    <p>
+      El butlletí no s’adreça a menors de catorze anys, edat fixada per l’article 7 de la LOPDGDD
+      per consentir per ells mateixos el tractament de les seves dades. Si detectes que un menor
+      s’ha subscrit sense l’acord dels seus responsables legals, avisa’ns: suprimirem l’adreça.
+    </p>
+
+    <h2>8. Seguretat</h2>
+    <p>
+      El web se serveix exclusivament per HTTPS. No té base de dades, ni comptes d’usuari, ni espai
+      d’emmagatzematge accessible des de fora: la superfície d’atac s’ha reduït deliberadament al
+      mínim. L’accés a la interfície d’administració de continguts està restringit a les persones
+      autoritzades de l’associació.
+    </p>
+
+    <h2>9. Actualització d’aquesta política</h2>
+    <p>
+      Darrera actualització: {maj}. Si aquesta política canvia de manera substancial, la nova versió
+      es publicarà en aquesta pàgina i s’informarà per correu les persones subscrites al butlletí.
+    </p>
+  </div>
+</section>
+
+<style>
+  .tableau-traitement { width: 100%; border-collapse: collapse; font-size: var(--t-300); }
+  .tableau-traitement th,
+  .tableau-traitement td {
+    text-align: left;
+    vertical-align: top;
+    padding: var(--e-3);
+    border-bottom: 1px solid var(--trait);
+    line-height: 1.55;
+  }
+  .tableau-traitement th {
+    font-family: var(--f-titre);
+    font-size: var(--t-100);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--encre-faible);
+    white-space: nowrap;
+  }
+  @media (max-width: 34rem) { .tableau-traitement th { white-space: normal; } }
+  .note-encadree {
+    border-left: var(--epaisseur-trait) solid var(--or);
+    padding-left: var(--e-5);
+    font-size: var(--t-300);
+    color: var(--encre-douce);
+  }
+</style>

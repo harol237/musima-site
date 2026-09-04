@@ -2,6 +2,8 @@
 import Base from '~/layouts/Base.astro';
 import LegalEs from './textes/LegalEs.astro';
 import LegalFr from './textes/LegalFr.astro';
+import LegalEn from './textes/LegalEn.astro';
+import LegalCa from './textes/LegalCa.astro';
 import type { Langue } from '~/i18n/config';
 
 interface Props { langue: Langue; alternatives: Record<Langue, string> }
@@ -16,9 +18,20 @@ const meta = {
     titre: 'Mentions légales',
     description: "Éditeur, hébergeur, conditions d'utilisation et informations légales du site MUSIMA.",
   },
+  en: {
+    titre: 'Legal notice',
+    description: 'Publisher, host, terms of use and legal information for the MUSIMA site.',
+  },
+  ca: {
+    titre: 'Avís legal',
+    description: 'Editor, allotjament, condicions d’ús i informació legal del web de MUSIMA.',
+  },
 } as const;
-const { titre, description } = meta[langue as 'es' | 'fr'] ?? meta.fr;
+const { titre, description } = meta[langue];
 ---
 <Base titre={titre} description={description} langue={langue} alternatives={alternatives}>
-  {langue === 'es' ? <LegalEs /> : <LegalFr />}
+  {langue === 'es' && <LegalEs />}
+  {langue === 'fr' && <LegalFr />}
+  {langue === 'en' && <LegalEn />}
+  {langue === 'ca' && <LegalCa />}
 </Base>

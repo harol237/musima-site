@@ -1,0 +1,113 @@
+---
+import EntetePage from '~/components/EntetePage.astro';
+import FicheLegale from '~/components/FicheLegale.astro';
+import site from '~/data/site.json';
+import { champ } from '~/i18n/site';
+import { chemin } from '~/i18n/config';
+
+const { hebergeur: h, contact: c } = site;
+const maj = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid',
+}).format(new Date('2026-09-03'));
+---
+<EntetePage
+  surtitre="Legal information"
+  titre="Legal notice"
+  chapo="Who publishes this site, who hosts it, and what you may do with it. This is the information required by article 10 of Spanish Law 34/2002 (LSSI-CE)."
+  ariane={[{ libelle: 'Legal notice' }]}
+  registre="papier"
+/>
+<section class="section conteneur">
+  <div class="prose">
+
+    <h2>1. Publisher</h2>
+    <FicheLegale langue="en" />
+
+    <h2>2. Hosting</h2>
+    <p>
+      This site is hosted by <strong>{h.nom}</strong>, {champ(h.adresse, 'en')}
+      {' '}(<a href={h.site} class="lien" rel="noopener">{h.site.replace('https://', '')}</a>),
+      through its {h.service} service.
+    </p>
+    <p>
+      It is a static site: pages are generated in advance and served as they are, with no database
+      and no processing on the server.
+    </p>
+
+    <h2>3. What this site is for</h2>
+    <p>
+      This site presents the activity of {site.nom}: its gatherings, the people who speak at them,
+      its projects and its writing. Access is free and open. Nothing is sold here, there is no
+      payment and no commercial transaction.
+    </p>
+
+    <h2>4. Terms of use</h2>
+    <h3>What you may do</h3>
+    <p>
+      You may read this site, quote it, share its addresses and reproduce extracts for private,
+      educational, community or journalistic use, as long as you credit {site.nom} and do not
+      distort the content. For any other use, commercial in particular, write to us: we answer.
+    </p>
+    <h3>What you may not do</h3>
+    <p>
+      The following are not allowed: systematic extraction or reuse of a substantial part of the
+      content, any attempt at unauthorised access, any action meant to disrupt the running of the
+      site, and use of the published contact addresses for unsolicited canvassing.
+    </p>
+    <h3>Links</h3>
+    <p>
+      Outgoing links point to sites we do not control and are not answerable for. You may link to
+      this site without asking us, as long as the link does not mislead anyone about where the
+      content comes from.
+    </p>
+
+    <h2>5. Intellectual property</h2>
+    <p>
+      The texts published on this site belong to {site.nom} unless stated otherwise. Photographs
+      remain the property of their authors: every published image carries its credit where one has
+      been given to us. The visual identity and the name {site.nom} belong to the association.
+    </p>
+    <p>
+      Portraits, stories and photographs of people are published with the agreement of the people
+      concerned. If you appear in an image or a text and want it taken down, write to us: we do it,
+      without argument and without delay.
+    </p>
+
+    <h2>6. Liability</h2>
+    <p>
+      We do our best to publish accurate, up-to-date information, in particular the dates and
+      venues of gatherings. An error is still possible: it cannot engage the association’s
+      liability. Announced dates and venues may change; the event page is the one that counts.
+    </p>
+    <p>
+      The site is offered as it is. We guarantee neither continuous availability nor the absence of
+      interruptions for maintenance or on the host’s side.
+    </p>
+
+    <h2>7. Data protection and cookies</h2>
+    <p>
+      How personal data is handled is set out in the
+      {' '}<a href={chemin('en', 'confidentialite')} class="lien">privacy policy</a>. The use of
+      cookies and local storage is set out in the
+      {' '}<a href={chemin('en', 'cookies')} class="lien">cookie policy</a>.
+    </p>
+
+    <h2>8. Applicable law</h2>
+    <p>
+      This legal notice is governed by Spanish law, in particular Law 34/2002 on information
+      society services and electronic commerce (LSSI-CE). Any dispute falls to the competent courts
+      of Barcelona, without prejudice to the protective rules applicable to consumers.
+    </p>
+
+    <h2>9. Telling us about something</h2>
+    <p>
+      An error, content that should not be there, a broken link, an image to take down: write to
+      {' '}<a href={`mailto:${c.email}`} class="lien">{c.email}</a>.
+    </p>
+
+    <p class="maj">Last updated: {maj}.</p>
+  </div>
+</section>
+<style>
+  .maj { margin-top: var(--e-8); font-size: var(--t-200); color: var(--encre-faible); }
+</style>
