@@ -26,7 +26,10 @@ const { langue, evenement } = Astro.props;
 const t = traducteur(langue);
 
 const action = pret(site.inscription.action);
-const destinataire = site.inscription.destinataire;
+/* L'adresse de contact fait foi : une copie séparée finirait par
+   diverger, et c'est exactement ce qu'on ne peut pas se permettre sur
+   un formulaire dont les messages doivent arriver quelque part. */
+const destinataire = site.contact.email;
 ---
 <section class="inscription" id="inscription">
   <div class="inscription__texte">
