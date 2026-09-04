@@ -389,6 +389,23 @@ const cleDefaut = cleApercu(entrees[0]?.rubrique);
     pointer-events: none;
   }
 
+  /* `preserveAspectRatio: none` étire la courbe à la hauteur du panneau.
+     Sur un plein écran étroit — 390 × 844 pour un viewBox de 1200 × 400 —
+     elle est comprimée six fois et devient deux quasi-verticales en
+     travers des entrées, avec un trait d'épaisseur inégale par-dessus le
+     marché. Ici on ne la masque pas comme dans le héros : le panneau n'a
+     rien d'autre pour tenir le fond. On lui rend le rapport de son
+     viewBox et on la pose en bande basse — elle redevient le fragment de
+     trait du logo. */
+  @media (max-width: 51.99rem) {
+    .menu-plein__trait {
+      inset: auto -25% 16% -25%;
+      width: 150%;
+      height: auto;
+      aspect-ratio: 3 / 1;
+    }
+  }
+
   .menu-plein__interieur {
     position: relative;
     min-height: 100%;
