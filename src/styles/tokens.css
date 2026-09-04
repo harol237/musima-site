@@ -63,7 +63,7 @@
   --t-600: clamp(1.3125rem, 0.9vw + 1.05rem, 1.6875rem);
   --t-700: clamp(1.625rem, 1.8vw + 1.15rem, 2.375rem);
   --t-800: clamp(2.125rem, 3.4vw + 1.1rem, 3.625rem);
-  --t-900: clamp(2.75rem, 6.2vw + 0.9rem, 6rem);
+  --t-900: clamp(2.6rem, 4.6vw + 0.9rem, 4.75rem);
 
   /* Corps de la prose longue : Newsreader respire mieux un cran au-dessus
      de --t-400, qui reste la valeur des cartes et des listes. */

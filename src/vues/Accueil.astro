@@ -82,7 +82,8 @@ const titreProchaine = prochaine
       <div class="heros__texte">
         <p class="surtitre heros__surtitre">{t('heroSurtitre')}</p>
         <h1 class="t-hero heros__titre">
-          {t('heroTitre1')} <em>{t('heroTitreAccent')}</em> {t('heroTitre2')}
+          <span class="heros__phrase">{t('heroTitreA')}</span>
+          <span class="heros__phrase heros__phrase--fort">{t('heroTitreB')}</span>
         </h1>
         <p class="chapo heros__chapo">{t('heroChapo')}</p>
         <div class="rang heros__actions">
@@ -280,11 +281,13 @@ const titreProchaine = prochaine
   }
   .heros__surtitre, .heros__titre, .heros__chapo, .heros__actions, .heros__reperes { position: relative; }
 
-  .heros__titre { margin-bottom: var(--e-5); max-width: 15ch; }
-  .heros__titre em {
-    font-style: normal;
-    color: var(--terre);
-  }
+  .heros__titre { margin-bottom: var(--e-5); max-width: 17ch; }
+  /* Les deux phrases s'empilent toujours : c'est l'antithèse qui porte
+     le titre, et elle ne se lit que si les deux moitiés sont parallèles.
+     L'accent est un poids, pas une couleur — la terracotta reste à
+     l'action, c'est-à-dire au bouton juste en dessous. */
+  .heros__phrase { display: block; text-wrap: balance; color: var(--encre-douce); }
+  .heros__phrase--fort { font-weight: 800; color: var(--encre); }
   .heros__chapo { margin-bottom: var(--e-6); }
   .heros__actions { gap: var(--e-3); }
 
@@ -310,8 +313,8 @@ const titreProchaine = prochaine
 
   @media (min-width: 62rem) {
     .heros__interieur {
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-      gap: var(--e-10);
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.85fr);
+      gap: var(--e-9);
     }
     /* Le visuel descend sur la section suivante. */
     .heros__visuel { margin-bottom: -4rem; }
