@@ -3,9 +3,10 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import ARemplir from './ARemplir.astro';
 import BadgeModele from './BadgeModele.astro';
+import VisuelDeSecours from './VisuelDeSecours.astro';
 import { chemin, type Langue } from '~/i18n/config';
 import { statutsProjet, traduireValeur } from '~/i18n/utils';
-import { enChantier, pret, slugDe } from '~/lib/contenu';
+import { pret, slugDe } from '~/lib/contenu';
 import { nomTransition } from '~/lib/transitions';
 
 interface Props {
@@ -31,7 +32,6 @@ const formeStatut = {
 <article class:list={['carte', 'projet', affiche && 'projet--affiche']}>
   {data.modele && <BadgeModele />}
 
-  {(data.image || enChantier) && (
   <div
     class:list={['carte__visuel', affiche ? 'ratio-21-9' : 'ratio-3-2']}
     style={nomTransition('pj', slugDe(projet.id), !!data.image)}
@@ -44,10 +44,12 @@ const formeStatut = {
         sizes={affiche ? '(min-width: 64rem) 72rem, 100vw' : '(min-width: 64rem) 22rem, (min-width: 40rem) 45vw, 90vw'}
       />
     ) : (
-      <ARemplir type="photo" forme="visuel" />
+      <>
+        <VisuelDeSecours variante="titre" texte={data.titre} graine={projet.id} />
+        <ARemplir type="photo" forme="visuel" class="par-dessus" />
+      </>
     )}
   </div>
-  )}
 
   <div class="rang">
     <span class:list={['etat', formeStatut]}>{traduireValeur(statutsProjet, data.statut, langue)}</span>

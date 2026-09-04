@@ -3,11 +3,12 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import ARemplir from './ARemplir.astro';
 import BadgeModele from './BadgeModele.astro';
+import VisuelDeSecours from './VisuelDeSecours.astro';
 import { formaterJourMois, formaterPlage } from '~/i18n/utils';
 import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
 import { formatsEvenement, traduireValeur } from '~/i18n/utils';
-import { dateISO, enChantier, estAVenir, pret, slugDe } from '~/lib/contenu';
+import { dateISO, estAVenir, pret, slugDe } from '~/lib/contenu';
 
 interface Props {
   langue: Langue;
@@ -38,8 +39,8 @@ const ligne = variante === 'ligne';
 >
   {data.modele && <BadgeModele />}
 
-  {affiche && (data.image || enChantier) && (
-    <div class="evenement__visuel ratio-16-9">
+  {affiche && (
+    <div class="evenement__visuel tirage ratio-16-9">
       {data.image ? (
         <Image
           src={data.image}
@@ -48,7 +49,10 @@ const ligne = variante === 'ligne';
           sizes="(min-width: 64rem) 30rem, 100vw"
         />
       ) : (
-        <ARemplir type="photo" forme="visuel" />
+        <>
+          <VisuelDeSecours variante="date" date={data.date_debut} langue={langue} graine={evenement.id} />
+          <ARemplir type="photo" forme="visuel" class="par-dessus" />
+        </>
       )}
       {/* La date posée sur l'image : c'est l'information qu'on vient
           chercher, elle ne doit pas attendre la deuxième colonne. */}

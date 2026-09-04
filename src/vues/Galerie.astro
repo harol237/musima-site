@@ -4,6 +4,7 @@ import Base from '~/layouts/Base.astro';
 import EntetePage from '~/components/EntetePage.astro';
 import EtatVide from '~/components/EtatVide.astro';
 import BadgeModele from '~/components/BadgeModele.astro';
+import VisuelDeSecours from '~/components/VisuelDeSecours.astro';
 import { chargerAlbums, pret, slugDe, enChantier } from '~/lib/contenu';
 import { formaterDate } from '~/i18n/utils';
 import { chemin, type Langue } from '~/i18n/config';
@@ -34,8 +35,11 @@ const albums = await chargerAlbums(langue);
           <li>
             <article class="carte album">
               {album.data.modele && <BadgeModele />}
-              {(album.data.couverture || enChantier) && (
+              {(
                 <div class="carte__visuel ratio-3-2">
+                  {!album.data.couverture && (
+                    <VisuelDeSecours variante="titre" texte={album.data.titre} graine={album.id} />
+                  )}
                   {album.data.couverture && (
                     <Image
                       src={album.data.couverture}

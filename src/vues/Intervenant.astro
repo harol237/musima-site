@@ -7,6 +7,7 @@ import EnteteSection from '~/components/EnteteSection.astro';
 import CarteEvenement from '~/components/CarteEvenement.astro';
 import CarteRecit from '~/components/CarteRecit.astro';
 import ARemplir from '~/components/ARemplir.astro';
+import VisuelDeSecours from '~/components/VisuelDeSecours.astro';
 import { estPublie, pret, slugDe } from '~/lib/contenu';
 import { nomTransition } from '~/lib/transitions';
 import { chemin, type Langue } from '~/i18n/config';
@@ -57,11 +58,14 @@ const donnees = {
       <FilDAriane elements={[{ libelle: t('navIntervenants'), url: chemin(langue, 'intervenants') }, { libelle: data.nom }]} />
 
       <div class="profil">
-        <div class="profil__portrait ratio-4-5" style={nomTransition('pt', slugDe(intervenant.id), !!data.photo)}>
+        <div class="profil__portrait tirage ratio-4-5" style={nomTransition('pt', slugDe(intervenant.id), !!data.photo)}>
           {data.photo ? (
             <Image src={data.photo} alt={pret(data.photo_alt) ?? `${t('portraitDe')} ${data.nom}`} widths={[320, 520, 780]} sizes="(min-width: 62rem) 20rem, 70vw" />
           ) : (
-            <ARemplir type="photo" forme="visuel" />
+            <>
+              <VisuelDeSecours variante="initiales" texte={data.nom} graine={intervenant.id} />
+              <ARemplir type="photo" forme="visuel" class="par-dessus" />
+            </>
           )}
         </div>
 

@@ -3,10 +3,11 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import ARemplir from './ARemplir.astro';
 import BadgeModele from './BadgeModele.astro';
+import VisuelDeSecours from './VisuelDeSecours.astro';
 import { formaterDate } from '~/i18n/utils';
 import { chemin, type Langue } from '~/i18n/config';
 import { categoriesRecit, traduireValeur } from '~/i18n/utils';
-import { dateISO, enChantier, pret, slugDe } from '~/lib/contenu';
+import { dateISO, pret, slugDe } from '~/lib/contenu';
 import { nomTransition } from '~/lib/transitions';
 
 interface Props {
@@ -20,7 +21,6 @@ const { data } = recit;
 <article class:list={['carte', 'recit', variante === 'mise-en-avant' && 'recit--large']}>
   {data.modele && <BadgeModele />}
 
-  {(data.image || enChantier) && (
   <div
     class:list={['carte__visuel', variante === 'mise-en-avant' ? 'ratio-16-9' : 'ratio-3-2']}
     style={nomTransition('rc', slugDe(recit.id), !!data.image)}
@@ -33,10 +33,12 @@ const { data } = recit;
         sizes={variante === 'mise-en-avant' ? '(min-width: 64rem) 46rem, 100vw' : '(min-width: 64rem) 22rem, 90vw'}
       />
     ) : (
-      <ARemplir type="photo" forme="visuel" />
+      <>
+        <VisuelDeSecours variante="titre" texte={data.titre} graine={recit.id} />
+        <ARemplir type="photo" forme="visuel" class="par-dessus" />
+      </>
     )}
   </div>
-  )}
 
   <div class="rang">
     <span class="puce puce--sourde">{traduireValeur(categoriesRecit, data.categorie, langue)}</span>
