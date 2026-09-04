@@ -41,8 +41,9 @@ const textes = {
     sujets: [
       'Proponer una intervención',
       'Proponer un tema o un retrato',
-      'Colaborar con la asociación',
+      'Asociarme',
       'Echar una mano',
+      'Colaborar con la asociación',
       'Prensa',
       'Otro',
     ],
@@ -72,8 +73,9 @@ const textes = {
     sujets: [
       'Proposer une intervention',
       'Proposer un sujet ou un portrait',
-      'Devenir partenaire',
+      'Adhérer à l’association',
       'Devenir bénévole',
+      'Devenir partenaire',
       'Presse',
       'Autre',
     ],
@@ -183,6 +185,20 @@ const x = textes[langue as 'es' | 'fr'] ?? textes.fr;
     // la personne l'envoyer depuis sa propre messagerie. Zéro donnée stockée,
     // zéro service tiers — et ça marche dès le premier jour.
     const formulaire = document.querySelector<HTMLFormElement>('[data-formulaire-mailto]');
+
+    // Les rangs correspondent à l'ordre de la liste `sujets` ci-dessus,
+    // identique dans toutes les langues.
+    const rangs: Record<string, number> = {
+      intervenir: 0, sujet: 1, adherer: 2, benevolat: 3, partenariat: 4, presse: 5,
+    };
+    const voie = new URLSearchParams(location.search).get('via');
+    const choix = formulaire?.querySelector<HTMLSelectElement>('#sujet');
+    if (voie && choix && voie in rangs) {
+      choix.selectedIndex = rangs[voie];
+      // La personne arrive avec son objet déjà réglé : le curseur va
+      // directement au premier champ qui lui reste à remplir.
+      formulaire?.querySelector<HTMLInputElement>('#nom')?.focus();
+    }
 
     formulaire?.addEventListener('submit', (evenement) => {
       evenement.preventDefault();

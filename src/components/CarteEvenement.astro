@@ -12,8 +12,12 @@ import { dateISO, enChantier, estAVenir, pret, slugDe } from '~/lib/contenu';
 interface Props {
   langue: Langue;
   evenement: CollectionEntry<'evenements'>;
-  /** `mise-en-avant` affiche le visuel en grand. */
-  variante?: 'liste' | 'mise-en-avant';
+  /**
+   * `mise-en-avant` : format affiche — le visuel à gauche, la date posée
+   * dessus, le texte à droite.
+   * `ligne` : rangée sans cadre, pour les listes et le chronologique.
+   */
+  variante?: 'liste' | 'mise-en-avant' | 'ligne';
 }
 const { evenement, variante = 'liste', langue } = Astro.props;
 const { data } = evenement;
@@ -21,31 +25,48 @@ const t = traducteur(langue);
 const { jour, mois, annee } = formaterJourMois(data.date_debut, langue);
 const aVenir = estAVenir(evenement);
 const lieu = [data.lieu?.nom, data.lieu?.ville].filter(Boolean).join(', ');
+const affiche = variante === 'mise-en-avant';
+const ligne = variante === 'ligne';
 ---
-<article class:list={['carte', 'evenement', variante === 'mise-en-avant' && 'evenement--large']}>
+<article
+  class:list={[
+    'evenement',
+    !ligne && 'carte',
+    affiche && 'evenement--affiche',
+    ligne && 'evenement--ligne',
+  ]}
+>
   {data.modele && <BadgeModele />}
 
-  {variante === 'mise-en-avant' && (data.image || enChantier) && (
-    <div class="carte__visuel ratio-16-9">
+  {affiche && (data.image || enChantier) && (
+    <div class="evenement__visuel ratio-16-9">
       {data.image ? (
         <Image
           src={data.image}
           alt={pret(data.image_alt) ?? ''}
           widths={[480, 800, 1200]}
-          sizes="(min-width: 64rem) 46rem, 100vw"
+          sizes="(min-width: 64rem) 30rem, 100vw"
         />
       ) : (
         <ARemplir type="photo" forme="visuel" />
       )}
+      {/* La date posée sur l'image : c'est l'information qu'on vient
+          chercher, elle ne doit pas attendre la deuxième colonne. */}
+      <time class="date-posee" datetime={dateISO(data.date_debut)}>
+        <span class="date-posee__jour">{jour}</span>
+        <span class="date-posee__mois">{mois}</span>
+      </time>
     </div>
   )}
 
   <div class="evenement__entete">
-    <time class="date-bloc" datetime={dateISO(data.date_debut)}>
-      <span class="date-bloc__jour">{jour}</span>
-      <span class="date-bloc__mois">{mois}</span>
-      <span class="date-bloc__annee">{annee}</span>
-    </time>
+    {!affiche && (
+      <time class="date-bloc" datetime={dateISO(data.date_debut)}>
+        <span class="date-bloc__jour">{jour}</span>
+        <span class="date-bloc__mois">{mois}</span>
+        <span class="date-bloc__annee">{annee}</span>
+      </time>
+    )}
 
     <div class="evenement__texte">
       <div class="rang">
@@ -55,7 +76,7 @@ const lieu = [data.lieu?.nom, data.lieu?.ville].filter(Boolean).join(', ');
         {data.lieu?.en_ligne && <span class="puce">{t('enLigne')}</span>}
       </div>
 
-      <h3 class="t-carte">
+      <h3 class={affiche ? 't-section' : 't-carte'}>
         <a href={chemin(langue, 'evenements', slugDe(evenement.id))} class="carte__lien">{data.titre}</a>
       </h3>
 
@@ -69,6 +90,8 @@ const lieu = [data.lieu?.nom, data.lieu?.ville].filter(Boolean).join(', ');
       </p>
 
       {data.resume && <p class="evenement__resume">{data.resume}</p>}
+
+      {affiche && data.tarif && <p class="evenement__tarif">{data.tarif}</p>}
     </div>
   </div>
 </article>
@@ -78,6 +101,65 @@ const lieu = [data.lieu?.nom, data.lieu?.ville].filter(Boolean).join(', ');
   .evenement__entete { display: flex; gap: var(--e-5); align-items: flex-start; }
   .evenement__texte { display: flex; flex-direction: column; gap: var(--e-2); min-width: 0; }
 
+  /* --- Format affiche --- */
+  .evenement--affiche { padding: 0; overflow: hidden; }
+  @media (min-width: 52rem) {
+    .evenement--affiche {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: stretch;
+      gap: 0;
+    }
+    .evenement--affiche .evenement__visuel { height: 100%; aspect-ratio: auto; }
+    .evenement--affiche .evenement__entete { padding: var(--e-6); }
+  }
+  .evenement--affiche .evenement__entete { padding: var(--e-5); }
+
+  .evenement__visuel {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface-2);
+  }
+  .evenement__visuel :global(img) { width: 100%; height: 100%; object-fit: cover; }
+
+  .date-posee {
+    position: absolute;
+    left: var(--e-4);
+    bottom: var(--e-4);
+    display: grid;
+    justify-items: center;
+    gap: 1px;
+    padding: var(--e-3) var(--e-4);
+    border-radius: var(--r-visuel);
+    background: var(--scene-fond);
+    color: var(--scene-encre);
+    font-family: var(--f-titre);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .date-posee__jour { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.04em; }
+  .date-posee__mois {
+    font-size: var(--t-200);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--scene-or);
+  }
+
+  .evenement__tarif {
+    font-family: var(--f-titre);
+    font-size: var(--t-300);
+    font-weight: 600;
+    color: var(--or-encre);
+    margin-top: var(--e-2);
+  }
+
+  /* --- Rangée sans cadre : listes secondaires et chronologique --- */
+  .evenement--ligne { position: relative; display: block; }
+  .evenement--ligne .evenement__entete { gap: var(--e-4); }
+  .evenement--ligne .evenement__resume { display: none; }
+
+  /* --- Bloc de date --- */
   .date-bloc {
     flex: none;
     display: grid;
@@ -92,15 +174,15 @@ const lieu = [data.lieu?.nom, data.lieu?.ville].filter(Boolean).join(', ');
     font-family: var(--f-titre);
     font-variant-numeric: tabular-nums;
   }
-  .date-bloc__jour { font-size: var(--t-600); font-weight: 700; line-height: 1; letter-spacing: -0.03em; }
+  .date-bloc__jour { font-size: 2.4rem; font-weight: 700; line-height: 1; letter-spacing: -0.04em; }
   .date-bloc__mois {
     font-size: var(--t-200);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--terre);
+    color: var(--or-encre);
   }
-  .date-bloc__annee { font-size: var(--t-100); color: var(--encre-faible); }
+  .date-bloc__annee { font-size: var(--t-100); color: var(--encre-douce); }
 
   .evenement__quand { color: var(--encre-douce); }
   .evenement__ou { font-size: var(--t-300); color: var(--encre-douce); }
@@ -111,5 +193,4 @@ const lieu = [data.lieu?.nom, data.lieu?.ville].filter(Boolean).join(', ');
     margin-top: var(--e-1);
     text-wrap: pretty;
   }
-  .evenement--large .t-carte { font-size: var(--t-700); }
 </style>

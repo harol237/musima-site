@@ -31,10 +31,10 @@ const intervenants = data.intervenants.length ? await getEntries(data.intervenan
   alternatives={alternatives}
 >
   <EntetePage
-    surtitre="Projet"
+    surtitre={t('labelProjet')}
     titre={data.titre}
     chapo={data.resume}
-    ariane={[{ libelle: 'Projets', url: '/projets' }, { libelle: data.titre }]}
+    ariane={[{ libelle: t('navProjets'), url: chemin(langue, 'projets') }, { libelle: data.titre }]}
   >
     {data.modele && <p class="rappel-modele">Fiche de démonstration — à remplacer ou supprimer dans le CMS.</p>}
     <div class="rang">
@@ -58,14 +58,14 @@ const intervenants = data.intervenants.length ? await getEntries(data.intervenan
 
     <aside aria-label={t('infosProjet')}>
       <div class="encart">
-        <h2 class="encart__titre">Partenaires</h2>
+        <h2 class="encart__titre">{t('labelPartenaires')}</h2>
         {data.partenaires.length > 0 ? (
           <ul class="encart__liste">{data.partenaires.map((p) => <li>{p}</li>)}</ul>
         ) : (
           <ARemplir libelle="PARTENAIRES À AJOUTER" />
         )}
         {data.lien ? (
-          <a href={data.lien} class="bouton encart__action" rel="noopener">Voir le projet</a>
+          <a href={data.lien} class="bouton encart__action" rel="noopener">{t('voirLeProjet')}</a>
         ) : (
           <div class="encart__action"><ARemplir type="lien" /></div>
         )}
@@ -75,15 +75,48 @@ const intervenants = data.intervenants.length ? await getEntries(data.intervenan
 
   {intervenants.length > 0 && (
     <section class="section conteneur">
-      <EnteteSection surtitre="Impliqués" titre="Les personnes du projet" />
-      <ul class="grille grille--4 liste-nue">
-        {intervenants.map((intervenant) => <li><CarteIntervenant intervenant={intervenant} /></li>)}
+      <EnteteSection surtitre={t('impliques')} titre={t('personnesDuProjet')} />
+      <ul class="grille grille--3 liste-nue">
+        {intervenants.map((intervenant, index) => (
+          <li class="apparait apparait--image" style={`--i:${index}`}>
+            <CarteIntervenant intervenant={intervenant} langue={langue} />
+          </li>
+        ))}
       </ul>
     </section>
   )}
+
+  {/* Chaque projet ouvre une porte vers Participer : la page cesse
+      d'informer et commence à demander. */}
+  <section class="section conteneur">
+    <div class="aide">
+      <p class="aide__titre">{t('commentAider')}</p>
+      <a href={chemin(langue, 'engagement')} class="bouton bouton--fantome">{t('ctaVoirEngagement')}</a>
+    </div>
+  </section>
 </Base>
 
 <style>
+  .aide {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-4);
+    padding: var(--e-6);
+    border: 1px solid var(--trait);
+    border-left: var(--epaisseur-trait) solid var(--or);
+    border-radius: var(--r-carte);
+    background: var(--surface);
+  }
+  .aide__titre {
+    font-family: var(--f-titre);
+    font-size: var(--t-500);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
   .page-projet { display: grid; gap: var(--e-8); align-items: start; padding-block: var(--e-8); }
   @media (min-width: 62rem) {
     .page-projet { grid-template-columns: minmax(0, 1fr) 18rem; gap: var(--e-9); }

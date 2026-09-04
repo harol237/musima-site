@@ -54,19 +54,19 @@ const donnees = {
 >
   <section class="entete-profil scene">
     <div class="conteneur">
-      <FilDAriane elements={[{ libelle: 'Intervenants', url: '/intervenants' }, { libelle: data.nom }]} />
+      <FilDAriane elements={[{ libelle: t('navIntervenants'), url: chemin(langue, 'intervenants') }, { libelle: data.nom }]} />
 
       <div class="profil">
         <div class="profil__portrait ratio-4-5" style={nomTransition('pt', slugDe(intervenant.id), !!data.photo)}>
           {data.photo ? (
-            <Image src={data.photo} alt={pret(data.photo_alt) ?? `Portrait de ${data.nom}`} widths={[320, 520, 780]} sizes="(min-width: 62rem) 20rem, 70vw" />
+            <Image src={data.photo} alt={pret(data.photo_alt) ?? `${t('portraitDe')} ${data.nom}`} widths={[320, 520, 780]} sizes="(min-width: 62rem) 20rem, 70vw" />
           ) : (
             <ARemplir type="photo" forme="visuel" />
           )}
         </div>
 
         <div class="profil__texte">
-          {data.modele && <p class="rappel-modele">Fiche de démonstration — à remplacer ou supprimer dans le CMS.</p>}
+          {data.modele && <p class="rappel-modele">{t('ficheModele')}</p>}
           <h1 class="t-page">{data.nom}</h1>
           {sousTitre ? <p class="profil__role">{sousTitre}</p> : <ARemplir libelle="FONCTION À AJOUTER" forme="ligne" />}
           {data.territoire && <p class="meta">{data.territoire}</p>}
@@ -94,23 +94,29 @@ const donnees = {
 
   <section class="section conteneur">
     <div class="prose"><Content /></div>
-    {pret(data.credit_photo) && <p class="credit">Portrait : {data.credit_photo}</p>}
+    {pret(data.credit_photo) && <p class="credit">{t('portraitCredit')} : {data.credit_photo}</p>}
   </section>
 
   {evenements.length > 0 && (
     <section class="section conteneur">
-      <EnteteSection surtitre="Participations" titre="Rencontres MUSIMA" />
+      <EnteteSection surtitre={t('participations')} titre={t('rencontresMusima')} />
       <ul class="pile pile-4 liste-nue">
-        {evenements.map((evenement) => <li><CarteEvenement evenement={evenement} /></li>)}
+        {evenements.map((evenement, index) => (
+          <li class="apparait apparait--texte" style={`--i:${index}`}>
+            <CarteEvenement evenement={evenement} langue={langue} />
+          </li>
+        ))}
       </ul>
     </section>
   )}
 
   {recits.length > 0 && (
     <section class="section conteneur">
-      <EnteteSection surtitre="À lire" titre="Récits liés" />
+      <EnteteSection surtitre={t('aLire')} titre={t('recitsLies')} />
       <ul class="grille grille--2 liste-nue">
-        {recits.map((recit) => <li><CarteRecit recit={recit} /></li>)}
+        {recits.map((recit, index) => (
+          <li class="apparait" style={`--i:${index}`}><CarteRecit recit={recit} langue={langue} /></li>
+        ))}
       </ul>
     </section>
   )}

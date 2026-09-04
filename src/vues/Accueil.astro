@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '~/layouts/Base.astro';
 import EnteteSection from '~/components/EnteteSection.astro';
 import CarteEvenement from '~/components/CarteEvenement.astro';
@@ -7,7 +8,6 @@ import CarteProjet from '~/components/CarteProjet.astro';
 import CarteRecit from '~/components/CarteRecit.astro';
 import BandeauCta from '~/components/BandeauCta.astro';
 import EtatVide from '~/components/EtatVide.astro';
-import ARemplir from '~/components/ARemplir.astro';
 import site from '~/data/site.json';
 import { champ } from '~/i18n/site';
 import {
@@ -17,9 +17,17 @@ import {
   chargerRecits,
   enChantier,
 } from '~/lib/contenu';
+import { formaterDate } from '~/i18n/utils';
 import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
 import { intentionsPar } from '~/i18n/intentions';
+
+/* Photo d'ouverture : une vraie image d'une rencontre MUSIMA, prise dans
+   l'archive 2025. Les six photos de l'album sont en 16/9 — d'où un cadre
+   3/2 ici plutôt que le portrait 4/5 prévu : mieux vaut un cadrage que
+   le matériau supporte qu'un recadrage qui l'abîme. À remplacer le jour
+   où un portrait d'ouverture sera photographié pour cette place. */
+import ouverture from '~/assets/uploads/galerie-2025/inspire-bcn-6.jpg';
 
 interface Props { langue: Langue; alternatives: Record<Langue, string> }
 const { langue, alternatives } = Astro.props;
@@ -39,6 +47,23 @@ const enAvant = <T extends { data: { en_avant: boolean } }>(liste: T[], nombre: 
 };
 
 const intentions = intentionsPar[langue];
+
+/* Ligne de données du héros : la date, le lieu et le tarif de la
+   prochaine rencontre. Trois informations réelles, ou rien. */
+const reperes = prochaine
+  ? [
+      formaterDate(prochaine.data.date_debut, langue, { day: 'numeric', month: 'long' }),
+      prochaine.data.lieu?.ville,
+      prochaine.data.tarif,
+    ].filter(Boolean)
+  : [];
+
+const titreProchaine = prochaine
+  ? t('prochaineRencontreLe').replace(
+      '{date}',
+      formaterDate(prochaine.data.date_debut, langue, { day: 'numeric', month: 'long' }),
+    )
+  : t('prochaineRencontre');
 ---
 
 <Base
@@ -55,43 +80,50 @@ const intentions = intentionsPar[langue];
 
     <div class="conteneur heros__interieur">
       <div class="heros__texte">
-        <p class="surtitre">{t('heroSurtitre')}</p>
+        <p class="surtitre heros__surtitre">{t('heroSurtitre')}</p>
         <h1 class="t-hero heros__titre">
           {t('heroTitre1')} <em>{t('heroTitreAccent')}</em> {t('heroTitre2')}
         </h1>
         <p class="chapo heros__chapo">{t('heroChapo')}</p>
         <div class="rang heros__actions">
-          <a href={chemin(langue, 'evenements')} class="bouton">{t('heroBoutonEvenements')}</a>
+          <a href={chemin(langue, 'evenements')} class="bouton">
+            {prochaine ? t('heroBoutonProchain') : t('heroBoutonEvenements')}
+          </a>
           <a href={chemin(langue, 'association')} class="bouton bouton--fantome">{t('heroBoutonAssociation')}</a>
         </div>
+
+        {reperes.length > 0 && (
+          <p class="heros__reperes">
+            {reperes.map((repere, index) => (
+              <>{index > 0 && <span aria-hidden="true"> · </span>}<span>{repere}</span></>
+            ))}
+          </p>
+        )}
       </div>
 
-      {enChantier && (
       <div class="heros__visuel">
-        <ARemplir
-          libelle="PHOTO D’OUVERTURE À AJOUTER — portrait ou scène de rencontre, format portrait 4:5"
-          forme="visuel"
-          ratio="ratio-4-5"
+        <Image
+          src={ouverture}
+          alt={t('ouvertureAlt')}
+          widths={[420, 700, 1000]}
+          sizes="(min-width: 62rem) 32rem, 92vw"
+          loading="eager"
         />
-        <p class="heros__legende">
-          Le visuel d’ouverture donne le ton du site : une personne réelle, dans son environnement.
-        </p>
       </div>
-      )}
     </div>
   </section>
 
   <!-- ================= INTENTIONS ================= -->
-  <section class="section conteneur">
+  <section class="section conteneur section--intentions">
     <EnteteSection
       surtitre={t('intentionsSurtitre')}
       titre={t('intentionsTitre')}
     />
-    <ul class="grille grille--2 intentions">
-      {intentions.map((intention) => (
-        <li class="intention apparait">
-          <span class="intention__trait" aria-hidden="true"></span>
-          <h3 class="t-petit">{intention.titre}</h3>
+    <ul class="intentions">
+      {intentions.map((intention, index) => (
+        <li class="intention apparait" style={`--i:${index}`}>
+          <span class="trait-croissant intention__trait" style={`--i:${index}`}></span>
+          <h3 class="t-carte intention__mot">{intention.titre}</h3>
           <p>{intention.texte}</p>
         </li>
       ))}
@@ -102,16 +134,20 @@ const intentions = intentionsPar[langue];
   <section class="section conteneur">
     <EnteteSection
       surtitre={t('sectionRencontres')}
-      titre={t('prochaineRencontre')}
+      titre={titreProchaine}
       lien={{ url: chemin(langue, 'evenements'), libelle: t('tousLesEvenements') }}
     />
     {prochaine ? (
-      <div class="grille prochaine">
-        <CarteEvenement evenement={prochaine} variante="mise-en-avant" langue={langue} />
+      <div class="pile pile-6">
+        <div class="apparait apparait--image">
+          <CarteEvenement evenement={prochaine} variante="mise-en-avant" langue={langue} />
+        </div>
         {suivants.length > 0 && (
-          <ul class="pile pile-4 prochaine__suite">
-            {suivants.map((evenement) => (
-              <li><CarteEvenement evenement={evenement} langue={langue} /></li>
+          <ul class="suite liste-nue">
+            {suivants.map((evenement, index) => (
+              <li class="apparait apparait--texte" style={`--i:${index}`}>
+                <CarteEvenement evenement={evenement} variante="ligne" langue={langue} />
+              </li>
             ))}
           </ul>
         )}
@@ -129,59 +165,66 @@ const intentions = intentionsPar[langue];
       titre={t('ceuxQuiParlent')}
       lien={{ url: chemin(langue, 'intervenants'), libelle: t('tousLesIntervenants') }}
     />
+    {/* En dessous de 52rem la rangée défile au doigt plutôt que
+        d'empiler quatre portraits sur quatre écrans. */}
     {intervenants.length > 0 ? (
-      <ul class="grille grille--4 liste-nue">
-        {enAvant(intervenants, 4).map((intervenant) => (
-          <li><CarteIntervenant intervenant={intervenant} langue={langue} /></li>
+      <ul class="voix liste-nue">
+        {enAvant(intervenants, 4).map((intervenant, index) => (
+          <li class="apparait apparait--image" style={`--i:${index}`}>
+            <CarteIntervenant intervenant={intervenant} langue={langue} />
+          </li>
         ))}
       </ul>
     ) : (
       <EtatVide titre={t('aucunIntervenantTitre')} texte={t('aucunIntervenantTexte')} />
     )}
   </section>
-
   )}
 
   <!-- ================= PROJETS ================= -->
   {(projets.length > 0 || enChantier) && (
-  <section class="section conteneur">
+  <section class="section conteneur colonnes">
     <EnteteSection
       surtitre={t('navProjets')}
       titre={t('ceQueLAssociationConstruit')}
       lien={{ url: chemin(langue, 'projets'), libelle: t('tousLesProjets') }}
+      class="entete-section--rail"
     />
     {projets.length > 0 ? (
       <ul class="grille grille--2 liste-nue">
-        {enAvant(projets, 3).map((projet) => (
-          <li><CarteProjet projet={projet} langue={langue} /></li>
+        {enAvant(projets, 3).map((projet, index) => (
+          <li class="apparait" style={`--i:${index}`}>
+            <CarteProjet projet={projet} langue={langue} />
+          </li>
         ))}
       </ul>
     ) : (
       <EtatVide titre={t('aucunProjetTitre')} texte={t('aucunProjetTexte')} />
     )}
   </section>
-
   )}
 
   <!-- ================= RÉCITS ================= -->
   {(recits.length > 0 || enChantier) && (
-  <section class="section conteneur">
+  <section class="section conteneur colonnes colonnes--decale">
     <EnteteSection
       surtitre={t('navRecits')}
       titre={t('portraitsRetoursIdees')}
       lien={{ url: chemin(langue, 'recits'), libelle: t('tousLesRecits') }}
+      class="entete-section--rail"
     />
     {recits.length > 0 ? (
       <ul class="grille grille--2 liste-nue">
-        {enAvant(recits, 3).map((recit) => (
-          <li><CarteRecit recit={recit} langue={langue} /></li>
+        {enAvant(recits, 3).map((recit, index) => (
+          <li class="apparait" style={`--i:${index}`}>
+            <CarteRecit recit={recit} langue={langue} />
+          </li>
         ))}
       </ul>
     ) : (
       <EtatVide titre={t('aucunRecitTitre')} texte={t('aucunRecitTexte')} />
     )}
   </section>
-
   )}
 
   <BandeauCta
@@ -199,7 +242,8 @@ const intentions = intentionsPar[langue];
   /* ---------------- Héros ---------------- */
   .heros {
     position: relative;
-    overflow: hidden;
+    /* Le visuel déborde sur la section suivante : rien à rogner en bas. */
+    overflow: clip visible;
     border-bottom: 1px solid var(--trait);
   }
 
@@ -225,7 +269,17 @@ const intentions = intentionsPar[langue];
     align-items: center;
   }
 
-  .heros__texte { display: flex; flex-direction: column; align-items: flex-start; }
+  .heros__texte { display: flex; flex-direction: column; align-items: flex-start; position: relative; }
+  /* Halo ocre derrière le titre : le fond profond gagne un centre. */
+  .heros__texte::before {
+    content: '';
+    position: absolute;
+    inset: -30% -20% 20% -25%;
+    background: radial-gradient(closest-side, var(--halo), transparent 72%);
+    pointer-events: none;
+  }
+  .heros__surtitre, .heros__titre, .heros__chapo, .heros__actions, .heros__reperes { position: relative; }
+
   .heros__titre { margin-bottom: var(--e-5); max-width: 15ch; }
   .heros__titre em {
     font-style: normal;
@@ -234,36 +288,111 @@ const intentions = intentionsPar[langue];
   .heros__chapo { margin-bottom: var(--e-6); }
   .heros__actions { gap: var(--e-3); }
 
-  .heros__visuel { display: flex; flex-direction: column; gap: var(--e-3); }
-  .heros__legende {
+  /* Trois données réelles sous les boutons : une raison de descendre. */
+  .heros__reperes {
+    margin-top: var(--e-5);
+    padding-top: var(--e-4);
+    border-top: 1px solid var(--trait);
     font-family: var(--f-titre);
-    font-size: var(--t-100);
-    line-height: 1.5;
-    color: var(--encre-faible);
-    max-width: 24rem;
+    font-size: var(--t-300);
+    font-variant-numeric: tabular-nums;
+    color: var(--encre-douce);
   }
 
+  .heros__visuel {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--r-visuel);
+    background: var(--surface);
+    aspect-ratio: 3 / 2;
+  }
+  .heros__visuel :global(img) { width: 100%; height: 100%; object-fit: cover; }
+
   @media (min-width: 62rem) {
-    .heros__interieur { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: var(--e-10); }
+    .heros__interieur {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: var(--e-10);
+    }
+    /* Le visuel descend sur la section suivante. */
+    .heros__visuel { margin-bottom: -4rem; }
+    .section--intentions { padding-top: clamp(5rem, 9vw, 9rem); }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .heros__surtitre, .heros__titre, .heros__chapo, .heros__actions, .heros__reperes, .heros__visuel {
+      animation: heros-entree var(--mv-lent) var(--courbe-arrivee) both;
+    }
+    .heros__titre { animation-delay: 60ms; }
+    .heros__chapo { animation-delay: 120ms; }
+    .heros__actions { animation-delay: 180ms; }
+    .heros__reperes { animation-delay: 240ms; }
+    .heros__visuel { animation-delay: 120ms; }
+    @keyframes heros-entree { from { opacity: 0; transform: translateY(14px); } }
+
+    /* Parallaxe : lié à la position du visuel dans l'écran, sans écouter
+       le défilement. Là où la règle est inconnue, l'image ne bouge pas. */
+    @supports (animation-timeline: view()) {
+      .heros__visuel :global(img) {
+        animation: heros-derive linear both;
+        animation-timeline: view();
+        animation-range: entry 0% exit 100%;
+      }
+      @keyframes heros-derive {
+        from { transform: translateY(-20px) scale(1.08); }
+        to { transform: translateY(20px) scale(1.08); }
+      }
+    }
   }
 
   /* ---------------- Intentions ---------------- */
-  .intentions { list-style: none; margin: 0; padding: 0; }
-  .intention { display: flex; flex-direction: column; gap: var(--e-3); }
-  .intention__trait {
-    width: 2.5rem;
-    height: var(--epaisseur-trait);
-    border-radius: var(--r-pilule);
-    background: var(--or);
+  /* Mosaïque : 7/5 puis 5/7. La rupture de rythme suffit — quatre blocs
+     de largeur égale se lisent comme un tableau, pas comme un propos. */
+  .intentions { display: grid; gap: var(--e-7) var(--e-8); }
+  @media (min-width: 52rem) {
+    .intentions { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+    .intention:nth-child(1) { grid-column: 1 / 8; }
+    .intention:nth-child(2) { grid-column: 8 / -1; }
+    .intention:nth-child(3) { grid-column: 1 / 6; }
+    .intention:nth-child(4) { grid-column: 6 / -1; }
   }
+  .intention { display: flex; flex-direction: column; gap: var(--e-3); }
+  .intention__trait { max-width: 6rem; }
+  .intention__mot { font-weight: 700; }
   .intention p { font-size: var(--t-300); line-height: 1.65; color: var(--encre-douce); text-wrap: pretty; }
 
-  /* ---------------- Divers ---------------- */
-  .liste-nue { list-style: none; margin: 0; padding: 0; }
-  .prochaine { list-style: none; margin: 0; padding: 0; }
-  .prochaine__suite { list-style: none; margin: 0; padding: 0; }
+  /* ---------------- Rencontres suivantes ---------------- */
+  .suite { display: flex; flex-direction: column; }
+  .suite li { border-top: 1px solid var(--trait); padding-block: var(--e-4); }
+  .suite li:last-child { border-bottom: 1px solid var(--trait); }
 
-  @media (min-width: 62rem) {
-    .prochaine { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: start; }
+  /* ---------------- Voix ---------------- */
+  .voix { display: grid; gap: var(--e-6); }
+  @media (max-width: 51.99rem) {
+    .voix {
+      grid-auto-flow: column;
+      grid-auto-columns: 68vw;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      /* La rangée déborde des marges du conteneur, comme un rayon. */
+      margin-inline: calc(var(--gouttiere) * -1);
+      padding-inline: var(--gouttiere);
+      padding-bottom: var(--e-3);
+      scrollbar-width: thin;
+    }
+    .voix > li { scroll-snap-align: start; }
+  }
+  @media (min-width: 52rem) {
+    .voix { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+
+  /* ---------------- Rails de section ---------------- */
+  @media (min-width: 60rem) {
+    .colonnes :global(.entete-section--rail) {
+      display: block;
+      margin-bottom: 0;
+      position: sticky;
+      top: 7rem;
+    }
+    .colonnes :global(.entete-section--rail .lien-suite) { margin-top: var(--e-4); }
   }
 </style>

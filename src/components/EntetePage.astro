@@ -8,10 +8,12 @@ interface Props {
   ariane?: { libelle: string; url?: string }[];
   /** `scene` = fond profond (défaut), `papier` = fond clair. */
   registre?: 'scene' | 'papier';
+  /** Retire le filet du bas quand la section suivante est du même registre. */
+  sansFilet?: boolean;
 }
-const { surtitre, titre, chapo, ariane, registre = 'scene' } = Astro.props;
+const { surtitre, titre, chapo, ariane, registre = 'scene', sansFilet = false } = Astro.props;
 ---
-<section class:list={['entete-page', registre === 'scene' && 'scene']}>
+<section class:list={['entete-page', registre === 'scene' && 'scene', sansFilet && 'entete-page--sans-filet']}>
   <div class="conteneur entete-page__interieur">
     {ariane && <FilDAriane elements={ariane} />}
     {surtitre && <p class="surtitre">{surtitre}</p>}
@@ -22,6 +24,7 @@ const { surtitre, titre, chapo, ariane, registre = 'scene' } = Astro.props;
 </section>
 <style>
   .entete-page { border-bottom: 1px solid var(--trait); }
+  .entete-page--sans-filet { border-bottom: 0; }
   .entete-page__interieur {
     display: flex;
     flex-direction: column;

@@ -40,9 +40,13 @@ const domaines = [...new Set(intervenants.flatMap((i) => i.data.domaines))].sort
           cible=".carte-intervenant"
           langue={langue}
         />
-        <ul class="grille grille--3 liste-nue">
-          {intervenants.map((intervenant) => (
-            <li class="carte-intervenant" data-etiquettes={intervenant.data.domaines.join('|')}>
+        <ul class="portraits liste-nue">
+          {intervenants.map((intervenant, index) => (
+            <li
+              class="carte-intervenant apparait apparait--image"
+              style={`--i:${index}`}
+              data-etiquettes={intervenant.data.domaines.join('|')}
+            >
               <CarteIntervenant intervenant={intervenant} langue={langue} />
             </li>
           ))}
@@ -62,5 +66,15 @@ const domaines = [...new Set(intervenants.flatMap((i) => i.data.domaines))].sort
 </Base>
 
 <style>
-  .liste-nue { list-style: none; margin: 0; padding: 0; }
+  /* Trois portraits par rangée plutôt que quatre : une vignette n'est pas
+     une présentation. La colonne du milieu descend — la grille d'annuaire
+     se défait sans que rien ne soit désordonné. */
+  .portraits { display: grid; gap: var(--e-6); }
+  @media (min-width: 46rem) {
+    .portraits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 64rem) {
+    .portraits { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--e-7); }
+    .portraits > li:nth-child(3n + 2) { margin-top: 3rem; }
+  }
 </style>

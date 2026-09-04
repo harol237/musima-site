@@ -139,6 +139,10 @@ export const ui = {
   heroBoutonEvenements: {
     es: 'Ver los encuentros', fr: 'Voir les rencontres', en: 'See the gatherings', ca: 'Veure les trobades',
   },
+  heroBoutonProchain: {
+    es: 'Ven al próximo', fr: 'Venez à la prochaine',
+    en: 'Come to the next one', ca: 'Vine a la propera',
+  },
   heroBoutonAssociation: {
     es: 'Conocer la asociación', fr: 'Découvrir l’association', en: 'About the association', ca: 'Conèixer l’associació',
   },
@@ -153,25 +157,29 @@ export const ui = {
   prochaineRencontre: {
     es: 'Próximo encuentro', fr: 'Prochaine rencontre', en: 'Next gathering', ca: 'Propera trobada',
   },
+  prochaineRencontreLe: {
+    es: 'El próximo es el {date}', fr: 'La prochaine, c’est le {date}',
+    en: 'The next one is on {date}', ca: 'La propera és el {date}',
+  },
   tousLesEvenements: {
     es: 'Todos los encuentros', fr: 'Tous les événements', en: 'All events', ca: 'Totes les trobades',
   },
   sectionVoix: { es: 'Las voces', fr: 'Les voix', en: 'The voices', ca: 'Les veus' },
   ceuxQuiParlent: {
-    es: 'Quienes toman la palabra', fr: 'Celles et ceux qui prennent la parole',
-    en: 'The people who speak', ca: 'Qui pren la paraula',
+    es: 'Quienes ya lo están haciendo', fr: 'Celles et ceux qui font déjà',
+    en: 'The people already doing it', ca: 'Qui ja ho està fent',
   },
   tousLesIntervenants: {
     es: 'Todos los ponentes', fr: 'Tous les intervenants', en: 'All speakers', ca: 'Tots els ponents',
   },
   ceQueLAssociationConstruit: {
-    es: 'Lo que la asociación construye', fr: 'Ce que l’association construit',
-    en: 'What the association is building', ca: 'El que l’associació construeix',
+    es: 'Lo que tenemos entre manos', fr: 'Ce qu’on a sur le feu',
+    en: 'What we have on our hands', ca: 'El que tenim entre mans',
   },
   tousLesProjets: { es: 'Todos los proyectos', fr: 'Tous les projets', en: 'All projects', ca: 'Tots els projectes' },
   portraitsRetoursIdees: {
-    es: 'Retratos, crónicas e ideas', fr: 'Portraits, retours et idées',
-    en: 'Portraits, write-ups and ideas', ca: 'Retrats, cròniques i idees',
+    es: 'Lo que se dijo, y lo que quedó', fr: 'Ce qui s’est dit, et ce qu’il en reste',
+    en: 'What was said, and what stayed', ca: 'El que es va dir, i el que en va quedar',
   },
   tousLesRecits: { es: 'Todos los relatos', fr: 'Tous les récits', en: 'All stories', ca: 'Tots els relats' },
 
@@ -196,10 +204,10 @@ export const ui = {
 
   /* ---------------- Événements ---------------- */
   evenementsChapo: {
-    es: 'Conferencias y encuentros donde se cuentan trayectorias, se transmiten oficios y circulan ideas.',
-    fr: 'Des conférences et des rencontres où des parcours se racontent, où des savoir-faire se transmettent et où des idées circulent.',
-    en: 'Talks and gatherings where people tell their stories, pass on what they know, and let ideas travel.',
-    ca: 'Conferències i trobades on es expliquen trajectòries, es transmeten oficis i circulen idees.',
+    es: 'Una tarde, gente que ya lo ha hecho, y sitio para preguntar. Eso es un encuentro de MUSIMA.',
+    fr: 'Une après-midi, des gens qui l’ont déjà fait, et de la place pour poser des questions. C’est ça, une rencontre MUSIMA.',
+    en: 'An afternoon, people who have already done it, and room to ask. That is a MUSIMA gathering.',
+    ca: 'Una tarda, gent que ja ho ha fet, i lloc per preguntar. Això és una trobada de MUSIMA.',
   },
   aVenir: { es: 'Próximamente', fr: 'À venir', en: 'Upcoming', ca: 'Properament' },
   rencontresProgrammees: {
@@ -234,7 +242,7 @@ export const ui = {
   labelLieu: { es: 'Lugar', fr: 'Lieu', en: 'Venue', ca: 'Lloc' },
   labelFormat: { es: 'Formato', fr: 'Format', en: 'Format', ca: 'Format' },
   labelTarif: { es: 'Precio', fr: 'Tarif', en: 'Price', ca: 'Preu' },
-  sInscrire: { es: 'Apuntarme', fr: 'S’inscrire', en: 'Register', ca: 'Apunta-m’hi' },
+  sInscrire: { es: 'Guardar mi sitio', fr: 'Garder ma place', en: 'Save my seat', ca: 'Guardar el meu lloc' },
   surScene: { es: 'En el escenario', fr: 'Sur scène', en: 'On stage', ca: 'A l’escenari' },
   lesIntervenants: { es: 'Los ponentes', fr: 'Les intervenants', en: 'The speakers', ca: 'Els ponents' },
   lIntervenant: { es: 'El ponente', fr: 'L’intervenant·e', en: 'The speaker', ca: 'El ponent' },
@@ -262,10 +270,10 @@ export const ui = {
 
   /* ---------------- Intervenants ---------------- */
   intervenantsChapo: {
-    es: 'Personas reales, trayectorias reales. Cada ficha cuenta de dónde viene la persona, qué construye y qué vino a compartir.',
-    fr: 'Des personnes réelles, des parcours réels. Chaque fiche raconte d’où vient la personne, ce qu’elle construit et ce qu’elle est venue partager.',
-    en: 'Real people, real paths. Each profile says where the person comes from, what they are building, and what they came to share.',
-    ca: 'Persones reals, trajectòries reals. Cada fitxa explica d’on ve la persona, què construeix i què va venir a compartir.',
+    es: 'De dónde vienen, qué han montado, qué contaron aquí.',
+    fr: 'D’où elles viennent, ce qu’elles ont monté, ce qu’elles sont venues raconter.',
+    en: 'Where they come from, what they built, what they came here to tell.',
+    ca: 'D’on vénen, què han muntat, què van venir a explicar.',
   },
   aucunIntervenantTitre: {
     es: 'Las primeras fichas están en camino', fr: 'Les premières fiches arrivent',
@@ -278,6 +286,32 @@ export const ui = {
     ca: 'Cada persona convidada per MUSIMA tindrà la seva fitxa.',
   },
   portraitDe: { es: 'Retrato de', fr: 'Portrait de', en: 'Portrait of', ca: 'Retrat de' },
+  participations: { es: 'Participaciones', fr: 'Participations', en: 'Appearances', ca: 'Participacions' },
+  rencontresMusima: {
+    es: 'Encuentros de MUSIMA', fr: 'Rencontres MUSIMA',
+    en: 'MUSIMA gatherings', ca: 'Trobades de MUSIMA',
+  },
+  aLire: { es: 'Para leer', fr: 'À lire', en: 'Worth reading', ca: 'Per llegir' },
+  recitsLies: {
+    es: 'Relatos relacionados', fr: 'Récits liés',
+    en: 'Related stories', ca: 'Relats relacionats',
+  },
+  dansCeRecit: { es: 'En este relato', fr: 'Dans ce récit', en: 'In this story', ca: 'En aquest relat' },
+  personnesCitees: {
+    es: 'Las personas citadas', fr: 'Les personnes citées',
+    en: 'The people mentioned', ca: 'Les persones citades',
+  },
+  aLireEnsuite: {
+    es: 'Para seguir leyendo', fr: 'À lire ensuite',
+    en: 'Read next', ca: 'Per continuar llegint',
+  },
+  autresRecits: { es: 'Otros relatos', fr: 'Autres récits', en: 'Other stories', ca: 'Altres relats' },
+  ficheModele: {
+    es: 'Ficha de demostración — sustitúyela o bórrala en el CMS.',
+    fr: 'Fiche de démonstration — à remplacer ou supprimer dans le CMS.',
+    en: 'Demo entry — replace or delete it in the CMS.',
+    ca: 'Fitxa de demostració — substitueix-la o esborra-la al CMS.',
+  },
   photoCredit: { es: 'Foto', fr: 'Photo', en: 'Photo', ca: 'Foto' },
   portraitCredit: { es: 'Retrato', fr: 'Portrait', en: 'Portrait', ca: 'Retrat' },
 
@@ -302,6 +336,16 @@ export const ui = {
   labelStatut: { es: 'Estado', fr: 'Statut', en: 'Status', ca: 'Estat' },
   labelAnnee: { es: 'Año', fr: 'Année', en: 'Year', ca: 'Any' },
   labelTerritoire: { es: 'Territorio', fr: 'Territoire', en: 'Territory', ca: 'Territori' },
+  voirLeProjet: { es: 'Ver el proyecto', fr: 'Voir le projet', en: 'See the project', ca: 'Veure el projecte' },
+  impliques: { es: 'Implicados', fr: 'Impliqués', en: 'Involved', ca: 'Implicats' },
+  personnesDuProjet: {
+    es: 'Las personas del proyecto', fr: 'Les personnes du projet',
+    en: 'The people behind it', ca: 'Les persones del projecte',
+  },
+  commentAider: {
+    es: '¿Quieres echar una mano en esto?', fr: 'Envie de donner un coup de main ?',
+    en: 'Want to pitch in on this?', ca: 'Vols donar-hi un cop de mà?',
+  },
   labelPartenaires: { es: 'Colaboradores', fr: 'Partenaires', en: 'Partners', ca: 'Col·laboradors' },
 
   /* ---------------- Récits ---------------- */
@@ -351,6 +395,23 @@ export const ui = {
     fr: 'Touchez une photo pour la voir en grand.',
     en: 'Tap a photo to see it full size.',
     ca: 'Toca una foto per veure-la en gran.',
+  },
+
+  /* Photo d'ouverture de l'accueil — tirée de l'archive 2025, en
+     attendant un portrait fait pour cette place. */
+  ouvertureAlt: {
+    es: 'Primer plano de un hombre con polo azul claro hablando por el micrófono, delante de las letras doradas INSPIRE BCN.',
+    fr: 'Gros plan d’un homme en polo bleu clair qui parle au micro, devant les lettres dorées INSPIRE BCN.',
+    en: 'Close-up of a man in a light blue polo shirt speaking into a microphone, in front of the gold INSPIRE BCN letters.',
+    ca: 'Primer pla d’un home amb polo blau clar parlant pel micròfon, davant de les lletres daurades INSPIRE BCN.',
+  },
+
+  /* Photo de salle, page Association — archive 2025. */
+  salleAlt: {
+    es: 'Vista general de la sala: una veintena de personas sentadas en filas, con un reloj de pared encima.',
+    fr: 'Vue générale de la salle : une vingtaine de personnes assises en rangées, une horloge murale au-dessus.',
+    en: 'Wide view of the room: about twenty people seated in rows, a wall clock above them.',
+    ca: 'Vista general de la sala: una vintena de persones assegudes en files, amb un rellotge de paret a sobre.',
   },
 
   /* Décrit l'image de partage pour qui ne la voit pas : certains

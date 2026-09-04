@@ -65,11 +65,11 @@ const x = textes[langue as 'es' | 'fr'] ?? textes.fr;
 
   <section class="section conteneur">
     <EnteteSection surtitre={x.bureauSurtitre} titre={x.bureauTitre} />
-    <ul class="grille grille--4 liste-nue">
-      {x.roles.map((role) => (
-        <li>
+    <ul class="grille grille--3 liste-nue">
+      {x.roles.map((role, index) => (
+        <li class="apparait" style={`--i:${index}`}>
           <article class="carte membre">
-            <div class="carte__visuel ratio-4-5">
+            <div class="carte__visuel ratio-4-5 membre__reserve">
               <ARemplir type="photo" forme="visuel" />
             </div>
             <p class="membre__role">{role}</p>
@@ -98,13 +98,25 @@ const x = textes[langue as 'es' | 'fr'] ?? textes.fr;
   .liste-nue { list-style: none; margin: 0; padding: 0; }
   .membre { gap: var(--e-2); padding: var(--e-4); }
   .membre .carte__visuel { margin: calc(var(--e-4) * -1) calc(var(--e-4) * -1) var(--e-3); }
+  /* La trame se voit aussi en production, où le marqueur, lui, disparaît :
+     un emplacement réservé se lit comme une intention, un cadre gris
+     comme un oubli. */
+  .membre__reserve {
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        color-mix(in oklab, var(--or) 14%, transparent) 0 2px,
+        transparent 2px 9px
+      ),
+      color-mix(in oklab, var(--or) 6%, transparent);
+  }
   .membre__role {
     font-family: var(--f-titre);
-    font-size: var(--t-100);
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--terre);
+    font-size: var(--t-400);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: none;
+    color: var(--encre);
   }
   .membre__nom { font-size: var(--t-300); }
   .note { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.65; }

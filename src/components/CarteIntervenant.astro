@@ -27,7 +27,7 @@ const sousTitre = [data.fonction, data.organisation].filter(Boolean).join(' · '
         src={data.photo}
         alt={pret(data.photo_alt) ?? `${t('portraitDe')} ${data.nom}`}
         widths={[240, 400, 640]}
-        sizes="(min-width: 64rem) 17rem, (min-width: 40rem) 40vw, 85vw"
+        sizes="(min-width: 64rem) 20rem, (min-width: 40rem) 40vw, 85vw"
       />
     ) : (
       <ARemplir type="photo" forme="visuel" />
@@ -35,7 +35,9 @@ const sousTitre = [data.fonction, data.organisation].filter(Boolean).join(' · '
   </div>
   )}
 
-  <h3 class="t-petit">
+  {/* Quatre niveaux typographiques en quatre lignes : c'est là que se
+      lit la hiérarchie, pas dans la taille des blocs. */}
+  <h3 class="fiche__nom">
     <a href={chemin(langue, 'intervenants', slugDe(intervenant.id))} class="carte__lien">{data.nom}</a>
   </h3>
 
@@ -48,7 +50,7 @@ const sousTitre = [data.fonction, data.organisation].filter(Boolean).join(' · '
   {data.territoire && <p class="meta fiche__lieu">{data.territoire}</p>}
 
   {data.domaines.length > 0 && (
-    <ul class="fiche__domaines">
+    <ul class="fiche__domaines liste-nue">
       {data.domaines.slice(0, 3).map((domaine) => (
         <li><span class="puce puce--sourde">{domaine}</span></li>
       ))}
@@ -59,14 +61,41 @@ const sousTitre = [data.fonction, data.organisation].filter(Boolean).join(' · '
 <style>
   .fiche { gap: var(--e-2); padding: var(--e-4); }
   .fiche .carte__visuel { margin: calc(var(--e-4) * -1) calc(var(--e-4) * -1) var(--e-3); }
-  .fiche__role { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.45; }
-  .fiche__lieu { font-size: var(--t-100); }
+
+  .fiche__nom {
+    font-family: var(--f-titre);
+    font-size: var(--t-500);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+  }
+  /* L'italique de Newsreader est chargée et ne servait nulle part :
+     c'est ici qu'elle a le plus de sens, sur la ligne de fonction. */
+  .fiche__role {
+    font-family: var(--f-lecture);
+    font-style: italic;
+    font-size: var(--t-300);
+    color: var(--encre-douce);
+    line-height: 1.45;
+  }
+  .fiche__lieu { font-size: var(--t-100); font-variant-numeric: tabular-nums; }
   .fiche__domaines {
     display: flex;
     flex-wrap: wrap;
     gap: var(--e-2);
-    list-style: none;
-    margin: var(--e-2) 0 0;
-    padding: 0;
+    margin-top: auto;
+    padding-top: var(--e-3);
+  }
+
+  /* Les portraits viennent de mains différentes : une désaturation légère
+     au repos les rassemble, et le survol rend la couleur. */
+  @media (prefers-reduced-motion: no-preference) {
+    .fiche .carte__visuel :global(img) {
+      filter: saturate(0.82);
+      transition: filter var(--mv-lent) var(--courbe-arrivee),
+                  transform var(--mv-lent) var(--courbe-arrivee);
+    }
+    .fiche:has(a:hover) .carte__visuel :global(img),
+    .fiche:has(a:focus-visible) .carte__visuel :global(img) { filter: saturate(1); }
   }
 </style>

@@ -28,8 +28,16 @@ const projets = await chargerProjets(langue);
   />
   <section class="section conteneur">
     {projets.length > 0 ? (
-      <ul class="grille grille--2 liste-nue">
-        {projets.map((projet) => <li><CarteProjet projet={projet} langue={langue} /></li>)}
+      <ul class="projets liste-nue">
+        {projets.map((projet, index) => (
+          <li class="apparait" style={`--i:${index}`}>
+            <CarteProjet
+              projet={projet}
+              langue={langue}
+              variante={index === 0 ? 'mise-en-avant' : 'liste'}
+            />
+          </li>
+        ))}
       </ul>
     ) : (
       <EtatVide titre={t('aucunProjetTitre')} texte={t('aucunProjetTexte')} />
@@ -45,4 +53,11 @@ const projets = await chargerProjets(langue);
     ]}
   />
 </Base>
-<style>.liste-nue { list-style: none; margin: 0; padding: 0; }</style>
+<style>
+  .projets { display: grid; gap: var(--e-6); }
+  @media (min-width: 52rem) {
+    .projets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .projets > li:first-child { grid-column: 1 / -1; }
+  }
+  .liste-nue { list-style: none; margin: 0; padding: 0; }
+</style>

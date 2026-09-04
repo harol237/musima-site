@@ -1,6 +1,6 @@
 ---
 import site from '~/data/site.json';
-import { etiquettes, langueDefaut, langues, type Langue } from '~/i18n/config';
+import { etiquettes, langueDefaut, langues, prefixe, type Langue } from '~/i18n/config';
 import { champ } from '~/i18n/site';
 import { traducteur } from '~/i18n/ui';
 
@@ -108,6 +108,11 @@ const organisation = {
 <meta name="twitter:title" content={titreComplet} />
 <meta name="twitter:description" content={description} />
 
-<link rel="alternate" type="application/rss+xml" title={`Récits — ${site.nom}`} href="/rss.xml" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={`${traducteur(langue)('navRecits')} — ${site.nom}`}
+  href={`${prefixe(langue)}/rss.xml`}
+/>
 
 <script type="application/ld+json" set:html={JSON.stringify(organisation)} is:inline />
