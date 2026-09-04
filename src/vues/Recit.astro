@@ -24,7 +24,7 @@ const { data } = recit;
 const { Content } = await render(recit);
 const intervenants = data.intervenants.length ? await getEntries(data.intervenants) : [];
 
-const tous = await chargerRecits();
+const tous = await chargerRecits(langue);
 const aLire = tous.filter((r) => r.id !== recit.id).slice(0, 2);
 
 const donnees = {
@@ -47,19 +47,23 @@ const donnees = {
   langue={langue}
   alternatives={alternatives}
 >
+  {/* Barre de progression : pilotée par le défilement du document,
+      sans écouteur. Elle n'apparaît que sur les pages de lecture. */}
+  <div class="progression" aria-hidden="true"></div>
+
   <article>
     <header class="entete-recit">
       <div class="conteneur conteneur--etroit pile pile-4">
-        <FilDAriane elements={[{ libelle: 'Récits', url: '/recits' }, { libelle: data.titre }]} />
-        {data.modele && <p class="rappel-modele">Fiche de démonstration — à remplacer ou supprimer dans le CMS.</p>}
+        <FilDAriane elements={[{ libelle: t('navRecits'), url: chemin(langue, 'recits') }, { libelle: data.titre }]} />
+        {data.modele && <p class="rappel-modele">{t('ficheModele')}</p>}
         <div class="rang">
           <span class="puce puce--sourde">{data.categorie}</span>
-          <time class="meta" datetime={dateISO(data.date)}>{formaterDate(data.date)}</time>
+          <time class="meta" datetime={dateISO(data.date)}>{formaterDate(data.date, langue)}</time>
           {data.temps_lecture && <span class="meta">· {data.temps_lecture}</span>}
         </div>
         <h1 class="t-page">{data.titre}</h1>
         {data.resume && <p class="chapo">{data.resume}</p>}
-        <p class="meta">Par {data.auteur ?? 'MUSIMA'}</p>
+        <p class="meta">{t('parAuteur')} {data.auteur ?? 'MUSIMA'}</p>
       </div>
     </header>
 
@@ -72,7 +76,7 @@ const donnees = {
             <ARemplir type="photo" forme="visuel" />
           )}
         </div>
-        {pret(data.credit_photo) && <figcaption>Photo : {data.credit_photo}</figcaption>}
+        {pret(data.credit_photo) && <figcaption>{t('photoCredit')} : {data.credit_photo}</figcaption>}
       </figure>
 
       <div class="prose corps-recit"><Content /></div>
@@ -87,18 +91,28 @@ const donnees = {
 
   {intervenants.length > 0 && (
     <section class="section conteneur">
-      <EnteteSection surtitre="Dans ce récit" titre="Les personnes citées" />
-      <ul class="grille grille--4 liste-nue">
-        {intervenants.map((intervenant) => <li><CarteIntervenant intervenant={intervenant} /></li>)}
+      <EnteteSection surtitre={t('dansCeRecit')} titre={t('personnesCitees')} />
+      <ul class="grille grille--3 liste-nue">
+        {intervenants.map((intervenant, index) => (
+          <li class="apparait apparait--image" style={`--i:${index}`}>
+            <CarteIntervenant intervenant={intervenant} langue={langue} />
+          </li>
+        ))}
       </ul>
     </section>
   )}
 
   {aLire.length > 0 && (
     <section class="section conteneur">
-      <EnteteSection surtitre="À lire ensuite" titre="Autres récits" lien={{ url: '/recits', libelle: 'Tous les récits' }} />
+      <EnteteSection
+        surtitre={t('aLireEnsuite')}
+        titre={t('autresRecits')}
+        lien={{ url: chemin(langue, 'recits'), libelle: t('tousLesRecits') }}
+      />
       <ul class="grille grille--2 liste-nue">
-        {aLire.map((autre) => <li><CarteRecit recit={autre} /></li>)}
+        {aLire.map((autre, index) => (
+          <li class="apparait" style={`--i:${index}`}><CarteRecit recit={autre} langue={langue} /></li>
+        ))}
       </ul>
     </section>
   )}
@@ -107,7 +121,29 @@ const donnees = {
 </Base>
 
 <style>
+  .progression {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--epaisseur-trait);
+    background: var(--or);
+    transform: scaleX(0);
+    transform-origin: left;
+    z-index: 55;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: scroll()) {
+      .progression {
+        animation: lecture linear both;
+        animation-timeline: scroll();
+      }
+      @keyframes lecture { to { transform: scaleX(1); } }
+    }
+  }
+
   .entete-recit { padding-block: var(--e-6) var(--e-7); border-bottom: 1px solid var(--trait); margin-bottom: var(--e-7); }
+  .entete-recit .meta { font-variant-numeric: tabular-nums; }
   .entete-recit .pile { align-items: flex-start; }
 
   .visuel-principal { margin: 0 0 var(--e-8); }
@@ -116,6 +152,25 @@ const donnees = {
   .visuel-principal figcaption { font-family: var(--f-titre); font-size: var(--t-100); color: var(--encre-faible); margin-top: var(--e-2); }
 
   .corps-recit { margin-inline: auto; }
+  /* Lettrine : le geste qui sépare un article composé d'un billet. */
+  .corps-recit > :global(p:first-of-type::first-letter) {
+    float: left;
+    font-size: 3.4em;
+    line-height: 0.82;
+    font-weight: 300;
+    padding-right: 0.07em;
+    padding-top: 0.04em;
+    color: var(--terre);
+  }
+  /* Les citations débordent la mesure : elles se lisent comme une
+     respiration, pas comme un paragraphe de plus. */
+  @media (min-width: 56rem) {
+    .corps-recit :global(blockquote) {
+      margin-left: calc(var(--e-8) * -1);
+      padding-left: var(--e-7);
+      max-width: calc(var(--largeur-texte) + var(--e-8));
+    }
+  }
   .mots-cles { display: flex; flex-wrap: wrap; gap: var(--e-2); list-style: none; margin: var(--e-8) auto 0; padding: var(--e-6) 0 0; max-width: var(--largeur-texte); border-top: 1px solid var(--trait); }
   .rappel-modele { font-family: var(--f-titre); font-size: var(--t-200); color: var(--or); }
   .liste-nue { list-style: none; margin: 0; padding: 0; }

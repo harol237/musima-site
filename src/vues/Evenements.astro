@@ -5,7 +5,7 @@ import EnteteSection from '~/components/EnteteSection.astro';
 import CarteEvenement from '~/components/CarteEvenement.astro';
 import EtatVide from '~/components/EtatVide.astro';
 import BandeauCta from '~/components/BandeauCta.astro';
-import { chargerEvenements } from '~/lib/contenu';
+import { chargerEvenements, pret, slugDe } from '~/lib/contenu';
 import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
 
@@ -13,6 +13,11 @@ interface Props { langue: Langue; alternatives: Record<Langue, string> }
 const { langue, alternatives } = Astro.props;
 const t = traducteur(langue);
 const { aVenir, passes } = await chargerEvenements(langue);
+
+/* La première rencontre à venir monte dans l'en-tête : c'est la seule
+   information que la plupart des visiteurs viennent chercher ici. */
+const [prochaine, ...autresAVenir] = aVenir;
+const inscription = prochaine ? pret(prochaine.data.lien_inscription) : undefined;
 ---
 <Base
   titre={t('navEvenements')}
@@ -25,38 +30,63 @@ const { aVenir, passes } = await chargerEvenements(langue);
     titre={t('navEvenements')}
     chapo={t('evenementsChapo')}
     ariane={[{ libelle: t('navEvenements') }]}
+    sansFilet={!!prochaine}
   />
 
-  <section class="section conteneur" id="a-venir">
-    <EnteteSection
-      surtitre={t('aVenir')}
-      titre={aVenir.length > 1 ? `${aVenir.length} ${t('rencontresProgrammees')}` : t('prochaineRencontre')}
-    />
-    {aVenir.length > 0 ? (
-      <ul class="pile pile-5 liste-nue">
-        {aVenir.map((evenement, index) => (
-          <li>
-            <CarteEvenement
-              evenement={evenement}
-              langue={langue}
-              variante={index === 0 ? 'mise-en-avant' : 'liste'}
-            />
+  {prochaine && (
+    <section class="scene section--dense prochaine" id="a-venir">
+      <div class="conteneur pile pile-5">
+        <p class="surtitre">{t('prochaineRencontre')}</p>
+        <CarteEvenement evenement={prochaine} variante="mise-en-avant" langue={langue} />
+        <div class="rang prochaine__actions">
+          {inscription ? (
+            <a href={inscription} class="bouton" rel="noopener">{t('sInscrire')}</a>
+          ) : (
+            <a
+              href={chemin(langue, 'evenements', slugDe(prochaine.id))}
+              class="bouton"
+            >{t('enSavoirPlus')}</a>
+          )}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {/* Chronologique : un seul filet ocre relie les dates. C'est le seul
+      mouvement de la page qui représente vraiment quelque chose — le
+      temps qui passe. */}
+  {autresAVenir.length > 0 && (
+    <section class="section conteneur">
+      <EnteteSection
+        surtitre={t('aVenir')}
+        titre={`${aVenir.length} ${t('rencontresProgrammees')}`}
+      />
+      <ol class="chrono liste-nue">
+        {autresAVenir.map((evenement, index) => (
+          <li class="chrono__pas apparait apparait--texte" style={`--i:${index}`}>
+            <CarteEvenement evenement={evenement} variante="ligne" langue={langue} />
           </li>
         ))}
-      </ul>
-    ) : (
+      </ol>
+    </section>
+  )}
+
+  {aVenir.length === 0 && (
+    <section class="section conteneur">
       <EtatVide titre={t('aucuneRencontreTitre')} texte={t('aucuneRencontreTexte')} />
-    )}
-  </section>
+    </section>
+  )}
 
   {passes.length > 0 && (
     <section class="section conteneur" id="passes">
       <EnteteSection surtitre={t('archives')} titre={t('rencontresPassees')} />
-      <ul class="grille grille--2 liste-nue">
-        {passes.map((evenement) => (
-          <li><CarteEvenement evenement={evenement} langue={langue} /></li>
+      <ol class="chrono chrono--archive liste-nue">
+        {passes.map((evenement, index) => (
+          <li class="chrono__pas apparait apparait--texte" style={`--i:${index}`}>
+            <CarteEvenement evenement={evenement} variante="ligne" langue={langue} />
+          </li>
         ))}
-      </ul>
+      </ol>
     </section>
   )}
 
@@ -69,5 +99,57 @@ const { aVenir, passes } = await chargerEvenements(langue);
 </Base>
 
 <style>
-  .liste-nue { list-style: none; margin: 0; padding: 0; }
+  /* L'en-tête et l'affiche forment un seul bloc profond. */
+  .prochaine { border-bottom: 1px solid var(--trait); padding-top: 0; }
+  .prochaine__actions { gap: var(--e-3); }
+
+  /* ---------------- Chronologique ---------------- */
+  .chrono { position: relative; display: flex; flex-direction: column; padding-left: var(--e-6); }
+  /* Le filet vertical, tracé au fil du défilement. */
+  .chrono::before {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 0.6rem;
+    bottom: 0.6rem;
+    width: var(--epaisseur-trait);
+    border-radius: var(--r-pilule);
+    background: var(--or);
+    transform-origin: top;
+  }
+  .chrono--archive::before {
+    background: repeating-linear-gradient(
+      var(--trait-fort) 0 6px,
+      transparent 6px 12px
+    );
+  }
+
+  .chrono__pas { position: relative; padding-block: var(--e-5); }
+  .chrono__pas + .chrono__pas { border-top: 1px solid var(--trait); }
+  /* Le point qui accroche la rangée au filet. */
+  .chrono__pas::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--e-6) * -1);
+    top: calc(var(--e-5) + 0.55rem);
+    width: 8px;
+    height: 8px;
+    border-radius: var(--r-pilule);
+    background: var(--terre);
+  }
+  .chrono--archive .chrono__pas::before { background: var(--trait-fort); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .chrono::before {
+        animation: chrono-trace linear both;
+        animation-timeline: view();
+        animation-range: entry 30% cover 70%;
+      }
+      @keyframes chrono-trace {
+        from { transform: scaleY(0); }
+        to { transform: scaleY(1); }
+      }
+    }
+  }
 </style>

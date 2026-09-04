@@ -34,13 +34,20 @@ const categories = [
     {recits.length > 0 ? (
       <>
         <Filtres legende={t('filtrerParDomaine')} options={categories} cible=".carte-recit" langue={langue} />
-        <ul class="grille grille--2 liste-nue">
-          {recits.map((recit) => (
+        {/* Le plus récent tient la largeur, comme une une. Il reste dans
+            la même liste que les autres : le filtre continue de l'atteindre. */}
+        <ul class="recits liste-nue">
+          {recits.map((recit, index) => (
             <li
-              class="carte-recit"
+              class="carte-recit apparait"
+              style={`--i:${index}`}
               data-etiquettes={traduireValeur(categoriesRecit, recit.data.categorie, langue)}
             >
-              <CarteRecit recit={recit} langue={langue} />
+              <CarteRecit
+                recit={recit}
+                langue={langue}
+                variante={index === 0 ? 'mise-en-avant' : 'liste'}
+              />
             </li>
           ))}
         </ul>
@@ -50,4 +57,11 @@ const categories = [
     )}
   </section>
 </Base>
-<style>.liste-nue { list-style: none; margin: 0; padding: 0; }</style>
+<style>
+  .recits { display: grid; gap: var(--e-6); }
+  @media (min-width: 52rem) {
+    .recits { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--e-7) var(--e-6); }
+    .recits > li:first-child { grid-column: 1 / -1; }
+  }
+  .liste-nue { list-style: none; margin: 0; padding: 0; }
+</style>

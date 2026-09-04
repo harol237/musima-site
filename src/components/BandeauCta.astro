@@ -8,6 +8,9 @@ interface Props {
 const { surtitre, titre, texte, actions = [] } = Astro.props;
 ---
 <section class="section bandeau scene">
+  <svg class="bandeau__trait" viewBox="0 0 1200 400" aria-hidden="true" preserveAspectRatio="none">
+    <path d="M-40 330 C 180 330 200 90 400 90 C 600 90 620 310 820 310 C 1020 310 1040 120 1260 120" />
+  </svg>
   <div class="conteneur bandeau__interieur">
     <div>
       {surtitre && <p class="surtitre">{surtitre}</p>}
@@ -27,6 +30,35 @@ const { surtitre, titre, texte, actions = [] } = Astro.props;
   </div>
 </section>
 <style>
+  .bandeau { position: relative; overflow: hidden; }
+  .bandeau__trait {
+    position: absolute;
+    inset: -20% -10%;
+    width: 120%;
+    height: 140%;
+    fill: none;
+    stroke: var(--scene-or);
+    stroke-width: 2;
+    stroke-linecap: round;
+    opacity: 0.14;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    /* Défilement lié à la position de la bande : aucun écouteur de
+       scroll, et rien ne bouge là où la règle n'est pas connue. */
+    @supports (animation-timeline: view()) {
+      .bandeau__trait {
+        animation: bandeau-derive linear both;
+        animation-timeline: view();
+      }
+      @keyframes bandeau-derive {
+        from { transform: translateY(24px); }
+        to { transform: translateY(-24px); }
+      }
+    }
+  }
+
+  .bandeau__interieur { position: relative; }
   .bandeau__interieur {
     display: flex;
     flex-wrap: wrap;

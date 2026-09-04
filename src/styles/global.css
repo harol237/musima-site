@@ -214,6 +214,35 @@ a { color: inherit; }
 .grille--3 { grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); }
 .grille--4 { grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr)); }
 
+.liste-nue { list-style: none; margin: 0; padding: 0; }
+
+/* Douze colonnes : un rail de titre à gauche, le contenu à droite.
+   La variante « décalée » pousse le contenu d'une colonne — d'une
+   section à l'autre l'asymétrie change, et la page cesse de se lire
+   comme une pile de blocs identiques. */
+.colonnes { display: grid; gap: var(--e-6); align-items: start; }
+@media (min-width: 60rem) {
+  .colonnes {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--e-8);
+  }
+  .colonnes > :first-child { grid-column: 1 / 5; }
+  .colonnes > :last-child { grid-column: 5 / -1; }
+  .colonnes--decale > :first-child { grid-column: 1 / 4; }
+  .colonnes--decale > :last-child { grid-column: 6 / -1; }
+  .colonnes--collant > :first-child { position: sticky; top: 7rem; }
+}
+
+/* Filet qui se déploie à l'entrée en écran. Repris du trait du logo :
+   c'est la marque de section de tout le site. */
+.trait-croissant {
+  display: block;
+  width: 100%;
+  height: var(--epaisseur-trait);
+  border-radius: var(--r-pilule);
+  background: var(--or);
+}
+
 /* En-tête de section : titre à gauche, lien « tout voir » à droite. */
 .entete-section {
   display: flex;
@@ -500,6 +529,14 @@ a { color: inherit; }
   .apparait--titre { --apparait-y: 0px; }
   .apparait--image { --apparait-y: 0px; --apparait-echelle: 1.03; }
   .apparait.est-visible { opacity: 1; transform: none; }
+
+  .trait-croissant {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--mv-lent) var(--courbe-arrivee);
+    transition-delay: calc(var(--i, 0) * 60ms);
+  }
+  .trait-croissant.est-visible { transform: none; }
 }
 
 /* ==================================================================

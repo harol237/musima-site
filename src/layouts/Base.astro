@@ -89,7 +89,7 @@ const versions = Object.fromEntries(
       // réduites, tout reste visible : la classe n'est ajoutée que si
       // l'utilisateur ne demande pas de mouvement réduit.
       const mouvementOk = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
-      const cibles = document.querySelectorAll('.apparait');
+      const cibles = document.querySelectorAll('.apparait, .trait-croissant');
 
       if (!mouvementOk || !('IntersectionObserver' in window)) {
         cibles.forEach((cible) => cible.classList.add('est-visible'));

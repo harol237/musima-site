@@ -1,21 +1,34 @@
 ---
 /**
  * Filtres progressifs : sans JavaScript, tout reste affiché.
- * Le script masque simplement les éléments qui ne correspondent pas.
+ * Le script masque simplement les éléments qui ne correspondent pas,
+ * puis relance une courte entrée en cascade sur ceux qui restent —
+ * un tri qui s'affiche d'un coup ressemble à un rechargement.
  */
+import { traducteur } from '~/i18n/ui';
+import type { Langue } from '~/i18n/config';
+
 interface Props {
   legende: string;
   options: string[];
   /** Sélecteur des éléments filtrables, portant data-etiquettes. */
   cible: string;
+  langue: Langue;
 }
-const { legende, options, cible } = Astro.props;
+const { legende, options, cible, langue } = Astro.props;
+const t = traducteur(langue);
 ---
 {options.length > 1 && (
-  <div class="filtres" data-filtres data-cible={cible}>
+  <div
+    class="filtres"
+    data-filtres
+    data-cible={cible}
+    data-un={t('resultatUn')}
+    data-plusieurs={t('resultatPlusieurs')}
+  >
     <p class="filtres__legende" id="legende-filtres">{legende}</p>
     <div class="filtres__boutons" role="group" aria-labelledby="legende-filtres">
-      <button type="button" class="filtre" data-valeur="" aria-pressed="true">Tout</button>
+      <button type="button" class="filtre" data-valeur="" aria-pressed="true">{t('filtreTout')}</button>
       {options.map((option) => (
         <button type="button" class="filtre" data-valeur={option} aria-pressed="false">{option}</button>
       ))}
@@ -30,9 +43,9 @@ const { legende, options, cible } = Astro.props;
     font-family: var(--f-titre);
     font-size: var(--t-100);
     font-weight: 600;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--encre-faible);
+    color: var(--encre-douce);
   }
   .filtres__boutons { display: flex; flex-wrap: wrap; gap: var(--e-2); }
   .filtre {
@@ -40,15 +53,40 @@ const { legende, options, cible } = Astro.props;
     font-size: var(--t-200);
     font-weight: 600;
     line-height: 1;
-    padding: 0.55em 0.95em;
+    padding: 0.6em 1em;
     border-radius: var(--r-pilule);
     border: 1px solid var(--trait);
     color: var(--encre-douce);
-    transition: color var(--transition), border-color var(--transition), background var(--transition);
+    transition: color var(--transition), border-color var(--transition),
+                background var(--transition), transform var(--mv-moyen) var(--courbe-arrivee);
   }
   .filtre:hover { border-color: var(--terre); color: var(--terre); }
-  .filtre[aria-pressed='true'] { background: var(--terre); border-color: var(--terre); color: var(--sur-terre); }
-  .filtres__resultat { font-size: var(--t-200); color: var(--encre-faible); font-family: var(--f-titre); }
+  .filtre[aria-pressed='true'] {
+    background: var(--terre);
+    border-color: var(--terre);
+    color: var(--sur-terre);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .filtre[aria-pressed='true'] { transform: translateY(-1px); }
+  }
+  .filtres__resultat {
+    font-size: var(--t-200);
+    color: var(--encre-douce);
+    font-family: var(--f-titre);
+    font-variant-numeric: tabular-nums;
+  }
+</style>
+
+<style is:global>
+  @media (prefers-reduced-motion: no-preference) {
+    [data-filtre-entree] {
+      animation: filtre-entree var(--mv-moyen) var(--courbe-arrivee) both;
+      animation-delay: calc(var(--i, 0) * 45ms);
+    }
+    @keyframes filtre-entree {
+      from { opacity: 0; transform: translateY(10px); }
+    }
+  }
 </style>
 
 <script>
@@ -57,27 +95,36 @@ const { legende, options, cible } = Astro.props;
     const elements = Array.from(document.querySelectorAll<HTMLElement>(selecteur));
     const resultat = groupe.querySelector<HTMLElement>('[data-resultat]');
     const boutons = Array.from(groupe.querySelectorAll<HTMLButtonElement>('.filtre'));
+    const un = groupe.dataset.un ?? '';
+    const plusieurs = groupe.dataset.plusieurs ?? '';
 
-    const appliquer = (valeur: string) => {
+    const appliquer = (valeur: string, animer: boolean) => {
       let visibles = 0;
       for (const element of elements) {
         const etiquettes = (element.dataset.etiquettes ?? '').split('|');
         const garde = !valeur || etiquettes.includes(valeur);
         element.hidden = !garde;
-        if (garde) visibles += 1;
+        if (garde) {
+          if (animer) {
+            element.style.setProperty('--i', String(visibles));
+            // Retirer puis remettre l'attribut relance l'animation.
+            element.removeAttribute('data-filtre-entree');
+            void element.offsetWidth;
+            element.setAttribute('data-filtre-entree', '');
+          }
+          visibles += 1;
+        }
       }
       for (const bouton of boutons) {
         bouton.setAttribute('aria-pressed', String(bouton.dataset.valeur === valeur));
       }
       if (resultat) {
-        resultat.textContent = valeur
-          ? `${visibles} résultat${visibles > 1 ? 's' : ''}`
-          : '';
+        resultat.textContent = valeur ? `${visibles} ${visibles > 1 ? plusieurs : un}` : '';
       }
     };
 
     boutons.forEach((bouton) =>
-      bouton.addEventListener('click', () => appliquer(bouton.dataset.valeur ?? '')),
+      bouton.addEventListener('click', () => appliquer(bouton.dataset.valeur ?? '', true)),
     );
   });
 </script>

@@ -11,22 +11,37 @@ import { nomTransition } from '~/lib/transitions';
 interface Props {
   langue: Langue;
   projet: CollectionEntry<'projets'>;
+  /** `mise-en-avant` : pleine largeur, visuel très allongé. */
+  variante?: 'liste' | 'mise-en-avant';
 }
-const { projet, langue } = Astro.props;
+const { projet, langue, variante = 'liste' } = Astro.props;
 const { data } = projet;
-const teinteStatut = data.statut === 'Réalisé' ? 'puce--sourde' : data.statut === 'En cours' ? 'puce--terre' : 'puce--or';
+const affiche = variante === 'mise-en-avant';
+
+/* L'état ne se distingue pas par sa couleur seule : « en cours » est
+   plein, « réalisé » est en contour, « en préparation » est en pointillés.
+   L'avancement se lit avant le mot. */
+const formeStatut = {
+  'En cours': 'etat--vif',
+  'Réalisé': 'etat--fait',
+  'En préparation': 'etat--attente',
+  'Idée': 'etat--attente',
+}[data.statut] ?? 'etat--attente';
 ---
-<article class="carte projet">
+<article class:list={['carte', 'projet', affiche && 'projet--affiche']}>
   {data.modele && <BadgeModele />}
 
   {(data.image || enChantier) && (
-  <div class="carte__visuel ratio-3-2" style={nomTransition('pj', slugDe(projet.id), !!data.image)}>
+  <div
+    class:list={['carte__visuel', affiche ? 'ratio-21-9' : 'ratio-3-2']}
+    style={nomTransition('pj', slugDe(projet.id), !!data.image)}
+  >
     {data.image ? (
       <Image
         src={data.image}
         alt={pret(data.image_alt) ?? ''}
-        widths={[400, 700, 1000]}
-        sizes="(min-width: 64rem) 22rem, (min-width: 40rem) 45vw, 90vw"
+        widths={[400, 700, 1000, 1600]}
+        sizes={affiche ? '(min-width: 64rem) 72rem, 100vw' : '(min-width: 64rem) 22rem, (min-width: 40rem) 45vw, 90vw'}
       />
     ) : (
       <ARemplir type="photo" forme="visuel" />
@@ -35,11 +50,11 @@ const teinteStatut = data.statut === 'Réalisé' ? 'puce--sourde' : data.statut 
   )}
 
   <div class="rang">
-    <span class:list={['puce', teinteStatut]}>{traduireValeur(statutsProjet, data.statut, langue)}</span>
+    <span class:list={['etat', formeStatut]}>{traduireValeur(statutsProjet, data.statut, langue)}</span>
     {data.annee && <span class="meta">{data.annee}</span>}
   </div>
 
-  <h3 class="t-carte">
+  <h3 class={affiche ? 't-section' : 't-carte'}>
     <a href={chemin(langue, 'projets', slugDe(projet.id))} class="carte__lien">{data.titre}</a>
   </h3>
 
@@ -54,4 +69,24 @@ const teinteStatut = data.statut === 'Réalisé' ? 'puce--sourde' : data.statut 
 
 <style>
   .projet__resume { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.6; text-wrap: pretty; }
+  .projet--affiche .projet__resume { font-size: var(--t-400); max-width: 44rem; }
+  .ratio-21-9 { aspect-ratio: 21 / 9; }
+
+  /* --- L'état, par la forme autant que par la couleur --- */
+  .etat {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--f-titre);
+    font-size: var(--t-100);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1;
+    padding: 0.5em 0.85em;
+    border-radius: var(--r-pilule);
+    white-space: nowrap;
+  }
+  .etat--vif { background: var(--or); border: 1px solid var(--or); color: var(--sur-or); }
+  .etat--fait { border: 1px solid var(--trait-fort); color: var(--encre-douce); }
+  .etat--attente { border: 1px dashed var(--trait-fort); color: var(--encre-douce); }
 </style>

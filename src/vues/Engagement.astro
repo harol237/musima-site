@@ -12,36 +12,50 @@ interface Props { langue: Langue; alternatives: Record<Langue, string> }
 const { langue, alternatives } = Astro.props;
 const t = traducteur(langue);
 
+/* Chaque voie porte trois lignes fixes : pour qui, ce que ça implique,
+   et ce qu'on fait maintenant. C'est la troisième qui décide — sans
+   elle, la page informe sans jamais rien demander.
+
+   `via` règle l'objet du formulaire de contact : une seule porte
+   d'entrée pour les quatre voies. */
 const textes = {
   es: {
     meta: 'Intervenir, asociarse, echar una mano o acompañar a MUSIMA: las distintas maneras de aportar a la asociación.',
     surtitre: 'Participar',
-    titre: 'Participar en MUSIMA',
+    titre: 'Hay sitio para ti aquí',
     chapo: 'MUSIMA se construye con quienes hacen. Hay varias maneras de formar parte, según lo que te apetezca aportar.',
     voies: [
       {
-        titre: 'Intervenir',
+        titre: 'Contar lo que has montado',
         pour: 'Tienes una experiencia, un oficio o una trayectoria que compartir.',
         texte: 'MUSIMA invita a personas de todos los ámbitos a contar qué están construyendo — no solo los logros, también los caminos que llevaron hasta ahí.',
+        maintenant: 'Escríbenos dos líneas sobre lo que contarías. Con eso basta para empezar a hablar.',
         action: 'Proponer una intervención',
+        via: 'intervenir',
       },
       {
         titre: 'Asociarte',
         pour: 'Quieres apoyar el proyecto y formar parte de la aventura.',
         texte: 'La cuota permite que la asociación funcione y da acceso a la vida de MUSIMA: encuentros, intercambios y asamblea general.',
+        maintenant: 'La cuota se está fijando. Dinos que te interesa y te avisamos en cuanto esté.',
         action: 'Hacerte socio',
+        via: 'adherer',
       },
       {
-        titre: 'Dar tiempo',
+        titre: 'Echar una mano un sábado',
         pour: 'Quieres aportar algo concreto a la organización.',
         texte: 'Acogida en los encuentros, fotografía, grabación de vídeo, redacción, traducción, comunicación, logística: las necesidades son variadas y cambian con los proyectos.',
+        maintenant: 'Cuéntanos qué sabes hacer y cuándo puedes. No hace falta comprometerse a más.',
         action: 'Echar una mano',
+        via: 'benevolat',
       },
       {
         titre: 'Acompañar',
         pour: 'Representas a una asociación, una empresa o una institución.',
         texte: 'Ceder un local, apoyar económicamente, coorganizar un encuentro, difundir entre tus públicos: las formas de colaboración se construyen caso por caso.',
+        maintenant: 'Escríbenos y lo hablamos. Cada colaboración se define en una conversación.',
         action: 'Colaborar con MUSIMA',
+        via: 'partenariat',
       },
     ],
     cadreSurtitre: 'Marco',
@@ -54,32 +68,40 @@ const textes = {
   fr: {
     meta: 'Intervenir, adhérer, donner du temps ou accompagner MUSIMA : les différentes façons de contribuer à l’association.',
     surtitre: 'Participer',
-    titre: 'S’engager auprès de MUSIMA',
+    titre: 'Il y a de la place pour vous ici',
     chapo: 'MUSIMA se construit avec celles et ceux qui font. Il y a plusieurs façons d’en faire partie, selon ce que vous avez envie d’apporter.',
     voies: [
       {
-        titre: 'Intervenir',
+        titre: 'Raconter ce que vous avez monté',
         pour: 'Vous avez une expérience, un savoir-faire ou un parcours à partager.',
         texte: 'MUSIMA invite des personnes de tous les domaines à venir raconter ce qu’elles construisent — pas seulement les réussites, mais aussi les chemins qui ont permis d’y arriver.',
+        maintenant: 'Écrivez-nous deux lignes sur ce que vous raconteriez. Ça suffit pour commencer à en parler.',
         action: 'Proposer une intervention',
+        via: 'intervenir',
       },
       {
         titre: 'Adhérer',
         pour: 'Vous voulez soutenir la démarche et faire partie de l’aventure.',
         texte: 'L’adhésion permet à l’association de fonctionner et donne accès à la vie de MUSIMA : rencontres, échanges et assemblée générale.',
+        maintenant: 'Le montant est en cours de fixation. Dites-nous que ça vous intéresse, on vous prévient dès que c’est arrêté.',
         action: 'Adhérer à l’association',
+        via: 'adherer',
       },
       {
-        titre: 'Donner du temps',
+        titre: 'Donner un coup de main un samedi',
         pour: 'Vous souhaitez contribuer concrètement à l’organisation.',
         texte: 'Accueil des rencontres, photographie, captation vidéo, rédaction, traduction, communication, logistique : les besoins sont variés et évoluent avec les projets.',
+        maintenant: 'Dites-nous ce que vous savez faire et quand vous êtes disponible. Rien de plus à engager.',
         action: 'Devenir bénévole',
+        via: 'benevolat',
       },
       {
         titre: 'Accompagner',
         pour: 'Vous représentez une association, une entreprise ou une institution.',
         texte: 'Mise à disposition d’un lieu, soutien financier, co-organisation d’une rencontre, relais auprès de vos publics : les formes de partenariat se construisent au cas par cas.',
+        maintenant: 'Écrivez-nous et on en discute. Chaque partenariat se définit dans une conversation.',
         action: 'Devenir partenaire',
+        via: 'partenariat',
       },
     ],
     cadreSurtitre: 'Cadre',
@@ -91,6 +113,12 @@ const textes = {
   },
 } as const;
 const x = textes[langue as 'es' | 'fr'] ?? textes.fr;
+
+/* La première voie est celle dont l'association a le plus besoin : elle
+   passe en pleine largeur, sur fond profond. La hiérarchie est la
+   recommandation — quatre cartes identiques n'en font aucune. */
+const [principale, ...secondaires] = x.voies;
+const lienVoie = (via: string) => `${chemin(langue, 'contact')}?via=${via}`;
 ---
 
 <Base
@@ -104,30 +132,43 @@ const x = textes[langue as 'es' | 'fr'] ?? textes.fr;
     titre={x.titre}
     chapo={x.chapo}
     ariane={[{ libelle: x.surtitre }]}
+    sansFilet
   />
 
+  <section class="scene section--dense principale">
+    <div class="conteneur principale__interieur">
+      <div class="principale__texte">
+        <span class="trait-croissant principale__trait"></span>
+        <h2 class="t-section">{principale.titre}</h2>
+        <p class="principale__pour">{principale.pour}</p>
+        <p class="principale__corps">{principale.texte}</p>
+      </div>
+      <div class="principale__suite">
+        <p class="principale__maintenant">{principale.maintenant}</p>
+        <a href={lienVoie(principale.via)} class="bouton">{principale.action}</a>
+      </div>
+    </div>
+  </section>
+
   <section class="section conteneur">
-    <ul class="voies">
-      {x.voies.map((voie) => (
-        <li class="voie apparait">
+    <ul class="voies liste-nue">
+      {secondaires.map((voie, index) => (
+        <li class="voie apparait" style={`--i:${index}`}>
           <div class="voie__entete">
             <span class="voie__trait" aria-hidden="true"></span>
             <h2 class="t-carte">{voie.titre}</h2>
           </div>
           <p class="voie__pour">{voie.pour}</p>
           <p class="voie__texte">{voie.texte}</p>
-          {enChantier && (
-          <div class="voie__action">
-            <ARemplir libelle={`${voie.action.toUpperCase()} — LIEN OU FORMULAIRE À AJOUTER`} />
-          </div>
-          )}
+          <p class="voie__maintenant">{voie.maintenant}</p>
+          <a href={lienVoie(voie.via)} class="bouton bouton--fantome voie__action">{voie.action}</a>
         </li>
       ))}
     </ul>
   </section>
 
   {enChantier && (
-  <section class="section conteneur deux-colonnes">
+  <section class="section conteneur colonnes colonnes--decale">
     <div>
       <EnteteSection surtitre={x.cadreSurtitre} titre={x.cadreTitre} />
     </div>
@@ -149,8 +190,34 @@ const x = textes[langue as 'es' | 'fr'] ?? textes.fr;
 </Base>
 
 <style>
-  .voies { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--e-6); }
-  @media (min-width: 52rem) { .voies { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  /* ---------------- Voie principale ---------------- */
+  .principale { border-bottom: 1px solid var(--trait); padding-top: 0; }
+  .principale__interieur { display: grid; gap: var(--e-6); align-items: end; }
+  @media (min-width: 60rem) {
+    .principale__interieur {
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      gap: var(--e-9);
+    }
+  }
+  .principale__texte { display: flex; flex-direction: column; gap: var(--e-3); }
+  .principale__trait { max-width: 4rem; margin-bottom: var(--e-2); }
+  .principale__pour { font-family: var(--f-titre); font-size: var(--t-400); font-weight: 600; }
+  .principale__corps { color: var(--encre-douce); line-height: 1.65; max-width: 38rem; text-wrap: pretty; }
+  .principale__suite { display: flex; flex-direction: column; align-items: flex-start; gap: var(--e-4); }
+  .principale__maintenant {
+    font-family: var(--f-lecture);
+    font-style: italic;
+    font-size: var(--t-500);
+    line-height: 1.5;
+    color: var(--encre);
+    border-left: var(--epaisseur-trait) solid var(--or);
+    padding-left: var(--e-4);
+    text-wrap: pretty;
+  }
+
+  /* ---------------- Les trois autres ---------------- */
+  .voies { display: grid; gap: var(--e-5); }
+  @media (min-width: 60rem) { .voies { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
   .voie {
     display: flex;
@@ -160,14 +227,36 @@ const x = textes[langue as 'es' | 'fr'] ?? textes.fr;
     border: 1px solid var(--trait);
     border-radius: var(--r-carte);
     background: var(--surface);
+    transition: border-color var(--transition),
+                box-shadow var(--mv-moyen) var(--courbe-arrivee);
+  }
+  .voie:has(a:hover), .voie:has(a:focus-visible) {
+    border-color: var(--terre);
+    box-shadow: var(--ombre-survol);
   }
   .voie__entete { display: flex; align-items: center; gap: var(--e-3); }
-  .voie__trait { flex: none; width: 1.75rem; height: var(--epaisseur-trait); border-radius: var(--r-pilule); background: var(--terre); }
+  .voie__trait {
+    flex: none;
+    width: 1.75rem;
+    height: var(--epaisseur-trait);
+    border-radius: var(--r-pilule);
+    background: var(--terre);
+    transition: width var(--mv-moyen) var(--courbe-arrivee);
+  }
+  .voie:has(a:hover) .voie__trait { width: 3.25rem; }
   .voie__pour { font-family: var(--f-titre); font-size: var(--t-300); font-weight: 600; color: var(--encre); }
   .voie__texte { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.65; text-wrap: pretty; }
-  .voie__action { margin-top: auto; padding-top: var(--e-3); }
+  .voie__maintenant {
+    font-family: var(--f-lecture);
+    font-style: italic;
+    font-size: var(--t-300);
+    line-height: 1.55;
+    color: var(--encre);
+    border-top: 1px solid var(--trait);
+    padding-top: var(--e-3);
+    text-wrap: pretty;
+  }
+  .voie__action { margin-top: auto; align-self: flex-start; }
 
-  .deux-colonnes { display: grid; gap: var(--e-6); align-items: start; }
-  @media (min-width: 60rem) { .deux-colonnes { grid-template-columns: minmax(0, 20rem) minmax(0, 1fr); gap: var(--e-10); } }
   .note { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.65; max-width: var(--largeur-texte); }
 </style>
