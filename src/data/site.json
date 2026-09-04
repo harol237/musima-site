@@ -1,10 +1,10 @@
 {
   "nom": "MUSIMA",
   "baseline": {
-    "es": "Dar luz a lo que los africanos construyen",
-    "fr": "Mettre en lumière ce que les Africains construisent",
-    "en": "Shining a light on what Africans are building",
-    "ca": "Donar llum al que els africans construeixen"
+    "es": "Se construye mucho. Se cuenta poco.",
+    "fr": "On construit beaucoup. On en parle peu.",
+    "en": "A lot gets built. Little gets told.",
+    "ca": "Es construeix molt. Se’n parla poc."
   },
   "verbes": [
     "Connecter",
@@ -12,10 +12,10 @@
     "Impacter"
   ],
   "phrase": {
-    "es": "MUSIMA da luz a lo que los africanos construyen: personas, trayectorias, proyectos. Organizamos encuentros donde quienes ya hacen cuentan cómo se las arreglaron, y hacemos circular lo que allí se dice.",
-    "fr": "MUSIMA met en lumière ce que les Africains construisent : des personnes, des parcours, des projets. On organise des rencontres où celles et ceux qui font déjà racontent comment ils s’y sont pris, et on fait circuler ce qui s’y dit.",
-    "en": "MUSIMA shines a light on what Africans are building: people, paths, projects. We run gatherings where the people already doing it explain how they went about it, and we pass on what gets said.",
-    "ca": "MUSIMA dona llum al que els africans construeixen: persones, trajectòries, projectes. Organitzem trobades on qui ja ho fa explica com se les va manegar, i fem circular el que s’hi diu."
+    "es": "MUSIMA organiza encuentros donde africanos que han montado algo cuentan cómo lo hicieron. Recogemos lo que se dice allí y lo dejamos accesible.",
+    "fr": "MUSIMA organise des rencontres où des Africains qui ont monté quelque chose racontent comment ils s’y sont pris. On recueille ce qui s’y dit et on le laisse accessible.",
+    "en": "MUSIMA runs gatherings where Africans who have built something explain how they did it. We gather what gets said there and keep it open.",
+    "ca": "MUSIMA organitza trobades on africans que han muntat alguna cosa expliquen com ho van fer. Recollim el que s’hi diu i ho deixem accessible."
   },
   "description_courte": {
     "es": "Africanos que montan empresas, proyectos y oficios en Barcelona y en otros sitios. En MUSIMA cuentan cómo lo hicieron: los pasos, los errores y lo que costó.",

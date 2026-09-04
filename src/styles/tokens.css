@@ -86,7 +86,7 @@
   --e-8: 3.5rem;
   --e-9: 4.5rem;
   --e-10: 6rem;
-  --e-section: clamp(4.5rem, 9vw, 9rem);
+  --e-section: clamp(3.5rem, 9vw, 9rem);
 
   /* --- Mise en page ---------------------------------------------- */
   --largeur-page: 78rem;
