@@ -137,7 +137,7 @@ const titreProchaine = prochaine
       surtitre={t('sectionRencontres')}
       titre={titreProchaine}
       lien={{ url: chemin(langue, 'evenements'), libelle: t('tousLesEvenements') }}
-    />
+    ><p class="intro-section">{t('introRencontres')}</p></EnteteSection>
     {prochaine ? (
       <div class="pile pile-6">
         <div class="apparait apparait--image">
@@ -165,7 +165,7 @@ const titreProchaine = prochaine
       surtitre={t('sectionVoix')}
       titre={t('ceuxQuiParlent')}
       lien={{ url: chemin(langue, 'intervenants'), libelle: t('tousLesIntervenants') }}
-    />
+    ><p class="intro-section">{t('introVoix')}</p></EnteteSection>
     {/* En dessous de 52rem la rangée défile au doigt plutôt que
         d'empiler quatre portraits sur quatre écrans. */}
     {intervenants.length > 0 ? (
@@ -190,7 +190,7 @@ const titreProchaine = prochaine
       titre={t('ceQueLAssociationConstruit')}
       lien={{ url: chemin(langue, 'projets'), libelle: t('tousLesProjets') }}
       class="entete-section--rail"
-    />
+    ><p class="intro-section">{t('introProjets')}</p></EnteteSection>
     {projets.length > 0 ? (
       <ul class="grille grille--2 liste-nue">
         {enAvant(projets, 3).map((projet, index) => (
@@ -213,7 +213,7 @@ const titreProchaine = prochaine
       titre={t('portraitsRetoursIdees')}
       lien={{ url: chemin(langue, 'recits'), libelle: t('tousLesRecits') }}
       class="entete-section--rail"
-    />
+    ><p class="intro-section">{t('introRecits')}</p></EnteteSection>
     {recits.length > 0 ? (
       <ul class="grille grille--2 liste-nue">
         {enAvant(recits, 3).map((recit, index) => (

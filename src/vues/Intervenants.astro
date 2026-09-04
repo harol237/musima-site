@@ -29,7 +29,10 @@ const domaines = [...new Set(intervenants.flatMap((i) => i.data.domaines))].sort
     titre={t('navIntervenants')}
     chapo={t('intervenantsChapo')}
     ariane={[{ libelle: t('navIntervenants') }]}
-  />
+  ><div class="prose entete-page__corps">
+    <p>{t('intervenantsCorpsA')}</p>
+    <p>{t('intervenantsCorpsB')}</p>
+  </div></EntetePage>
 
   <section class="section conteneur">
     {intervenants.length > 0 ? (

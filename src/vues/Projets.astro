@@ -25,7 +25,10 @@ const projets = await chargerProjets(langue);
     titre={t('ceQueLAssociationConstruit')}
     chapo={t('projetsChapo')}
     ariane={[{ libelle: t('navProjets') }]}
-  />
+  ><div class="prose entete-page__corps">
+    <p>{t('projetsCorpsA')}</p>
+    <p>{t('projetsCorpsB')}</p>
+  </div></EntetePage>
   <section class="section conteneur">
     {projets.length > 0 ? (
       <ul class="projets liste-nue">

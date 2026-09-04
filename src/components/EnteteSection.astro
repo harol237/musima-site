@@ -12,9 +12,19 @@ const { surtitre, titre, lien, niveau: Niveau = 'h2', class: classe = '' } = Ast
   <div>
     {surtitre && <p class="surtitre">{surtitre}</p>}
     <Niveau class="t-section">{titre}</Niveau>
+    {/* Introduction courte, facultative : passée en enfant. */}
+    <slot />
   </div>
   {lien && <a href={lien.url} class="bouton bouton--discret lien-suite">{lien.libelle} <span aria-hidden="true">→</span></a>}
 </div>
 <style>
   .lien-suite { flex: none; padding-bottom: 0.35rem; }
+  .entete-section :global(.intro-section) {
+    margin-top: var(--e-3);
+    font-size: var(--t-400);
+    line-height: 1.6;
+    color: var(--encre-douce);
+    max-width: 46ch;
+    text-wrap: pretty;
+  }
 </style>
