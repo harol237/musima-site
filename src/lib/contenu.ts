@@ -1,5 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import type { Langue } from '~/i18n/config';
+import { fuseau, type Langue } from '~/i18n/config';
 
 /* ---------------------------------------------------------------- *
  *  Helpers de contenu — un seul endroit pour les règles de tri, de
@@ -36,6 +36,31 @@ export const estPublie = (entree: AvecBrouillon) =>
 
 export function dateISO(date: Date) {
   return date.toISOString().slice(0, 10);
+}
+
+/**
+ * Un horodatage complet dans le fuseau du site :
+ * « 2026-09-26T16:30:00+02:00 ».
+ *
+ * Sans heure, la date nue est renvoyée : c'est ce qu'attend schema.org
+ * quand l'horaire est inconnu. Annoncer minuit serait une information
+ * fausse, pas une valeur par défaut.
+ *
+ * Le décalage n'est pas écrit en dur : il est demandé au fuseau pour la
+ * journée concernée, sinon une rencontre d'hiver serait décalée d'une
+ * heure par le passage à l'heure d'été.
+ */
+export function horodatageISO(date: Date, heure?: string) {
+  const jour = dateISO(date);
+  if (!heure) return jour;
+  const nomFuseau = new Intl.DateTimeFormat('en-US', {
+    timeZone: fuseau,
+    timeZoneName: 'longOffset',
+  })
+    .formatToParts(new Date(`${jour}T${heure}:00Z`))
+    .find((partie) => partie.type === 'timeZoneName')?.value;
+  const decalage = nomFuseau?.replace('GMT', '') || 'Z';
+  return `${jour}T${heure}:00${decalage}`;
 }
 
 /* ================================================================== *

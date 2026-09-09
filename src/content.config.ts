@@ -43,13 +43,32 @@ const evenements = defineCollection({
         .default('Rencontre'),
       date_debut: z.coerce.date(),
       date_fin: z.coerce.date().optional(),
+      /** Horaire tel qu'il s'affiche : « 16h30 – 20h00 ». Texte libre. */
       heure: z.string().optional(),
+      /** Les mêmes horaires en lisible par une machine, « HH:MM ».
+          Ils alimentent les données structurées et le compte à rebours :
+          la formule libre ci-dessus ne s'analyse pas. */
+      heure_debut: z.string().regex(/^\d{2}:\d{2}$/).optional(),
+      heure_fin: z.string().regex(/^\d{2}:\d{2}$/).optional(),
       lieu: z
         .object({
           nom: z.string().optional(),
           adresse: z.string().optional(),
+          /** Quartier ou district, quand il aide à situer le lieu. */
+          quartier: z.string().optional(),
+          code_postal: z.string().optional(),
           ville: z.string().optional(),
           pays: z.string().optional(),
+          /** Coordonnées exactes : elles produisent le lien vers la carte
+              et le bloc `geo` des données structurées. Les deux ou aucune. */
+          latitude: z.number().optional(),
+          longitude: z.number().optional(),
+          /** Accessible aux personnes à mobilité réduite. Ne l'indiquer
+              qu'une fois vérifié auprès du lieu : une information fausse
+              ici fait faire le déplacement pour rien. */
+          acces_pmr: z.boolean().optional(),
+          /** Arrêt le plus proche, avec son réseau : « Sarrià (FGC) ». */
+          transport: z.string().optional(),
           en_ligne: z.boolean().default(false),
         })
         .default({ en_ligne: false }),
@@ -64,6 +83,10 @@ const evenements = defineCollection({
       /** Alimente les données structurées : Google veut un prix chiffré,
           pas la formule libre saisie dans `tarif`. */
       gratuit: z.boolean().default(false),
+      /** Gratuit ne veut pas dire que tout le monde entre : quand la salle
+          a une jauge, l'offre est annoncée en disponibilité limitée plutôt
+          qu'en stock, et le tarif affiché le dit. */
+      places_limitees: z.boolean().default(false),
       complet: z.boolean().default(false),
       en_avant: z.boolean().default(false),
       ...base,
@@ -151,6 +174,11 @@ const albums = defineCollection({
       titre: z.string(),
       date: z.coerce.date().optional(),
       lieu: z.string().optional(),
+      /** Album antérieur à MUSIMA. Fait apparaître une pastille sur la
+          carte de galerie et remplace le surtitre « Album » par
+          « Archives » : sans ça, un visiteur prend ces images pour
+          celles de la dernière rencontre. */
+      archive: z.boolean().default(false),
       evenement: reference('evenements').optional(),
       couverture: image().optional(),
       couverture_alt: z.string().optional(),
