@@ -50,6 +50,12 @@ const albums = await chargerAlbums(langue);
                   )}
                 </div>
               )}
+              {album.data.archive && (
+                <p class="rang album__archive">
+                  <span class="puce puce--sourde">{t('albumArchive')}</span>
+                  <span class="album__note">{t('albumArchiveNote')}</span>
+                </p>
+              )}
               <h2 class="t-carte">
                 <a href={chemin(langue, 'galerie', slugDe(album.id))} class="carte__lien">
                   {album.data.titre}
@@ -57,7 +63,8 @@ const albums = await chargerAlbums(langue);
               </h2>
               <p class="meta">
                 {album.data.date && formaterDate(album.data.date, langue)}
-                {album.data.lieu && <> · {album.data.lieu}</>}
+                {album.data.date && album.data.lieu && <> · </>}
+                {album.data.lieu}
               </p>
             </article>
           </li>
@@ -71,4 +78,10 @@ const albums = await chargerAlbums(langue);
 <style>
   .liste-nue { list-style: none; margin: 0; padding: 0; }
   .album { gap: var(--e-3); }
+  /* Entre l'image et le titre : c'est la première chose à savoir sur cet
+     album. Surtout pas `order: -1` pour la remonter plus haut — la marge
+     négative du visuel, qui le fait affleurer le bord de la carte, la
+     recouvrirait. */
+  .album__archive { align-items: baseline; gap: var(--e-3); margin-bottom: calc(var(--e-2) * -1); }
+  .album__note { font-family: var(--f-titre); font-size: var(--t-200); color: var(--encre-faible); }
 </style>
