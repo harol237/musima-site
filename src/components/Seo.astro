@@ -42,12 +42,26 @@ const cheminPublic =
 const canonical = new URL(cheminPublic, Astro.site).href;
 const titreComplet = titre === site.nom ? `${site.nom} — ${champ(site.baseline, langue)}` : `${titre} — ${site.nom}`;
 /* L'aperçu affiché quand on colle un lien du site dans une messagerie
-   ou un réseau social. Sans image, l'aperçu se réduit à un rectangle
-   vide — c'est ce que voient les gens avant de décider s'ils cliquent.
-   Une page peut fournir la sienne ; à défaut, celle-ci sert partout. */
-const imageParDefaut = '/partage-musima.jpg';
-const imagePartage = new URL(image ?? imageParDefaut, Astro.site).href;
-const dimensionsConnues = !image;
+   ou un réseau social.
+
+   Aucune image par défaut pour l'instant : la précédente était une photo
+   d'archive Inspire BCN, décrite à tort comme « une rencontre MUSIMA ».
+   Elle est retirée, et aucune des photos actuelles ne tient le 1200×630
+   sans être défigurée par le recadrage. Un visuel pensé pour ce format
+   viendra ; d'ici là on n'annonce pas d'image plutôt que d'en annoncer
+   une fausse ou une qui s'affiche de travers.
+
+   Pour en remettre une : déposer le fichier dans public/, remplacer
+   `undefined` par son chemin, et redonner à og:image:alt une description
+   de ce qu'on y voit. L'ancienne a été supprimée plutôt que gardée :
+   elle décrivait une photo qui n'est plus là. Les balises ci-dessous se
+   rallument toutes seules, carte Twitter en grand format comprise. */
+const imageParDefaut: string | undefined = undefined;
+const chemin = image ?? imageParDefaut;
+const imagePartage = chemin ? new URL(chemin, Astro.site).href : undefined;
+/* Les dimensions ne sont connues que pour l'image par défaut : une page
+   qui fournit la sienne n'est pas tenue au 1200×630. */
+const dimensionsConnues = !image && !!imagePartage;
 
 const organisation = {
   '@context': 'https://schema.org',
@@ -93,18 +107,19 @@ const organisation = {
 <meta property="og:title" content={titreComplet} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
-<meta property="og:image" content={imagePartage} />
+{imagePartage && <meta property="og:image" content={imagePartage} />}
 {dimensionsConnues && (
   <>
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={t('partageAlt')} />
   </>
 )}
 {publieLe && <meta property="article:published_time" content={publieLe.toISOString()} />}
 
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content={imagePartage} />
+{/* Sans image, `summary_large_image` afficherait un grand cadre vide :
+    la carte compacte est le bon repli. */}
+<meta name="twitter:card" content={imagePartage ? 'summary_large_image' : 'summary'} />
+{imagePartage && <meta name="twitter:image" content={imagePartage} />}
 <meta name="twitter:title" content={titreComplet} />
 <meta name="twitter:description" content={description} />
 
