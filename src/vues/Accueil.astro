@@ -7,6 +7,7 @@ import CarteIntervenant from '~/components/CarteIntervenant.astro';
 import CarteProjet from '~/components/CarteProjet.astro';
 import CarteRecit from '~/components/CarteRecit.astro';
 import BandeauCta from '~/components/BandeauCta.astro';
+import CompteARebours from '~/components/CompteARebours.astro';
 import EtatVide from '~/components/EtatVide.astro';
 import site from '~/data/site.json';
 import { champ } from '~/i18n/site';
@@ -18,28 +19,20 @@ import {
   enChantier,
 } from '~/lib/contenu';
 import { formaterDate } from '~/i18n/utils';
+import { horodatageISO } from '~/lib/contenu';
 import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
 import { intentionsPar } from '~/i18n/intentions';
 
-/* Les trois images de l'accueil, dans l'ordre du récit : le métier,
-   la salle avant que ça commence, ce qu'on en écrit. Aucun visage.
-   Source : Pexels, licence libre pour usage commercial.
-     metier — Kings Studio        · pexels.com/photo/33428733
-     salle  — Borta               · pexels.com/photo/4331578
-     trace  — cottonbro studio    · pexels.com/photo/6143818
-   À remplacer par des photos de MUSIMA dès qu'il y en aura : ces
-   trois-là illustrent le propos, elles ne montrent pas l'association. */
-import metier from '~/assets/uploads/metier.jpg';
-import salle from '~/assets/uploads/salle.jpg';
-import trace from '~/assets/uploads/trace.jpg';
+/* Photo d'ouverture. Le héros retrouve sa seconde colonne dès qu'elle
+   existe ; à `null`, il se replie sur une seule colonne plutôt que
+   d'afficher un cadre vide. */
+import ouverture from '~/assets/uploads/pages/accueil.jpg';
 
-/* Photo d'ouverture : aucune pour l'instant. Le héros se replie alors
-   sur une seule colonne plutôt que d'afficher un cadre vide.
-   Pour en remettre une, deux lignes :
-     import ouverture from '~/assets/uploads/nom-du-fichier.jpg';
-   puis remplacer `null` ci-dessous par `ouverture`. */
-const ouverture = null;
+/* La colonne d'image des quatre intentions : une main qui écrit dans un
+   carnet. Elle répond à la quatrième — « Laisser une trace » — et c'est
+   pour ça qu'elle est là plutôt qu'ailleurs. */
+import trace from '~/assets/uploads/pages/cequefaitmusima.jpg';
 
 interface Props { langue: Langue; alternatives: Record<Langue, string> }
 const { langue, alternatives } = Astro.props;
@@ -107,9 +100,19 @@ const titreProchaine = prochaine
 
         {reperes.length > 0 && (
           <p class="heros__reperes">
-            {reperes.map((repere, index) => (
-              <>{index > 0 && <span aria-hidden="true"> · </span>}<span class="heros__repere">{repere}</span></>
-            ))}
+            {reperes.map((repere) => <span class="heros__repere">{repere}</span>)}
+            {/* Quatrième donnée de la même ligne, dans la même typo et
+                les mêmes chiffres tabulaires. Rien de neuf à l'écran :
+                le compte à rebours est un repère parmi les autres, pas
+                une alarme posée par-dessus le héros. */}
+            {prochaine?.data.heure_debut && (
+              <CompteARebours
+                  langue={langue}
+                  variante="ligne"
+                  debut={horodatageISO(prochaine.data.date_debut, prochaine.data.heure_debut)}
+                  fin={horodatageISO(prochaine.data.date_fin ?? prochaine.data.date_debut, prochaine.data.heure_fin)}
+                />
+            )}
           </p>
         )}
       </div>
@@ -119,8 +122,8 @@ const titreProchaine = prochaine
           <Image
             src={ouverture}
             alt={t('ouvertureAlt')}
-            widths={[420, 700, 1000]}
-            sizes="(min-width: 62rem) 32rem, 92vw"
+            widths={[420, 640, 832]}
+            sizes="(min-width: 62rem) 26rem, 92vw"
             loading="eager"
           />
         </div>
@@ -134,32 +137,28 @@ const titreProchaine = prochaine
       surtitre={t('intentionsSurtitre')}
       titre={t('intentionsTitre')}
     />
-    <ul class="intentions">
-      {intentions.map((intention, index) => (
-        <li class="intention apparait" style={`--i:${index}`}>
-          <span class="trait-croissant intention__trait" style={`--i:${index}`}></span>
-          <h3 class="t-carte intention__mot">{intention.titre}</h3>
-          <p>{intention.texte}</p>
-        </li>
-      ))}
-    </ul>
-  </section>
-
-  <!-- ================= TRIPTYQUE ================= -->
-  <section class="triptyque">
-    <div class="conteneur triptyque__grille">
-      <figure class="tri tri--metier tirage">
-        <Image src={metier} alt={t('triptyqueMetierAlt')} widths={[420, 760, 1100]}
-               sizes="(min-width: 62rem) 34rem, 92vw" />
+    <div class="intentions">
+      {/* Format d'origine, aucun recadrage : 2/3, comme la source. Elle
+          accompagne le défilement des quatre blocs plutôt que d'être
+          posée au-dessus ou en dessous. */}
+      <figure class="intentions__visuel tirage">
+        <Image
+          src={trace}
+          alt={t('traceAlt')}
+          widths={[300, 460, 620]}
+          sizes="(min-width: 52rem) 19rem, 60vw"
+          loading="lazy"
+        />
       </figure>
-      <figure class="tri tri--salle tirage">
-        <Image src={salle} alt={t('triptyqueSalleAlt')} widths={[380, 700, 1000]}
-               sizes="(min-width: 62rem) 28rem, 92vw" />
-      </figure>
-      <figure class="tri tri--trace tirage">
-        <Image src={trace} alt={t('triptyqueTraceAlt')} widths={[400, 720, 1050]}
-               sizes="(min-width: 62rem) 30rem, 92vw" />
-      </figure>
+      <ul class="intentions__liste">
+        {intentions.map((intention, index) => (
+          <li class="intention apparait" style={`--i:${index}`}>
+            <span class="trait-croissant intention__trait" style={`--i:${index}`}></span>
+            <h3 class="t-carte intention__mot">{intention.titre}</h3>
+            <p>{intention.texte}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 
@@ -332,7 +331,16 @@ const titreProchaine = prochaine
   .heros__actions { gap: var(--e-3); }
 
   /* Trois données réelles sous les boutons : une raison de descendre. */
+  /* Quatre données sur une rangée. Les points médians d'avant ne
+     survivaient pas au retour à la ligne : le séparateur restait
+     orphelin en fin ou en début de ligne, à trois largeurs sur quatre.
+     L'écart les sépare aussi bien, et il se replie proprement. Le filet
+     du dessus tient déjà le bloc ensemble. */
   .heros__reperes {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--e-5);
+    row-gap: var(--e-2);
     margin-top: var(--e-5);
     padding-top: var(--e-4);
     border-top: 1px solid var(--trait);
@@ -341,9 +349,8 @@ const titreProchaine = prochaine
     font-variant-numeric: tabular-nums;
     color: var(--encre-douce);
   }
-  /* Chaque donnée reste d'un seul tenant : la ligne casse entre elles,
-     jamais au milieu de « Entrada libre y gratuita ». Le séparateur, lui,
-     garde ses espaces sécables — sinon la ligne n'aurait plus où casser. */
+  /* Chaque donnée reste d'un seul tenant : la rangée casse entre elles,
+     jamais au milieu de « Entrada libre y gratuita ». */
   .heros__repere { white-space: nowrap; }
 
   .heros__visuel {
@@ -351,14 +358,18 @@ const titreProchaine = prochaine
     overflow: hidden;
     border-radius: var(--r-visuel);
     background: var(--surface);
-    aspect-ratio: 3 / 2;
+    /* Portrait 4/5, comme les fiches d'intervenants : le site a déjà
+       ce format dans son vocabulaire, l'image n'arrive pas en corps
+       étranger. Le 3/2 d'avant rognait plus de la moitié de la hauteur
+       d'une photo verticale. */
+    aspect-ratio: 4 / 5;
   }
   .heros__visuel :global(img) { width: 100%; height: 100%; object-fit: cover; }
 
   @media (min-width: 62rem) {
     /* La seconde colonne n'existe que s'il y a un visuel. */
     .heros__interieur:has(.heros__visuel) {
-      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.85fr);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
       gap: var(--e-9);
     }
     /* Le visuel descend sur la section suivante. */
@@ -393,76 +404,40 @@ const titreProchaine = prochaine
   }
 
   /* ---------------- Intentions ---------------- */
-  /* Mosaïque : 7/5 puis 5/7. La rupture de rythme suffit — quatre blocs
-     de largeur égale se lisent comme un tableau, pas comme un propos. */
-  .intentions { display: grid; gap: var(--e-7) var(--e-8); }
+  /* Mosaïque : 5/4 puis 4/5, sur les neuf colonnes qui restent à droite
+     de l'image. La rupture de rythme suffit — quatre blocs de largeur
+     égale se lisent comme un tableau, pas comme un propos. */
+  .intentions { display: grid; gap: var(--e-7); }
+  .intentions__liste { display: grid; gap: var(--e-7) var(--e-8); list-style: none; margin: 0; padding: 0; }
+  .intentions__visuel {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--r-visuel);
+    background: var(--surface-2);
+    /* Ratio de la source : elle n'est jamais recadrée. */
+    aspect-ratio: 2 / 3;
+    max-width: 19rem;
+  }
+  .intentions__visuel :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+
   @media (min-width: 52rem) {
-    .intentions { grid-template-columns: repeat(12, minmax(0, 1fr)); }
-    .intention:nth-child(1) { grid-column: 1 / 8; }
-    .intention:nth-child(2) { grid-column: 8 / -1; }
-    .intention:nth-child(3) { grid-column: 1 / 6; }
-    .intention:nth-child(4) { grid-column: 6 / -1; }
+    .intentions { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: var(--e-8); align-items: start; }
+    /* L'image accompagne les deux rangées de blocs sans les suivre. */
+    .intentions__visuel { position: sticky; top: 7rem; }
+    .intentions__liste { grid-template-columns: repeat(9, minmax(0, 1fr)); }
+    .intention:nth-child(1) { grid-column: 1 / 6; }
+    .intention:nth-child(2) { grid-column: 6 / -1; }
+    .intention:nth-child(3) { grid-column: 1 / 5; }
+    .intention:nth-child(4) { grid-column: 5 / -1; }
+  }
+  @media (max-width: 51.99rem) {
+    /* Le propos d'abord, l'image ensuite. */
+    .intentions__visuel { order: 1; max-width: 14rem; }
   }
   .intention { display: flex; flex-direction: column; gap: var(--e-3); }
   .intention__trait { max-width: 6rem; }
   .intention__mot { font-weight: 700; }
   .intention p { font-size: var(--t-300); line-height: 1.65; color: var(--encre-douce); text-wrap: pretty; }
-
-  /* ---------------- Triptyque ----------------
-     Trois images qui se chevauchent, chacune à sa profondeur. Ce qui
-     donne le vivant, ce n'est pas le mouvement de chaque image mais
-     l'écart entre elles : trois vitesses de dérive, trois amplitudes
-     de parallaxe. Une vidéo de fond ferait le même effet pour plusieurs
-     mégaoctets et une batterie vidée. */
-  /* Moins d'air en haut : le triptyque prolonge les quatre blocs,
-     il n'ouvre pas une nouvelle section. */
-  .triptyque { padding-block: var(--e-7) var(--e-section); overflow: clip; }
-  .triptyque__grille { display: grid; gap: var(--e-5); }
-
-  .tri { margin: 0; overflow: hidden; border-radius: var(--r-visuel); background: var(--surface-2); }
-  .tri :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .tri--metier { aspect-ratio: 4 / 3; }
-  .tri--salle { aspect-ratio: 16 / 9; }
-  .tri--trace { aspect-ratio: 3 / 2; }
-
-  @media (min-width: 62rem) {
-    .triptyque__grille {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      column-gap: var(--e-6);
-      row-gap: 0;
-      align-items: start;
-    }
-    .tri--metier { grid-column: 1 / 7;  grid-row: 1; margin-top: 3.5rem; }
-    .tri--salle  { grid-column: 8 / 13; grid-row: 1; }
-    .tri--trace  { grid-column: 5 / 11; grid-row: 2; margin-top: -5rem; z-index: 1; }
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    /* La dérive : lente, sans fin, jamais la même vitesse d'une image
-       à l'autre — sinon les trois respirent ensemble et ça se voit. */
-    .tri :global(img) {
-      animation: derive 28s ease-in-out infinite alternate;
-      will-change: transform;
-    }
-    .tri--salle :global(img) { animation-duration: 34s; animation-delay: -6s; }
-    .tri--trace :global(img) { animation-duration: 24s; animation-delay: -12s; }
-    @keyframes derive {
-      from { transform: scale(1.04) translate(-0.6%, 0.4%); }
-      to   { transform: scale(1.1) translate(0.8%, -0.7%); }
-    }
-
-    @supports (animation-timeline: view()) {
-      /* La profondeur : la grande bouge le moins. */
-      .tri { animation: flotte linear both; animation-timeline: view(); }
-      .tri--metier { --amplitude: 14px; }
-      .tri--salle { --amplitude: 34px; }
-      .tri--trace { --amplitude: 22px; }
-      @keyframes flotte {
-        from { translate: 0 calc(var(--amplitude) * 1); }
-        to   { translate: 0 calc(var(--amplitude) * -1); }
-      }
-    }
-  }
 
   /* ---------------- Rencontres suivantes ---------------- */
   .suite { display: flex; flex-direction: column; }

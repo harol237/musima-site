@@ -4,6 +4,8 @@ titre: "Why MUSIMA"
 date: 2026-09-02
 categorie: "Idées & analyses"
 resume: "For years I watched people around me build solid things that never travelled beyond their own circle. MUSIMA came out of that gap — and out of the moment I stopped waiting for someone else to deal with it."
+image: ../../../assets/uploads/pages/porquemusima.jpg
+image_alt: "A young girl in profile, her hand against a venetian blind, looking through the slats at the golden late-afternoon light."
 mots_cles: ["Origins", "Diaspora", "Barcelona"]
 temps_lecture: "4 min read"
 en_avant: true

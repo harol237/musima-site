@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '~/layouts/Base.astro';
 import EntetePage from '~/components/EntetePage.astro';
 import CarteRecit from '~/components/CarteRecit.astro';
@@ -8,6 +9,7 @@ import { chargerRecits } from '~/lib/contenu';
 import { categoriesRecit, traduireValeur } from '~/i18n/utils';
 import type { Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
+import relatos from '~/assets/uploads/pages/relatos.jpg';
 
 interface Props { langue: Langue; alternatives: Record<Langue, string> }
 const { langue, alternatives } = Astro.props;
@@ -32,7 +34,18 @@ const categories = [
   ><div class="prose entete-page__corps">
     <p>{t('recitsCorpsA')}</p>
     <p>{t('recitsCorpsB')}</p>
-  </div></EntetePage>
+  </div>
+  {/* Format d'origine, aucun recadrage : la source fait 853 px de large,
+      la colonne 24rem — 768 px sur un écran à 2×. On est juste dedans. */}
+  <Image
+    slot="visuel"
+    src={relatos}
+    alt={t('relatosAlt')}
+    widths={[420, 640, 853]}
+    sizes="(min-width: 62rem) 24rem, 92vw"
+    loading="eager"
+  />
+  </EntetePage>
   <section class="section conteneur">
     {recits.length > 0 ? (
       <>

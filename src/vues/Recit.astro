@@ -72,7 +72,12 @@ const donnees = {
       <figure class="visuel-principal">
         <div class="ratio-16-9 visuel-principal__cadre tirage" style={nomTransition('rc', slugDe(recit.id), !!data.image)}>
           {data.image ? (
-            <Image src={data.image} alt={pret(data.image_alt) ?? ''} widths={[640, 1000, 1400]} sizes="(min-width: 56rem) 52rem, 100vw" />
+            <Image
+              src={data.image}
+              alt={pret(data.image_alt) ?? ''}
+              widths={[640, 1000, 1400].filter((l) => l <= data.image.width)}
+              sizes="(min-width: 56rem) 52rem, 100vw"
+            />
           ) : (
             <>
               <VisuelDeSecours variante="titre" texte={data.titre} graine={recit.id} />

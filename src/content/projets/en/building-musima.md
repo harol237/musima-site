@@ -5,6 +5,8 @@ statut: En cours
 annee: "2026"
 territoire: "Barcelona, Catalonia"
 resume: "The association's first project is the association itself. Setting it up, finding it a room, getting the first people around a table. And doing it in the open rather than behind the scenes."
+image: ../../../assets/uploads/pages/montarmusima.jpg
+image_alt: "Two women sitting facing each other at a trade fair, deep in conversation; one holds out a phone to record, the other sits in an armchair built from reclaimed tyres."
 partenaires: []
 en_avant: true
 meta_description: "Where the creation of MUSIMA stands: what is done, what is stuck, and how to help."
