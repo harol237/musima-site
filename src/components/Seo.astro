@@ -70,14 +70,13 @@ const organisation = {
   description: champ(site.description_courte, langue),
   url: Astro.site?.href,
   areaServed: [champ(site.contact.pays, langue), 'Europe', 'Africa'],
+  /* Ni rue ni code postal : l'adresse précise du siège ne figure pas sur
+     le site public. Reste la localité, qui suffit à situer l'association
+     et que `PostalAddress` accepte seule. */
   address: {
     '@type': 'PostalAddress',
-    streetAddress: site.contact.rue,
-    postalCode: site.contact.code_postal,
-    /* La commune du siège, et non « Barcelone » : les moteurs consomment
-       cette adresse comme une donnée administrative. */
-    addressLocality: site.contact.ville_siege,
-    addressRegion: champ(site.contact.province, langue),
+    addressLocality: champ(site.contact.ville, langue),
+    addressRegion: champ(site.contact.region, langue),
     addressCountry: 'ES',
   },
 };

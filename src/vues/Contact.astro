@@ -34,7 +34,6 @@ const textes = {
     coordonnees: 'Datos de contacto',
     labelEmail: 'Correo',
     labelOu: 'Dónde',
-    labelAdresse: 'Dirección',
     reseaux: 'Redes',
     presse: 'Prensa',
     pressseTexte: 'Periodistas y medios: aquí se pondrá a disposición un dossier de prensa y material gráfico en alta resolución.',
@@ -66,7 +65,6 @@ const textes = {
     coordonnees: 'Coordonnées',
     labelEmail: 'E-mail',
     labelOu: 'Où',
-    labelAdresse: 'Adresse',
     reseaux: 'Réseaux',
     presse: 'Presse',
     pressseTexte: 'Journalistes et médias : un dossier de presse et des visuels en haute définition seront mis à disposition ici.',
@@ -98,7 +96,6 @@ const textes = {
     coordonnees: 'Details',
     labelEmail: 'Email',
     labelOu: 'Where',
-    labelAdresse: 'Address',
     reseaux: 'Social',
     presse: 'Press',
     pressseTexte: 'Journalists and media: a press kit and high-resolution images will be made available here.',
@@ -130,7 +127,6 @@ const textes = {
     coordonnees: 'Dades de contacte',
     labelEmail: 'Correu',
     labelOu: 'On',
-    labelAdresse: 'Adreça',
     reseaux: 'Xarxes',
     presse: 'Premsa',
     pressseTexte: 'Periodistes i mitjans: aquí es posarà a disposició un dossier de premsa i material gràfic en alta resolució.',
@@ -208,13 +204,12 @@ const x = textes[langue];
             <dt>{x.labelEmail}</dt>
             <dd><a href={`mailto:${site.contact.email}`} class="lien">{site.contact.email}</a></dd>
           </div>
+          {/* Une seule ligne de lieu, en forme courte. L'ancienne ligne
+              « Adresse », qui donnait rue et code postal, est retirée :
+              on écrit à l'association, on ne s'y présente pas. */}
           <div>
             <dt>{x.labelOu}</dt>
-            <dd>{site.contact.ville_siege}, {champ(site.contact.region, langue)}, {champ(site.contact.pays, langue)}</dd>
-          </div>
-          <div>
-            <dt>{x.labelAdresse}</dt>
-            <dd>{site.contact.adresse}</dd>
+            <dd>{champ(site.contact.siege, langue)}</dd>
           </div>
         </dl>
       </div>

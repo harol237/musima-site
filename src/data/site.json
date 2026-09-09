@@ -27,14 +27,11 @@
   "contact": {
     "email": "Musima.org@mail.com",
     "telephone": "[TÉLÉPHONE À AJOUTER]",
-    "rue": "Carretera Reial 131",
-    "code_postal": "08960",
-    "ville_siege": "Sant Just Desvern",
-    "province": {
-      "es": "Barcelona",
-      "fr": "Barcelone",
-      "en": "Barcelona",
-      "ca": "Barcelona"
+    "siege": {
+      "es": "Barcelona, Catalunya — España",
+      "fr": "Barcelone, Catalogne — Espagne",
+      "en": "Barcelona, Catalonia — Spain",
+      "ca": "Barcelona, Catalunya — Espanya"
     },
     "ville": {
       "es": "Barcelona",
@@ -53,8 +50,7 @@
       "fr": "Espagne",
       "en": "Spain",
       "ca": "Espanya"
-    },
-    "adresse": "Carretera Reial 131, 08960 Sant Just Desvern (Barcelona)"
+    }
   },
   "reseaux": [
     {
