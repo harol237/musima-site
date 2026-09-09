@@ -12,14 +12,26 @@ interface Props {
   sansFilet?: boolean;
 }
 const { surtitre, titre, chapo, ariane, registre = 'scene', sansFilet = false } = Astro.props;
+
+/* Une page peut poser une image à côté de son titre. Sans elle, l'en-tête
+   garde exactement la mise en page d'avant : une colonne, plafonnée à
+   52rem pour que le chapô reste lisible. */
+const aVisuel = Astro.slots.has('visuel');
 ---
 <section class:list={['entete-page', registre === 'scene' && 'scene', sansFilet && 'entete-page--sans-filet']}>
-  <div class="conteneur entete-page__interieur">
-    {ariane && <FilDAriane elements={ariane} />}
-    {surtitre && <p class="surtitre">{surtitre}</p>}
-    <h1 class="t-page">{titre}</h1>
-    {chapo && <p class="chapo">{chapo}</p>}
-    <slot />
+  <div class:list={['conteneur', 'entete-page__interieur', aVisuel && 'entete-page__interieur--visuel']}>
+    <div class="entete-page__texte">
+      {ariane && <FilDAriane elements={ariane} />}
+      {surtitre && <p class="surtitre">{surtitre}</p>}
+      <h1 class="t-page">{titre}</h1>
+      {chapo && <p class="chapo">{chapo}</p>}
+      <slot />
+    </div>
+    {aVisuel && (
+      <div class="entete-page__visuel tirage">
+        <slot name="visuel" />
+      </div>
+    )}
   </div>
 </section>
 <style>
@@ -31,12 +43,36 @@ const { surtitre, titre, chapo, ariane, registre = 'scene', sansFilet = false } 
   }
   .entete-page__interieur :global(.entete-page__corps p + p) { margin-top: var(--e-4); }
 
-  .entete-page__interieur {
+  .entete-page__texte {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: var(--e-4);
-    padding-block: clamp(2.5rem, 6vw, 5rem) clamp(2.5rem, 5vw, 4rem);
     max-width: 52rem;
+  }
+  .entete-page__interieur {
+    padding-block: clamp(2.5rem, 6vw, 5rem) clamp(2.5rem, 5vw, 4rem);
+  }
+
+  /* Avec un visuel, l'en-tête passe en deux colonnes — même partition
+     que le héros de l'accueil, pour que ce soit lu comme le même
+     système et non comme une page à part. En dessous, l'image passe
+     sous le texte : la lecture prime. */
+  .entete-page__visuel {
+    overflow: hidden;
+    border-radius: var(--r-visuel);
+    background: var(--surface);
+    margin-top: var(--e-6);
+  }
+  .entete-page__visuel :global(img) { width: 100%; height: auto; display: block; }
+
+  @media (min-width: 62rem) {
+    .entete-page__interieur--visuel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
+      gap: var(--e-9);
+      align-items: center;
+    }
+    .entete-page__interieur--visuel .entete-page__visuel { margin-top: 0; }
   }
 </style>

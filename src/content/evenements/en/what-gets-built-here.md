@@ -3,24 +3,30 @@ cle: rencontre-inaugurale
 titre: "What Gets Built Here"
 format: Rencontre
 date_debut: 2026-09-26
-heure: "From 5pm"
+heure: "4.30pm – 8pm"
+heure_debut: "16:30"
+heure_fin: "20:00"
 lieu:
-  nom: "Casal de Barri Besòs"
-  adresse: "Rambla Prim 87-89"
+  nom: "Centre Cívic Casa Orlandai"
+  adresse: "Carrer de Jaume Piquet 23"
+  quartier: "Sarrià-Sant Gervasi"
+  code_postal: "08017"
   ville: Barcelona
   pays: Spain
+  latitude: 41.3983
+  longitude: 2.1247
+  acces_pmr: true
+  transport: "Sarrià (FGC)"
   en_ligne: false
 resume: "MUSIMA's first gathering. We invited people who have built something in Barcelona — a business, a project, a craft — and asked them to tell us how it actually went. Not the polished version: what worked, what stalled, what they would do differently."
-image: ../../../assets/uploads/galerie-2025/inspire-bcn-4.jpg
-image_alt: "In a seated audience, a man in a suit and a printed headwrap raises a finger as he speaks into a microphone; around him, a dozen people listen."
-credit_photo: "Barcelona, 2025"
 intervenants:
-  - en/sebastien-richnel
-tarif: "Free entry"
+  - en/jeffrey-nomba
+tarif: "Free — limited places"
 gratuit: true
+places_limitees: true
 lien_inscription: ""
 en_avant: true
-meta_description: "MUSIMA's first gathering in Barcelona, Saturday 26 September 2026 from 5pm. People who have built something here talk about how."
+meta_description: "MUSIMA's first gathering in Barcelona, Saturday 26 September 2026, 4.30pm to 8pm, at the Centre Cívic Casa Orlandai. People who have built something here talk about how."
 ---
 
 For the first gathering we did not want a panel discussion about "African entrepreneurship". We wanted specific people, who have done specific things, and who are willing to talk about the detail.
@@ -29,13 +35,13 @@ So that is what we did. We invited people based here, in Barcelona, who have bui
 
 ## The evening
 
-**5:00pm — People arrive.** Coffee, tea, hellos. Nothing formal — nobody pins a badge on your chest.
+**4.30pm — People arrive.** Coffee, tea, hellos. Nothing formal — nobody pins a badge on your chest.
 
-**5:30pm — The talks.** Each speaker takes about twenty minutes to tell their story. Not a pitch: an account, with the hesitations left in.
+**5pm — The talks.** Each speaker takes about twenty minutes to tell their story. Not a pitch: an account, with the hesitations left in.
 
-**6:45pm — Questions from the room.** This is the part we care about most. Ask whatever you like, including the daft questions. Especially those, in fact.
+**6.15pm — Questions from the room.** This is the part we care about most. Ask whatever you like, including the daft questions. Especially those, in fact.
 
-**7:30pm — We stay.** Nobody gets shown the door. This is usually where the real conversations start.
+**7pm — We stay.** Nobody gets shown the door. This is usually where the real conversations start. The room closes at 8pm.
 
 > The exact running order may shift by a few minutes depending on the speakers. The date and the opening time are fixed.
 
@@ -47,12 +53,14 @@ Also for you, if you have built nothing at all but the idea keeps nagging, and y
 
 And for you too, if you are not African and simply want to listen. The gathering runs in French, with stretches in Spanish where speakers are more comfortable that way.
 
-It is free. You do not need to be a member. You do not need to know anyone. You just come.
+It is free, but the room has a capacity: places are limited. You do not need to be a member, you do not need to know anyone — just don't leave it to the last day.
 
 ## Getting there
 
-The gathering is at the **Casal de Barri Besòs**, Rambla Prim 87-89. It is a municipal neighbourhood centre: you walk in, that's it — there is no reception desk to get past.
+The gathering is at the **Centre Cívic Casa Orlandai**, Carrer de Jaume Piquet 23, in the Sarrià-Sant Gervasi district. It is a municipal centre: you walk in, that's it — there is no reception desk to get past.
 
-<!-- TO COMPLETE — check with the casal and add here: the nearest metro or bus
-     stop, and whether access is step-free or by lift. Those are the two things
-     people look for before coming. -->
+The nearest stop is **Sarrià**, on the FGC lines.
+
+The venue is **accessible to people with reduced mobility**: that is what its official listing on the Ajuntament de Barcelona site says.
+
+The map is in the practical details, at the top of this page.

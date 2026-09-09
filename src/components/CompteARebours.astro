@@ -1,0 +1,239 @@
+---
+import { traducteur } from '~/i18n/ui';
+import type { Langue } from '~/i18n/config';
+import { horodatageISO } from '~/lib/contenu';
+
+/* ==================================================================
+   COMPTE À REBOURS
+   ------------------------------------------------------------------
+   Il sert à savoir dans combien de temps ça commence. Ce n'est pas un
+   outil de pression : pas de « plus que », pas de rouge, pas de
+   clignotement, et la formulation reste « Dans 16 jours » et non
+   « Il ne reste que 16 jours ».
+
+   Trois états :
+     avant   → le décompte
+     pendant → « C'est maintenant »
+     après   → rien du tout. Un compte à rebours figé à zéro est le pire
+               résultat possible ; la fiche porte déjà sa pastille
+               « Rencontre passée ».
+
+   Le premier état est calculé à la construction, le script prend la
+   suite. Il ne réécrit jamais de HTML : il ne change que le texte des
+   nœuds déjà en place. Réécrire en innerHTML perdrait l'attribut de
+   portée des styles Astro, et le bloc s'afficherait sans aucun style.
+
+   Aucune dépendance : rien n'est chargé depuis l'extérieur, la
+   politique « aucun script externe » de /cookies reste vraie.
+   ================================================================== */
+
+interface Props {
+  langue: Langue;
+  /** Début, en ISO complet avec décalage : « 2026-09-26T16:30:00+02:00 ». */
+  debut: string;
+  /** Fin, en ISO complet. Sans elle, l'état « pendant » n'existe pas. */
+  fin?: string;
+  /** `encart` sur la fiche de rencontre, `ligne` dans un rang de repères. */
+  variante?: 'encart' | 'ligne';
+}
+const { langue, debut, fin, variante = 'encart' } = Astro.props;
+const t = traducteur(langue);
+
+const depart = new Date(debut).getTime();
+const arrivee = fin ? new Date(fin).getTime() : depart;
+const maintenant = Date.now();
+
+/* Déjà passé au moment de la construction : rien n'est rendu, et le
+   script n'a même pas à s'en occuper. */
+const termine = maintenant > arrivee;
+const enCours = maintenant >= depart && maintenant <= arrivee;
+
+const reste = Math.max(0, depart - maintenant);
+const parts = [
+  { cle: 'jour', valeur: Math.floor(reste / 86400000) },
+  { cle: 'heure', valeur: Math.floor(reste / 3600000) % 24 },
+  { cle: 'minute', valeur: Math.floor(reste / 60000) % 60 },
+] as const;
+
+/** « 16 jours », « 1 heure » — le pluriel suit la langue. */
+const libelle = (valeur: number, cle: 'jour' | 'heure' | 'minute') =>
+  `${valeur} ${t(valeur === 1 ? `unite_${cle}` : `unite_${cle}_p`)}`;
+
+/* Un rang de repères n'a de place que pour une donnée : on garde la plus
+   grosse unité non nulle, et les minutes en tout dernier recours. */
+const grosse = parts.find((p) => p.valeur > 0) ?? parts[2];
+const resume = libelle(grosse.valeur, grosse.cle);
+
+const phrase = enCours ? t('rebourMaintenant') : t('rebourPhrase').replace('{reste}', resume);
+
+const libelles = JSON.stringify({
+  prefixe: t('rebourPrefixe'),
+  maintenant: t('rebourMaintenant'),
+  phrase: t('rebourPhrase'),
+  jour: t('unite_jour'), jour_p: t('unite_jour_p'),
+  heure: t('unite_heure'), heure_p: t('unite_heure_p'),
+  minute: t('unite_minute'), minute_p: t('unite_minute_p'),
+});
+
+/* La variante `ligne` vit dans un <p>. Un <div> y serait invalide : le
+   navigateur fermerait le paragraphe avant lui, le bloc sortirait de la
+   ligne et perdrait la taille et la couleur héritées. */
+const Balise = variante === 'ligne' ? 'span' : 'div';
+---
+
+{!termine && (
+  <Balise
+    class:list={['rebours', `rebours--${variante}`]}
+    data-compte-a-rebours
+    data-debut={debut}
+    data-fin={fin ?? debut}
+    data-libelles={libelles}
+  >
+    {/* La phrase complète et statique : c'est elle que lit un lecteur
+        d'écran. Aucun aria-live nulle part, donc aucune annonce en
+        boucle pendant que les chiffres tournent. */}
+    <span class="visuellement-cache" data-rebours-phrase>{phrase}</span>
+
+    {/* Les chiffres qui bougent sont masqués aux lecteurs d'écran : ils
+        répètent la phrase ci-dessus, en moins lisible. */}
+    <span class="rebours__vue" aria-hidden="true">
+      <span class="rebours__maintenant" data-rebours-maintenant hidden={!enCours}>
+        {t('rebourMaintenant')}
+      </span>
+
+      {variante === 'ligne' ? (
+        <span class="rebours__resume" data-rebours-resume hidden={enCours}>
+          {t('rebourPrefixe')} {resume}
+        </span>
+      ) : (
+        <span class="rebours__detail" data-rebours-detail hidden={enCours}>
+          <span class="rebours__prefixe">{t('rebourPrefixe')}</span>
+          <span class="rebours__unites">
+            {parts.map(({ cle, valeur }) => (
+              <span class="rebours__unite">
+                <span class="rebours__nombre" data-unite={cle}>{valeur}</span>
+                <span class="rebours__mot" data-mot={cle}>
+                  {t(valeur === 1 ? `unite_${cle}` : `unite_${cle}_p`)}
+                </span>
+              </span>
+            ))}
+          </span>
+        </span>
+      )}
+    </span>
+  </Balise>
+)}
+
+<script>
+  /* Une seule mise à jour par minute, calée sur la minute : l'affichage
+     n'a pas de secondes, en compter serait de la batterie dépensée pour
+     rien. Seuls des textContent changent — jamais de HTML réécrit. */
+  type Libelles = Record<string, string>;
+
+  const pluriel = (n: number, cle: string, l: Libelles) =>
+    `${n} ${n === 1 ? l[cle] : l[`${cle}_p`]}`;
+
+  function rendre(bloc: HTMLElement) {
+    const l: Libelles = JSON.parse(bloc.dataset.libelles || '{}');
+    const debut = new Date(bloc.dataset.debut!).getTime();
+    const fin = new Date(bloc.dataset.fin!).getTime();
+    const ecart = debut - Date.now();
+
+    /* Après : le bloc disparaît. Pas de zéros figés. */
+    if (Date.now() > fin) {
+      bloc.remove();
+      return;
+    }
+
+    const phrase = bloc.querySelector('[data-rebours-phrase]');
+    const maintenant = bloc.querySelector<HTMLElement>('[data-rebours-maintenant]');
+    const resume = bloc.querySelector<HTMLElement>('[data-rebours-resume]');
+    const detail = bloc.querySelector<HTMLElement>('[data-rebours-detail]');
+
+    /* Pendant : le décompte cède la place, sans rien réécrire. */
+    if (ecart <= 0) {
+      if (maintenant) maintenant.hidden = false;
+      if (resume) resume.hidden = true;
+      if (detail) detail.hidden = true;
+      if (phrase) phrase.textContent = l.maintenant;
+      return;
+    }
+
+    if (maintenant) maintenant.hidden = true;
+
+    const valeurs = {
+      jour: Math.floor(ecart / 86400000),
+      heure: Math.floor(ecart / 3600000) % 24,
+      minute: Math.floor(ecart / 60000) % 60,
+    };
+
+    const grosse =
+      valeurs.jour > 0
+        ? pluriel(valeurs.jour, 'jour', l)
+        : valeurs.heure > 0
+          ? pluriel(valeurs.heure, 'heure', l)
+          : pluriel(valeurs.minute, 'minute', l);
+
+    if (phrase) phrase.textContent = l.phrase.replace('{reste}', grosse);
+
+    if (resume) {
+      resume.hidden = false;
+      resume.textContent = `${l.prefixe} ${grosse}`;
+    }
+
+    if (detail) {
+      detail.hidden = false;
+      for (const [cle, n] of Object.entries(valeurs)) {
+        const nombre = bloc.querySelector(`[data-unite="${cle}"]`);
+        const mot = bloc.querySelector(`[data-mot="${cle}"]`);
+        if (nombre) nombre.textContent = String(n);
+        if (mot) mot.textContent = n === 1 ? l[cle] : l[`${cle}_p`];
+      }
+    }
+  }
+
+  const blocs = [...document.querySelectorAll<HTMLElement>('[data-compte-a-rebours]')];
+  if (blocs.length) {
+    blocs.forEach(rendre);
+    /* Calé sur la prochaine minute pleine, puis toutes les minutes. */
+    setTimeout(() => {
+      blocs.forEach(rendre);
+      setInterval(() => blocs.forEach(rendre), 60000);
+    }, 60000 - (Date.now() % 60000));
+  }
+</script>
+
+<style>
+  /* Aucun rouge, aucun clignotement : c'est une information, pas une
+     alerte. L'or de la marque porte les chiffres, l'encre douce le reste. */
+  .rebours { font-family: var(--f-titre); font-variant-numeric: tabular-nums; }
+
+  /* ---- Variante encart : trois unités, sur la fiche de rencontre ---- */
+  .rebours--encart {
+    display: block;
+    padding-bottom: var(--e-5);
+    margin-bottom: var(--e-5);
+    border-bottom: 1px solid var(--trait);
+  }
+  .rebours__prefixe {
+    display: block;
+    font-size: var(--t-100);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--encre-faible);
+    margin-bottom: var(--e-3);
+  }
+  .rebours__unites { display: flex; gap: var(--e-5); }
+  .rebours__unite { display: flex; flex-direction: column; line-height: 1.15; }
+  .rebours__nombre { font-size: var(--t-700); font-weight: 700; color: var(--or-encre); }
+  .rebours__mot { font-size: var(--t-100); color: var(--encre-faible); }
+  .rebours--encart .rebours__maintenant {
+    font-size: var(--t-500);
+    font-weight: 700;
+    color: var(--or-encre);
+  }
+
+  /* ---- Variante ligne : une donnée parmi d'autres ---- */
+  .rebours--ligne { white-space: nowrap; }
+</style>

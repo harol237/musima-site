@@ -3,24 +3,30 @@ cle: rencontre-inaugurale
 titre: "Lo que se construye aquí"
 format: Rencontre
 date_debut: 2026-09-26
-heure: "A partir de las 17:00"
+heure: "16:30 – 20:00"
+heure_debut: "16:30"
+heure_fin: "20:00"
 lieu:
-  nom: "Casal de Barri Besòs"
-  adresse: "Rambla Prim 87-89"
+  nom: "Centre Cívic Casa Orlandai"
+  adresse: "Carrer de Jaume Piquet 23"
+  quartier: "Sarrià-Sant Gervasi"
+  code_postal: "08017"
   ville: Barcelona
   pays: España
+  latitude: 41.3983
+  longitude: 2.1247
+  acces_pmr: true
+  transport: "Sarrià (FGC)"
   en_ligne: false
 resume: "El primer encuentro de MUSIMA. Invitamos a personas que han montado algo en Barcelona —una actividad, un proyecto, un oficio— y les pedimos que contaran cómo fue de verdad. Nada de versiones retocadas: lo que funcionó, lo que se atascó, lo que harían distinto."
-image: ../../../assets/uploads/galerie-2025/inspire-bcn-4.jpg
-image_alt: "Entre el público sentado, un hombre con traje y pañuelo estampado en la cabeza levanta el índice mientras habla por el micrófono; a su alrededor, una decena de personas escuchan."
-credit_photo: "Barcelona, 2025"
 intervenants:
-  - es/sebastien-richnel
-tarif: "Entrada libre y gratuita"
+  - es/jeffrey-nomba
+tarif: "Gratuito — plazas limitadas"
 gratuit: true
+places_limitees: true
 lien_inscription: ""
 en_avant: true
-meta_description: "Primer encuentro de MUSIMA en Barcelona, el sábado 26 de septiembre de 2026 a partir de las 17:00. Personas que han construido algo aquí cuentan cómo."
+meta_description: "Primer encuentro de MUSIMA en Barcelona, el sábado 26 de septiembre de 2026 de 16:30 a 20:00, en el Centre Cívic Casa Orlandai. Personas que han construido algo aquí cuentan cómo."
 ---
 
 Para el primer encuentro no queríamos una mesa redonda sobre «el emprendimiento africano». Queríamos gente concreta, que ha hecho cosas concretas, y que acepta contar el detalle.
@@ -29,13 +35,13 @@ Así que eso hicimos. Invitamos a personas instaladas aquí, en Barcelona, que h
 
 ## El programa
 
-**17:00 — Llegamos.** Café, té, nos saludamos. Nada protocolario: aquí nadie te cuelga una etiqueta en el pecho.
+**16:30 — Llegamos.** Café, té, nos saludamos. Nada protocolario: aquí nadie te cuelga una etiqueta en el pecho.
 
-**17:30 — Las intervenciones.** Cada ponente cuenta su trayectoria durante unos veinte minutos. No es un pitch: es una historia, con las dudas dentro.
+**17:00 — Las intervenciones.** Cada ponente cuenta su trayectoria durante unos veinte minutos. No es un pitch: es una historia, con las dudas dentro.
 
-**18:45 — El turno de la sala.** Es el momento que más nos interesa. Preguntas lo que quieras, incluidas las preguntas tontas. Sobre todo esas, en realidad.
+**18:15 — El turno de la sala.** Es el momento que más nos interesa. Preguntas lo que quieras, incluidas las preguntas tontas. Sobre todo esas, en realidad.
 
-**19:30 — Nos quedamos.** No echamos a nadie. Suele ser ahí donde empiezan las conversaciones de verdad.
+**19:00 — Nos quedamos.** No echamos a nadie. Suele ser ahí donde empiezan las conversaciones de verdad. La sala cierra a las 20:00.
 
 > El horario exacto puede moverse unos minutos según los ponentes. La fecha y la hora de apertura, esas están fijadas.
 
@@ -47,12 +53,14 @@ También para ti, si no has montado nada pero la idea te ronda, y te apetece ver
 
 Y para ti igualmente, si no eres africano y simplemente quieres escuchar. El encuentro es en francés, con partes en español cuando los ponentes se sienten más cómodos así.
 
-Es gratuito. No hace falta ser socio. No hace falta conocer a nadie. Vienes y ya.
+Es gratuito, pero la sala tiene aforo: las plazas son limitadas. No hace falta ser socio ni conocer a nadie — solo conviene no dejarlo para el último día.
 
 ## Cómo llegar
 
-El encuentro es en el **Casal de Barri Besòs**, en la Rambla Prim 87-89. Es un equipamiento municipal de barrio: entras y ya está, no hay recepción que pasar.
+El encuentro es en el **Centre Cívic Casa Orlandai**, en el Carrer de Jaume Piquet 23, en el barrio de Sarrià-Sant Gervasi. Es un equipamiento municipal: entras y ya está, no hay recepción que pasar.
 
-<!-- A COMPLETAR — confirmar con el casal y añadir aquí: la parada de metro o
-     bus más cercana, y si el acceso es a nivel de calle o hay ascensor. Son
-     los dos datos que la gente busca antes de venir. -->
+La parada más cercana es **Sarrià**, en las líneas de FGC.
+
+El local es **accesible para personas con movilidad reducida**: así consta en su ficha oficial en la web del Ajuntament de Barcelona.
+
+El mapa está en la información práctica, arriba en esta página.

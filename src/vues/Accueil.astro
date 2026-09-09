@@ -7,6 +7,7 @@ import CarteIntervenant from '~/components/CarteIntervenant.astro';
 import CarteProjet from '~/components/CarteProjet.astro';
 import CarteRecit from '~/components/CarteRecit.astro';
 import BandeauCta from '~/components/BandeauCta.astro';
+import CompteARebours from '~/components/CompteARebours.astro';
 import EtatVide from '~/components/EtatVide.astro';
 import site from '~/data/site.json';
 import { champ } from '~/i18n/site';
@@ -18,16 +19,20 @@ import {
   enChantier,
 } from '~/lib/contenu';
 import { formaterDate } from '~/i18n/utils';
+import { horodatageISO } from '~/lib/contenu';
 import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
 import { intentionsPar } from '~/i18n/intentions';
 
-/* Photo d'ouverture : une vraie image d'une rencontre MUSIMA, prise dans
-   l'archive 2025. Les six photos de l'album sont en 16/9 — d'où un cadre
-   3/2 ici plutôt que le portrait 4/5 prévu : mieux vaut un cadrage que
-   le matériau supporte qu'un recadrage qui l'abîme. À remplacer le jour
-   où un portrait d'ouverture sera photographié pour cette place. */
-import ouverture from '~/assets/uploads/galerie-2025/inspire-bcn-6.jpg';
+/* Photo d'ouverture. Le héros retrouve sa seconde colonne dès qu'elle
+   existe ; à `null`, il se replie sur une seule colonne plutôt que
+   d'afficher un cadre vide. */
+import ouverture from '~/assets/uploads/pages/accueil.jpg';
+
+/* La colonne d'image des quatre intentions : une main qui écrit dans un
+   carnet. Elle répond à la quatrième — « Laisser une trace » — et c'est
+   pour ça qu'elle est là plutôt qu'ailleurs. */
+import trace from '~/assets/uploads/pages/cequefaitmusima.jpg';
 
 interface Props { langue: Langue; alternatives: Record<Langue, string> }
 const { langue, alternatives } = Astro.props;
@@ -95,22 +100,34 @@ const titreProchaine = prochaine
 
         {reperes.length > 0 && (
           <p class="heros__reperes">
-            {reperes.map((repere, index) => (
-              <>{index > 0 && <span aria-hidden="true"> · </span>}<span class="heros__repere">{repere}</span></>
-            ))}
+            {reperes.map((repere) => <span class="heros__repere">{repere}</span>)}
+            {/* Quatrième donnée de la même ligne, dans la même typo et
+                les mêmes chiffres tabulaires. Rien de neuf à l'écran :
+                le compte à rebours est un repère parmi les autres, pas
+                une alarme posée par-dessus le héros. */}
+            {prochaine?.data.heure_debut && (
+              <CompteARebours
+                  langue={langue}
+                  variante="ligne"
+                  debut={horodatageISO(prochaine.data.date_debut, prochaine.data.heure_debut)}
+                  fin={horodatageISO(prochaine.data.date_fin ?? prochaine.data.date_debut, prochaine.data.heure_fin)}
+                />
+            )}
           </p>
         )}
       </div>
 
-      <div class="heros__visuel tirage">
-        <Image
-          src={ouverture}
-          alt={t('ouvertureAlt')}
-          widths={[420, 700, 1000]}
-          sizes="(min-width: 62rem) 32rem, 92vw"
-          loading="eager"
-        />
-      </div>
+      {ouverture && (
+        <div class="heros__visuel tirage">
+          <Image
+            src={ouverture}
+            alt={t('ouvertureAlt')}
+            widths={[420, 640, 832]}
+            sizes="(min-width: 62rem) 26rem, 92vw"
+            loading="eager"
+          />
+        </div>
+      )}
     </div>
   </section>
 
@@ -120,15 +137,29 @@ const titreProchaine = prochaine
       surtitre={t('intentionsSurtitre')}
       titre={t('intentionsTitre')}
     />
-    <ul class="intentions">
-      {intentions.map((intention, index) => (
-        <li class="intention apparait" style={`--i:${index}`}>
-          <span class="trait-croissant intention__trait" style={`--i:${index}`}></span>
-          <h3 class="t-carte intention__mot">{intention.titre}</h3>
-          <p>{intention.texte}</p>
-        </li>
-      ))}
-    </ul>
+    <div class="intentions">
+      {/* Format d'origine, aucun recadrage : 2/3, comme la source. Elle
+          accompagne le défilement des quatre blocs plutôt que d'être
+          posée au-dessus ou en dessous. */}
+      <figure class="intentions__visuel tirage">
+        <Image
+          src={trace}
+          alt={t('traceAlt')}
+          widths={[300, 460, 620]}
+          sizes="(min-width: 52rem) 19rem, 60vw"
+          loading="lazy"
+        />
+      </figure>
+      <ul class="intentions__liste">
+        {intentions.map((intention, index) => (
+          <li class="intention apparait" style={`--i:${index}`}>
+            <span class="trait-croissant intention__trait" style={`--i:${index}`}></span>
+            <h3 class="t-carte intention__mot">{intention.titre}</h3>
+            <p>{intention.texte}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
   </section>
 
   <!-- ================= PROCHAINE RENCONTRE ================= -->
@@ -300,7 +331,16 @@ const titreProchaine = prochaine
   .heros__actions { gap: var(--e-3); }
 
   /* Trois données réelles sous les boutons : une raison de descendre. */
+  /* Quatre données sur une rangée. Les points médians d'avant ne
+     survivaient pas au retour à la ligne : le séparateur restait
+     orphelin en fin ou en début de ligne, à trois largeurs sur quatre.
+     L'écart les sépare aussi bien, et il se replie proprement. Le filet
+     du dessus tient déjà le bloc ensemble. */
   .heros__reperes {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--e-5);
+    row-gap: var(--e-2);
     margin-top: var(--e-5);
     padding-top: var(--e-4);
     border-top: 1px solid var(--trait);
@@ -309,9 +349,8 @@ const titreProchaine = prochaine
     font-variant-numeric: tabular-nums;
     color: var(--encre-douce);
   }
-  /* Chaque donnée reste d'un seul tenant : la ligne casse entre elles,
-     jamais au milieu de « Entrada libre y gratuita ». Le séparateur, lui,
-     garde ses espaces sécables — sinon la ligne n'aurait plus où casser. */
+  /* Chaque donnée reste d'un seul tenant : la rangée casse entre elles,
+     jamais au milieu de « Entrada libre y gratuita ». */
   .heros__repere { white-space: nowrap; }
 
   .heros__visuel {
@@ -319,13 +358,18 @@ const titreProchaine = prochaine
     overflow: hidden;
     border-radius: var(--r-visuel);
     background: var(--surface);
-    aspect-ratio: 3 / 2;
+    /* Portrait 4/5, comme les fiches d'intervenants : le site a déjà
+       ce format dans son vocabulaire, l'image n'arrive pas en corps
+       étranger. Le 3/2 d'avant rognait plus de la moitié de la hauteur
+       d'une photo verticale. */
+    aspect-ratio: 4 / 5;
   }
   .heros__visuel :global(img) { width: 100%; height: 100%; object-fit: cover; }
 
   @media (min-width: 62rem) {
-    .heros__interieur {
-      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.85fr);
+    /* La seconde colonne n'existe que s'il y a un visuel. */
+    .heros__interieur:has(.heros__visuel) {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
       gap: var(--e-9);
     }
     /* Le visuel descend sur la section suivante. */
@@ -360,15 +404,35 @@ const titreProchaine = prochaine
   }
 
   /* ---------------- Intentions ---------------- */
-  /* Mosaïque : 7/5 puis 5/7. La rupture de rythme suffit — quatre blocs
-     de largeur égale se lisent comme un tableau, pas comme un propos. */
-  .intentions { display: grid; gap: var(--e-7) var(--e-8); }
+  /* Mosaïque : 5/4 puis 4/5, sur les neuf colonnes qui restent à droite
+     de l'image. La rupture de rythme suffit — quatre blocs de largeur
+     égale se lisent comme un tableau, pas comme un propos. */
+  .intentions { display: grid; gap: var(--e-7); }
+  .intentions__liste { display: grid; gap: var(--e-7) var(--e-8); list-style: none; margin: 0; padding: 0; }
+  .intentions__visuel {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--r-visuel);
+    background: var(--surface-2);
+    /* Ratio de la source : elle n'est jamais recadrée. */
+    aspect-ratio: 2 / 3;
+    max-width: 19rem;
+  }
+  .intentions__visuel :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+
   @media (min-width: 52rem) {
-    .intentions { grid-template-columns: repeat(12, minmax(0, 1fr)); }
-    .intention:nth-child(1) { grid-column: 1 / 8; }
-    .intention:nth-child(2) { grid-column: 8 / -1; }
-    .intention:nth-child(3) { grid-column: 1 / 6; }
-    .intention:nth-child(4) { grid-column: 6 / -1; }
+    .intentions { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: var(--e-8); align-items: start; }
+    /* L'image accompagne les deux rangées de blocs sans les suivre. */
+    .intentions__visuel { position: sticky; top: 7rem; }
+    .intentions__liste { grid-template-columns: repeat(9, minmax(0, 1fr)); }
+    .intention:nth-child(1) { grid-column: 1 / 6; }
+    .intention:nth-child(2) { grid-column: 6 / -1; }
+    .intention:nth-child(3) { grid-column: 1 / 5; }
+    .intention:nth-child(4) { grid-column: 5 / -1; }
+  }
+  @media (max-width: 51.99rem) {
+    /* Le propos d'abord, l'image ensuite. */
+    .intentions__visuel { order: 1; max-width: 14rem; }
   }
   .intention { display: flex; flex-direction: column; gap: var(--e-3); }
   .intention__trait { max-width: 6rem; }

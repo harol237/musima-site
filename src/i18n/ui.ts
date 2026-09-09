@@ -334,16 +334,46 @@ export const ui = {
   labelLieu: { es: 'Lugar', fr: 'Lieu', en: 'Venue', ca: 'Lloc' },
   labelFormat: { es: 'Formato', fr: 'Format', en: 'Format', ca: 'Format' },
   labelTarif: { es: 'Precio', fr: 'Tarif', en: 'Price', ca: 'Preu' },
+  labelAcces: {
+    es: 'Accesibilidad', fr: 'Accessibilité', en: 'Accessibility', ca: 'Accessibilitat',
+  },
+  labelTransport: {
+    es: 'Parada más cercana', fr: 'Arrêt le plus proche',
+    en: 'Nearest stop', ca: 'Parada més propera',
+  },
+  accesPmr: {
+    es: 'Accesible para personas con movilidad reducida',
+    fr: 'Accessible aux personnes à mobilité réduite',
+    en: 'Accessible to people with reduced mobility',
+    ca: 'Accessible per a persones amb mobilitat reduïda',
+  },
+  /* Le libellé porte l'adresse : lu hors contexte par un lecteur d'écran,
+     « ouvrir sur Google Maps » ne dirait pas de quel lieu il s'agit.
+     {adresse} est remplacé à l'affichage. */
+  voirSurCarte: {
+    es: 'Abrir {adresse} en Google Maps',
+    fr: 'Ouvrir {adresse} sur Google Maps',
+    en: 'Open {adresse} in Google Maps',
+    ca: 'Obrir {adresse} a Google Maps',
+  },
+  /* L'avertissement complète le nom du lien pour qui l'entend, sans
+     ajouter une troisième ligne dans une colonne de 20rem. */
+  nouvelOnglet: {
+    es: '(se abre en una pestaña nueva)',
+    fr: '(s’ouvre dans un nouvel onglet)',
+    en: '(opens in a new tab)',
+    ca: '(s’obre en una pestanya nova)',
+  },
   /* ---------------- Inscription à une rencontre ---------------- */
   inscriptionTitre: {
     es: 'Apúntate a este encuentro', fr: 'Inscris-toi à cette rencontre',
     en: 'Sign up for this gathering', ca: 'Apunta’t a aquesta trobada',
   },
   inscriptionTexte: {
-    es: 'La entrada es libre, pero saber cuántos seremos nos ayuda a preparar la sala.',
-    fr: 'L’entrée est libre, mais savoir combien on sera nous aide à préparer la salle.',
-    en: 'Entry is free, but knowing how many of us there will be helps us set the room up.',
-    ca: 'L’entrada és lliure, però saber quants serem ens ajuda a preparar la sala.',
+    es: 'La entrada es gratuita, pero las plazas son limitadas: saber cuántos seremos nos ayuda a preparar la sala.',
+    fr: 'L’entrée est gratuite, mais les places sont limitées : savoir combien on sera nous aide à préparer la salle.',
+    en: 'Entry is free, but places are limited: knowing how many of us there will be helps us set the room up.',
+    ca: 'L’entrada és gratuïta, però les places són limitades: saber quants serem ens ajuda a preparar la sala.',
   },
   inscriptionNom: { es: 'Nombre y apellidos', fr: 'Nom et prénom', en: 'Name', ca: 'Nom i cognoms' },
   inscriptionEmail: { es: 'Dirección de correo', fr: 'Adresse e-mail', en: 'Email address', ca: 'Adreça electrònica' },
@@ -526,7 +556,37 @@ export const ui = {
     ca: 'Les fotos de la primera trobada es publicaran aquí.',
   },
 
+  /* ---------------- Compte à rebours ----------------
+     Formulation neutre, jamais pressante : « Dans 16 jours », pas
+     « il ne reste que 16 jours ». Aucune langue n'emploie de
+     vocabulaire d'urgence. */
+  rebourPrefixe: { es: 'Dentro de', fr: 'Dans', en: 'In', ca: 'D’aquí a' },
+  rebourMaintenant: {
+    es: 'Es ahora', fr: 'C’est maintenant', en: 'Happening now', ca: 'És ara',
+  },
+  /* La phrase lue par les lecteurs d'écran. {reste} vaut « 16 jours ». */
+  rebourPhrase: {
+    es: 'El encuentro es dentro de {reste}.',
+    fr: 'La rencontre a lieu dans {reste}.',
+    en: 'The gathering is in {reste}.',
+    ca: 'La trobada és d’aquí a {reste}.',
+  },
+  unite_jour: { es: 'día', fr: 'jour', en: 'day', ca: 'dia' },
+  unite_jour_p: { es: 'días', fr: 'jours', en: 'days', ca: 'dies' },
+  unite_heure: { es: 'hora', fr: 'heure', en: 'hour', ca: 'hora' },
+  unite_heure_p: { es: 'horas', fr: 'heures', en: 'hours', ca: 'hores' },
+  unite_minute: { es: 'minuto', fr: 'minute', en: 'minute', ca: 'minut' },
+  unite_minute_p: { es: 'minutos', fr: 'minutes', en: 'minutes', ca: 'minuts' },
+
   albumSurtitre: { es: 'Álbum', fr: 'Album', en: 'Album', ca: 'Àlbum' },
+  /* Surtitre et pastille d'un album antérieur à MUSIMA. */
+  albumArchive: { es: 'Archivo', fr: 'Archives', en: 'Archive', ca: 'Arxiu' },
+  albumArchiveNote: {
+    es: 'Imágenes anteriores a MUSIMA',
+    fr: 'Images antérieures à MUSIMA',
+    en: 'Images from before MUSIMA',
+    ca: 'Imatges anteriors a MUSIMA',
+  },
   albumRencontre: {
     es: 'Ver el encuentro', fr: 'Voir la rencontre associée',
     en: 'See the related gathering', ca: 'Veure la trobada',
@@ -538,30 +598,28 @@ export const ui = {
     ca: 'Toca una foto per veure-la en gran.',
   },
 
-  /* Photo d'ouverture de l'accueil — tirée de l'archive 2025, en
-     attendant un portrait fait pour cette place. */
+  /* Image de la section « Quatre choses, concrètement ». */
+  traceAlt: {
+    es: 'Unas manos oscuras sostienen un cuaderno de rayas abierto y escriben en él con un bolígrafo negro, sobre ropa oscura.',
+    fr: 'Des mains sombres tiennent un carnet ligné ouvert et y écrivent au stylo noir, sur des vêtements sombres.',
+    en: 'Dark-skinned hands holding an open lined notebook and writing in it with a black pen, against dark clothing.',
+    ca: 'Unes mans fosques sostenen una llibreta ratllada oberta i hi escriuen amb un bolígraf negre, sobre roba fosca.',
+  },
+
+  /* Image d'en-tête de la page Récits. */
+  relatosAlt: {
+    es: 'Una mano escribe con estilográfica en un cuaderno abierto sobre un mantel de lino, en una luz cálida y rasante que proyecta sombras largas.',
+    fr: 'Une main écrit au stylo-plume sur un carnet ouvert posé sur une nappe de lin, dans une lumière chaude et rasante qui étire les ombres.',
+    en: 'A hand writing with a fountain pen in an open notebook on a linen tablecloth, in warm raking light that stretches the shadows.',
+    ca: 'Una mà escriu amb ploma estilogràfica en una llibreta oberta sobre unes estovalles de lli, amb una llum càlida i rasant que allarga les ombres.',
+  },
+
+  /* Photo d'ouverture de l'accueil. */
   ouvertureAlt: {
-    es: 'Primer plano de un hombre con polo azul claro hablando por el micrófono, delante de las letras doradas INSPIRE BCN.',
-    fr: 'Gros plan d’un homme en polo bleu clair qui parle au micro, devant les lettres dorées INSPIRE BCN.',
-    en: 'Close-up of a man in a light blue polo shirt speaking into a microphone, in front of the gold INSPIRE BCN letters.',
-    ca: 'Primer pla d’un home amb polo blau clar parlant pel micròfon, davant de les lletres daurades INSPIRE BCN.',
-  },
-
-  /* Photo de salle, page Association — archive 2025. */
-  salleAlt: {
-    es: 'Vista general de la sala: una veintena de personas sentadas en filas, con un reloj de pared encima.',
-    fr: 'Vue générale de la salle : une vingtaine de personnes assises en rangées, une horloge murale au-dessus.',
-    en: 'Wide view of the room: about twenty people seated in rows, a wall clock above them.',
-    ca: 'Vista general de la sala: una vintena de persones assegudes en files, amb un rellotge de paret a sobre.',
-  },
-
-  /* Décrit l'image de partage pour qui ne la voit pas : certains
-     lecteurs de flux et messageries lisent cette description. */
-  partageAlt: {
-    es: 'Nueve personas posan juntas al final de un encuentro de MUSIMA; una de ellas sostiene un ramo de flores.',
-    fr: 'Neuf personnes posent ensemble à la fin d’une rencontre MUSIMA ; l’une d’elles tient un bouquet de fleurs.',
-    en: 'Nine people posing together at the end of a MUSIMA gathering; one of them holds a bunch of flowers.',
-    ca: 'Nou persones posen juntes al final d’una trobada de MUSIMA; una d’elles sosté un ram de flors.',
+    es: 'Una mujer joven de pelo rizado recogido, con chaqueta de punto color crema, trabaja en su portátil ante una mesa blanca; a su lado, una taza y un cuaderno con un bolígrafo dorado.',
+    fr: 'Une jeune femme aux cheveux bouclés relevés, en gilet crème, travaille sur son ordinateur portable devant une table blanche ; à côté d’elle, une tasse et un carnet posé avec un stylo doré.',
+    en: 'A young woman with her curly hair tied up, in a cream cardigan, working at her laptop at a white table; beside her, a mug and a notebook with a gold pen resting on it.',
+    ca: 'Una dona jove amb els cabells arrissats recollits, amb jaqueta de punt color crema, treballa al portàtil davant d’una taula blanca; al seu costat, una tassa i una llibreta amb un bolígraf daurat.',
   },
 
   /* ---------------- Visionneuse ---------------- */

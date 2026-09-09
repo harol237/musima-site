@@ -35,3 +35,18 @@ https://www.musima.org/*  https://musima.org/:splat  301
 /accessibilite          /fr                        301
 /accesibilidad          /                          301
 /fr/accessibilite       /fr                        301
+
+# --- Fiche intervenant renommée : « Sebastien Richnel » était une erreur
+#     de saisie, le nom réel est Jeffrey Nomba. Les quatre adresses
+#     déjà partagées mènent à la fiche corrigée dans leur propre langue.
+/ponentes/sebastien-richnel          /ponentes/jeffrey-nomba          301
+/fr/intervenants/sebastien-richnel   /fr/intervenants/jeffrey-nomba   301
+/en/speakers/sebastien-richnel       /en/speakers/jeffrey-nomba       301
+/ca/ponents/sebastien-richnel        /ca/ponents/jeffrey-nomba        301
+
+# --- Album 2025 renommé en archives Inspire BCN. Les adresses de
+#     septembre 2026 mènent au même album sous son nouveau nom.
+/galeria/galeria-2025       /galeria/archivo-inspire-bcn        301
+/fr/galerie/galerie-2025    /fr/galerie/archives-inspire-bcn    301
+/en/gallery/gallery-2025    /en/gallery/inspire-bcn-archive     301
+/ca/galeria/galeria-2025    /ca/galeria/arxiu-inspire-bcn       301

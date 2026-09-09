@@ -9,7 +9,8 @@ import ARemplir from '~/components/ARemplir.astro';
 import FormulaireInscription from '~/components/FormulaireInscription.astro';
 import VisuelDeSecours from '~/components/VisuelDeSecours.astro';
 import BadgeModele from '~/components/BadgeModele.astro';
-import { dateISO, estAVenir, estPublie, enChantier, pret } from '~/lib/contenu';
+import CompteARebours from '~/components/CompteARebours.astro';
+import { dateISO, horodatageISO, estAVenir, estPublie, enChantier, pret } from '~/lib/contenu';
 import { formaterPlage, formatsEvenement, traduireValeur } from '~/i18n/utils';
 import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
@@ -30,19 +31,40 @@ const intervenants = (
   data.intervenants.length ? await getEntries(data.intervenants) : []
 ).filter(estPublie);
 const aVenir = estAVenir(evenement);
-const lieuComplet = [data.lieu?.nom, data.lieu?.adresse, data.lieu?.ville, data.lieu?.pays]
+
+const lieu = data.lieu;
+/* Le code postal reste collé à sa ville : « 08017 Barcelone » est une
+   ligne d'adresse, pas deux informations séparées par une virgule. */
+const lieuComplet = [
+  lieu?.nom,
+  lieu?.adresse,
+  lieu?.quartier,
+  [lieu?.code_postal, lieu?.ville].filter(Boolean).join(' '),
+  lieu?.pays,
+]
   .filter(Boolean)
   .join(', ');
+
+/* Lien vers la carte : construit à partir des coordonnées, pas d'une URL
+   saisie à la main. Une adresse tapée dans Google Maps peut tomber sur le
+   mauvais numéro de rue ; un couple latitude/longitude, non. */
+const carte =
+  lieu?.latitude != null && lieu?.longitude != null
+    ? `https://www.google.com/maps/search/?api=1&query=${lieu.latitude},${lieu.longitude}`
+    : undefined;
+const libelleCarte = t('voirSurCarte').replace('{adresse}', lieu?.adresse ?? lieu?.nom ?? '');
 
 const donnees = {
   '@context': 'https://schema.org',
   '@type': 'Event',
   name: data.titre,
-  /* Date seule, pas un horodatage : l'heure est saisie en texte libre
-     (« A partir de las 17:00 ») et n'est donc pas analysable. Annoncer
-     minuit UTC serait faux ; schema.org accepte la date nue. */
-  startDate: dateISO(data.date_debut),
-  ...(data.date_fin ? { endDate: dateISO(data.date_fin) } : {}),
+  /* Horodatage complet dès que l'horaire est saisi en `heure_debut` /
+     `heure_fin`. Sans eux, la date nue : schema.org l'accepte, alors
+     qu'annoncer minuit serait une information fausse. */
+  startDate: horodatageISO(data.date_debut, data.heure_debut),
+  ...(data.date_fin || data.heure_fin
+    ? { endDate: horodatageISO(data.date_fin ?? data.date_debut, data.heure_fin) }
+    : {}),
   eventAttendanceMode: data.lieu?.en_ligne
     ? 'https://schema.org/OnlineEventAttendanceMode'
     : 'https://schema.org/OfflineEventAttendanceMode',
@@ -54,13 +76,35 @@ const donnees = {
     ? {
         location: {
           '@type': 'Place',
-          name: data.lieu?.nom ?? lieuComplet,
+          name: lieu?.nom ?? lieuComplet,
           address: {
             '@type': 'PostalAddress',
-            ...(data.lieu?.adresse ? { streetAddress: data.lieu.adresse } : {}),
-            ...(data.lieu?.ville ? { addressLocality: data.lieu.ville } : {}),
+            ...(lieu?.adresse ? { streetAddress: lieu.adresse } : {}),
+            ...(lieu?.code_postal ? { postalCode: lieu.code_postal } : {}),
+            ...(lieu?.ville ? { addressLocality: lieu.ville } : {}),
             addressCountry: 'ES',
           },
+          ...(carte
+            ? {
+                hasMap: carte,
+                geo: {
+                  '@type': 'GeoCoordinates',
+                  latitude: lieu!.latitude,
+                  longitude: lieu!.longitude,
+                },
+              }
+            : {}),
+          /* Un équipement municipal : on y entre sans invitation. */
+          publicAccess: true,
+          ...(lieu?.acces_pmr
+            ? {
+                amenityFeature: {
+                  '@type': 'LocationFeatureSpecification',
+                  name: 'wheelchairAccessible',
+                  value: true,
+                },
+              }
+            : {}),
         },
       }
     : {}),
@@ -73,9 +117,16 @@ const donnees = {
           '@type': 'Offer',
           price: 0,
           priceCurrency: 'EUR',
+          /* Gratuit et places limitées ne se contredisent pas : le prix
+             reste zéro, c'est la disponibilité qui porte la jauge.
+             `LimitedAvailability` est le seul terme du vocabulaire qui
+             dise « il en reste, mais pas pour tout le monde » — `InStock`
+             laisserait croire que la salle est sans fond. */
           availability: data.complet
             ? 'https://schema.org/SoldOut'
-            : 'https://schema.org/InStock',
+            : data.places_limitees
+              ? 'https://schema.org/LimitedAvailability'
+              : 'https://schema.org/InStock',
           url: new URL(Astro.url.pathname.replace(/\.html$/, ''), Astro.site).href,
         },
       }
@@ -136,6 +187,17 @@ const donnees = {
         {data.modele && <BadgeModele />}
         <h2 class="encart__titre">{t('infosPratiques')}</h2>
 
+        {/* En tête de l'encart, au-dessus de la date : c'est la seule
+            donnée de la page qui change toute seule, et c'est celle
+            qu'on vient chercher en premier quand la date approche. */}
+        {aVenir && data.heure_debut && (
+          <CompteARebours
+            langue={langue}
+            debut={horodatageISO(data.date_debut, data.heure_debut)}
+            fin={horodatageISO(data.date_fin ?? data.date_debut, data.heure_fin)}
+          />
+        )}
+
         <dl class="infos">
           <div>
             <dt>{t('labelDate')}</dt>
@@ -149,8 +211,27 @@ const donnees = {
           )}
           <div>
             <dt>{t('labelLieu')}</dt>
-            <dd>{lieuComplet ? lieuComplet : <ARemplir libelle="LIEU À AJOUTER" forme="ligne" />}</dd>
+            <dd>
+              {lieuComplet ? lieuComplet : <ARemplir libelle="LIEU À AJOUTER" forme="ligne" />}
+              {carte && (
+                <a href={carte} class="lien infos__carte" target="_blank" rel="noopener noreferrer">
+                  {libelleCarte} <span class="visuellement-cache">{t('nouvelOnglet')}</span>
+                </a>
+              )}
+            </dd>
           </div>
+          {lieu?.acces_pmr && (
+          <div>
+            <dt>{t('labelAcces')}</dt>
+            <dd>{t('accesPmr')}</dd>
+          </div>
+          )}
+          {lieu?.transport && (
+          <div>
+            <dt>{t('labelTransport')}</dt>
+            <dd>{lieu.transport}</dd>
+          </div>
+          )}
           <div>
             <dt>{t('labelFormat')}</dt>
             <dd>{traduireValeur(formatsEvenement, data.format, langue)}</dd>
@@ -236,6 +317,9 @@ const donnees = {
     color: var(--encre-faible);
   }
   .infos dd { margin: 0; font-size: var(--t-300); line-height: 1.5; }
+  /* Le lien vers la carte passe à la ligne sous l'adresse et garde sa
+     propre zone tactile : collé en fin de paragraphe, il se rate. */
+  .infos__carte { display: inline-block; margin-top: var(--e-2); padding-block: 0.15rem; }
 
   .rappel-modele {
     font-family: var(--f-titre);

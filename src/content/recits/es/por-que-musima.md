@@ -4,6 +4,8 @@ titre: "Por qué MUSIMA"
 date: 2026-09-02
 categorie: "Idées & analyses"
 resume: "Durante años vi a gente de mi alrededor construir cosas sólidas sin que aquello saliera nunca de su círculo. MUSIMA nació de esa distancia, y del momento en que dejé de esperar a que se ocupara otra persona."
+image: ../../../assets/uploads/pages/porquemusima.jpg
+image_alt: "Una niña de perfil, con la mano apoyada en una persiana veneciana, mira a través de las lamas la luz dorada del final del día."
 mots_cles: ["Origen", "Diáspora", "Barcelona"]
 temps_lecture: "4 min de lectura"
 en_avant: true

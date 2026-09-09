@@ -21,7 +21,7 @@ const identifiant = (valeur: string) =>
     .replace(/^-+|-+$/g, '');
 
 /**
- * `nomTransition('pt', 'sebastien-richnel')` → `pt-sebastien-richnel`
+ * `nomTransition('pt', 'jeffrey-nomba')` → `pt-jeffrey-nomba`
  *
  * Renvoie `undefined` quand il n'y a pas de visuel : un emplacement
  * vide n'a rien à faire grandir, et une transition sur un cadre gris

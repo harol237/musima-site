@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import asso from '~/assets/uploads/pages/la-asociacion.jpg';
 import Base from '~/layouts/Base.astro';
 import EntetePage from '~/components/EntetePage.astro';
 import EnteteSection from '~/components/EnteteSection.astro';
@@ -7,23 +8,28 @@ import BandeauCta from '~/components/BandeauCta.astro';
 import ARemplir from '~/components/ARemplir.astro';
 import site from '~/data/site.json';
 import { champ } from '~/i18n/site';
-import { enChantier } from '~/lib/contenu';
+import { chargerAlbums, enChantier, slugDe } from '~/lib/contenu';
 import { chemin, type Langue } from '~/i18n/config';
-
-/* Photo de salle, tirée de l'archive 2025 : une seule image dans toute
-   la page, posée là où la lecture commence à fatiguer. */
-import salle from '~/assets/uploads/galerie-2025/inspire-bcn-5.jpg';
 import { traducteur } from '~/i18n/ui';
 
 interface Props { langue: Langue; alternatives: Record<Langue, string> }
 const { langue, alternatives } = Astro.props;
 const t = traducteur(langue);
 
+/* Le lien vers les archives se déduit de l'album, il n'est pas écrit en
+   dur : si l'album disparaît ou change de nom, la section perd son lien
+   au lieu de pointer dans le vide. */
+const archives = (await chargerAlbums(langue)).find((a) => a.data.archive);
+const lienArchives = archives
+  ? chemin(langue, 'galerie', slugDe(archives.id))
+  : undefined;
+
 /* La page a la même structure dans toutes les langues : seuls les textes
    changent. Un dictionnaire vaut donc mieux ici que deux gabarits, qui
    finiraient par diverger de mise en page. */
 const textes = {
   es: {
+    assoAlt: 'Una emprendedora de pie tras su mesa en una feria, sosteniendo un tarro de manteca de karité; delante de ella, su gama de productos alineada y un folleto de su marca.',
     meta: 'MUSIMA da luz a personas, trayectorias e iniciativas de africanos que emprenden, crean e innovan. Misión, público, territorio y manera de trabajar.',
     surtitre: 'La asociación',
     titre: 'Por qué montamos esto',
@@ -34,6 +40,14 @@ const textes = {
       'Lo que nos interesa cabe en una pregunta: ¿cómo lo hiciste? No el resultado, ni la historia bonita que se cuenta después, sino el camino — el dinero que hubo que encontrar, las puertas cerradas, la persona que echó una mano en el momento justo, lo que harías distinto. Eso es lo que le sirve a otro.',
       'Empezamos en Barcelona porque es donde vivimos, pero no es una frontera. Lo que se construye aquí se parece bastante a lo que se construye en otros sitios de Europa y del continente, y no hay nada que impida que circule.',
     ],
+    origineSurtitre: 'De dónde viene',
+    origineTitre: 'De Inspire a MUSIMA',
+    origine: [
+      'Antes de MUSIMA estuvo Inspire. Organizábamos encuentros, poníamos a gente en contacto y mirábamos qué salía de ahí. Al principio no había mucho plan: se hacía y ya.',
+      'A fuerza de repetirlo fuimos viendo lo que faltaba alrededor. La gente se iba contenta de una tarde y seis meses después no quedaba nada: ni rastro, ni continuidad, ninguna manera de conectar a alguien de aquí con alguien de allá que no fuera por casualidad.',
+      'De ahí salió MUSIMA. Las mismas ganas, pero con algo que aguante en el tiempo.',
+    ],
+    origineLien: 'Ver el archivo Inspire BCN',
     boussoleSurtitre: 'Nuestra brújula',
     boussoleTitre: 'Conectar · Construir · Impactar',
     verbes: [
@@ -81,6 +95,7 @@ const textes = {
     cadreNote: 'Forma jurídica, fecha de creación, composición de la junta y memoria de actividades: esta información es la que hace legible una asociación ante socios e instituciones.',
   },
   fr: {
+    assoAlt: 'Une entrepreneuse debout derrière sa table dans un salon, tenant un pot de beurre de karité ; devant elle, sa gamme de produits alignée et une brochure de sa marque.',
     meta: 'MUSIMA met en lumière des personnes, des parcours et des initiatives d’Africains qui entreprennent, créent et innovent. Mission, public, territoire et démarche.',
     surtitre: 'L’association',
     titre: 'Pourquoi on a monté ça',
@@ -91,6 +106,14 @@ const textes = {
       'Ce qui nous intéresse tient dans une question : comment tu t’y es pris ? Pas le résultat, pas la belle histoire lissée pour l’occasion, mais le chemin — l’argent qu’il a fallu trouver, les portes fermées, la personne qui a donné un coup de main au bon moment, ce que tu referais autrement. C’est ça qui sert à quelqu’un d’autre.',
       'On commence à Barcelone parce que c’est là qu’on vit, mais ce n’est pas une frontière. Ce qui se construit ici ressemble à ce qui se construit ailleurs en Europe et sur le continent, et rien n’empêche que ça circule.',
     ],
+    origineSurtitre: 'D’où ça vient',
+    origineTitre: 'De Inspire à MUSIMA',
+    origine: [
+      'Avant MUSIMA, il y a eu Inspire. On organisait des rencontres, on mettait des gens en contact, on regardait ce que ça donnait. Au départ il n’y avait pas beaucoup de plan : on faisait, c’est tout.',
+      'À force, on a vu ce qui manquait autour. Les gens repartaient contents d’une soirée, et six mois plus tard il n’en restait rien : pas de trace, pas de suite, aucun moyen de relier quelqu’un d’ici à quelqu’un de là-bas autrement que par hasard.',
+      'MUSIMA est né de là. La même envie, avec de quoi tenir dans le temps.',
+    ],
+    origineLien: 'Voir les archives Inspire BCN',
     boussoleSurtitre: 'Notre boussole',
     boussoleTitre: 'Connecter · Bâtir · Impacter',
     verbes: [
@@ -138,6 +161,7 @@ const textes = {
     cadreNote: 'Statut juridique, date de création, composition du bureau et rapport d’activité : ces informations rendent l’association lisible pour les partenaires et les institutions.',
   },
   en: {
+    assoAlt: 'An entrepreneur standing behind her table at a trade fair, holding a jar of shea butter; in front of her, her range of products lined up and a brochure for her brand.',
     meta: 'MUSIMA shines a light on the people, paths and initiatives of Africans who start things, create and innovate. Mission, audience, territory and approach.',
     surtitre: 'The association',
     titre: 'Why we set this up',
@@ -148,6 +172,14 @@ const textes = {
       'What interests us fits into one question: how did you do it? Not the result, not the neat story told afterwards, but the road — the money you had to find, the doors that stayed shut, the person who helped at the right moment, what you’d do differently. That’s the part somebody else can use.',
       'We start in Barcelona because that’s where we live, but it isn’t a border. What gets built here looks a lot like what gets built elsewhere in Europe and on the continent, and there’s nothing to stop it travelling.',
     ],
+    origineSurtitre: 'Where it comes from',
+    origineTitre: 'From Inspire to MUSIMA',
+    origine: [
+      'Before MUSIMA there was Inspire. We ran gatherings, put people in touch, and watched what came of it. There wasn’t much of a plan at first — we just did it.',
+      'Doing it often enough, we started to see what was missing around it. People left an evening happy, and six months on there was nothing left of it: no record, no follow-up, no way of connecting someone here with someone there other than by chance.',
+      'MUSIMA came out of that. The same appetite, with something built to hold up.',
+    ],
+    origineLien: 'See the Inspire BCN archive',
     boussoleSurtitre: 'Our compass',
     boussoleTitre: 'Connect · Build · Impact',
     verbes: [
@@ -195,6 +227,7 @@ const textes = {
     cadreNote: 'Legal form, founding date, board composition and activity report: this is the information that makes an association legible to partners and institutions.',
   },
   ca: {
+    assoAlt: 'Una emprenedora dreta darrere la seva taula en una fira, sostenint un pot de mantega de karité; davant seu, la seva gamma de productes alineada i un fullet de la seva marca.',
     meta: 'MUSIMA dona llum a persones, trajectòries i iniciatives d’africans que emprenen, creen i innoven. Missió, públic, territori i manera de treballar.',
     surtitre: 'L’associació',
     titre: 'Per què vam muntar això',
@@ -205,6 +238,14 @@ const textes = {
       'El que ens interessa cap en una pregunta: com ho vas fer? No el resultat, ni la història bonica que s’explica després, sinó el camí — els diners que va caldre trobar, les portes tancades, la persona que va donar un cop de mà en el moment just, què faries diferent. Això és el que li serveix a un altre.',
       'Comencem a Barcelona perquè és on vivim, però no és una frontera. El que es construeix aquí s’assembla força al que es construeix en altres llocs d’Europa i del continent, i no hi ha res que impedeixi que circuli.',
     ],
+    origineSurtitre: 'D’on ve',
+    origineTitre: 'D’Inspire a MUSIMA',
+    origine: [
+      'Abans de MUSIMA hi va haver Inspire. Organitzàvem trobades, posàvem gent en contacte i miràvem què en sortia. Al principi no hi havia gaire pla: es feia i prou.',
+      'A força de repetir-ho vam anar veient què faltava al voltant. La gent marxava contenta d’una tarda i sis mesos després no en quedava res: ni rastre, ni continuïtat, cap manera de connectar algú d’aquí amb algú d’allà que no fos per casualitat.',
+      'MUSIMA va néixer d’aquí. Les mateixes ganes, amb alguna cosa que aguanti amb el temps.',
+    ],
+    origineLien: 'Veure l’arxiu Inspire BCN',
     boussoleSurtitre: 'La nostra brúixola',
     boussoleTitre: 'Connectar · Construir · Impactar',
     verbes: [
@@ -266,7 +307,17 @@ const x = textes[langue];
     titre={x.titre}
     chapo={champ(site.phrase, langue)}
     ariane={[{ libelle: x.surtitre }]}
-  />
+  >
+    {/* Format d'origine, aucun recadrage : la source est déjà en 3/4. */}
+    <Image
+      slot="visuel"
+      src={asso}
+      alt={x.assoAlt}
+      widths={[420, 640, 900]}
+      sizes="(min-width: 62rem) 24rem, 92vw"
+      loading="eager"
+    />
+  </EntetePage>
 
   <!-- ============ MISSION ============ -->
   <section class="section conteneur colonnes colonnes--collant">
@@ -278,14 +329,24 @@ const x = textes[langue];
     </div>
   </section>
 
-  <figure class="salle tirage">
-    <Image
-      src={salle}
-      alt={t('salleAlt')}
-      widths={[720, 1100, 1600]}
-      sizes="100vw"
-    />
-  </figure>
+  <!-- ============ D'OÙ ÇA VIENT ============
+       Placée juste après la mission : celle-ci répond à « pourquoi »,
+       celle-là à « d'où ça vient ». C'est le deuxième temps naturel de
+       la page, avant que le lecteur ait à absorber la boussole et le
+       territoire. Plus bas, elle se lirait comme une note de bas de page. -->
+  <section class="section conteneur colonnes colonnes--collant">
+    <div class="colonne-titre">
+      <EnteteSection surtitre={x.origineSurtitre} titre={x.origineTitre} />
+    </div>
+    <div class="pile pile-5">
+      <div class="prose">
+        {x.origine.map((p) => <p>{p}</p>)}
+      </div>
+      {lienArchives && (
+        <a href={lienArchives} class="lien-suite">{x.origineLien}</a>
+      )}
+    </div>
+  </section>
 
   <!-- ============ LES TROIS VERBES ============ -->
   <section class="section conteneur colonnes colonnes--decale colonnes--collant">

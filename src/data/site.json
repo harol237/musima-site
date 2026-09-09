@@ -27,9 +27,9 @@
   "contact": {
     "email": "Musima.org@mail.com",
     "telephone": "[TÉLÉPHONE À AJOUTER]",
-    "rue": "Carrer Musima 237",
-    "code_postal": "08930",
-    "ville_siege": "Sant Adrià de Besòs",
+    "rue": "Carretera Reial 131",
+    "code_postal": "08960",
+    "ville_siege": "Sant Just Desvern",
     "province": {
       "es": "Barcelona",
       "fr": "Barcelone",
@@ -54,12 +54,16 @@
       "en": "Spain",
       "ca": "Espanya"
     },
-    "adresse": "Carrer Musima 237, 08930 Sant Adrià de Besòs (Barcelona)"
+    "adresse": "Carretera Reial 131, 08960 Sant Just Desvern (Barcelona)"
   },
   "reseaux": [
     {
       "nom": "Instagram",
       "url": "https://www.instagram.com/musima_official"
+    },
+    {
+      "nom": "YouTube",
+      "url": "https://youtube.com/@musima-org"
     }
   ],
   "infolettre": {
@@ -94,7 +98,7 @@
     "enregistrement_en_cours": true,
     "nif": "[NIF À AJOUTER DÈS RÉCEPTION]",
     "numero_registre": "[NUMÉRO D'INSCRIPTION AU REGISTRE À AJOUTER DÈS RÉCEPTION]",
-    "responsable_publication": "Noubissie Dzitou Roxanne Fiona",
+    "responsable_publication": "Roxanne Fiona Noubissie",
     "statuts_pdf": "[LIEN VERS LES STATUTS (PDF) À AJOUTER]"
   },
   "hebergeur": {

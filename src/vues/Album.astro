@@ -30,7 +30,7 @@ const evenement = data.evenement ? await getEntry(data.evenement) : undefined;
   noindex={data.modele}
 >
   <EntetePage
-    surtitre={t('albumSurtitre')}
+    surtitre={data.archive ? t('albumArchive') : t('albumSurtitre')}
     titre={data.titre}
     ariane={[
       { libelle: t('navGalerie'), url: chemin(langue, 'galerie') },

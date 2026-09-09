@@ -1,10 +1,11 @@
 ---
-cle: galerie-2025
-titre: "Galerie 2025"
+cle: archives-inspire-bcn
+titre: "Archives — Inspire BCN"
 lieu: "Biblioteca Jaume Fuster, Barcelone"
+archive: true
 couverture: ../../../assets/uploads/galerie-2025/inspire-bcn-1.jpg
 couverture_alt: "Neuf personnes posent côte à côte, la plupart en t-shirt marron INSPIRE avec un badge autour du cou ; l’une d’elles tient un bouquet enveloppé de papier rose."
-meta_description: "Six photos d’une rencontre à la Biblioteca Jaume Fuster, à Barcelone, en 2025."
+meta_description: "Six photos d’une rencontre Inspire BCN à la Biblioteca Jaume Fuster, à Barcelone, en 2025. Images antérieures à MUSIMA."
 photos:
   - fichier: ../../../assets/uploads/galerie-2025/inspire-bcn-1.jpg
     alt: "Neuf personnes posent côte à côte, la plupart en t-shirt marron INSPIRE avec un badge autour du cou ; l’une d’elles tient un bouquet enveloppé de papier rose."
@@ -26,6 +27,13 @@ photos:
     cadrage: standard
 ---
 
-Six photos d’une rencontre à la Biblioteca Jaume Fuster, à Barcelone, en 2025. Un micro qui circule, une salle qui écoute, et les lettres dorées sorties pour la photo de groupe.
+**Ces photos sont antérieures à MUSIMA.** Elles viennent d’Inspire BCN, la démarche
+qui a précédé l’association. Ce n’est pas la rencontre du 26 septembre.
 
-<!-- À COMPLÉTER : la date exacte de la rencontre, et le nom de l’événement à relier dans le champ « evenement » une fois sa fiche créée. -->
+Six photos d’une rencontre à la Biblioteca Jaume Fuster, à Barcelone, en 2025. Un micro
+qui circule, une salle qui écoute, et les lettres dorées sorties pour la photo de groupe.
+
+<!-- Pas de champ « date » : seul le millésime est connu, et il est dans le
+     texte. Mieux vaut pas de date qu'une date inventée au 1er janvier.
+     Cet album ne se relie à aucune fiche de rencontre — Inspire BCN est
+     antérieur aux rencontres MUSIMA. -->
