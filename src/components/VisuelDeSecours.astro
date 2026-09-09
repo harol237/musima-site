@@ -36,7 +36,7 @@ const teinte = variante === 'titre' ? teintes[empreinte % teintes.length] : 'pet
 
 const jourMois = date ? formaterJourMois(date, langue) : undefined;
 
-/** « Sébastien Richnel » → « SR ». Une seule lettre s'il n'y a qu'un mot. */
+/** « Jeffrey Nomba » → « JN ». Une seule lettre s'il n'y a qu'un mot. */
 const initiales = texte
   .split(/\s+/)
   .filter(Boolean)
