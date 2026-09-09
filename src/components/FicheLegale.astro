@@ -63,7 +63,10 @@ const libelles = {
 } as const;
 
 const l = libelles[langue];
-const adresse = `${c.adresse}, ${champ(c.region, langue)}, ${champ(c.pays, langue)}`;
+/* Le siège est annoncé par sa ville, sa région et son pays, sans rue ni
+   code postal : l'association est joignable par son adresse électronique,
+   et l'adresse précise n'a pas à figurer sur une page publique. */
+const adresse = champ(c.siege, langue);
 ---
 
 <dl class="fiche-legale">

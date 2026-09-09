@@ -18,6 +18,8 @@ lieu:
   acces_pmr: true
   transport: "Sarrià (FGC)"
   en_ligne: false
+image: ../../../assets/uploads/pages/barcelone.jpg
+image_alt: "Barcelona seen from the heights of Montjuïc: the city stretching out to the Mediterranean, hills on the horizon, a Catalan flag on the left, in low golden winter light."
 resume: "MUSIMA's first gathering. We invited people who have built something in Barcelona — a business, a project, a craft — and asked them to tell us how it actually went. Not the polished version: what worked, what stalled, what they would do differently."
 intervenants:
   - en/jeffrey-nomba

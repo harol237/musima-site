@@ -5,7 +5,7 @@ date: 2026-09-02
 categorie: "Idées & analyses"
 resume: "Pendant des années, j'ai vu des gens autour de moi construire des choses solides sans que ça sorte jamais de leur cercle. MUSIMA est né de cet écart-là — et du moment où j'ai arrêté d'attendre que quelqu'un d'autre s'en occupe."
 image: ../../../assets/uploads/pages/porquemusima.jpg
-image_alt: "Une petite fille de profil, la main posée contre un store vénitien, regarde à travers les lamelles la lumière dorée de la fin de journée."
+image_alt: "Un homme en costume parle au pupitre dans une salle de réception, une table d'honneur de chaque côté, sous des lustres."
 mots_cles: ["Origine", "Diaspora", "Barcelone"]
 temps_lecture: "4 min de lecture"
 en_avant: true

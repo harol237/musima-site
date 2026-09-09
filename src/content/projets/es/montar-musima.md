@@ -6,7 +6,7 @@ annee: "2026"
 territoire: "Barcelona, Cataluña"
 resume: "El primer proyecto de la asociación es la asociación misma. Montarla, encontrarle un local, reunir a las primeras personas alrededor de una mesa. Y hacerlo a la vista de todo el mundo, no entre bastidores."
 image: ../../../assets/uploads/pages/montarmusima.jpg
-image_alt: "Dos mujeres sentadas frente a frente en una feria, conversando; una sostiene un teléfono para grabar, la otra está en un sillón fabricado con neumáticos reciclados."
+image_alt: "Una sala de conferencias llena, vista desde el fondo: el público sentado de espaldas frente a un escenario iluminado donde alguien habla en el atril, con una gran pantalla y lámparas de araña encima."
 partenaires: []
 en_avant: true
 meta_description: "En qué punto está la creación de MUSIMA: lo hecho, lo que falta, y cómo echar una mano."
