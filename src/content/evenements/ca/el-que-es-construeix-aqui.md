@@ -18,6 +18,8 @@ lieu:
   acces_pmr: true
   transport: "Sarrià (FGC)"
   en_ligne: false
+image: ../../../assets/uploads/pages/barcelone.jpg
+image_alt: "Barcelona vista des dalt de Montjuïc: la ciutat s'estén fins al Mediterrani, els turons al fons, una senyera a l'esquerra, amb una llum d'hivern baixa i daurada."
 resume: "La primera trobada de MUSIMA. Hem convidat persones que han muntat alguna cosa a Barcelona —una activitat, un projecte, un ofici— i els hem demanat que expliquessin com va anar de debò. Res de versions retocades: què va funcionar, què es va encallar, què farien diferent."
 intervenants:
   - ca/jeffrey-nomba

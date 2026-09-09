@@ -18,6 +18,8 @@ lieu:
   acces_pmr: true
   transport: "Sarrià (FGC)"
   en_ligne: false
+image: ../../../assets/uploads/pages/barcelone.jpg
+image_alt: "Barcelona vista desde lo alto de Montjuïc: la ciudad se extiende hasta el Mediterráneo, las colinas al fondo, una senyera a la izquierda, con una luz de invierno baja y dorada."
 resume: "El primer encuentro de MUSIMA. Invitamos a personas que han montado algo en Barcelona —una actividad, un proyecto, un oficio— y les pedimos que contaran cómo fue de verdad. Nada de versiones retocadas: lo que funcionó, lo que se atascó, lo que harían distinto."
 intervenants:
   - es/jeffrey-nomba

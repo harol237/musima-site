@@ -18,6 +18,8 @@ lieu:
   acces_pmr: true
   transport: "Sarrià (FGC)"
   en_ligne: false
+image: ../../../assets/uploads/pages/barcelone.jpg
+image_alt: "Barcelone vue depuis les hauteurs de Montjuïc : la ville s'étend jusqu'à la Méditerranée, les collines au fond, un drapeau catalan à gauche, dans une lumière d'hiver basse et dorée."
 resume: "La première rencontre MUSIMA. On a invité des personnes qui ont monté quelque chose à Barcelone — une activité, un projet, une pratique — et on leur a demandé de raconter comment ça s'est passé pour de vrai. Pas les versions retouchées : ce qui a marché, ce qui a coincé, ce qu'elles referaient autrement."
 intervenants:
   - fr/jeffrey-nomba
