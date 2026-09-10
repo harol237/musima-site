@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev --host",
     "build": "npm run verifier && astro build",
-    "verifier": "astro sync && tsc --noEmit",
+    "verifier": "astro sync && tsc --noEmit && tsc --noEmit -p functions/tsconfig.json",
     "preview": "astro preview --host",
     "astro": "astro",
     "cms": "sveltia-cms-proxy-server",
@@ -21,6 +21,7 @@
     "typescript": "^6.0.3"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260910.1",
     "@sveltia/cms": "^0.193.2"
   }
 }

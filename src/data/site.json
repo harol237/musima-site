@@ -25,7 +25,7 @@
   },
   "langue": "fr",
   "contact": {
-    "email": "Musima.org@mail.com",
+    "email": "contacto@musima.org",
     "telephone": "[TÉLÉPHONE À AJOUTER]",
     "siege": {
       "es": "Barcelona, Catalunya — España",
@@ -115,9 +115,5 @@
       "musima-theme",
       "musima-langue"
     ]
-  },
-  "inscription": {
-    "actif": true,
-    "action": "[URL DU FORMULAIRE (FORMSPREE, GETFORM…) — LAISSER TEL QUEL POUR ENVOYER PAR E-MAIL]"
   }
 }

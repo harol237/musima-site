@@ -55,11 +55,12 @@ const maj = new Intl.DateTimeFormat('es-ES', {
     <h3>Formulario de contacto</h3>
     <table class="tableau-traitement">
       <tbody>
-        <tr><th>Datos</th><td>El nombre, la dirección de correo y el mensaje que escribe.</td></tr>
-        <tr><th>Particularidad</th><td>El formulario no envía nada a un servidor: prepara un correo en su propio programa de mensajería, y es usted quien lo envía. Nada pasa por esta web, nada se registra en ella. Puede escribirnos directamente si lo prefiere.</td></tr>
-        <tr><th>Finalidad</th><td>Responder a su mensaje.</td></tr>
-        <tr><th>Base jurídica</th><td>Nuestro interés legítimo en responder a quien nos escribe — artículo 6.1.f del RGPD.</td></tr>
-        <tr><th>Conservación</th><td>El tiempo necesario para atender su solicitud, y como máximo tres años desde nuestro último intercambio.</td></tr>
+        <tr><th>Datos</th><td>El motivo de su mensaje, su nombre, sus apellidos, su dirección de correo, su teléfono, el mensaje si escribe uno, el idioma de la página y la fecha y hora del envío.</td></tr>
+        <tr><th>Finalidad</th><td>Responderle. Y, solo si marca la segunda casilla, informarle de los próximos encuentros: es una finalidad distinta, que se consiente aparte y se rechaza sin ninguna consecuencia sobre la primera.</td></tr>
+        <tr><th>Base jurídica</th><td>Su consentimiento para el tratamiento de su mensaje — artículo 6.1.a del RGPD — y, para la conservación de sus datos de contacto, un segundo consentimiento dado por separado. Ninguna casilla viene marcada.</td></tr>
+        <tr><th>Conservación</th><td>Dos años desde nuestro último intercambio. Después sus datos se eliminan, tanto de nuestro correo como de {site.infolettre.fournisseur}.</td></tr>
+        <tr><th>Destinatarios</th><td>{site.infolettre.fournisseur}, que hace llegar el correo de notificación y el acuse de recibo, y que registra sus datos si usted lo ha aceptado (véase la sección 4). Nadie más.</td></tr>
+        <tr><th>Particularidad</th><td>El envío pasa por nuestro propio servidor, en nuestro alojamiento. Su navegador no contacta con ningún dominio ajeno a musima.org: no se carga nada desde {site.infolettre.fournisseur} mientras rellena el formulario.</td></tr>
       </tbody>
     </table>
 
@@ -87,8 +88,9 @@ const maj = new Intl.DateTimeFormat('es-ES', {
         <tr>
           <th>{site.infolettre.fournisseur}</th>
           <td>
-            Brevo SAS, 106 boulevard Haussmann, 75008 París, Francia. Se encarga del envío del
-            boletín. Datos alojados en la Unión Europea. Un contrato de encargo de tratamiento
+            Brevo SAS, 106 boulevard Haussmann, 75008 París, Francia. Hace llegar el boletín, el correo de
+            notificación del formulario de contacto y su acuse de recibo, y registra los datos
+            de quien lo ha aceptado expresamente. Datos alojados en la Unión Europea. Un contrato de encargo de tratamiento
             conforme al artículo 28 del RGPD regula esta subcontratación.
           </td>
         </tr>

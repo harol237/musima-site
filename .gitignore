@@ -7,3 +7,6 @@ dist/
 .env.production
 .vercel
 .netlify
+
+# État local de wrangler (essais de la Pages Function)
+.wrangler/

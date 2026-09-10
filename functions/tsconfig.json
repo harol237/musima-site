@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  /* Seulement les fichiers de ce dossier : tsc suit ensuite les imports
+     tout seul. Reprendre tout src/ ferait entrer les modules qui
+     dépendent des types générés par Astro, absents de cet
+     environnement-ci. */
+  "include": ["**/*.ts"],
+  "compilerOptions": {
+    "types": ["@cloudflare/workers-types"],
+    "lib": ["ES2022"],
+    "resolveJsonModule": true,
+    "noEmit": true
+  }
+}

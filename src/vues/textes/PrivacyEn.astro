@@ -55,11 +55,12 @@ const maj = new Intl.DateTimeFormat('en-GB', {
     <h3>Contact form</h3>
     <table class="tableau-traitement">
       <tbody>
-        <tr><th>Data</th><td>The name, email address and message you write.</td></tr>
-        <tr><th>The particular bit</th><td>The form sends nothing to a server: it prepares an email in your own mail app, and you are the one who sends it. Nothing passes through this site, nothing is recorded on it. You can write to us directly if you prefer.</td></tr>
-        <tr><th>Purpose</th><td>Answering your message.</td></tr>
-        <tr><th>Legal basis</th><td>Our legitimate interest in replying to people who write to us — article 6.1.f of the GDPR.</td></tr>
-        <tr><th>Retention</th><td>As long as needed to deal with your request, and at most three years from our last exchange.</td></tr>
+        <tr><th>Data</th><td>What your message is about, your first name, your last name, your email address, your phone number, the message if you write one, the language of the page and the time you sent it.</td></tr>
+        <tr><th>Purpose</th><td>Answering you. And, only if you tick the second box, telling you about upcoming gatherings — that is a separate purpose, consented to separately, and refusing it changes nothing about the first.</td></tr>
+        <tr><th>Legal basis</th><td>Your consent for processing your message — article 6.1.a of the GDPR — and, for keeping your contact details, a second consent given separately. No box is ever pre-ticked.</td></tr>
+        <tr><th>Retention</th><td>Two years from our last exchange. Your details are then deleted, from our mailbox and from {site.infolettre.fournisseur} alike.</td></tr>
+        <tr><th>Recipients</th><td>{site.infolettre.fournisseur}, which carries the notification email and the acknowledgement, and which stores your details if you agreed to it (see section 4). Nobody else.</td></tr>
+        <tr><th>The particular bit</th><td>Sending goes through our own server, at our host. Your browser contacts no domain outside musima.org: nothing is loaded from {site.infolettre.fournisseur} while you fill the form in.</td></tr>
       </tbody>
     </table>
 
@@ -87,7 +88,9 @@ const maj = new Intl.DateTimeFormat('en-GB', {
         <tr>
           <th>{site.infolettre.fournisseur}</th>
           <td>
-            Brevo SAS, 106 boulevard Haussmann, 75008 Paris, France. Handles sending the newsletter.
+            Brevo SAS, 106 boulevard Haussmann, 75008 Paris, France. Carries the newsletter, the contact form's
+            notification email and its acknowledgement, and stores the details of anyone who
+            expressly agreed to it.
             Data hosted in the European Union. A processing agreement under article 28 of the GDPR
             governs this arrangement.
           </td>

@@ -6,6 +6,7 @@ import ARemplir from '~/components/ARemplir.astro';
 import BandeauCta from '~/components/BandeauCta.astro';
 import { enChantier } from '~/lib/contenu';
 import { chemin, type Langue } from '~/i18n/config';
+import { parametreMotif, ancreFormulaire } from '~/i18n/formulaire';
 import { traducteur } from '~/i18n/ui';
 
 interface Props { langue: Langue; alternatives: Record<Langue, string> }
@@ -210,7 +211,10 @@ const x = textes[langue];
    passe en pleine largeur, sur fond profond. La hiérarchie est la
    recommandation — quatre cartes identiques n'en font aucune. */
 const [principale, ...secondaires] = x.voies;
-const lienVoie = (via: string) => `${chemin(langue, 'contact')}?via=${via}`;
+/* Les quatre parcours de cette page correspondent un pour un à un motif
+   du formulaire de contact. */
+const lienVoie = (via: string) =>
+  `${chemin(langue, 'contact')}?${parametreMotif[langue]}=${via}#${ancreFormulaire[langue]}`;
 ---
 
 <Base
