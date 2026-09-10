@@ -6,13 +6,13 @@ import EntetePage from '~/components/EntetePage.astro';
 import EnteteSection from '~/components/EnteteSection.astro';
 import CarteIntervenant from '~/components/CarteIntervenant.astro';
 import ARemplir from '~/components/ARemplir.astro';
-import FormulaireInscription from '~/components/FormulaireInscription.astro';
 import VisuelDeSecours from '~/components/VisuelDeSecours.astro';
 import BadgeModele from '~/components/BadgeModele.astro';
 import CompteARebours from '~/components/CompteARebours.astro';
 import { dateISO, horodatageISO, estAVenir, estPublie, enChantier, pret } from '~/lib/contenu';
 import { formaterPlage, formatsEvenement, traduireValeur } from '~/i18n/utils';
 import { chemin, type Langue } from '~/i18n/config';
+import { parametreMotif, ancreFormulaire } from '~/i18n/formulaire';
 import { traducteur } from '~/i18n/ui';
 
 interface Props {
@@ -53,6 +53,11 @@ const carte =
     ? `https://www.google.com/maps/search/?api=1&query=${lieu.latitude},${lieu.longitude}`
     : undefined;
 const libelleCarte = t('voirSurCarte').replace('{adresse}', lieu?.adresse ?? lieu?.nom ?? '');
+
+/* Adresse du formulaire de contact, dans la langue de la page, avec le
+   motif d'inscription déjà choisi. Le jeton reste neutre en langue. */
+const inscription =
+  `${chemin(langue, 'contact')}?${parametreMotif[langue]}=inscription#${ancreFormulaire[langue]}`;
 
 const donnees = {
   '@context': 'https://schema.org',
@@ -174,12 +179,6 @@ const donnees = {
         <Content />
       </div>
 
-      {/* Le formulaire vit sous le programme : on s'inscrit après avoir
-          lu ce qui va se passer, pas avant. Seulement pour une rencontre
-          encore à venir, et sans doublon si une billetterie existe. */}
-      {aVenir && !pret(data.lien_inscription) && (
-        <FormulaireInscription langue={langue} evenement={data.titre} />
-      )}
     </article>
 
     <aside class="page-evenement__infos" aria-label={t('infosPratiques')}>
@@ -244,10 +243,16 @@ const donnees = {
           )}
         </dl>
 
+        {/* Une billetterie extérieure, si elle existe, prime. Sinon on
+            envoie vers le formulaire de contact, motif présélectionné :
+            un seul formulaire pour tout le site, donc une seule place où
+            vit la formulation RGPD. */}
         {aVenir && (
-          data.lien_inscription
-            ? <a href={data.lien_inscription} class="bouton encart__action" rel="noopener">{t('sInscrire')}</a>
-            : <ARemplir libelle="LIEN D’INSCRIPTION À AJOUTER" />
+          <a
+            href={pret(data.lien_inscription) ?? inscription}
+            class="bouton encart__action"
+            rel="noopener"
+          >{t('sInscrire')}</a>
         )}
       </div>
     </aside>

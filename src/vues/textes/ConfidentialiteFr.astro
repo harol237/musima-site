@@ -50,11 +50,12 @@ const maj = new Intl.DateTimeFormat('fr-FR', {
       <h3>Formulaire de contact</h3>
       <table class="tableau-traitement">
         <tbody>
-          <tr><th>Données</th><td>Le nom, l'adresse e-mail et le message que vous saisissez.</td></tr>
-          <tr><th>Particularité</th><td>Le formulaire n'envoie rien à un serveur : il prépare un e-mail dans votre propre logiciel de messagerie, et c'est vous qui l'envoyez. Rien ne transite par ce site, rien n'y est enregistré. Vous pouvez tout aussi bien nous écrire directement.</td></tr>
-          <tr><th>Finalité</th><td>Répondre à votre message.</td></tr>
-          <tr><th>Base légale</th><td>Notre intérêt légitime à répondre aux personnes qui nous écrivent — article 6.1.f du RGPD.</td></tr>
-          <tr><th>Conservation</th><td>Le temps de traiter votre demande, puis trois ans au maximum à compter de notre dernier échange.</td></tr>
+          <tr><th>Données</th><td>Le motif de votre message, votre prénom, votre nom, votre adresse e-mail, votre téléphone, le message si vous en écrivez un, la langue de la page et l'horodatage de l'envoi.</td></tr>
+          <tr><th>Finalité</th><td>Vous répondre. Et, uniquement si vous cochez la seconde case, vous informer des prochaines rencontres — c'est une finalité distincte, qui se consent à part et se refuse sans conséquence sur la première.</td></tr>
+          <tr><th>Base légale</th><td>Votre consentement pour le traitement de votre message — article 6.1.a du RGPD — et, pour la conservation de vos coordonnées, un second consentement donné séparément. Aucune case n'est pré-cochée.</td></tr>
+          <tr><th>Conservation</th><td>Deux ans à compter de notre dernier échange. Vos coordonnées sont ensuite supprimées, de notre messagerie comme de chez {site.infolettre.fournisseur}.</td></tr>
+          <tr><th>Destinataires</th><td>{site.infolettre.fournisseur}, qui achemine l'e-mail de notification et l'accusé de réception, et qui enregistre vos coordonnées si vous l'avez accepté (voir la section 4). Personne d'autre.</td></tr>
+          <tr><th>Particularité</th><td>L'envoi passe par notre propre serveur, chez notre hébergeur. Votre navigateur ne contacte aucun domaine extérieur à musima.org : rien n'est chargé depuis {site.infolettre.fournisseur} pendant que vous remplissez le formulaire.</td></tr>
         </tbody>
       </table>
 
@@ -83,8 +84,9 @@ const maj = new Intl.DateTimeFormat('fr-FR', {
           <tr>
             <th>{site.infolettre.fournisseur}</th>
             <td>
-              Brevo SAS, 106 boulevard Haussmann, 75008 Paris, France. Assure l'envoi de
-              l'infolettre. Données hébergées dans l'Union européenne. Un accord de traitement
+              Brevo SAS, 106 boulevard Haussmann, 75008 Paris, France. Achemine l'infolettre, l'e-mail de
+              notification du formulaire de contact et son accusé de réception, et enregistre
+              les coordonnées de qui l'a expressément accepté. Données hébergées dans l'Union européenne. Un accord de traitement
               conforme à l'article 28 du RGPD encadre cette sous-traitance.
             </td>
           </tr>

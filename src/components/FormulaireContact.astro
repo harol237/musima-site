@@ -1,0 +1,319 @@
+---
+import site from '~/data/site.json';
+import { chemin, type Langue } from '~/i18n/config';
+import { chargerEvenements } from '~/lib/contenu';
+import {
+  motifs, textes, libelleMotif, parametreMotif, ancreFormulaire,
+} from '~/i18n/formulaire';
+
+/* ==================================================================
+   FORMULAIRE DE CONTACT
+   ------------------------------------------------------------------
+   Il poste en JSON vers /api/contact, une Cloudflare Pages Function.
+   Le navigateur ne contacte que musima.org : c'est la Function qui
+   parle à Brevo. Rien de tiers ne se charge ici.
+
+   Le contrôle de saisie est fait deux fois, côté navigateur pour le
+   confort et côté serveur pour de vrai. Les deux lisent les mêmes
+   messages, dans src/i18n/formulaire.ts.
+   ================================================================== */
+
+interface Props { langue: Langue }
+const { langue } = Astro.props;
+const t = textes[langue];
+
+/* Le motif « inscription » n'existe que s'il y a une rencontre à venir,
+   et son libellé vient de cette rencontre. Aucune date écrite en dur :
+   le site se reconstruit à chaque déploiement, l'option disparaît donc
+   d'elle-même le jour où le calendrier est vide. */
+const { aVenir } = await chargerEvenements(langue);
+const prochaine = aVenir[0];
+const options = motifs
+  .filter((m) => m !== 'inscription' || prochaine)
+  .map((m) => ({ jeton: m, libelle: libelleMotif(m, langue, prochaine?.data.titre) }));
+
+const ancre = ancreFormulaire[langue];
+const messages = {
+  requis: t.erreurChamp.requis,
+  email: t.erreurChamp.email,
+  telephone: t.erreurChamp.telephone,
+  generale: t.erreurGenerale,
+  reseau: t.erreurReseau,
+  merci: t.merci,
+  merciDetail: t.merciDetail,
+  envoi: t.envoiEnCours,
+  envoyer: t.envoyer,
+  contact: site.contact.email,
+};
+---
+
+<form
+  class="formulaire"
+  id={ancre}
+  novalidate
+  data-formulaire-contact
+  data-langue={langue}
+  data-parametre={parametreMotif[langue]}
+  data-rencontre={prochaine?.data.titre ?? ''}
+  data-messages={JSON.stringify(messages)}
+>
+  <fieldset class="formulaire__groupe">
+    <legend class="visuellement-cache">{t.legende}</legend>
+
+    <div class="champ">
+      <label for="c-motif">{t.labelMotif}</label>
+      <select id="c-motif" name="motif" required aria-describedby="err-motif">
+        {options.map((o) => <option value={o.jeton}>{o.libelle}</option>)}
+      </select>
+      <p class="champ__erreur" id="err-motif" data-erreur="motif" hidden></p>
+    </div>
+
+    <div class="formulaire__paire">
+      <div class="champ">
+        <label for="c-prenom">{t.labelPrenom}</label>
+        <input id="c-prenom" name="prenom" type="text" autocomplete="given-name" required aria-describedby="err-prenom" />
+        <p class="champ__erreur" id="err-prenom" data-erreur="prenom" hidden></p>
+      </div>
+      <div class="champ">
+        <label for="c-nom">{t.labelNom}</label>
+        <input id="c-nom" name="nom" type="text" autocomplete="family-name" required aria-describedby="err-nom" />
+        <p class="champ__erreur" id="err-nom" data-erreur="nom" hidden></p>
+      </div>
+    </div>
+
+    <div class="formulaire__paire">
+      <div class="champ">
+        <label for="c-email">{t.labelEmail}</label>
+        <input id="c-email" name="email" type="email" autocomplete="email" required aria-describedby="err-email" />
+        <p class="champ__erreur" id="err-email" data-erreur="email" hidden></p>
+      </div>
+      <div class="champ">
+        <label for="c-tel">{t.labelTelephone}</label>
+        <input id="c-tel" name="telephone" type="tel" autocomplete="tel" required aria-describedby="err-telephone" />
+        <p class="champ__erreur" id="err-telephone" data-erreur="telephone" hidden></p>
+      </div>
+    </div>
+
+    <div class="champ">
+      <label for="c-message">
+        {t.labelMessage} <span class="champ__facultatif">({t.facultatif})</span>
+      </label>
+      <textarea id="c-message" name="message" rows="6"></textarea>
+    </div>
+
+    {/* Champ piège. Masqué à l'œil, retiré du parcours clavier et de
+        l'arbre d'accessibilité : seul un robot le remplit. */}
+    <div class="piege" aria-hidden="true">
+      <label for="c-site">Site</label>
+      <input id="c-site" name="site" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    {/* Deux finalités distinctes, donc deux cases distinctes, aucune
+        pré-cochée. Répondre à un message et garder des coordonnées pour
+        annoncer les prochaines rencontres ne se consentent pas ensemble. */}
+    <label class="consentement">
+      <input type="checkbox" name="consentement" value="1" required aria-describedby="err-consentement" />
+      <span>
+        {t.consentement}{' '}
+        <a href={chemin(langue, 'confidentialite')} class="lien">{t.consentementLien}</a>.
+      </span>
+    </label>
+    <p class="champ__erreur" id="err-consentement" data-erreur="consentement" hidden></p>
+
+    <label class="consentement">
+      <input type="checkbox" name="conservation" value="1" />
+      <span>{t.conservation}</span>
+    </label>
+
+    <button type="submit" class="bouton formulaire__envoi">{t.envoyer}</button>
+
+    {/* Une seule zone de retour, polie : elle n'interrompt pas la
+        saisie, elle est lue quand le lecteur d'écran arrive au bout. */}
+    <p class="formulaire__retour" data-retour role="status" aria-live="polite" hidden></p>
+
+    <noscript>
+      <p class="champ__aide">
+        {t.sansJs}{' '}
+        <a href={`mailto:${site.contact.email}`} class="lien">{site.contact.email}</a>.
+      </p>
+    </noscript>
+  </fieldset>
+</form>
+
+<script>
+  type Messages = Record<string, string>;
+
+  const form = document.querySelector<HTMLFormElement>('[data-formulaire-contact]');
+  if (form) {
+    const m: Messages = JSON.parse(form.dataset.messages || '{}');
+    const retour = form.querySelector<HTMLElement>('[data-retour]')!;
+    const bouton = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const champ = (n: string) => form.elements.namedItem(n) as HTMLInputElement | null;
+
+    /* Le motif arrive parfois d'une autre page, par l'URL. La valeur est
+       un jeton neutre en langue, pas un libellé traduit.
+       `via` est l'ancien paramètre de la page S'engager : il reste
+       accepté pour que les liens déjà partagés tombent juste. */
+    const url = new URLSearchParams(location.search);
+    const anciens: Record<string, string> = {
+      intervenir: 'intervenir', benevolat: 'benevolat',
+      partenariat: 'partenariat', adherer: 'adherer', sujet: 'general', presse: 'general',
+    };
+    const jeton = url.get(form.dataset.parametre || 'motif')
+      ?? anciens[url.get('via') ?? ''] ?? null;
+    const select = champ('motif') as unknown as HTMLSelectElement | null;
+    if (jeton && select && [...select.options].some((o) => o.value === jeton)) {
+      select.value = jeton;
+    }
+
+    const montrerErreur = (nom: string, texte: string | null) => {
+      const bloc = form.querySelector<HTMLElement>(`[data-erreur="${nom}"]`);
+      const entree = champ(nom);
+      if (bloc) { bloc.textContent = texte ?? ''; bloc.hidden = !texte; }
+      if (entree) entree.setAttribute('aria-invalid', texte ? 'true' : 'false');
+    };
+
+    const emailValide = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+    const telValide = (v: string) => /^[+()\d][\d\s().-]{5,}$/.test(v);
+
+    function verifier() {
+      const erreurs: Record<string, string> = {};
+      const lire = (n: string) => (champ(n)?.value || '').trim();
+      for (const n of ['motif', 'prenom', 'nom', 'email', 'telephone']) {
+        if (!lire(n)) erreurs[n] = m.requis;
+      }
+      if (!erreurs.email && !emailValide(lire('email'))) erreurs.email = m.email;
+      if (!erreurs.telephone && !telValide(lire('telephone'))) erreurs.telephone = m.telephone;
+      if (!champ('consentement')?.checked) erreurs.consentement = m.requis;
+      for (const n of ['motif', 'prenom', 'nom', 'email', 'telephone', 'consentement']) {
+        montrerErreur(n, erreurs[n] ?? null);
+      }
+      return erreurs;
+    }
+
+    /* On ne signale une erreur qu'après une première tentative : corriger
+       quelqu'un pendant qu'il tape est désagréable et inutile. */
+    let tente = false;
+    form.addEventListener('input', () => { if (tente) verifier(); });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      tente = true;
+      const erreurs = verifier();
+      if (Object.keys(erreurs).length) {
+        form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+        return;
+      }
+
+      bouton.disabled = true;
+      bouton.textContent = m.envoi;
+      retour.hidden = true;
+      retour.className = 'formulaire__retour';
+
+      const dire = (texte: string, etat: 'ok' | 'ko') => {
+        retour.textContent = texte;
+        retour.className = `formulaire__retour formulaire__retour--${etat}`;
+        retour.hidden = false;
+      };
+
+      try {
+        const r = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            motif: (champ('motif') as any)?.value,
+            prenom: champ('prenom')?.value,
+            nom: champ('nom')?.value,
+            email: champ('email')?.value,
+            telephone: champ('telephone')?.value,
+            message: (form.elements.namedItem('message') as HTMLTextAreaElement)?.value,
+            consentement: !!champ('consentement')?.checked,
+            conservation: !!champ('conservation')?.checked,
+            site: champ('site')?.value,
+            langue: form.dataset.langue,
+            rencontre: form.dataset.rencontre,
+          }),
+        });
+        const data = await r.json().catch(() => ({}));
+
+        if (r.ok && data.ok) {
+          /* On ne promet l'e-mail de confirmation que s'il est parti. */
+          dire(data.accuse ? `${m.merci} ${m.merciDetail}` : m.merci, 'ok');
+          form.querySelectorAll('input, select, textarea, button').forEach((c) => {
+            (c as HTMLInputElement).disabled = true;
+          });
+          retour.setAttribute('tabindex', '-1');
+          retour.focus();
+          return;
+        }
+
+        if (data.champs) {
+          for (const [nom, texte] of Object.entries(data.champs as Messages)) {
+            montrerErreur(nom, texte);
+          }
+          form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+          dire(m.generale, 'ko');
+        } else {
+          /* Jamais d'échec muet : l'adresse directe est donnée. */
+          dire(`${m.generale} ${m.contact}`, 'ko');
+        }
+      } catch {
+        dire(`${m.reseau} ${m.contact}`, 'ko');
+      } finally {
+        if (!retour.classList.contains('formulaire__retour--ok')) {
+          bouton.disabled = false;
+          bouton.textContent = m.envoyer;
+        }
+      }
+    });
+  }
+</script>
+
+<style>
+  .formulaire { display: flex; flex-direction: column; gap: var(--e-5); margin-top: var(--e-3); }
+  .champ { display: flex; flex-direction: column; gap: var(--e-2); }
+  .champ label {
+    font-family: var(--f-titre);
+    font-size: var(--t-200);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--encre-douce);
+  }
+  .champ :is(input, select, textarea) {
+    padding: 0.75em 0.9em;
+    border: 1px solid var(--trait-fort);
+    border-radius: var(--r-carte);
+    background: var(--surface);
+    font-size: var(--t-300);
+    font-family: var(--f-lecture);
+  }
+  .champ textarea { resize: vertical; }
+  .champ__aide { font-size: var(--t-200); color: var(--encre-faible); line-height: 1.5; }
+
+  /* La case et son texte sur une ligne, la case ne rétrécit pas. */
+  .consentement {
+    display: flex; align-items: flex-start; gap: var(--e-3);
+    font-size: var(--t-300); line-height: 1.55; color: var(--encre-douce); cursor: pointer;
+  }
+  .consentement input { flex: none; width: 1.35rem; height: 1.35rem; margin-top: 0.1em; accent-color: var(--terre); }
+
+  .formulaire__groupe { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--e-4); }
+  .formulaire__paire { display: grid; gap: var(--e-4); }
+  @media (min-width: 34rem) { .formulaire__paire { grid-template-columns: 1fr 1fr; } }
+  .champ__facultatif { color: var(--encre-faible); font-weight: 400; }
+  .champ__erreur { margin: 0; font-family: var(--f-titre); font-size: var(--t-200); color: var(--terre); }
+  .formulaire__envoi { align-self: flex-start; margin-top: var(--e-2); }
+
+  /* Hors de l'écran plutôt que `display:none` : certains robots ignorent
+     les champs non rendus, celui-ci doit rester rempli. */
+  .piege { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  .formulaire__retour {
+    margin: 0; padding: var(--e-4); border-radius: var(--r-carte);
+    font-size: var(--t-300); line-height: 1.6;
+  }
+  .formulaire__retour--ok { background: var(--surface-2); color: var(--encre); border-left: 3px solid var(--or); }
+  .formulaire__retour--ko { background: var(--surface-2); color: var(--encre); border-left: 3px solid var(--terre); }
+  .formulaire__retour:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+</style>

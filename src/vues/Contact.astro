@@ -1,6 +1,7 @@
 ---
 import Base from '~/layouts/Base.astro';
 import EntetePage from '~/components/EntetePage.astro';
+import FormulaireContact from '~/components/FormulaireContact.astro';
 import ARemplir from '~/components/ARemplir.astro';
 import site from '~/data/site.json';
 import { enChantier } from '~/lib/contenu';
@@ -22,30 +23,12 @@ const textes = {
     chapo: 'Una propuesta, una duda, ganas de aportar algo: lo más sencillo sigue siendo escribir.',
     meta: 'Escribir a MUSIMA: proponer una intervención, un tema, una colaboración, o hacer una pregunta.',
     formulaire: 'Formulario',
-    note: 'Este formulario abre tu programa de correo con el mensaje ya redactado: no hay intermediario, tu mensaje llega directamente a nuestro buzón. Si prefieres escribir por tu cuenta, la dirección está aquí al lado.',
-    nom: 'Nombre y apellidos',
-    email: 'Dirección de correo',
-    sujet: 'Asunto',
-    message: 'Mensaje',
-    envoyer: 'Enviar',
-    rgpd: 'No se guarda nada en esta web: lo que escribes sale directamente por correo y solo sirve para responderte. Consulta la',
-    rgpdLien: 'política de privacidad',
-    sansJs: 'El formulario necesita JavaScript para preparar el mensaje. Escríbenos directamente a',
     coordonnees: 'Datos de contacto',
     labelEmail: 'Correo',
     labelOu: 'Dónde',
     reseaux: 'Redes',
     presse: 'Prensa',
     pressseTexte: 'Periodistas y medios: aquí se pondrá a disposición un dossier de prensa y material gráfico en alta resolución.',
-    sujets: [
-      'Proponer una intervención',
-      'Proponer un tema o un retrato',
-      'Asociarme',
-      'Echar una mano',
-      'Colaborar con la asociación',
-      'Prensa',
-      'Otro',
-    ],
   },
   fr: {
     titre: 'Nous écrire',
@@ -53,30 +36,12 @@ const textes = {
     chapo: 'Une proposition, une question, une envie de contribuer : le plus simple est encore d’écrire.',
     meta: 'Écrire à MUSIMA : proposer une intervention, un sujet, un partenariat, ou poser une question.',
     formulaire: 'Formulaire',
-    note: 'Ce formulaire ouvre ton logiciel de messagerie avec le message déjà rédigé — il n’y a aucun intermédiaire, ton message arrive directement dans notre boîte. Si tu préfères écrire toi-même, l’adresse est juste à côté.',
-    nom: 'Nom et prénom',
-    email: 'Adresse e-mail',
-    sujet: 'Sujet',
-    message: 'Message',
-    envoyer: 'Envoyer',
-    rgpd: 'Rien n’est enregistré sur ce site : ce que tu écris part directement par e-mail et sert uniquement à te répondre. Voir la',
-    rgpdLien: 'politique de confidentialité',
-    sansJs: 'Le formulaire a besoin de JavaScript pour préparer le message. Écris-nous directement à',
     coordonnees: 'Coordonnées',
     labelEmail: 'E-mail',
     labelOu: 'Où',
     reseaux: 'Réseaux',
     presse: 'Presse',
     pressseTexte: 'Journalistes et médias : un dossier de presse et des visuels en haute définition seront mis à disposition ici.',
-    sujets: [
-      'Proposer une intervention',
-      'Proposer un sujet ou un portrait',
-      'Adhérer à l’association',
-      'Devenir bénévole',
-      'Devenir partenaire',
-      'Presse',
-      'Autre',
-    ],
   },
   en: {
     titre: 'Write to us',
@@ -84,30 +49,12 @@ const textes = {
     chapo: 'A proposal, a question, an urge to contribute: the simplest thing is still to write.',
     meta: 'Write to MUSIMA: propose a talk, a subject, a partnership, or ask a question.',
     formulaire: 'Form',
-    note: 'This form opens your own mail app with the message already written — there is no middleman, your message lands straight in our inbox. If you would rather write it yourself, the address is right here.',
-    nom: 'Name',
-    email: 'Email address',
-    sujet: 'Subject',
-    message: 'Message',
-    envoyer: 'Send',
-    rgpd: 'Nothing is stored on this site: what you type goes straight out by email and is only used to answer you. See the',
-    rgpdLien: 'privacy policy',
-    sansJs: 'The form needs JavaScript to prepare the message. Write to us directly at',
     coordonnees: 'Details',
     labelEmail: 'Email',
     labelOu: 'Where',
     reseaux: 'Social',
     presse: 'Press',
     pressseTexte: 'Journalists and media: a press kit and high-resolution images will be made available here.',
-    sujets: [
-      'Propose a talk',
-      'Propose a subject or a portrait',
-      'Become a member',
-      'Volunteer',
-      'Partner with us',
-      'Press',
-      'Other',
-    ],
   },
   ca: {
     titre: 'Escriu-nos',
@@ -115,30 +62,12 @@ const textes = {
     chapo: 'Una proposta, un dubte, ganes d’aportar alguna cosa: el més senzill segueix sent escriure.',
     meta: 'Escriure a MUSIMA: proposar una intervenció, un tema, una col·laboració, o fer una pregunta.',
     formulaire: 'Formulari',
-    note: 'Aquest formulari obre el teu programa de correu amb el missatge ja redactat: no hi ha intermediari, el teu missatge arriba directament a la nostra bústia. Si prefereixes escriure pel teu compte, l’adreça és aquí al costat.',
-    nom: 'Nom i cognoms',
-    email: 'Adreça electrònica',
-    sujet: 'Assumpte',
-    message: 'Missatge',
-    envoyer: 'Enviar',
-    rgpd: 'No es desa res en aquest web: el que escrius surt directament per correu i només serveix per respondre’t. Consulta la',
-    rgpdLien: 'política de privacitat',
-    sansJs: 'El formulari necessita JavaScript per preparar el missatge. Escriu-nos directament a',
     coordonnees: 'Dades de contacte',
     labelEmail: 'Correu',
     labelOu: 'On',
     reseaux: 'Xarxes',
     presse: 'Premsa',
     pressseTexte: 'Periodistes i mitjans: aquí es posarà a disposició un dossier de premsa i material gràfic en alta resolució.',
-    sujets: [
-      'Proposar una intervenció',
-      'Proposar un tema o un retrat',
-      'Associar-m’hi',
-      'Donar un cop de mà',
-      'Col·laborar amb l’associació',
-      'Premsa',
-      'Altres',
-    ],
   },
 } as const;
 const x = textes[langue];
@@ -155,45 +84,8 @@ const x = textes[langue];
   <section class="section conteneur contact">
     <div class="contact__form">
       <h2 class="t-section">{x.formulaire}</h2>
-      <p class="note">{x.note}</p>
 
-      <form class="formulaire" data-formulaire-mailto data-destinataire={site.contact.email}>
-        <div class="champ">
-          <label for="nom">{x.nom}</label>
-          <input id="nom" name="nom" type="text" autocomplete="name" required />
-        </div>
-
-        <div class="champ">
-          <label for="email">{x.email}</label>
-          <input id="email" name="email" type="email" autocomplete="email" required />
-        </div>
-
-        <div class="champ">
-          <label for="sujet">{x.sujet}</label>
-          <select id="sujet" name="sujet">
-            {x.sujets.map((sujet) => <option value={sujet}>{sujet}</option>)}
-          </select>
-        </div>
-
-        <div class="champ">
-          <label for="message">{x.message}</label>
-          <textarea id="message" name="message" rows="6" required></textarea>
-        </div>
-
-        <p class="champ__aide" id="aide-rgpd">
-          {x.rgpd}{' '}
-          <a href={chemin(langue, 'confidentialite')} class="lien">{x.rgpdLien}</a>.
-        </p>
-
-        <button type="submit" class="bouton" aria-describedby="aide-rgpd">{x.envoyer}</button>
-
-        <noscript>
-          <p class="champ__aide">
-            {x.sansJs}{' '}
-            <a href={`mailto:${site.contact.email}`} class="lien">{site.contact.email}</a>.
-          </p>
-        </noscript>
-      </form>
+      <FormulaireContact langue={langue} />
     </div>
 
     <aside class="contact__infos" aria-label={x.coordonnees}>
@@ -239,41 +131,6 @@ const x = textes[langue];
     </aside>
   </section>
 
-  <script>
-    // Le formulaire n'envoie rien lui-même : il compose un e-mail et laisse
-    // la personne l'envoyer depuis sa propre messagerie. Zéro donnée stockée,
-    // zéro service tiers — et ça marche dès le premier jour.
-    const formulaire = document.querySelector<HTMLFormElement>('[data-formulaire-mailto]');
-
-    // Les rangs correspondent à l'ordre de la liste `sujets` ci-dessus,
-    // identique dans toutes les langues.
-    const rangs: Record<string, number> = {
-      intervenir: 0, sujet: 1, adherer: 2, benevolat: 3, partenariat: 4, presse: 5,
-    };
-    const voie = new URLSearchParams(location.search).get('via');
-    const choix = formulaire?.querySelector<HTMLSelectElement>('#sujet');
-    if (voie && choix && voie in rangs) {
-      choix.selectedIndex = rangs[voie];
-      // La personne arrive avec son objet déjà réglé : le curseur va
-      // directement au premier champ qui lui reste à remplir.
-      formulaire?.querySelector<HTMLInputElement>('#nom')?.focus();
-    }
-
-    formulaire?.addEventListener('submit', (evenement) => {
-      evenement.preventDefault();
-      const champs = new FormData(formulaire);
-      const destinataire = formulaire.dataset.destinataire ?? '';
-      const nom = String(champs.get('nom') ?? '');
-      const email = String(champs.get('email') ?? '');
-      const sujet = String(champs.get('sujet') ?? 'Message');
-      const message = String(champs.get('message') ?? '');
-
-      const corps = `${message}\n\n—\n${nom}\n${email}`;
-      window.location.href =
-        `mailto:${destinataire}?subject=${encodeURIComponent(`[MUSIMA] ${sujet}`)}` +
-        `&body=${encodeURIComponent(corps)}`;
-    });
-  </script>
 </Base>
 
 <style>
@@ -281,28 +138,6 @@ const x = textes[langue];
   @media (min-width: 62rem) { .contact { grid-template-columns: minmax(0, 1fr) 21rem; gap: var(--e-9); } }
 
   .contact__form { display: flex; flex-direction: column; gap: var(--e-4); max-width: 34rem; }
-  .note { font-size: var(--t-300); color: var(--encre-douce); line-height: 1.65; }
-
-  .formulaire { display: flex; flex-direction: column; gap: var(--e-5); margin-top: var(--e-3); }
-  .champ { display: flex; flex-direction: column; gap: var(--e-2); }
-  .champ label {
-    font-family: var(--f-titre);
-    font-size: var(--t-200);
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--encre-douce);
-  }
-  .champ :is(input, select, textarea) {
-    padding: 0.75em 0.9em;
-    border: 1px solid var(--trait-fort);
-    border-radius: var(--r-carte);
-    background: var(--surface);
-    font-size: var(--t-300);
-    font-family: var(--f-lecture);
-  }
-  .champ textarea { resize: vertical; }
-  .champ__aide { font-size: var(--t-200); color: var(--encre-faible); line-height: 1.5; }
 
   .contact__infos { display: flex; flex-direction: column; gap: var(--e-4); }
   .encart { border: 1px solid var(--trait); border-radius: var(--r-carte); background: var(--surface); padding: var(--e-5); }
