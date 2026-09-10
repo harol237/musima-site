@@ -5,7 +5,7 @@ date: 2026-09-02
 categorie: "Idées & analyses"
 resume: "Durant anys vaig veure gent del meu voltant construir coses sòlides sense que allò sortís mai del seu cercle. MUSIMA va néixer d'aquesta distància, i del moment en què vaig deixar d'esperar que se n'ocupés una altra persona."
 image: ../../../assets/uploads/pages/porquemusima.jpg
-image_alt: "Un home amb vestit parla al faristol d'una sala de recepcions, amb una taula presidencial a cada costat, sota llums d'aranya."
+image_alt: "Una nena de perfil, amb la mà recolzada en una persiana veneciana, mira a través de les lamel·les la llum daurada del final del dia."
 mots_cles: ["Origen", "Diàspora", "Barcelona"]
 temps_lecture: "4 min de lectura"
 en_avant: true
@@ -70,6 +70,6 @@ Això no vol dir que s'acabi aquí. El que es diu a Barcelona es diu també a Ma
 
 ## El que ve
 
-La primera trobada és el **dissabte 26 de setembre de 2026**, a partir de les 17:00. Es diu «El que es construeix aquí». Pots venir sense conèixer ningú: de fet, aquesta és una mica la idea.
+La primera trobada és el **dissabte 26 de setembre de 2026**, de 16:30 a 20:00. Es diu «El que es construeix aquí». Pots venir sense conèixer ningú: de fet, aquesta és una mica la idea.
 
 I si has muntat alguna cosa i estàs pensant que la teva història no té res d'excepcional: és exactament el tipus d'història que volem escoltar. Escriu-nos.

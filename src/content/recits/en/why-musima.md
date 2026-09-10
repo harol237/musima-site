@@ -5,7 +5,7 @@ date: 2026-09-02
 categorie: "Idées & analyses"
 resume: "For years I watched people around me build solid things that never travelled beyond their own circle. MUSIMA came out of that gap — and out of the moment I stopped waiting for someone else to deal with it."
 image: ../../../assets/uploads/pages/porquemusima.jpg
-image_alt: "A man in a suit speaking at a lectern in a reception room, a top table on either side, beneath chandeliers."
+image_alt: "A young girl in profile, her hand against a venetian blind, looking through the slats at the golden late-afternoon light."
 mots_cles: ["Origins", "Diaspora", "Barcelona"]
 temps_lecture: "4 min read"
 en_avant: true
@@ -71,6 +71,6 @@ That does not mean it stops here. What gets said in Barcelona also gets said in 
 
 ## What comes next
 
-The first gathering is on **Saturday 26 September 2026**, from 5pm. It is called "What Gets Built Here". You can come without knowing anyone — that is rather the point.
+The first gathering is on **Saturday 26 September 2026**, from 4.30pm to 8pm. It is called "What Gets Built Here". You can come without knowing anyone — that is rather the point.
 
 And if you have built something and you are thinking, reading this, that your story is nothing special: that is exactly the kind of story we want to hear. Write to us.
