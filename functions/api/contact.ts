@@ -1,5 +1,5 @@
 import site from '../../src/data/site.json';
-import { estMotif, libelleMotif, textes, type Motif } from '../../src/i18n/formulaire';
+import { estMotif, libelleMotif, textes, LIMITES, type Motif } from '../../src/i18n/formulaire';
 import { langues, type Langue } from '../../src/i18n/config';
 
 /* ==================================================================
@@ -39,18 +39,44 @@ type Charge = {
   motif: string; prenom: string; nom: string; email: string;
   telephone: string; message: string; consentement: boolean;
   conservation: boolean; langue: string; rencontre?: string;
+  /** Millisecondes écoulées entre l'affichage de la page et l'envoi,
+      mesurées par le navigateur. */
+  delai?: number;
   /** Champ piège : rempli, c'est un robot. */
   site?: string;
 };
 
-const propre = (v: unknown, max = 2000) =>
-  typeof v === 'string' ? v.trim().slice(0, max) : '';
+
+/* Garde-fou sur la charge entière, avant même de la lire champ par
+   champ : un corps de plusieurs mégaoctets n'a aucune raison d'être. */
+const TAILLE_MAX = 16_000;
+
+/* Délai minimal entre l'affichage de la page et l'envoi. Un humain qui
+   remplit six champs met bien plus que trois secondes ; un script qui
+   poste immédiatement, non. */
+const DELAI_MIN = 3000;
+
+const propre = (v: unknown) => (typeof v === 'string' ? v.trim() : '');
 
 /* Volontairement permissif : il ne s'agit pas de valider une adresse
    selon la RFC, seulement d'attraper les fautes de frappe évidentes.
    Le vrai test, c'est que l'accusé de réception arrive. */
 const emailValide = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
 const telValide = (v: string) => /^[+()\d][\d\s().-]{5,}$/.test(v);
+
+/* Les rejets sont journalisés — visibles dans les journaux en temps réel
+   de Cloudflare Pages. Jamais le contenu des champs : on note ce qui a
+   été refusé et d'où, pas ce que la personne a écrit. */
+function journaliser(motif: string, request: Request, extra: Record<string, unknown> = {}) {
+  console.log(JSON.stringify({
+    rejet: motif,
+    ip: request.headers.get('cf-connecting-ip') ?? '?',
+    pays: (request as { cf?: { country?: string } }).cf?.country ?? '?',
+    ua: (request.headers.get('user-agent') ?? '').slice(0, 120),
+    quand: new Date().toISOString(),
+    ...extra,
+  }));
+}
 
 const echapper = (v: string) =>
   v.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -171,49 +197,83 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
   let brut: Charge;
   try {
-    brut = (await request.json()) as Charge;
+    const texte = await request.text();
+    if (texte.length > TAILLE_MAX) {
+      journaliser('taille', request, { octets: texte.length });
+      return repondre({ ok: false, erreur: 'requete' }, 413);
+    }
+    brut = JSON.parse(texte) as Charge;
+    if (typeof brut !== 'object' || brut === null) throw new Error('forme');
   } catch {
+    journaliser('json', request);
     return repondre({ ok: false, erreur: 'requete' }, 400);
   }
 
   /* Champ piège rempli : on répond comme si tout allait bien. Un robot
      qui reçoit une erreur apprend quelque chose ; un robot qui reçoit
      un succès ne revient pas. */
-  if (propre(brut.site)) return repondre({ ok: true, accuse: false });
+  if (propre(brut.site)) {
+    journaliser('piege', request);
+    return repondre({ ok: true, accuse: false });
+  }
+
+  /* Envoi trop rapide après l'affichage de la page. Même réponse feinte
+     que pour le piège, et pour la même raison. Un délai absent est traité
+     comme trop rapide : le champ est posé par le script du formulaire, et
+     une soumission qui ne passe pas par lui n'a pas à être servie. */
+  const delai = typeof brut.delai === 'number' ? brut.delai : -1;
+  if (delai < DELAI_MIN) {
+    journaliser('delai', request, { delai });
+    return repondre({ ok: true, accuse: false });
+  }
 
   const langue: Langue = (langues as readonly string[]).includes(brut.langue)
     ? (brut.langue as Langue) : 'es';
   const t = textes[langue];
 
   const c: Charge = {
-    motif: propre(brut.motif, 40),
-    prenom: propre(brut.prenom, 80),
-    nom: propre(brut.nom, 80),
-    email: propre(brut.email, 160),
-    telephone: propre(brut.telephone, 40),
-    message: propre(brut.message, 4000),
+    motif: propre(brut.motif),
+    prenom: propre(brut.prenom),
+    nom: propre(brut.nom),
+    email: propre(brut.email),
+    telephone: propre(brut.telephone),
+    message: propre(brut.message),
     consentement: brut.consentement === true,
     conservation: brut.conservation === true,
     langue,
-    rencontre: propre(brut.rencontre, 160),
+    rencontre: propre(brut.rencontre).slice(0, LIMITES.rencontre),
   };
 
   /* Mêmes règles que côté client, refaites ici : le contrôle du
      navigateur est un confort d'usage, pas une garantie. */
   const champs: Record<string, string> = {};
-  if (!estMotif(c.motif)) champs.motif = t.erreurChamp.requis;
-  if (!c.prenom) champs.prenom = t.erreurChamp.requis;
-  if (!c.nom) champs.nom = t.erreurChamp.requis;
-  if (!c.email) champs.email = t.erreurChamp.requis;
-  else if (!emailValide(c.email)) champs.email = t.erreurChamp.email;
-  if (!c.telephone) champs.telephone = t.erreurChamp.requis;
-  else if (!telValide(c.telephone)) champs.telephone = t.erreurChamp.telephone;
-  if (!c.consentement) champs.consentement = t.erreurChamp.requis;
-  if (Object.keys(champs).length) return repondre({ ok: false, erreur: 'champs', champs }, 422);
+  const trop: string[] = [];
+  for (const [nom, max] of Object.entries(LIMITES)) {
+    const valeur = (c as unknown as Record<string, unknown>)[nom];
+    if (typeof valeur === 'string' && valeur.length > max) {
+      champs[nom] = t.erreurChamp.trop.replace('{max}', String(max));
+      trop.push(nom);
+    }
+  }
+  if (!estMotif(c.motif)) champs.motif ??= t.erreurChamp.requis;
+  if (!c.prenom) champs.prenom ??= t.erreurChamp.requis;
+  if (!c.nom) champs.nom ??= t.erreurChamp.requis;
+  if (!c.email) champs.email ??= t.erreurChamp.requis;
+  else if (!emailValide(c.email)) champs.email ??= t.erreurChamp.email;
+  if (!c.telephone) champs.telephone ??= t.erreurChamp.requis;
+  else if (!telValide(c.telephone)) champs.telephone ??= t.erreurChamp.telephone;
+  if (!c.consentement) champs.consentement ??= t.erreurChamp.requis;
+  if (Object.keys(champs).length) {
+    journaliser('champs', request, { champs: Object.keys(champs), trop });
+    return repondre({ ok: false, erreur: 'champs', champs }, 422);
+  }
 
   const cle = env.BREVO_API_KEY;
   const base = env.BREVO_API_BASE || BREVO_DEFAUT;
-  if (!cle) return repondre({ ok: false, erreur: 'configuration' }, 500);
+  if (!cle) {
+    journaliser('configuration', request, { manque: 'BREVO_API_KEY' });
+    return repondre({ ok: false, erreur: 'configuration' }, 500);
+  }
   const motif = c.motif as Motif;
 
   /* 1. Enregistrement du contact, seulement si la seconde case est
@@ -234,7 +294,10 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
           MENSAJE: c.message, IDIOMA: langue, MOTIVO: motif,
         },
       });
-      if (!r.ok) contactEnregistre = `NON enregistré — Brevo ${r.statut}`;
+      if (!r.ok) {
+        contactEnregistre = `NON enregistré — Brevo ${r.statut}`;
+        journaliser('brevo-contact', request, { statut: r.statut, detail: r.detail });
+      }
     }
   }
 
@@ -246,7 +309,14 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     subject: `[${langue}] ${libelleMotif(motif, langue, c.rencontre)} — ${c.prenom} ${c.nom}`.slice(0, 200),
     htmlContent: notification(c, langue, motif, contactEnregistre),
   });
-  if (!envoi.ok) return repondre({ ok: false, erreur: 'envoi' }, 502);
+  if (!envoi.ok) {
+    /* Le détail renvoyé par Brevo va dans les journaux, jamais dans la
+       réponse : il peut contenir la structure de la requête, l'état du
+       compte, parfois l'adresse de l'expéditeur. Le visiteur reçoit un
+       code générique, et le formulaire lui affiche l'adresse directe. */
+    journaliser('brevo-envoi', request, { statut: envoi.statut, detail: envoi.detail });
+    return repondre({ ok: false, erreur: 'envoi' }, 502);
+  }
 
   /* 3. Accusé de réception. Son échec ne remet pas en cause le reste,
         mais le visiteur ne doit pas s'entendre promettre un e-mail
@@ -259,6 +329,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     htmlContent: accuseHtml(langue, c.prenom, motif, c.rencontre ?? '', c.message),
     textContent: accuseTexte(langue, c.prenom, motif, c.rencontre ?? '', c.message),
   });
+
+  if (!accuse.ok) journaliser('brevo-accuse', request, { statut: accuse.statut, detail: accuse.detail });
 
   return repondre({ ok: true, accuse: accuse.ok });
 };

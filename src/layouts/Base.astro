@@ -57,7 +57,12 @@ const versions = Object.fromEntries(
       }
     </script>
 
-    <script is:inline define:vars={{ versions }}>
+    {/* Les adresses des quatre versions voyagent par un attribut, pas par
+        `define:vars` : injectées dans le code, elles changeraient le corps
+        du script à chaque page, donc son empreinte, et la politique de
+        sécurité du contenu ne pourrait plus l'autoriser par empreinte. */}
+    <meta name="musima-versions" content={JSON.stringify(versions)} />
+    <script is:inline>
       // Préférence de langue : uniquement depuis l'accueil espagnol, qui est
       // la page d'atterrissage par défaut. Un visiteur qui a déjà choisi une
       // langue y est renvoyé ; les autres restent en espagnol. On n'intervient
@@ -66,6 +71,9 @@ const versions = Object.fromEntries(
       try {
         if (location.pathname === '/' || location.pathname === '/index.html') {
           const choix = localStorage.getItem('musima-langue');
+          const versions = JSON.parse(
+            document.querySelector('meta[name="musima-versions"]').content,
+          );
           if (choix && choix !== 'es' && versions[choix]) {
             location.replace(versions[choix]);
           }

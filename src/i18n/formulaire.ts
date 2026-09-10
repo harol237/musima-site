@@ -23,6 +23,15 @@ export type Motif = (typeof motifs)[number];
 export const estMotif = (v: unknown): v is Motif =>
   typeof v === 'string' && (motifs as readonly string[]).includes(v);
 
+/* Longueur maximale par champ. Au-delà, la soumission est refusée : on ne
+   tronque pas en silence, sinon un message coupé au milieu partirait sans
+   que personne ne le sache — ni le visiteur, ni nous. Le navigateur pose
+   les mêmes bornes en `maxlength`, le serveur les vérifie pour de vrai. */
+export const LIMITES = {
+  motif: 40, prenom: 80, nom: 80, email: 160,
+  telephone: 40, message: 4000, langue: 8, rencontre: 200,
+} as const;
+
 /** Nom du paramètre d'URL, traduit comme le reste de l'adresse. */
 export const parametreMotif: Record<Langue, string> = {
   es: 'motivo', fr: 'motif', en: 'reason', ca: 'motiu',
@@ -58,7 +67,7 @@ type Textes = {
   merciDetail: string;
   erreurGenerale: string;
   erreurReseau: string;
-  erreurChamp: Record<'requis' | 'email' | 'telephone', string>;
+  erreurChamp: Record<'requis' | 'email' | 'telephone' | 'trop', string>;
   sansJs: string;
   /* Accusé de réception */
   courrielObjet: string;
@@ -108,6 +117,7 @@ export const textes: Record<Langue, Textes> = {
       requis: 'Falta este campo.',
       email: 'Esta dirección de correo no parece válida.',
       telephone: 'Este número no parece válido.',
+      trop: 'Este campo es demasiado largo (máximo {max} caracteres).',
     },
     sansJs: 'El formulario necesita JavaScript. Escríbenos directamente a',
     courrielObjet: 'Hemos recibido tu mensaje',
@@ -155,6 +165,7 @@ export const textes: Record<Langue, Textes> = {
       requis: 'Ce champ manque.',
       email: 'Cette adresse e-mail ne semble pas valide.',
       telephone: 'Ce numéro ne semble pas valide.',
+      trop: 'Ce champ est trop long ({max} caractères au maximum).',
     },
     sansJs: 'Le formulaire a besoin de JavaScript. Écris-nous directement à',
     courrielObjet: 'On a bien reçu ton message',
@@ -202,6 +213,7 @@ export const textes: Record<Langue, Textes> = {
       requis: 'This field is missing.',
       email: 'That email address does not look right.',
       telephone: 'That number does not look right.',
+      trop: 'This field is too long ({max} characters at most).',
     },
     sansJs: 'The form needs JavaScript. Write to us directly at',
     courrielObjet: 'We got your message',
@@ -249,6 +261,7 @@ export const textes: Record<Langue, Textes> = {
       requis: 'Falta aquest camp.',
       email: 'Aquesta adreça electrònica no sembla vàlida.',
       telephone: 'Aquest número no sembla vàlid.',
+      trop: 'Aquest camp és massa llarg (màxim {max} caràcters).',
     },
     sansJs: 'El formulari necessita JavaScript. Escriu-nos directament a',
     courrielObjet: 'Hem rebut el teu missatge',
