@@ -5,7 +5,7 @@ date: 2026-09-02
 categorie: "Idées & analyses"
 resume: "Pendant des années, j'ai vu des gens autour de moi construire des choses solides sans que ça sorte jamais de leur cercle. MUSIMA est né de cet écart-là — et du moment où j'ai arrêté d'attendre que quelqu'un d'autre s'en occupe."
 image: ../../../assets/uploads/pages/porquemusima.jpg
-image_alt: "Un homme en costume parle au pupitre dans une salle de réception, une table d'honneur de chaque côté, sous des lustres."
+image_alt: "Une petite fille de profil, la main posée contre un store vénitien, regarde à travers les lamelles la lumière dorée de la fin de journée."
 mots_cles: ["Origine", "Diaspora", "Barcelone"]
 temps_lecture: "4 min de lecture"
 en_avant: true
@@ -71,6 +71,6 @@ Parce que j'y vis, et parce que c'est là que je connais les gens. Ce n'est pas 
 
 ## La suite
 
-La première rencontre a lieu le **samedi 26 septembre 2026**, à partir de 17h. Elle s'appelle « Ce qui se construit ici ». Vous pouvez venir sans connaître personne — c'est même un peu le but.
+La première rencontre a lieu le **samedi 26 septembre 2026**, de 16h30 à 20h. Elle s'appelle « Ce qui se construit ici ». Vous pouvez venir sans connaître personne — c'est même un peu le but.
 
 Et si vous avez monté quelque chose et que vous vous dites en lisant ça que votre histoire n'a rien d'exceptionnel : c'est exactement le genre d'histoire qu'on veut entendre. Écrivez-nous.
