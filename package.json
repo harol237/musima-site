@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev --host",
-    "build": "npm run verifier && astro build",
+    "build": "npm run verifier && astro build && node scripts/entetes.mjs",
     "verifier": "astro sync && tsc --noEmit && tsc --noEmit -p functions/tsconfig.json",
     "preview": "astro preview --host",
     "astro": "astro",
