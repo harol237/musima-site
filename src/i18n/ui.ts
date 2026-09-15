@@ -78,6 +78,16 @@ export const ui = {
     en: 'Portraits, write-ups and analysis',
     ca: 'Retrats, cròniques i anàlisis',
   },
+  /* L'écosystème n'a pas de page à lui : l'entrée mène au bloc de
+     l'accueil. Le jour où il y aura un annuaire à publier, le bloc
+     deviendra une page et cette clé ne bougera pas. */
+  navEcosysteme: { es: 'Ecosistema', fr: 'Écosystème', en: 'Ecosystem', ca: 'Ecosistema' },
+  navEcosystemeDesc: {
+    es: 'Personas, proyectos y organizaciones',
+    fr: 'Des personnes, des projets, des organisations',
+    en: 'People, projects and organisations',
+    ca: 'Persones, projectes i organitzacions',
+  },
   navGalerie: { es: 'Galería', fr: 'Galerie', en: 'Gallery', ca: 'Galeria' },
   navContact: { es: 'Contacto', fr: 'Contact', en: 'Contact', ca: 'Contacte' },
   navEngagement: { es: 'Participar', fr: 'S’engager', en: 'Get involved', ca: 'Participa' },
@@ -127,98 +137,144 @@ export const ui = {
     es: 'Asociación · Barcelona, Cataluña', fr: 'Association · Barcelone, Catalogne',
     en: 'Association · Barcelona, Catalonia', ca: 'Associació · Barcelona, Catalunya',
   },
-  /* Deux phrases, en antithèse. Elles s'affichent l'une sous l'autre :
-     c'est la structure qui porte le propos, pas une couleur. */
-  /* Une seule phrase, coupée après la virgule. La seconde moitié garde
-     l'encre pleine : le titre se lit en deux temps sans être haché. */
-  heroTitreA: {
-    es: 'Se construye mucho,', fr: 'On construit beaucoup,',
-    en: 'A lot gets built,', ca: 'Es construeix molt,',
-  },
-  heroTitreB: {
-    es: 'se cuenta poco.', fr: 'on en parle peu.',
-    en: 'and hardly any of it gets told.', ca: 'se’n parla poc.',
-  },
+  /* Le titre n'est plus une phrase mais les trois verbes, empilés.
+     La composition vit dans src/vues/Accueil.astro ; les mots eux-mêmes
+     dans src/i18n/accueil.ts, d'où les reprend aussi la page Association. */
   heroChapo: {
-    es: 'En Barcelona y en otros sitios hay africanos montando empresas, proyectos y oficios. Lo hacen bien, y casi nadie se entera. MUSIMA existe para que eso deje de pasar, y para que esas historias salgan por fin del círculo.',
-    fr: 'À Barcelone et ailleurs, des Africains montent des entreprises, des projets, des métiers. Ils le font bien, et presque personne ne le sait. MUSIMA existe pour que ça change, et pour que ces histoires sortent enfin du cercle.',
-    en: 'In Barcelona and elsewhere, Africans are starting businesses, projects and trades. They do it well, and almost nobody hears about it. MUSIMA exists to change that, and to get these stories out of the small circle that already knows them.',
-    ca: 'A Barcelona i en altres llocs hi ha africans muntant empreses, projectes i oficis. Ho fan bé, i gairebé ningú se n’assabenta. MUSIMA existeix perquè això deixi de passar, i perquè aquestes històries surtin per fi del cercle.',
+    es: 'Hay personas que crean, emprenden, innovan y construyen cada día. Hay ideas, conocimientos, recursos y oportunidades. Pero no siempre se encuentran. MUSIMA crea las condiciones para que puedan circular, conectarse y dar lugar a nuevas posibilidades.',
+    fr: 'Il y a des personnes qui créent, entreprennent, innovent et construisent chaque jour. Il y a des idées, des savoirs, des ressources et des opportunités. Mais elles ne se rencontrent pas toujours. MUSIMA crée les conditions pour qu’elles circulent, se connectent et donnent lieu à de nouvelles possibilités.',
+    en: 'There are people creating, starting things, innovating and building every day. There are ideas, knowledge, resources and opportunities. They don’t always find each other. MUSIMA creates the conditions for them to travel, connect and open up new possibilities.',
+    ca: 'Hi ha persones que creen, emprenen, innoven i construeixen cada dia. Hi ha idees, coneixements, recursos i oportunitats. Però no sempre es troben. MUSIMA crea les condicions perquè puguin circular, connectar-se i donar lloc a noves possibilitats.',
   },
-  heroBoutonEvenements: {
-    es: 'Ver los encuentros', fr: 'Voir les rencontres', en: 'See the gatherings', ca: 'Veure les trobades',
+  heroBoutonDecouvrir: {
+    es: 'Descubrir MUSIMA', fr: 'Découvrir MUSIMA', en: 'Discover MUSIMA', ca: 'Descobrir MUSIMA',
   },
-  heroBoutonProchain: {
-    es: 'Ven al próximo', fr: 'Viens à la prochaine',
-    en: 'Come to the next one', ca: 'Vine a la propera',
-  },
-  heroBoutonAssociation: {
-    es: 'Conocer la asociación', fr: 'Découvrir l’association', en: 'About the association', ca: 'Conèixer l’associació',
+  heroBoutonParticiper: {
+    es: 'Participar', fr: 'Participer', en: 'Take part', ca: 'Participar',
   },
   intentionsSurtitre: {
-    es: 'Lo que hace MUSIMA', fr: 'Ce que fait MUSIMA', en: 'What MUSIMA does', ca: 'El que fa MUSIMA',
+    es: 'Lo hacemos posible de distintas maneras', fr: 'On s’y prend de plusieurs façons',
+    en: 'We make it happen in several ways', ca: 'Ho fem possible de diverses maneres',
   },
   intentionsTitre: {
-    es: 'Cuatro cosas, en concreto', fr: 'Quatre choses, concrètement',
-    en: 'Four things, concretely', ca: 'Quatre coses, en concret',
+    es: 'De una conexión puede surgir mucho más', fr: 'D’une connexion, il peut sortir bien plus',
+    en: 'A connection can lead to much more', ca: 'D’una connexió en pot sortir molt més',
   },
   sectionRencontres: { es: 'Encuentros', fr: 'Rencontres', en: 'Gatherings', ca: 'Trobades' },
   prochaineRencontre: {
     es: 'Próximo encuentro', fr: 'Prochaine rencontre', en: 'Next gathering', ca: 'Propera trobada',
   },
-  prochaineRencontreLe: {
-    es: 'El próximo es el {date}', fr: 'La prochaine, c’est le {date}',
-    en: 'The next one is on {date}', ca: 'La propera és el {date}',
+  /* Titre de la section Rencontres sur l'accueil. Il ne porte plus la
+     date : celle-ci est déjà dans les repères du héros et sur la carte
+     juste en dessous, et le titre dit maintenant à quoi sert la section. */
+  accueilRencontresTitre: {
+    es: 'Nos encontramos para que algo pueda suceder',
+    fr: 'On se retrouve pour que quelque chose puisse arriver',
+    en: 'We meet so that something can happen',
+    ca: 'Ens trobem perquè alguna cosa pugui passar',
   },
   /* Courtes introductions sous les titres de sections de l'accueil.
      Passées en enfants de <EnteteSection>, qui a gagné un emplacement. */
   introRencontres: {
-    es: 'Nos juntamos unas cuantas veces al año, en un sitio que nos acoge, alrededor de gente que tiene algo que contar.',
-    fr: 'On se réunit quelques fois par an, dans un lieu qui nous accueille, autour de gens qui ont quelque chose à raconter.',
-    en: 'We meet a few times a year, in a place that takes us in, around people who have something to tell.',
-    ca: 'Ens trobem unes quantes vegades l’any, en un lloc que ens acull, al voltant de gent que té alguna cosa a explicar.',
+    es: 'Las reuniones son una de las formas en las que MUSIMA actúa. Creamos encuentros alrededor de personas, experiencias, preguntas y proyectos que pueden abrir nuevas perspectivas y conexiones.',
+    fr: 'Les rencontres sont l’une des formes que prend notre action. On crée des rendez-vous autour de personnes, d’expériences, de questions et de projets qui peuvent ouvrir des perspectives et des connexions nouvelles.',
+    en: 'Gatherings are one of the ways we work. We build them around people, experiences, questions and projects that can open up new perspectives and new connections.',
+    ca: 'Les trobades són una de les formes en què MUSIMA actua. Creem trobades al voltant de persones, experiències, preguntes i projectes que poden obrir noves perspectives i connexions.',
   },
   introVoix: {
-    es: 'Montaron una actividad, un proyecto, un oficio. Les pedimos el detalle, no la versión pulida.',
-    fr: 'Ils ont monté une activité, un projet, un métier. On leur a demandé le détail, pas la version lisse.',
-    en: 'They started an activity, a project, a trade. We asked them for the detail, not the tidy version.',
-    ca: 'Van muntar una activitat, un projecte, un ofici. Els vam demanar el detall, no la versió polida.',
+    es: 'Emprendedores, profesionales, estudiantes, creadores, expertos y personas con una experiencia que compartir. Sus recorridos, aprendizajes e iniciativas pueden abrir nuevas perspectivas para otros.',
+    fr: 'Des entrepreneurs, des professionnels, des étudiants, des créateurs, des experts, et des personnes qui ont une expérience à partager. Leurs parcours, leurs apprentissages et leurs initiatives peuvent ouvrir des perspectives à d’autres.',
+    en: 'Entrepreneurs, professionals, students, makers, experts and people with an experience to share. Their paths, what they have learnt and what they are starting can open up perspectives for others.',
+    ca: 'Emprenedors, professionals, estudiants, creadors, experts i persones amb una experiència per compartir. Els seus recorreguts, aprenentatges i iniciatives poden obrir noves perspectives per a altres.',
   },
   introProjets: {
-    es: 'Lo que la asociación lleva adelante, con lo que está en marcha y lo que aún queda por montar.',
-    fr: 'Ce que l’association porte elle-même, avec ses chantiers en cours et ce qui reste à monter.',
-    en: 'What the association runs itself, with the work in progress and the parts still to build.',
-    ca: 'El que l’associació duu endavant, amb el que està en marxa i el que encara queda per muntar.',
+    es: 'MUSIMA también se construye a través de proyectos, iniciativas y colaboraciones. Algunos están en marcha, otros nacen de una conexión y otros todavía están por desarrollar.',
+    fr: 'MUSIMA se construit aussi à travers des projets, des initiatives et des collaborations. Certains sont en cours, d’autres naissent d’une connexion, d’autres restent à développer.',
+    en: 'MUSIMA is also built through projects, initiatives and collaborations. Some are under way, some come out of a connection, some are still to be developed.',
+    ca: 'MUSIMA també es construeix a través de projectes, iniciatives i col·laboracions. Alguns estan en marxa, d’altres neixen d’una connexió i d’altres encara estan per desenvolupar.',
   },
   introRecits: {
-    es: 'Los encuentros pasan. Lo que se dijo en ellos se queda aquí, escrito, a disposición de quien lo necesite.',
-    fr: 'Les rencontres passent. Ce qui s’y est dit reste ici, écrit, à disposition de qui en aura besoin.',
-    en: 'Gatherings pass. What was said at them stays here, written down, for whoever needs it.',
-    ca: 'Les trobades passen. El que s’hi va dir es queda aquí, escrit, a disposició de qui ho necessiti.',
+    es: 'Las conversaciones pasan, pero las ideas, experiencias y aprendizajes pueden seguir circulando. MUSIMA documenta y comparte parte de lo que surge para que pueda llegar más lejos.',
+    fr: 'Les conversations passent, mais les idées, les expériences et les apprentissages peuvent continuer à circuler. MUSIMA documente et partage une partie de ce qui s’y dit, pour que ça puisse aller plus loin.',
+    en: 'Conversations pass, but ideas, experience and lessons can keep travelling. MUSIMA documents and shares part of what comes up, so it can reach further.',
+    ca: 'Les converses passen, però les idees, experiències i aprenentatges poden continuar circulant. MUSIMA documenta i comparteix part del que en surt perquè pugui arribar més lluny.',
   },
   tousLesEvenements: {
-    es: 'Todos los encuentros', fr: 'Tous les événements', en: 'All events', ca: 'Totes les trobades',
+    es: 'Ver próximos encuentros', fr: 'Voir les prochaines rencontres',
+    en: 'See upcoming gatherings', ca: 'Veure les properes trobades',
   },
   sectionVoix: { es: 'Las voces', fr: 'Les voix', en: 'The voices', ca: 'Les veus' },
+  /* Surtitre de la section Voix sur l'accueil. `sectionVoix` sert encore
+     de titre à la page annuaire, qui garde son registre jusqu'au second
+     passage : les deux ne peuvent pas partager la même clé. */
+  accueilVoixSurtitre: { es: 'Voces', fr: 'Voix', en: 'Voices', ca: 'Veus' },
   ceuxQuiParlent: {
-    es: 'Quienes ya pasaron por ahí', fr: 'Celles et ceux qui sont passés par là',
-    en: 'Those who’ve been through it', ca: 'Els qui ja hi han passat',
+    es: 'Personas que están construyendo', fr: 'Des personnes qui construisent',
+    en: 'People who are building', ca: 'Persones que estan construint',
   },
   tousLesIntervenants: {
-    es: 'Todos los ponentes', fr: 'Tous les intervenants', en: 'All speakers', ca: 'Tots els ponents',
+    es: 'Conocer las voces', fr: 'Découvrir les voix', en: 'Meet the voices', ca: 'Conèixer les veus',
+  },
+  /* Les quatre clés suivantes ne servent qu'à l'accueil. Les pages de
+     rubrique gardent `ceQueLAssociationConstruit`, `portraitsRetoursIdees`
+     et `tousLesRecits`, écrits dans l'ancien registre, jusqu'au second
+     passage. */
+  accueilProjetsSurtitre: {
+    es: 'Proyectos e iniciativas', fr: 'Projets et initiatives',
+    en: 'Projects and initiatives', ca: 'Projectes i iniciatives',
+  },
+  accueilProjetsTitre: {
+    es: 'Lo que estamos construyendo', fr: 'Ce que nous construisons',
+    en: 'What we are building', ca: 'El que estem construint',
+  },
+  accueilRecitsSurtitre: {
+    es: 'Ideas y experiencias', fr: 'Idées et expériences',
+    en: 'Ideas and experience', ca: 'Idees i experiències',
+  },
+  accueilRecitsTitre: {
+    es: 'Lo que compartimos permanece', fr: 'Ce qu’on partage reste',
+    en: 'What we share stays', ca: 'El que compartim queda',
+  },
+  accueilRecitsLien: {
+    es: 'Explorar contenidos', fr: 'Explorer les contenus',
+    en: 'Explore the writing', ca: 'Explorar continguts',
   },
   ceQueLAssociationConstruit: {
     es: 'Lo que tenemos entre manos', fr: 'Ce qu’on a sur le feu',
     en: 'What we have on our hands', ca: 'El que tenim entre mans',
   },
-  tousLesProjets: { es: 'Todos los proyectos', fr: 'Tous les projets', en: 'All projects', ca: 'Tots els projectes' },
+  tousLesProjets: {
+    es: 'Descubrir los proyectos', fr: 'Découvrir les projets',
+    en: 'See the projects', ca: 'Descobrir els projectes',
+  },
   portraitsRetoursIdees: {
     es: 'Lo que se dijo, y lo que quedó', fr: 'Ce qui s’est dit, et ce qu’il en reste',
     en: 'What was said, and what stayed', ca: 'El que es va dir, i el que en va quedar',
   },
   tousLesRecits: { es: 'Todos los relatos', fr: 'Tous les récits', en: 'All stories', ca: 'Tots els relats' },
 
-  /* ---------------- Bandeau d'appel ---------------- */
+  /* ---------------- Bandeau d'appel ----------------
+     Deux jeux de clés cohabitent pendant la transition. `ctaAporter*`
+     porte le nouveau positionnement : accueil et page Association.
+     `ctaParticiper*`, en dessous, reste l'ancien texte, encore affiché
+     au bas des pages Projets — à reprendre au second passage. */
+  ctaAporterSurtitre: { es: 'Participar', fr: 'Participer', en: 'Take part', ca: 'Participar' },
+  ctaAporterTitre: {
+    es: '¿Qué puedes aportar?', fr: 'Qu’est-ce que tu peux apporter ?',
+    en: 'What can you bring?', ca: 'Què hi pots aportar?',
+  },
+  ctaAporterTexte: {
+    es: 'Una idea. Una experiencia. Una competencia. Un contacto. Un recurso. Un proyecto. O simplemente las ganas de conocer a otras personas y descubrir nuevas posibilidades. MUSIMA se construye con quienes participan.',
+    fr: 'Une idée. Une expérience. Une compétence. Un contact. Une ressource. Un projet. Ou simplement l’envie de rencontrer d’autres personnes et de découvrir de nouvelles possibilités. MUSIMA se construit avec celles et ceux qui participent.',
+    en: 'An idea. An experience. A skill. A contact. A resource. A project. Or simply the wish to meet other people and find new possibilities. MUSIMA is built with the people who take part.',
+    ca: 'Una idea. Una experiència. Una competència. Un contacte. Un recurs. Un projecte. O simplement les ganes de conèixer altres persones i descobrir noves possibilitats. MUSIMA es construeix amb qui hi participa.',
+  },
+  ctaCommentParticiper: {
+    es: 'Cómo participar', fr: 'Comment participer',
+    en: 'How to take part', ca: 'Com participar-hi',
+  },
+  ctaContacter: { es: 'Contactar', fr: 'Nous contacter', en: 'Get in touch', ca: 'Contactar' },
+
   ctaParticiperSurtitre: { es: 'Participar', fr: 'Participer', en: 'Take part', ca: 'Participar' },
   ctaParticiperTitre: {
     es: '¿Has construido algo?',
@@ -231,13 +287,6 @@ export const ui = {
     fr: 'Peu importe la taille. Si tu as monté une activité, un projet ou un métier et que tu peux raconter comment, il y a une place pour toi dans une rencontre. Et si tu préfères être de l’autre côté, à installer les chaises ou à prendre les photos, il y a de la place aussi.',
     en: 'Size doesn’t matter. If you’ve started an activity, a project or a trade and you can say how, there’s a place for you at a gathering. And if you’d rather be on the other side, setting out chairs or taking the photographs, there’s room for that too.',
     ca: 'Tant se val la mida. Si has muntat una activitat, un projecte o un ofici i pots explicar com, hi ha lloc per a tu en una trobada. I si prefereixes ser a l’altra banda, posant cadires o fent les fotos, també hi ha lloc.',
-  },
-  /* Phrase clé, posée au pied de la page Participer. */
-  phraseClef: {
-    es: 'Si te reconoces en esta manera de hacer las cosas, hay un lugar para ti en MUSIMA.',
-    fr: 'Si tu te reconnais dans cette démarche, il y a une place pour toi à MUSIMA.',
-    en: 'If any of this sounds like you, there’s a place for you at MUSIMA.',
-    ca: 'Si et reconeixes en aquesta manera de fer les coses, hi ha un lloc per a tu a MUSIMA.',
   },
   ctaVoirEngagement: {
     es: 'Ver cómo participar', fr: 'Voir comment s’engager', en: 'See how to take part', ca: 'Veure com participar-hi',

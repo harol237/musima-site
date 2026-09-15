@@ -16,8 +16,10 @@ import type { Langue } from './config';
 /** Jeton stable, neutre en langue. C'est lui qui part dans Brevo et
     dans l'e-mail : filtrer sur « inscription » doit marcher quelle que
     soit la langue de la personne qui a écrit. */
-export const motifs =
-  ['general', 'intervenir', 'adherer', 'benevolat', 'partenariat', 'inscription'] as const;
+export const motifs = [
+  'general', 'intervenir', 'idea', 'recurso',
+  'adherer', 'benevolat', 'partenariat', 'inscription',
+] as const;
 export type Motif = (typeof motifs)[number];
 
 export const estMotif = (v: unknown): v is Motif =>
@@ -83,6 +85,8 @@ export const textes: Record<Langue, Textes> = {
     motif: {
       general: 'Contacto general',
       intervenir: 'Intervenir en un encuentro',
+      idea: 'Proponer una idea',
+      recurso: 'Aportar una competencia o un recurso',
       adherer: 'Hacerme socio/a',
       benevolat: 'Ser voluntario/a',
       partenariat: 'Colaboración',
@@ -91,6 +95,8 @@ export const textes: Record<Langue, Textes> = {
     suite: {
       general: 'Leemos todo lo que llega y respondemos nosotros mismos.',
       intervenir: 'Te escribiremos para saber qué te gustaría contar y cuándo te vendría bien.',
+      idea: 'Te escribimos para hablar de tu idea y ver con quién puede desarrollarse.',
+      recurso: 'Te decimos dónde puede encajar lo que aportas, y en qué momento.',
       adherer: 'Te enviamos cómo funciona la adhesión y qué cambia en la práctica.',
       benevolat: 'Te diremos qué hace falta ahora mismo y cuánto tiempo supone.',
       partenariat: 'Te contamos en qué punto estamos y qué tiene sentido montar juntos.',
@@ -131,6 +137,8 @@ export const textes: Record<Langue, Textes> = {
     motif: {
       general: 'Contact général',
       intervenir: 'Intervenir lors d’une rencontre',
+      idea: 'Proposer une idée',
+      recurso: 'Apporter une compétence ou une ressource',
       adherer: 'Adhérer à l’association',
       benevolat: 'Devenir bénévole',
       partenariat: 'Partenariat',
@@ -139,6 +147,8 @@ export const textes: Record<Langue, Textes> = {
     suite: {
       general: 'On lit tout ce qui arrive, et c’est nous qui répondons.',
       intervenir: 'On revient vers toi pour savoir ce que tu aimerais raconter, et quand ça t’arrange.',
+      idea: 'On t’écrit pour parler de ton idée et voir avec qui elle peut se développer.',
+      recurso: 'On te dit où ce que tu apportes peut servir, et à quel moment.',
       adherer: 'On t’envoie les modalités d’adhésion, et ce que ça change concrètement.',
       benevolat: 'On te dira ce dont on a besoin en ce moment, et le temps que ça demande.',
       partenariat: 'On t’explique où on en est et ce qui aurait du sens à monter ensemble.',
@@ -179,6 +189,8 @@ export const textes: Record<Langue, Textes> = {
     motif: {
       general: 'General enquiry',
       intervenir: 'Speak at a gathering',
+      idea: 'Suggest an idea',
+      recurso: 'Offer a skill or a resource',
       adherer: 'Join the association',
       benevolat: 'Volunteer',
       partenariat: 'Partnership',
@@ -187,6 +199,8 @@ export const textes: Record<Langue, Textes> = {
     suite: {
       general: 'We read everything that comes in, and we answer it ourselves.',
       intervenir: 'We will get back to you about what you would like to talk about, and when suits you.',
+      idea: 'We’ll write back to talk your idea through and see who it could grow with.',
+      recurso: 'We’ll tell you where what you’re offering fits, and when.',
       adherer: 'We will send you how membership works, and what it changes in practice.',
       benevolat: 'We will tell you what is needed right now, and how much time it takes.',
       partenariat: 'We will tell you where we are and what would make sense to build together.',
@@ -227,6 +241,8 @@ export const textes: Record<Langue, Textes> = {
     motif: {
       general: 'Contacte general',
       intervenir: 'Intervenir en una trobada',
+      idea: 'Proposar una idea',
+      recurso: 'Aportar una competència o un recurs',
       adherer: 'Fer-me’n soci/sòcia',
       benevolat: 'Fer-me voluntari/ària',
       partenariat: 'Col·laboració',
@@ -235,6 +251,8 @@ export const textes: Record<Langue, Textes> = {
     suite: {
       general: 'Llegim tot el que arriba i responem nosaltres mateixos.',
       intervenir: 'T’escriurem per saber què t’agradaria explicar i quan et va bé.',
+      idea: 'T’escrivim per parlar de la teva idea i veure amb qui es pot desenvolupar.',
+      recurso: 'Et diem on pot encaixar el que aportes, i en quin moment.',
       adherer: 'T’enviem com funciona l’adhesió i què canvia a la pràctica.',
       benevolat: 'Et direm què fa falta ara mateix i quant de temps suposa.',
       partenariat: 'T’expliquem on som i què tindria sentit muntar plegats.',

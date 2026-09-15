@@ -14,6 +14,7 @@ import {
   rubriquesRemplies,
 } from '~/lib/contenu';
 import { formaterDate, statutsProjet, traduireValeur } from '~/i18n/utils';
+import { accueilPar } from '~/i18n/accueil';
 import { traducteur } from '~/i18n/ui';
 import type { Langue } from '~/i18n/config';
 
@@ -89,6 +90,11 @@ const apercus: Record<string, Apercu> = {
         detail: traduireValeur(statutsProjet, projet.data.statut, langue),
       }
     : { etiquette: t('navProjets'), titre: t('aucunProjetTitre') },
+  ecosysteme: {
+    etiquette: accueilPar[langue].ecosysteme.surtitre,
+    titre: accueilPar[langue].ecosysteme.titre,
+    detail: accueilPar[langue].qui.titre,
+  },
   recits: recit
     ? {
         etiquette: t('navRecits'),
@@ -98,9 +104,11 @@ const apercus: Record<string, Apercu> = {
     : { etiquette: t('navRecits'), titre: t('aucunRecitTitre') },
 };
 
-/** La clé d'aperçu d'une entrée de menu. « Association » n'a pas de collection. */
-const cleApercu = (rubrique?: string) => rubrique ?? 'association';
-const cleDefaut = cleApercu(entrees[0]?.rubrique);
+/** La clé d'aperçu d'une entrée de menu. « Association » n'a pas de
+    collection, l'écosystème non plus : ils nomment leur aperçu eux-mêmes. */
+const cleApercu = (entree: { rubrique?: string; apercu?: string }) =>
+  entree.apercu ?? entree.rubrique ?? 'association';
+const cleDefaut = entrees[0] ? cleApercu(entrees[0]) : 'association';
 ---
 
 <header class="entete" data-entete>
@@ -178,7 +186,7 @@ const cleDefaut = cleApercu(entrees[0]?.rubrique);
           <li style={`--i:${index}`}>
             <a
               href={entree.url}
-              data-apercu-cle={cleApercu(entree.rubrique)}
+              data-apercu-cle={cleApercu(entree)}
               aria-current={estActif(entree.url) ? 'page' : undefined}
             >
               <span class="menu-plein__libelle">{entree.libelle}</span>

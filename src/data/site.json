@@ -1,27 +1,33 @@
 {
   "nom": "MUSIMA",
   "baseline": {
-    "es": "Se construye mucho. Se cuenta poco.",
-    "fr": "On construit beaucoup. On en parle peu.",
-    "en": "A lot gets built. Little gets told.",
-    "ca": "Es construeix molt. Se’n parla poc."
+    "es": "Valorizar · Conectar · Construir",
+    "fr": "Valoriser · Connecter · Construire",
+    "en": "Value · Connect · Build",
+    "ca": "Valoritzar · Connectar · Construir"
   },
   "verbes": [
-    "Connecter",
-    "Bâtir",
-    "Impacter"
+    "Valorizar",
+    "Conectar",
+    "Construir"
   ],
   "phrase": {
-    "es": "MUSIMA organiza encuentros donde africanos que han montado algo cuentan cómo lo hicieron. Recogemos lo que se dice allí y lo dejamos accesible.",
-    "fr": "MUSIMA organise des rencontres où des Africains qui ont monté quelque chose racontent comment ils s’y sont pris. On recueille ce qui s’y dit et on le laisse accessible.",
-    "en": "MUSIMA runs gatherings where Africans who have built something explain how they did it. We gather what gets said there and keep it open.",
-    "ca": "MUSIMA organitza trobades on africans que han muntat alguna cosa expliquen com ho van fer. Recollim el que s’hi diu i ho deixem accessible."
+    "es": "MUSIMA es una asociación anclada en la diáspora africana que valoriza lo que se construye, conecta personas y actores y favorece nuevas posibilidades.",
+    "fr": "MUSIMA est une association ancrée dans la diaspora africaine, qui valorise ce qui se construit, connecte les personnes et les acteurs, et favorise de nouvelles possibilités.",
+    "en": "MUSIMA is an association anchored in the African diaspora that gives value to what gets built, connects people and organisations, and opens up new possibilities.",
+    "ca": "MUSIMA és una associació ancorada en la diàspora africana que valoritza el que es construeix, connecta persones i actors i afavoreix noves possibilitats."
+  },
+  "phrase_association": {
+    "es": "MUSIMA nace con una identidad clara y una ambición abierta: partir de la diáspora africana y de lo que construye para contribuir a un ecosistema donde personas, proyectos, ideas, recursos y oportunidades puedan encontrarse.",
+    "fr": "MUSIMA naît avec une identité claire et une ambition ouverte : partir de la diaspora africaine et de ce qu’elle construit, pour contribuer à un écosystème où les personnes, les projets, les idées, les ressources et les opportunités peuvent se rencontrer.",
+    "en": "MUSIMA starts with a clear identity and an open ambition: to begin from the African diaspora and what it builds, and to contribute to an ecosystem where people, projects, ideas, resources and opportunities can meet.",
+    "ca": "MUSIMA neix amb una identitat clara i una ambició oberta: partir de la diàspora africana i del que construeix per contribuir a un ecosistema on persones, projectes, idees, recursos i oportunitats puguin trobar-se."
   },
   "description_courte": {
-    "es": "Africanos que montan empresas, proyectos y oficios en Barcelona y en otros sitios. En MUSIMA cuentan cómo lo hicieron: los pasos, los errores y lo que costó.",
-    "fr": "Des Africains qui montent des entreprises, des projets, des métiers, à Barcelone et ailleurs. Chez MUSIMA, ils racontent comment ils s’y sont pris.",
-    "en": "Africans who start businesses, projects and trades, in Barcelona and elsewhere. At MUSIMA they tell how they did it: the steps, the mistakes, what it cost.",
-    "ca": "Africans que munten empreses, projectes i oficis a Barcelona i en altres llocs. A MUSIMA expliquen com ho van fer: els passos, els errors i el que va costar."
+    "es": "MUSIMA crea conexiones entre personas, proyectos e iniciativas para hacer circular ideas, conocimientos, recursos y oportunidades y dar lugar a nuevas posibilidades. Con la diáspora africana como parte esencial de su identidad.",
+    "fr": "MUSIMA crée des connexions entre des personnes, des projets et des initiatives pour faire circuler les idées, les savoirs, les ressources et les opportunités, et donner lieu à de nouvelles possibilités. Avec la diaspora africaine comme part essentielle de son identité.",
+    "en": "MUSIMA creates connections between people, projects and initiatives so that ideas, knowledge, resources and opportunities can travel and open up new possibilities. With the African diaspora as an essential part of its identity.",
+    "ca": "MUSIMA crea connexions entre persones, projectes i iniciatives per fer circular idees, coneixements, recursos i oportunitats i donar lloc a noves possibilitats. Amb la diàspora africana com a part essencial de la seva identitat."
   },
   "langue": "fr",
   "contact": {

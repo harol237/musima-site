@@ -1,9 +1,14 @@
 import { chemin, type CleSegment, type Langue } from '~/i18n/config';
 import { traducteur, type CleUi } from '~/i18n/ui';
+import { ancreEcosysteme } from '~/i18n/accueil';
 
-/* Navigation — 5 entrées principales + 1 action, construites pour la
-   langue de la page. Modifier ce fichier suffit à changer le menu
-   partout : en-tête, pied de page, plan du site. */
+/* Navigation — 4 rubriques + 1 action, construites pour la langue de la
+   page. Modifier ce fichier suffit à changer le menu partout : en-tête,
+   pied de page, plan du site.
+
+   « Ponentes » et « Relatos » ne sont plus au premier niveau : leurs
+   fiches restent servies à leur adresse, et on y arrive depuis les
+   sections de l'accueil — et, pour les récits, depuis le pied de page. */
 
 export type Entree = {
   libelle: string;
@@ -11,6 +16,8 @@ export type Entree = {
   description?: string;
   /** Sert à masquer une rubrique encore vide. */
   rubrique?: string;
+  /** Clé de l'aperçu du menu plein écran. Par défaut, la rubrique. */
+  apercu?: string;
 };
 
 const entree = (
@@ -29,18 +36,35 @@ const entree = (
   };
 };
 
+/* L'écosystème n'a pas de page : l'entrée mène au bloc de l'accueil.
+   Pas de `rubrique` — il n'y a pas de collection derrière, donc rien à
+   masquer quand elle est vide ; `apercu` lui donne malgré tout sa propre
+   vignette dans le menu plein écran. */
+const entreeEcosysteme = (langue: Langue): Entree => {
+  const t = traducteur(langue);
+  return {
+    libelle: t('navEcosysteme'),
+    url: `${chemin(langue)}#${ancreEcosysteme[langue]}`,
+    description: t('navEcosystemeDesc'),
+    apercu: 'ecosysteme',
+  };
+};
+
 export const navigationPrincipale = (langue: Langue): Entree[] => [
   entree(langue, 'association', 'navAssociation', 'navAssociationDesc'),
   entree(langue, 'evenements', 'navEvenements', 'navEvenementsDesc', 'evenements'),
-  entree(langue, 'intervenants', 'navIntervenants', 'navIntervenantsDesc', 'intervenants'),
   entree(langue, 'projets', 'navProjets', 'navProjetsDesc', 'projets'),
-  entree(langue, 'recits', 'navRecits', 'navRecitsDesc', 'recits'),
+  entreeEcosysteme(langue),
 ];
 
 export const actionPrincipale = (langue: Langue): Entree =>
   entree(langue, 'engagement', 'navEngagement');
 
+/* Le pied de page liste tout ce qui n'est pas au premier niveau. Les
+   récits y figurent : la rubrique est publiée, elle doit rester
+   atteignable ailleurs que depuis sa section de l'accueil. */
 export const navigationSecondaire = (langue: Langue): Entree[] => [
+  entree(langue, 'recits', 'navRecits', undefined, 'recits'),
   entree(langue, 'galerie', 'navGalerie', undefined, 'galerie'),
   entree(langue, 'contact', 'navContact'),
 ];

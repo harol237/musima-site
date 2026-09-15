@@ -22,21 +22,23 @@ import { formaterDate } from '~/i18n/utils';
 import { horodatageISO } from '~/lib/contenu';
 import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
-import { intentionsPar } from '~/i18n/intentions';
+import { accueilPar, ancreEcosysteme } from '~/i18n/accueil';
+import { parametreMotif, ancreFormulaire } from '~/i18n/formulaire';
 
 /* Photo d'ouverture. Le héros retrouve sa seconde colonne dès qu'elle
    existe ; à `null`, il se replie sur une seule colonne plutôt que
    d'afficher un cadre vide. */
 import ouverture from '~/assets/uploads/pages/accueil.jpg';
 
-/* La colonne d'image des quatre intentions : une main qui écrit dans un
-   carnet. Elle répond à la quatrième — « Laisser une trace » — et c'est
-   pour ça qu'elle est là plutôt qu'ailleurs. */
+/* La colonne d'image des quatre manières : une main qui écrit dans un
+   carnet. Elle répond à la troisième — « Faire circuler » : ce qui est
+   noté continue de servir à quelqu'un d'autre. */
 import trace from '~/assets/uploads/pages/cequefaitmusima.jpg';
 
 interface Props { langue: Langue; alternatives: Record<Langue, string> }
 const { langue, alternatives } = Astro.props;
 const t = traducteur(langue);
+const a = accueilPar[langue];
 
 const { aVenir } = await chargerEvenements(langue);
 const intervenants = await chargerIntervenants(langue);
@@ -51,7 +53,10 @@ const enAvant = <T extends { data: { en_avant: boolean } }>(liste: T[], nombre: 
   return (mis.length ? mis : liste).slice(0, nombre);
 };
 
-const intentions = intentionsPar[langue];
+/* Le bouton de l'écosystème ouvre le formulaire sur le motif qui
+   correspond : une seule porte d'entrée, comme pour les voies de la
+   page Participer. */
+const lienEcosysteme = `${chemin(langue, 'contact')}?${parametreMotif[langue]}=adherer#${ancreFormulaire[langue]}`;
 
 /* Ligne de données du héros : la date, le lieu et le tarif de la
    prochaine rencontre. Trois informations réelles, ou rien. */
@@ -62,13 +67,6 @@ const reperes = prochaine
       prochaine.data.tarif,
     ].filter(Boolean)
   : [];
-
-const titreProchaine = prochaine
-  ? t('prochaineRencontreLe').replace(
-      '{date}',
-      formaterDate(prochaine.data.date_debut, langue, { day: 'numeric', month: 'long' }),
-    )
-  : t('prochaineRencontre');
 ---
 
 <Base
@@ -86,16 +84,27 @@ const titreProchaine = prochaine
     <div class="conteneur heros__interieur">
       <div class="heros__texte">
         <p class="surtitre heros__surtitre">{t('heroSurtitre')}</p>
+        {/* Les trois verbes empilés, alignés à gauche sur la même
+            verticale que le surtitre, le chapô et les boutons. Les
+            points médians restent, posés en fin de ligne : ils marquent
+            le rythme sans casser la colonne. Le dernier n'en a pas —
+            il n'y a rien après lui. */}
         <h1 class="t-hero heros__titre">
-          <span class="heros__phrase">{t('heroTitreA')}</span>
-          <span class="heros__phrase heros__phrase--fort">{t('heroTitreB')}</span>
+          {a.verbes.map((mot, index) => (
+            <span class="heros__mot">
+              <span class="heros__verbe">{mot}</span>
+              {index < a.verbes.length - 1 && (
+                <span class="heros__point" aria-hidden="true">·</span>
+              )}
+            </span>
+          ))}
         </h1>
         <p class="chapo heros__chapo">{t('heroChapo')}</p>
         <div class="rang heros__actions">
-          <a href={chemin(langue, 'evenements')} class="bouton">
-            {prochaine ? t('heroBoutonProchain') : t('heroBoutonEvenements')}
+          <a href={chemin(langue, 'association')} class="bouton">{t('heroBoutonDecouvrir')}</a>
+          <a href={chemin(langue, 'engagement')} class="bouton bouton--fantome">
+            {t('heroBoutonParticiper')}
           </a>
-          <a href={chemin(langue, 'association')} class="bouton bouton--fantome">{t('heroBoutonAssociation')}</a>
         </div>
 
         {reperes.length > 0 && (
@@ -131,17 +140,57 @@ const titreProchaine = prochaine
     </div>
   </section>
 
-  <!-- ================= INTENTIONS ================= -->
-  <section class="section conteneur section--intentions">
+  <!-- ================= QUI EST MUSIMA ================= -->
+  <section class="section conteneur colonnes colonnes--collant section--apres-heros">
+    <div>
+      <EnteteSection surtitre={a.qui.surtitre} titre={a.qui.titre} />
+    </div>
+    <div class="prose">
+      {a.qui.texte.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
+
+  <!-- ================= LE CONSTAT =================
+       Sur fond profond : c'est le seul endroit de la page qui pose un
+       problème avant de proposer quelque chose, et il gagne à être lu
+       d'un bloc, détaché des sections claires qui l'entourent. -->
+  <section class="section scene">
+    <div class="conteneur">
+      <EnteteSection surtitre={a.constat.surtitre} titre={a.constat.titre} />
+      <div class="constat">
+        <p class="constat__enumeration">{a.constat.texte[0]}</p>
+        <p class="constat__corps">{a.constat.texte[1]}</p>
+        <p class="constat__phrase">{a.constat.phrase}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= COMMENT NOUS AGISSONS ================= -->
+  <section class="section conteneur">
+    <EnteteSection surtitre={a.role.surtitre} titre={a.triade} />
+    <ol class="verbes">
+      {a.role.verbes.map((verbe, index) => (
+        <li class="verbe apparait" style={`--i:${index}`}>
+          <span class="trait-croissant verbe__trait" style={`--i:${index}`}></span>
+          <span class="verbe__rang" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <h3 class="verbe__mot">{verbe.mot}</h3>
+          <p class="verbe__texte">{verbe.texte}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- ================= CE QUE ÇA PERMET ================= -->
+  <section class="section conteneur section--manieres">
     <EnteteSection
       surtitre={t('intentionsSurtitre')}
       titre={t('intentionsTitre')}
     />
-    <div class="intentions">
+    <div class="manieres">
       {/* Format d'origine, aucun recadrage : 2/3, comme la source. Elle
           accompagne le défilement des quatre blocs plutôt que d'être
           posée au-dessus ou en dessous. */}
-      <figure class="intentions__visuel tirage">
+      <figure class="manieres__visuel tirage">
         <Image
           src={trace}
           alt={t('traceAlt')}
@@ -150,12 +199,12 @@ const titreProchaine = prochaine
           loading="lazy"
         />
       </figure>
-      <ul class="intentions__liste">
-        {intentions.map((intention, index) => (
-          <li class="intention apparait" style={`--i:${index}`}>
-            <span class="trait-croissant intention__trait" style={`--i:${index}`}></span>
-            <h3 class="t-carte intention__mot">{intention.titre}</h3>
-            <p>{intention.texte}</p>
+      <ul class="manieres__liste">
+        {a.manieres.map((maniere, index) => (
+          <li class="maniere apparait" style={`--i:${index}`}>
+            <span class="trait-croissant maniere__trait" style={`--i:${index}`}></span>
+            <h3 class="t-carte maniere__mot">{maniere.titre}</h3>
+            <p>{maniere.texte}</p>
           </li>
         ))}
       </ul>
@@ -166,7 +215,7 @@ const titreProchaine = prochaine
   <section class="section conteneur">
     <EnteteSection
       surtitre={t('sectionRencontres')}
-      titre={titreProchaine}
+      titre={t('accueilRencontresTitre')}
       lien={{ url: chemin(langue, 'evenements'), libelle: t('tousLesEvenements') }}
     ><p class="intro-section">{t('introRencontres')}</p></EnteteSection>
     {prochaine ? (
@@ -189,11 +238,11 @@ const titreProchaine = prochaine
     )}
   </section>
 
-  <!-- ================= INTERVENANTS ================= -->
+  <!-- ================= VOIX ================= -->
   {(intervenants.length > 0 || enChantier) && (
   <section class="section conteneur">
     <EnteteSection
-      surtitre={t('sectionVoix')}
+      surtitre={t('accueilVoixSurtitre')}
       titre={t('ceuxQuiParlent')}
       lien={{ url: chemin(langue, 'intervenants'), libelle: t('tousLesIntervenants') }}
     ><p class="intro-section">{t('introVoix')}</p></EnteteSection>
@@ -217,8 +266,8 @@ const titreProchaine = prochaine
   {(projets.length > 0 || enChantier) && (
   <section class="section conteneur colonnes">
     <EnteteSection
-      surtitre={t('navProjets')}
-      titre={t('ceQueLAssociationConstruit')}
+      surtitre={t('accueilProjetsSurtitre')}
+      titre={t('accueilProjetsTitre')}
       lien={{ url: chemin(langue, 'projets'), libelle: t('tousLesProjets') }}
       class="entete-section--rail"
     ><p class="intro-section">{t('introProjets')}</p></EnteteSection>
@@ -240,9 +289,9 @@ const titreProchaine = prochaine
   {(recits.length > 0 || enChantier) && (
   <section class="section conteneur colonnes colonnes--decale">
     <EnteteSection
-      surtitre={t('navRecits')}
-      titre={t('portraitsRetoursIdees')}
-      lien={{ url: chemin(langue, 'recits'), libelle: t('tousLesRecits') }}
+      surtitre={t('accueilRecitsSurtitre')}
+      titre={t('accueilRecitsTitre')}
+      lien={{ url: chemin(langue, 'recits'), libelle: t('accueilRecitsLien') }}
       class="entete-section--rail"
     ><p class="intro-section">{t('introRecits')}</p></EnteteSection>
     {recits.length > 0 ? (
@@ -259,13 +308,29 @@ const titreProchaine = prochaine
   </section>
   )}
 
+  <!-- ================= ÉCOSYSTÈME =================
+       Pas de page à lui : l'entrée du menu et les boutons « rejoindre »
+       mènent ici. L'ancre est traduite comme le reste des adresses. -->
+  <section class="section scene ecosysteme" id={ancreEcosysteme[langue]}>
+    <div class="conteneur ecosysteme__interieur">
+      <div>
+        <EnteteSection surtitre={a.ecosysteme.surtitre} titre={a.ecosysteme.titre} />
+        <p class="ecosysteme__texte">{a.ecosysteme.texte}</p>
+      </div>
+      <div class="ecosysteme__suite">
+        <p class="ecosysteme__phrase">{a.ecosysteme.phrase}</p>
+        <a href={lienEcosysteme} class="bouton">{a.ecosysteme.bouton}</a>
+      </div>
+    </div>
+  </section>
+
   <BandeauCta
-    surtitre={t('ctaParticiperSurtitre')}
-    titre={t('ctaParticiperTitre')}
-    texte={t('ctaParticiperTexte')}
+    surtitre={t('ctaAporterSurtitre')}
+    titre={t('ctaAporterTitre')}
+    texte={t('ctaAporterTexte')}
     actions={[
-      { url: chemin(langue, 'engagement'), libelle: t('ctaVoirEngagement') },
-      { url: chemin(langue, 'contact'), libelle: t('ctaNousEcrire'), variante: 'fantome' },
+      { url: chemin(langue, 'engagement'), libelle: t('ctaCommentParticiper') },
+      { url: chemin(langue, 'contact'), libelle: t('ctaContacter'), variante: 'fantome' },
     ]}
   />
 </Base>
@@ -320,13 +385,22 @@ const titreProchaine = prochaine
   }
   .heros__surtitre, .heros__titre, .heros__chapo, .heros__actions, .heros__reperes { position: relative; }
 
-  .heros__titre { margin-bottom: var(--e-5); max-width: 17ch; }
-  /* Les deux phrases s'empilent toujours : c'est l'antithèse qui porte
-     le titre, et elle ne se lit que si les deux moitiés sont parallèles.
-     L'accent est un poids, pas une couleur — la terracotta reste à
-     l'action, c'est-à-dire au bouton juste en dessous. */
-  .heros__phrase { display: block; text-wrap: balance; color: var(--encre-douce); }
-  .heros__phrase--fort { font-weight: 800; color: var(--encre); }
+  /* ---- Les trois verbes ----
+     Ils portent le même poids : aucun n'est l'accent de l'autre, et
+     c'est l'empilement qui fait la composition. Les capitales demandent
+     de rendre l'approche que `.t-hero` serre pour du bas-de-casse. */
+  .heros__titre {
+    margin-bottom: var(--e-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-1, 0.25rem);
+    text-transform: uppercase;
+    letter-spacing: -0.015em;
+  }
+  .heros__mot { display: flex; align-items: center; gap: var(--e-4); }
+  .heros__verbe { display: block; }
+  .heros__point { color: var(--or); font-weight: 400; }
+
   .heros__chapo { margin-bottom: var(--e-6); }
   .heros__actions { gap: var(--e-3); }
 
@@ -372,9 +446,9 @@ const titreProchaine = prochaine
       grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
       gap: var(--e-9);
     }
-    /* Le visuel descend sur la section suivante. */
+    /* Le visuel descend sur la section suivante, qui lui fait la place. */
     .heros__visuel { margin-bottom: -4rem; }
-    .section--intentions { padding-top: clamp(5rem, 9vw, 9rem); }
+    .section--apres-heros { padding-top: clamp(5rem, 9vw, 9rem); }
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -403,13 +477,87 @@ const titreProchaine = prochaine
     }
   }
 
-  /* ---------------- Intentions ---------------- */
+  /* ---------------- Le constat ---------------- */
+  .constat { display: grid; gap: var(--e-6); }
+  @media (min-width: 60rem) {
+    .constat {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+      column-gap: var(--e-8);
+      align-items: start;
+    }
+    .constat__phrase { grid-column: 1 / -1; }
+  }
+  /* L'énumération est le sujet de la section : elle se lit comme une
+     liste posée, pas comme une phrase. */
+  .constat__enumeration {
+    font-family: var(--f-titre);
+    font-size: var(--t-500);
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--encre);
+    text-wrap: balance;
+  }
+  .constat__corps {
+    font-size: var(--t-400);
+    line-height: 1.7;
+    color: var(--encre-douce);
+    max-width: var(--largeur-texte);
+    text-wrap: pretty;
+  }
+  .constat__phrase {
+    font-family: var(--f-lecture);
+    font-style: italic;
+    font-size: var(--t-600);
+    line-height: 1.45;
+    color: var(--encre);
+    max-width: 38ch;
+    border-left: var(--epaisseur-trait) solid var(--or);
+    padding-left: var(--e-5);
+    margin-top: var(--e-4);
+    text-wrap: pretty;
+  }
+
+  /* ---------------- Les trois verbes ----------------
+     Même composition que la boussole de la page Association : c'est le
+     même propos, il n'a pas de raison de changer de forme d'une page à
+     l'autre. */
+  .verbes {
+    display: grid;
+    gap: var(--e-6);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  @media (min-width: 48rem) {
+    .verbes { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--e-5); }
+  }
+  .verbe { display: flex; flex-direction: column; gap: var(--e-2); }
+  .verbe__trait { max-width: 6rem; margin-bottom: var(--e-3); }
+  .verbe__rang {
+    font-family: var(--f-titre);
+    font-size: var(--t-100);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--or-encre);
+    font-variant-numeric: tabular-nums;
+  }
+  .verbe__mot {
+    font-family: var(--f-titre);
+    font-size: var(--t-700);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--terre);
+  }
+  .verbe__texte { font-size: var(--t-300); line-height: 1.65; color: var(--encre-douce); text-wrap: pretty; }
+
+  /* ---------------- Les quatre manières ---------------- */
   /* Mosaïque : 5/4 puis 4/5, sur les neuf colonnes qui restent à droite
      de l'image. La rupture de rythme suffit — quatre blocs de largeur
      égale se lisent comme un tableau, pas comme un propos. */
-  .intentions { display: grid; gap: var(--e-7); }
-  .intentions__liste { display: grid; gap: var(--e-7) var(--e-8); list-style: none; margin: 0; padding: 0; }
-  .intentions__visuel {
+  .manieres { display: grid; gap: var(--e-7); }
+  .manieres__liste { display: grid; gap: var(--e-7) var(--e-8); list-style: none; margin: 0; padding: 0; }
+  .manieres__visuel {
     margin: 0;
     overflow: hidden;
     border-radius: var(--r-visuel);
@@ -418,26 +566,26 @@ const titreProchaine = prochaine
     aspect-ratio: 2 / 3;
     max-width: 19rem;
   }
-  .intentions__visuel :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .manieres__visuel :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   @media (min-width: 52rem) {
-    .intentions { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: var(--e-8); align-items: start; }
+    .manieres { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: var(--e-8); align-items: start; }
     /* L'image accompagne les deux rangées de blocs sans les suivre. */
-    .intentions__visuel { position: sticky; top: 7rem; }
-    .intentions__liste { grid-template-columns: repeat(9, minmax(0, 1fr)); }
-    .intention:nth-child(1) { grid-column: 1 / 6; }
-    .intention:nth-child(2) { grid-column: 6 / -1; }
-    .intention:nth-child(3) { grid-column: 1 / 5; }
-    .intention:nth-child(4) { grid-column: 5 / -1; }
+    .manieres__visuel { position: sticky; top: 7rem; }
+    .manieres__liste { grid-template-columns: repeat(9, minmax(0, 1fr)); }
+    .maniere:nth-child(1) { grid-column: 1 / 6; }
+    .maniere:nth-child(2) { grid-column: 6 / -1; }
+    .maniere:nth-child(3) { grid-column: 1 / 5; }
+    .maniere:nth-child(4) { grid-column: 5 / -1; }
   }
   @media (max-width: 51.99rem) {
     /* Le propos d'abord, l'image ensuite. */
-    .intentions__visuel { order: 1; max-width: 14rem; }
+    .manieres__visuel { order: 1; max-width: 14rem; }
   }
-  .intention { display: flex; flex-direction: column; gap: var(--e-3); }
-  .intention__trait { max-width: 6rem; }
-  .intention__mot { font-weight: 700; }
-  .intention p { font-size: var(--t-300); line-height: 1.65; color: var(--encre-douce); text-wrap: pretty; }
+  .maniere { display: flex; flex-direction: column; gap: var(--e-3); }
+  .maniere__trait { max-width: 6rem; }
+  .maniere__mot { font-weight: 700; }
+  .maniere p { font-size: var(--t-300); line-height: 1.65; color: var(--encre-douce); text-wrap: pretty; }
 
   /* ---------------- Rencontres suivantes ---------------- */
   .suite { display: flex; flex-direction: column; }
@@ -462,6 +610,34 @@ const titreProchaine = prochaine
   }
   @media (min-width: 52rem) {
     .voix { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+
+  /* ---------------- Écosystème ---------------- */
+  .ecosysteme__interieur { display: grid; gap: var(--e-7); align-items: start; }
+  @media (min-width: 60rem) {
+    .ecosysteme__interieur {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      gap: var(--e-9);
+      align-items: end;
+    }
+  }
+  .ecosysteme__texte {
+    font-size: var(--t-400);
+    line-height: 1.7;
+    color: var(--encre-douce);
+    max-width: var(--largeur-texte);
+    text-wrap: pretty;
+  }
+  .ecosysteme__suite { display: flex; flex-direction: column; align-items: flex-start; gap: var(--e-5); }
+  .ecosysteme__phrase {
+    font-family: var(--f-lecture);
+    font-style: italic;
+    font-size: var(--t-500);
+    line-height: 1.5;
+    color: var(--encre);
+    border-left: var(--epaisseur-trait) solid var(--or);
+    padding-left: var(--e-4);
+    text-wrap: pretty;
   }
 
   /* ---------------- Rails de section ---------------- */

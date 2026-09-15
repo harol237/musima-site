@@ -49,6 +49,10 @@ const champNom = aRemplir(site.infolettre.champ_nom) ? undefined : site.infolett
           {entreesPrincipales.map((e) => (
             <li><a href={e.url} class="lien-pied">{e.libelle}</a></li>
           ))}
+          {/* « Participer » est déjà le bouton de la colonne de gauche.
+              Il figure aussi dans la liste : c'est une rubrique du site,
+              et quelqu'un qui parcourt le pied de page la cherche là. */}
+          <li><a href={action.url} class="lien-pied">{action.libelle}</a></li>
           {entreesSecondaires.map((e) => (
             <li><a href={e.url} class="lien-pied">{e.libelle}</a></li>
           ))}

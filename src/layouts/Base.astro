@@ -9,6 +9,8 @@ import { traducteur } from '~/i18n/ui';
 
 interface Props {
   titre: string;
+  /** Voir Seo.astro : titre d'onglet qui ne suit pas « Page — MUSIMA ». */
+  titreExact?: string;
   description?: string;
   image?: string;
   type?: 'website' | 'article' | 'profile' | 'event';
