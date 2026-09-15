@@ -10,7 +10,7 @@ import ARemplir from '~/components/ARemplir.astro';
 import VisuelDeSecours from '~/components/VisuelDeSecours.astro';
 import { estPublie, dateISO, chargerRecits, pret, slugDe } from '~/lib/contenu';
 import { nomTransition } from '~/lib/transitions';
-import { formaterDate } from '~/i18n/utils';
+import { categoriesRecit, formaterDate, traduireValeur } from '~/i18n/utils';
 import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
 
@@ -58,7 +58,7 @@ const donnees = {
         <FilDAriane elements={[{ libelle: t('navRecits'), url: chemin(langue, 'recits') }, { libelle: data.titre }]} />
         {data.modele && <p class="rappel-modele">{t('ficheModele')}</p>}
         <div class="rang">
-          <span class="puce puce--sourde">{data.categorie}</span>
+          <span class="puce puce--sourde">{traduireValeur(categoriesRecit, data.categorie, langue)}</span>
           <time class="meta" datetime={dateISO(data.date)}>{formaterDate(data.date, langue)}</time>
           {data.temps_lecture && <span class="meta">· {data.temps_lecture}</span>}
         </div>
