@@ -36,7 +36,12 @@ const toutes = langues;
 export const pagesStatiques: PageStatique[] = [
   { vue: 'accueil',         disponible: toutes },
   { vue: 'association',     segment: 'association', disponible: toutes },
-  { vue: 'equipe',          segment: 'association', sous: 'equipe', disponible: toutes },
+  /* La page équipe n'est pas publiée tant que la composition de la
+     junta n'est pas connue : servie vide, avec quatre rôles sans nom,
+     elle desservait l'association. Ses adresses sont redirigées vers la
+     page Association dans public/_redirects. La vue reste dans le
+     dépôt ; remettre cette ligne suffit à la republier :
+     { vue: 'equipe', segment: 'association', sous: 'equipe', disponible: toutes } */
   { vue: 'evenements',      segment: 'evenements', disponible: toutes },
   { vue: 'intervenants',    segment: 'intervenants', disponible: toutes },
   { vue: 'projets',         segment: 'projets', disponible: toutes },

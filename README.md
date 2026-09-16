@@ -1,7 +1,9 @@
 # Site MUSIMA
 
-Site de l’association MUSIMA : événements, intervenants, projets, récits et galerie photo,
-avec une interface d’administration pour tout modifier sans toucher au code.
+Site de l’association MUSIMA — valoriser, connecter, construire — en quatre langues
+(espagnol à la racine, français, anglais et catalan sous `/fr`, `/en`, `/ca`) : rencontres,
+intervenants, projets, récits et galerie photo, avec une interface d’administration pour
+modifier le contenu sans toucher au code.
 
 ---
 
@@ -56,14 +58,24 @@ src/
 ├── assets/uploads/   ← LES PHOTOS (optimisées automatiquement)
 ├── data/
 │   ├── site.json         ← nom, baseline, coordonnées, réseaux, infolettre
-│   └── navigation.ts     ← le menu principal
+│   └── navigation.ts     ← le menu principal et le pied de page
+├── i18n/
+│   ├── config.ts         ← les langues et les segments d’URL traduits
+│   ├── ui.ts             ← toutes les chaînes d’interface, quatre langues
+│   ├── accueil.ts        ← les blocs éditoriaux de l’accueil
+│   ├── formulaire.ts     ← textes et motifs du formulaire de contact
+│   └── pages.ts          ← quelles pages statiques existent, dans quelles langues
+├── vues/             ← une vue par page : accueil, association, participer…
+│   └── textes/           ← les pages légales, un fichier par langue
 ├── styles/
 │   ├── tokens.css        ← COULEURS, TYPO, ESPACEMENTS — tout se change ici
 │   └── global.css        ← styles partagés
 ├── components/       ← briques réutilisables (cartes, en-têtes, filtres…)
 ├── layouts/Base.astro ← squelette commun à toutes les pages
-├── pages/            ← une page du site = un fichier
+├── pages/[...ruta].astro ← le routeur : génère toutes les pages, toutes langues
 └── content.config.ts ← les champs de chaque type de contenu
+
+functions/api/contact.ts ← l’envoi du formulaire (Cloudflare Pages Function)
 
 public/admin/config.yml ← les champs tels qu’ils apparaissent dans l’interface d’admin
 ```
@@ -86,20 +98,24 @@ Puis l’afficher dans la page ou le composant concerné.
 ### Ajouter un type de contenu
 
 Même principe : une nouvelle collection dans `src/content.config.ts`, un nouveau bloc dans
-`public/admin/config.yml`, un dossier dans `src/content/`, et les pages de liste et de détail
-dans `src/pages/`. Le reste (SEO, thèmes, navigation, styles) suit tout seul.
+`public/admin/config.yml`, un dossier dans `src/content/` avec un sous-dossier par langue,
+et les vues de liste et de détail dans `src/vues/`, branchées dans `src/pages/[...ruta].astro`.
+Le reste (SEO, thèmes, navigation, styles) suit tout seul.
 
 ---
 
 ## Emplacements à compléter
 
-Les zones où il manque une information s’affichent en clair sur le site :
+Les zones où il manque une information portent un marqueur entre crochets :
 
 - `[PHOTO À AJOUTER]`
 - `[TEXTE À FINALISER]`
 - `[LIEN À AJOUTER]`
 
-Elles disparaissent dès que l’information est saisie. Pour les retrouver toutes :
+En développement (`npm run dev`) ils s’affichent en clair ; sur le site public, un champ qui
+porte encore son marqueur est traité comme vide, et les blocs qui en dépendent (infolettre,
+équipe, cadre juridique) ne s’affichent pas. Ils disparaissent dès que l’information est
+saisie. Pour les retrouver tous :
 
 ```bash
 grep -rn "À AJOUTER\|À FINALISER\|À CONFIRMER\|À DÉFINIR\|À COMPLÉTER" src/ public/admin/

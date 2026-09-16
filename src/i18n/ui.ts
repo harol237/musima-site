@@ -32,7 +32,6 @@ export const ui = {
   ouvrirMenu: { es: 'Abrir el menú', fr: 'Ouvrir le menu', en: 'Open menu', ca: 'Obre el menú' },
   fermerMenu: { es: 'Cerrar el menú', fr: 'Fermer le menu', en: 'Close menu', ca: 'Tanca el menú' },
   menuBouton: { es: 'Menú', fr: 'Menu', en: 'Menu', ca: 'Menú' },
-  menuApercu: { es: 'Vista previa', fr: 'Aperçu', en: 'Preview', ca: 'Vista prèvia' },
   basculeTheme: {
     es: 'Cambiar entre tema claro y oscuro', fr: 'Changer de thème clair ou sombre',
     en: 'Switch between light and dark theme', ca: 'Canvia entre tema clar i fosc',
@@ -112,7 +111,6 @@ export const ui = {
   enSavoirPlus: { es: 'Más información', fr: 'En savoir plus', en: 'Learn more', ca: 'Més informació' },
 
   /* ---------------- Composants ---------------- */
-  badgeModele: { es: 'Plantilla', fr: 'Modèle', en: 'Template', ca: 'Plantilla' },
   filtreTout: { es: 'Todo', fr: 'Tout', en: 'All', ca: 'Tot' },
   filtrerParDomaine: {
     es: 'Filtrar por ámbito', fr: 'Filtrer par domaine', en: 'Filter by field', ca: 'Filtra per àmbit',
@@ -464,9 +462,6 @@ export const ui = {
     ca: 'Cada projecte que MUSIMA dugui o acompanyi quedarà documentat: intenció, avenç, col·laboradors.',
   },
   labelProjet: { es: 'Proyecto', fr: 'Projet', en: 'Project', ca: 'Projecte' },
-  labelStatut: { es: 'Estado', fr: 'Statut', en: 'Status', ca: 'Estat' },
-  labelAnnee: { es: 'Año', fr: 'Année', en: 'Year', ca: 'Any' },
-  labelTerritoire: { es: 'Territorio', fr: 'Territoire', en: 'Territory', ca: 'Territori' },
   voirLeProjet: { es: 'Ver el proyecto', fr: 'Voir le projet', en: 'See the project', ca: 'Veure el projecte' },
   impliques: { es: 'Implicados', fr: 'Impliqués', en: 'Involved', ca: 'Implicats' },
   personnesDuProjet: {
@@ -496,7 +491,6 @@ export const ui = {
     en: 'Portraits, write-ups and analysis: whatever MUSIMA publishes will show up here.',
     ca: 'Retrats, cròniques de trobades i anàlisis: el que publiqui MUSIMA apareixerà aquí.',
   },
-  minDeLecture: { es: 'min de lectura', fr: 'min de lecture', en: 'min read', ca: 'min de lectura' },
   parAuteur: { es: 'Por', fr: 'Par', en: 'By', ca: 'Per' },
 
   /* ---------------- Galerie ---------------- */
