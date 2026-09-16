@@ -21,8 +21,8 @@ const projets = await chargerProjets(langue);
   noindex={projets.length === 0}
 >
   <EntetePage
-    surtitre={t('navProjets')}
-    titre={t('ceQueLAssociationConstruit')}
+    surtitre={t('projetsSurtitre')}
+    titre={t('projetsTitre')}
     chapo={t('projetsChapo')}
     ariane={[{ libelle: t('navProjets') }]}
   ><div class="prose entete-page__corps">
@@ -47,12 +47,12 @@ const projets = await chargerProjets(langue);
     )}
   </section>
   <BandeauCta
-    surtitre={t('ctaParticiperSurtitre')}
-    titre={t('ctaParticiperTitre')}
-    texte={t('ctaParticiperTexte')}
+    surtitre={t('ctaAporterSurtitre')}
+    titre={t('ctaAporterTitre')}
+    texte={t('ctaAporterTexte')}
     actions={[
-      { url: chemin(langue, 'engagement'), libelle: t('ctaVoirEngagement') },
-      { url: chemin(langue, 'contact'), libelle: t('ctaNousEcrire'), variante: 'fantome' },
+      { url: chemin(langue, 'engagement'), libelle: t('ctaCommentParticiper') },
+      { url: chemin(langue, 'contact'), libelle: t('ctaContacter'), variante: 'fantome' },
     ]}
   />
 </Base>

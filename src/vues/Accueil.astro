@@ -242,7 +242,7 @@ const reperes = prochaine
   {(intervenants.length > 0 || enChantier) && (
   <section class="section conteneur">
     <EnteteSection
-      surtitre={t('accueilVoixSurtitre')}
+      surtitre={t('sectionVoix')}
       titre={t('ceuxQuiParlent')}
       lien={{ url: chemin(langue, 'intervenants'), libelle: t('tousLesIntervenants') }}
     ><p class="intro-section">{t('introVoix')}</p></EnteteSection>
@@ -266,8 +266,8 @@ const reperes = prochaine
   {(projets.length > 0 || enChantier) && (
   <section class="section conteneur colonnes">
     <EnteteSection
-      surtitre={t('accueilProjetsSurtitre')}
-      titre={t('accueilProjetsTitre')}
+      surtitre={t('projetsSurtitre')}
+      titre={t('projetsTitre')}
       lien={{ url: chemin(langue, 'projets'), libelle: t('tousLesProjets') }}
       class="entete-section--rail"
     ><p class="intro-section">{t('introProjets')}</p></EnteteSection>
@@ -289,8 +289,8 @@ const reperes = prochaine
   {(recits.length > 0 || enChantier) && (
   <section class="section conteneur colonnes colonnes--decale">
     <EnteteSection
-      surtitre={t('accueilRecitsSurtitre')}
-      titre={t('accueilRecitsTitre')}
+      surtitre={t('recitsSurtitre')}
+      titre={t('recitsTitre')}
       lien={{ url: chemin(langue, 'recits'), libelle: t('accueilRecitsLien') }}
       class="entete-section--rail"
     ><p class="intro-section">{t('introRecits')}</p></EnteteSection>
