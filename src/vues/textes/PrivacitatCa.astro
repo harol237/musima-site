@@ -22,9 +22,8 @@ const maj = new Intl.DateTimeFormat('ca-ES', {
 
     <h2>1. En una frase</h2>
     <p>
-      El web en si no recull res: cap galeta, cap rastrejador, cap mesura d’audiència. L’única dada
-      personal que conservem és la seva adreça de correu, si es subscriu al butlletí, i només en
-      aquest cas.
+      El web en si no recull res: cap galeta, cap rastrejador, cap mesura d’audiència. Només conservem dades personals quan vostè ens les dona: en subscriure’s al butlletí, en
+      escriure’ns o en inscriure’s a una trobada.
     </p>
 
     <h2>2. Qui és el responsable del tractament</h2>
@@ -57,11 +56,22 @@ const maj = new Intl.DateTimeFormat('ca-ES', {
     <table class="tableau-traitement">
       <tbody>
         <tr><th>Dades</th><td>El motiu del seu missatge, el seu nom, els seus cognoms, la seva adreça electrònica, el seu telèfon, el missatge si n’escriu un, la llengua de la pàgina i la data i hora de l’enviament.</td></tr>
-        <tr><th>Finalitat</th><td>Respondre-li. I, només si marca la segona casella, informar-lo de les properes trobades: és una finalitat diferent, que es consent a part i es rebutja sense cap conseqüència sobre la primera.</td></tr>
+        <tr><th>Finalitat</th><td>Respondre-li. I, només si marca la segona casella, informar-lo de les properes trobades: és una finalitat diferent, que es consent a part i es rebutja sense cap conseqüència sobre la primera. La inscripció a una trobada és un cas a part, descrit a continuació.</td></tr>
         <tr><th>Base jurídica</th><td>El seu consentiment per al tractament del seu missatge — article 6.1.a del RGPD — i, per a la conservació de les seves dades de contacte, un segon consentiment donat per separat. Cap casella no ve marcada.</td></tr>
         <tr><th>Conservació</th><td>Dos anys des del nostre darrer intercanvi. Després les seves dades s’esborren, tant del nostre correu com de {site.infolettre.fournisseur}.</td></tr>
         <tr><th>Destinataris</th><td>{site.infolettre.fournisseur}, que fa arribar el correu de notificació i l’acusament de recepció, i que registra les seves dades si vostè ho ha acceptat (vegeu la secció 4). Ningú més.</td></tr>
         <tr><th>Particularitat</th><td>L’enviament passa pel nostre propi servidor, al nostre allotjament. El seu navegador no contacta amb cap domini aliè a musima.org: no es carrega res des de {site.infolettre.fournisseur} mentre omple el formulari.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Inscripció a una trobada</h3>
+    <table class="tableau-traitement">
+      <tbody>
+        <tr><th>Dades</th><td>Les mateixes que al formulari de contacte, més la trobada a la qual s’inscriu.</td></tr>
+        <tr><th>Finalitat</th><td>Gestionar la seva participació: comptar les places, confirmar-li els detalls pràctics i avisar-lo d’un canvi d’última hora.</td></tr>
+        <tr><th>Base jurídica</th><td>La gestió de la participació que vostè mateix sol·licita — article 6.1.b del RGPD. No depèn de cap casella: inscriure’s és demanar participar. La casella de conservació continua governant, a part, l’ús de les seves dades per informar-lo de trobades futures.</td></tr>
+        <tr><th>Conservació</th><td>A la llista pròpia de la trobada, fins a la seva celebració i el tancament del seu seguiment; després, les seves dades s’eliminen d’aquesta llista. Si a més ha marcat la casella de conservació, es mantenen a la llista de contactes en les condicions descrites més amunt.</td></tr>
+        <tr><th>Destinatari</th><td>{site.infolettre.fournisseur}, que registra la inscripció en una llista dedicada a la trobada, diferent de la llista de contactes (vegeu l’apartat 4).</td></tr>
       </tbody>
     </table>
 
@@ -90,8 +100,7 @@ const maj = new Intl.DateTimeFormat('ca-ES', {
           <th>{site.infolettre.fournisseur}</th>
           <td>
             Brevo SAS, 106 boulevard Haussmann, 75008 París, França. Fa arribar el butlletí, el correu de
-            notificació del formulari de contacte i el seu acusament de recepció, i registra les
-            dades de qui ho ha acceptat expressament. Dades allotjades a la Unió Europea. Un contracte d’encàrrec de tractament
+            notificació del formulari de contacte i el seu acusament de recepció, i registra, en dues llistes diferents, les inscripcions a les trobades i les dades de qui ha acceptat expressament ser informat. Dades allotjades a la Unió Europea. Un contracte d’encàrrec de tractament
             conforme a l’article 28 del RGPD regula aquesta subcontractació.
           </td>
         </tr>

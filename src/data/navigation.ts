@@ -8,7 +8,7 @@ import { ancreEcosysteme } from '~/i18n/accueil';
 
    « Ponentes » et « Relatos » ne sont plus au premier niveau : leurs
    fiches restent servies à leur adresse, et on y arrive depuis les
-   sections de l'accueil — et, pour les récits, depuis le pied de page. */
+   sections de l'accueil et depuis le pied de page. */
 
 export type Entree = {
   libelle: string;
@@ -61,9 +61,11 @@ export const actionPrincipale = (langue: Langue): Entree =>
   entree(langue, 'engagement', 'navEngagement');
 
 /* Le pied de page liste tout ce qui n'est pas au premier niveau. Les
-   récits y figurent : la rubrique est publiée, elle doit rester
-   atteignable ailleurs que depuis sa section de l'accueil. */
+   intervenants et les récits y figurent : ces rubriques sont publiées,
+   elles doivent rester atteignables ailleurs que depuis leur section
+   de l'accueil. */
 export const navigationSecondaire = (langue: Langue): Entree[] => [
+  entree(langue, 'intervenants', 'navIntervenants', undefined, 'intervenants'),
   entree(langue, 'recits', 'navRecits', undefined, 'recits'),
   entree(langue, 'galerie', 'navGalerie', undefined, 'galerie'),
   entree(langue, 'contact', 'navContact'),

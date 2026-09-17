@@ -22,8 +22,8 @@ const maj = new Intl.DateTimeFormat('fr-FR', {
       <h2>1. En une phrase</h2>
       <p>
         Le site en lui-même ne collecte rien : aucun cookie, aucun traceur, aucune mesure
-        d'audience. La seule donnée personnelle que nous conservons est votre adresse e-mail, si
-        vous vous inscrivez à l'infolettre — et uniquement dans ce cas.
+        d'audience. Nous ne conservons de données personnelles que lorsque vous nous les donnez : en vous
+        abonnant à l'infolettre, en nous écrivant ou en vous inscrivant à une rencontre.
       </p>
 
       <h2>2. Qui est responsable du traitement</h2>
@@ -51,11 +51,22 @@ const maj = new Intl.DateTimeFormat('fr-FR', {
       <table class="tableau-traitement">
         <tbody>
           <tr><th>Données</th><td>Le motif de votre message, votre prénom, votre nom, votre adresse e-mail, votre téléphone, le message si vous en écrivez un, la langue de la page et l'horodatage de l'envoi.</td></tr>
-          <tr><th>Finalité</th><td>Vous répondre. Et, uniquement si vous cochez la seconde case, vous informer des prochaines rencontres — c'est une finalité distincte, qui se consent à part et se refuse sans conséquence sur la première.</td></tr>
+          <tr><th>Finalité</th><td>Vous répondre. Et, uniquement si vous cochez la seconde case, vous informer des prochaines rencontres — c'est une finalité distincte, qui se consent à part et se refuse sans conséquence sur la première. L'inscription à une rencontre est un cas à part, décrit ci-dessous.</td></tr>
           <tr><th>Base légale</th><td>Votre consentement pour le traitement de votre message — article 6.1.a du RGPD — et, pour la conservation de vos coordonnées, un second consentement donné séparément. Aucune case n'est pré-cochée.</td></tr>
           <tr><th>Conservation</th><td>Deux ans à compter de notre dernier échange. Vos coordonnées sont ensuite supprimées, de notre messagerie comme de chez {site.infolettre.fournisseur}.</td></tr>
           <tr><th>Destinataires</th><td>{site.infolettre.fournisseur}, qui achemine l'e-mail de notification et l'accusé de réception, et qui enregistre vos coordonnées si vous l'avez accepté (voir la section 4). Personne d'autre.</td></tr>
           <tr><th>Particularité</th><td>L'envoi passe par notre propre serveur, chez notre hébergeur. Votre navigateur ne contacte aucun domaine extérieur à musima.org : rien n'est chargé depuis {site.infolettre.fournisseur} pendant que vous remplissez le formulaire.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Inscription à une rencontre</h3>
+      <table class="tableau-traitement">
+        <tbody>
+          <tr><th>Données</th><td>Les mêmes que pour le formulaire de contact, plus la rencontre à laquelle vous vous inscrivez.</td></tr>
+          <tr><th>Finalité</th><td>Gérer votre participation : compter les places, vous confirmer les détails pratiques, vous prévenir d'un changement de dernière minute.</td></tr>
+          <tr><th>Base juridique</th><td>La gestion de la participation que vous demandez vous-même — article 6.1.b du RGPD. Elle ne dépend d'aucune case : s'inscrire, c'est demander à participer. La case de conservation continue de régir, à part, l'usage de vos coordonnées pour vous informer des rencontres suivantes.</td></tr>
+          <tr><th>Conservation</th><td>Dans la liste propre à la rencontre, jusqu'à sa tenue et la clôture de son suivi ; vos données sont ensuite retirées de cette liste. Si vous avez aussi coché la case de conservation, elles restent dans la liste de contacts aux conditions décrites plus haut.</td></tr>
+          <tr><th>Destinataire</th><td>{site.infolettre.fournisseur}, qui enregistre l'inscription dans une liste dédiée à la rencontre, distincte de la liste de contacts (voir la section 4).</td></tr>
         </tbody>
       </table>
 
@@ -85,8 +96,7 @@ const maj = new Intl.DateTimeFormat('fr-FR', {
             <th>{site.infolettre.fournisseur}</th>
             <td>
               Brevo SAS, 106 boulevard Haussmann, 75008 Paris, France. Achemine l'infolettre, l'e-mail de
-              notification du formulaire de contact et son accusé de réception, et enregistre
-              les coordonnées de qui l'a expressément accepté. Données hébergées dans l'Union européenne. Un accord de traitement
+              notification du formulaire de contact et son accusé de réception, et enregistre, dans deux listes distinctes, les inscriptions aux rencontres et les coordonnées de qui a expressément accepté d'être informé. Données hébergées dans l'Union européenne. Un accord de traitement
               conforme à l'article 28 du RGPD encadre cette sous-traitance.
             </td>
           </tr>

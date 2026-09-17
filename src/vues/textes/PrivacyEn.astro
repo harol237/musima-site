@@ -22,8 +22,8 @@ const maj = new Intl.DateTimeFormat('en-GB', {
 
     <h2>1. In one sentence</h2>
     <p>
-      The site itself collects nothing: no cookie, no tracker, no audience measurement. The only
-      personal data we keep is your email address, if you sign up to the newsletter, and only then.
+      The site itself collects nothing: no cookie, no tracker, no audience measurement. We only keep personal data when you give it to us: by subscribing to the newsletter, by
+      writing to us, or by signing up for a gathering.
     </p>
 
     <h2>2. Who the data controller is</h2>
@@ -56,11 +56,22 @@ const maj = new Intl.DateTimeFormat('en-GB', {
     <table class="tableau-traitement">
       <tbody>
         <tr><th>Data</th><td>What your message is about, your first name, your last name, your email address, your phone number, the message if you write one, the language of the page and the time you sent it.</td></tr>
-        <tr><th>Purpose</th><td>Answering you. And, only if you tick the second box, telling you about upcoming gatherings — that is a separate purpose, consented to separately, and refusing it changes nothing about the first.</td></tr>
+        <tr><th>Purpose</th><td>Answering you. And, only if you tick the second box, telling you about upcoming gatherings — that is a separate purpose, consented to separately, and refusing it changes nothing about the first. Signing up for a gathering is a separate case, described below.</td></tr>
         <tr><th>Legal basis</th><td>Your consent for processing your message — article 6.1.a of the GDPR — and, for keeping your contact details, a second consent given separately. No box is ever pre-ticked.</td></tr>
         <tr><th>Retention</th><td>Two years from our last exchange. Your details are then deleted, from our mailbox and from {site.infolettre.fournisseur} alike.</td></tr>
         <tr><th>Recipients</th><td>{site.infolettre.fournisseur}, which carries the notification email and the acknowledgement, and which stores your details if you agreed to it (see section 4). Nobody else.</td></tr>
         <tr><th>The particular bit</th><td>Sending goes through our own server, at our host. Your browser contacts no domain outside musima.org: nothing is loaded from {site.infolettre.fournisseur} while you fill the form in.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Signing up for a gathering</h3>
+    <table class="tableau-traitement">
+      <tbody>
+        <tr><th>Data</th><td>The same as for the contact form, plus the gathering you are signing up for.</td></tr>
+        <tr><th>Purpose</th><td>Managing your participation: counting the seats, confirming the practical details, telling you about any last-minute change.</td></tr>
+        <tr><th>Legal basis</th><td>Managing the participation you yourself request — article 6.1.b of the GDPR. It depends on no box: signing up is asking to take part. The retention box still governs, separately, the use of your details to tell you about future gatherings.</td></tr>
+        <tr><th>Retention</th><td>In the gathering’s own list, until it has taken place and its follow-up is closed; your data is then removed from that list. If you also ticked the retention box, it stays in the contacts list under the conditions described above.</td></tr>
+        <tr><th>Recipient</th><td>{site.infolettre.fournisseur}, which records the sign-up in a list dedicated to the gathering, separate from the contacts list (see section 4).</td></tr>
       </tbody>
     </table>
 
@@ -89,8 +100,7 @@ const maj = new Intl.DateTimeFormat('en-GB', {
           <th>{site.infolettre.fournisseur}</th>
           <td>
             Brevo SAS, 106 boulevard Haussmann, 75008 Paris, France. Carries the newsletter, the contact form's
-            notification email and its acknowledgement, and stores the details of anyone who
-            expressly agreed to it.
+            notification email and its acknowledgement, and stores, in two separate lists, sign-ups for gatherings and the details of anyone who expressly agreed to be kept informed.
             Data hosted in the European Union. A processing agreement under article 28 of the GDPR
             governs this arrangement.
           </td>

@@ -22,9 +22,15 @@ import { langues, type Langue } from '../../src/i18n/config';
 
 interface Env {
   BREVO_API_KEY: string;
-  /** Identifiant de la liste « Contacts site ». Sans lui, aucun contact
-      n'est enregistré et la notification le dit. */
+  /** Identifiant de la liste « Contacts site » (liste 5). Sans lui, la
+      case de conservation n'enregistre personne et la notification le dit. */
   BREVO_LISTE_ID?: string;
+  /** Identifiant de la liste de la rencontre en cours, où va toute
+      inscription, case cochée ou non : s'inscrire, c'est demander à
+      participer, et la liste sert à gérer les places. À défaut, la
+      liste 4 « Rencontre 26 septembre 2026 » ; à changer pour la
+      rencontre suivante. */
+  BREVO_LISTE_INSCRIPTIONS?: string;
   /** Racine de l'API. Non définie en production ; sert à faire répondre
       un serveur local pendant les essais, sans rien envoyer pour de vrai. */
   BREVO_API_BASE?: string;
@@ -34,6 +40,7 @@ const EXPEDITEUR = { name: 'MUSIMA', email: 'no-reply@musima.org' };
 const DESTINATION = site.contact.email;
 const LOGO = 'https://musima.org/logo-musima.png';
 const BREVO_DEFAUT = 'https://api.brevo.com/v3';
+const LISTE_INSCRIPTIONS_DEFAUT = 4;
 
 type Charge = {
   motif: string; prenom: string; nom: string; email: string;
@@ -180,7 +187,7 @@ function notification(c: Charge, langue: Langue, motif: Motif, contactEnregistre
     ${l('Prénom', c.prenom)}${l('Nom', c.nom)}${l('E-mail', c.email)}${l('Téléphone', c.telephone)}
     ${l('Motif (jeton)', motif)}${l('Langue', langue)}
     ${l('Reçu le', new Date().toISOString())}
-    ${l('Infolettre', c.conservation ? `oui — ${contactEnregistre}` : 'non')}
+    ${l('Listes Brevo', contactEnregistre)}
   </table>
   ${c.message ? `<p style="margin:16px 0 0;padding-top:16px;border-top:1px solid #ded8ce;color:#12303f;font:15px/1.65 Arial,sans-serif;white-space:pre-wrap">${echapper(c.message)}</p>` : ''}
 </td></tr></table></td></tr></table></body></html>`;
@@ -276,30 +283,45 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   }
   const motif = c.motif as Motif;
 
-  /* 1. Enregistrement du contact, seulement si la seconde case est
-        cochée. Un échec ici ne fait pas échouer l'envoi : il est
-        reporté dans la notification pour être rattrapé à la main. */
-  let contactEnregistre = 'enregistré';
+  /* 1. Enregistrement du contact dans Brevo. Deux listes, deux raisons
+        qui ne se confondent pas :
+        - une inscription à une rencontre va toujours dans la liste de la
+          rencontre, case ou pas : la personne demande à participer, et
+          la liste sert à compter les places ;
+        - la case de conservation, elle seule, ajoute à la liste
+          « Contacts site » pour les communications futures.
+        Une même inscription peut donc aller dans les deux.
+        Un échec ici ne fait pas échouer l'envoi : il est reporté dans la
+        notification pour être rattrapé à la main. */
+  const listes: string[] = [];
+  const listIds: number[] = [];
+  const manques: string[] = [];
+  if (motif === 'inscription') {
+    const liste = Number(env.BREVO_LISTE_INSCRIPTIONS) || LISTE_INSCRIPTIONS_DEFAUT;
+    listIds.push(liste); listes.push(`inscription (liste ${liste})`);
+  }
   if (c.conservation) {
     const liste = Number(env.BREVO_LISTE_ID);
-    if (!liste) {
-      contactEnregistre = 'NON enregistré — BREVO_LISTE_ID absent';
-    } else {
-      const r = await brevo(base, '/contacts', cle, {
-        email: c.email,
-        updateEnabled: true,
-        listIds: [liste],
-        attributes: {
-          NOMBRE: c.prenom, APELLIDOS: c.nom, TELEFONO: c.telephone,
-          MENSAJE: c.message, IDIOMA: langue, MOTIVO: motif,
-        },
-      });
-      if (!r.ok) {
-        contactEnregistre = `NON enregistré — Brevo ${r.statut}`;
-        journaliser('brevo-contact', request, { statut: r.statut, detail: r.detail });
-      }
+    if (liste) { listIds.push(liste); listes.push(`contacts (liste ${liste})`); }
+    else manques.push('conservation NON enregistrée — BREVO_LISTE_ID absent');
+  }
+  let contactEnregistre = listes.length ? listes.join(' · ') : 'aucune';
+  if (listIds.length) {
+    const r = await brevo(base, '/contacts', cle, {
+      email: c.email,
+      updateEnabled: true,
+      listIds,
+      attributes: {
+        NOMBRE: c.prenom, APELLIDOS: c.nom, TELEFONO: c.telephone,
+        MENSAJE: c.message, IDIOMA: langue, MOTIVO: motif,
+      },
+    });
+    if (!r.ok) {
+      contactEnregistre = `NON enregistré (${listes.join(' · ')}) — Brevo ${r.statut}`;
+      journaliser('brevo-contact', request, { statut: r.statut, detail: r.detail });
     }
   }
+  if (manques.length) contactEnregistre += ` — ${manques.join(' ; ')}`;
 
   /* 2. Notification. C'est elle qui décide du sort du visiteur. */
   const envoi = await brevo(base, '/smtp/email', cle, {
