@@ -12,6 +12,8 @@ interface Props {
   description?: string;
   /** Chemin absolu vers une image de partage (1200×630). */
   image?: string;
+  /** Ce qu'on voit sur cette image, pour qui ne la voit pas. */
+  imageAlt?: string;
   type?: 'website' | 'article' | 'profile' | 'event';
   publieLe?: Date;
   noindex?: boolean;
@@ -24,6 +26,7 @@ const {
   titreExact,
   description: descriptionFournie,
   image,
+  imageAlt: imageAltFournie,
   type = 'website',
   publieLe,
   noindex = false,
@@ -50,24 +53,18 @@ const titreComplet =
 /* L'aperçu affiché quand on colle un lien du site dans une messagerie
    ou un réseau social.
 
-   Aucune image par défaut pour l'instant : la précédente était une photo
-   d'archive Inspire BCN, décrite à tort comme « une rencontre MUSIMA ».
-   Elle est retirée, et aucune des photos actuelles ne tient le 1200×630
-   sans être défigurée par le recadrage. Un visuel pensé pour ce format
-   viendra ; d'ici là on n'annonce pas d'image plutôt que d'en annoncer
-   une fausse ou une qui s'affiche de travers.
-
-   Pour en remettre une : déposer le fichier dans public/, remplacer
-   `undefined` par son chemin, et redonner à og:image:alt une description
-   de ce qu'on y voit. L'ancienne a été supprimée plutôt que gardée :
-   elle décrivait une photo qui n'est plus là. Les balises ci-dessous se
-   rallument toutes seules, carte Twitter en grand format comprise. */
-const imageParDefaut: string | undefined = undefined;
+   Par défaut, un visuel typographique en 1200×630 dans la langue de la
+   page — le logo, les trois verbes, le surtitre de l'accueil et la
+   description du site — généré hors du site et déposé dans
+   public/partage/. Une page peut fournir le sien par `image` : la page
+   d'une rencontre le fait quand un visuel daté existe pour elle. */
+const imageParDefaut = `/partage/musima-${langue}.png`;
 const chemin = image ?? imageParDefaut;
-const imagePartage = chemin ? new URL(chemin, Astro.site).href : undefined;
-/* Les dimensions ne sont connues que pour l'image par défaut : une page
-   qui fournit la sienne n'est pas tenue au 1200×630. */
-const dimensionsConnues = !image && !!imagePartage;
+const imagePartage = new URL(chemin, Astro.site).href;
+/* Tous les visuels de public/partage/ font 1200×630 ; une page qui en
+   fournit un autre n'est pas tenue à ce format. */
+const dimensionsConnues = !image || image.startsWith('/partage/');
+const imageAlt = imageAltFournie ?? t('partageAlt');
 
 const organisation = {
   '@context': 'https://schema.org',
@@ -112,7 +109,8 @@ const organisation = {
 <meta property="og:title" content={titreComplet} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
-{imagePartage && <meta property="og:image" content={imagePartage} />}
+<meta property="og:image" content={imagePartage} />
+<meta property="og:image:alt" content={imageAlt} />
 {dimensionsConnues && (
   <>
     <meta property="og:image:width" content="1200" />
@@ -121,10 +119,9 @@ const organisation = {
 )}
 {publieLe && <meta property="article:published_time" content={publieLe.toISOString()} />}
 
-{/* Sans image, `summary_large_image` afficherait un grand cadre vide :
-    la carte compacte est le bon repli. */}
-<meta name="twitter:card" content={imagePartage ? 'summary_large_image' : 'summary'} />
-{imagePartage && <meta name="twitter:image" content={imagePartage} />}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content={imagePartage} />
+<meta name="twitter:image:alt" content={imageAlt} />
 <meta name="twitter:title" content={titreComplet} />
 <meta name="twitter:description" content={description} />
 

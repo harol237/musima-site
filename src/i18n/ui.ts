@@ -576,6 +576,20 @@ export const ui = {
     ca: 'Una dona jove amb els cabells arrissats recollits, amb jaqueta de punt color crema, treballa al portàtil davant d’una taula blanca; al seu costat, una tassa i una llibreta amb un bolígraf daurat.',
   },
 
+  /* ---------------- Images de partage (public/partage/) ---------------- */
+  partageAlt: {
+    es: 'Sobre fondo azul profundo, el logo de MUSIMA y las palabras Valorizar, Conectar y Construir; debajo, Asociación · Barcelona, Cataluña, y musima.org.',
+    fr: 'Sur fond bleu profond, le logo MUSIMA et les mots Valoriser, Connecter, Construire ; en dessous, Association · Barcelone, Catalogne, et musima.org.',
+    en: 'On a deep blue background, the MUSIMA logo and the words Value, Connect, Build; below, Association · Barcelona, Catalonia, and musima.org.',
+    ca: 'Sobre fons blau profund, el logotip de MUSIMA i les paraules Valoritzar, Connectar i Construir; a sota, Associació · Barcelona, Catalunya, i musima.org.',
+  },
+  partageRencontreAlt: {
+    es: 'Sobre fondo azul profundo, el logo de MUSIMA, las palabras Valorizar, Conectar y Construir, y el próximo encuentro: sábado 26 de septiembre de 2026, de 16:30 a 20:00, Centre Cívic Casa Orlandai, Barcelona.',
+    fr: 'Sur fond bleu profond, le logo MUSIMA, les mots Valoriser, Connecter, Construire, et la prochaine rencontre : samedi 26 septembre 2026, de 16h30 à 20h, Centre Cívic Casa Orlandai, Barcelone.',
+    en: 'On a deep blue background, the MUSIMA logo, the words Value, Connect, Build, and the next gathering: Saturday 26 September 2026, 4.30pm to 8pm, Centre Cívic Casa Orlandai, Barcelona.',
+    ca: 'Sobre fons blau profund, el logotip de MUSIMA, les paraules Valoritzar, Connectar i Construir, i la propera trobada: dissabte 26 de setembre de 2026, de 16:30 a 20:00, Centre Cívic Casa Orlandai, Barcelona.',
+  },
+
   /* ---------------- Visionneuse ---------------- */
   visionneuseTitre: {
     es: 'Visor de fotos', fr: 'Visionneuse', en: 'Photo viewer', ca: 'Visor de fotos',

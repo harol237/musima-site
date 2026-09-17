@@ -11,6 +11,8 @@ import BadgeModele from '~/components/BadgeModele.astro';
 import CompteARebours from '~/components/CompteARebours.astro';
 import { dateISO, horodatageISO, estAVenir, estPublie, enChantier, pret } from '~/lib/contenu';
 import { formaterPlage, formatsEvenement, traduireValeur } from '~/i18n/utils';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { chemin, type Langue } from '~/i18n/config';
 import { parametreMotif, ancreFormulaire } from '~/i18n/formulaire';
 import { traducteur } from '~/i18n/ui';
@@ -23,6 +25,13 @@ interface Props {
 const { evenement, langue, alternatives } = Astro.props;
 const t = traducteur(langue);
 const { data } = evenement;
+
+/* Visuel de partage daté, s'il existe pour cette rencontre : un fichier
+   public/partage/<clé de la rencontre>-<langue>.png, déposé à la main.
+   Par convention de nom, donc rien à écrire dans la fiche elle-même. À
+   défaut, le visuel permanent du site prend le relais. */
+const cheminPartage = `/partage/${data.cle}-${langue}.png`;
+const imagePartage = existsSync(join(process.cwd(), 'public', cheminPartage)) ? cheminPartage : undefined;
 const { Content } = await render(evenement);
 
 /* Les fiches d'intervenants encore en brouillon ne remontent pas sur la
@@ -142,6 +151,8 @@ const donnees = {
 <Base
   titre={data.meta_titre ?? data.titre}
   description={data.meta_description ?? data.resume}
+  image={imagePartage}
+  imageAlt={imagePartage ? t('partageRencontreAlt') : undefined}
   type="event"
   noindex={data.modele}
   langue={langue}
