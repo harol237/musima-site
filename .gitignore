@@ -10,3 +10,7 @@ dist/
 
 # État local de wrangler (essais de la Pages Function)
 .wrangler/
+
+# Notes de travail : récapitulatifs, brouillons, captures. Jamais dans
+# un commit, jamais sur le site — le dépôt est public.
+notes/
