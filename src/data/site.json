@@ -24,15 +24,14 @@
     "ca": "MUSIMA neix amb una identitat clara i una ambició oberta: partir de la diàspora africana i del que construeix per contribuir a un ecosistema on persones, projectes, idees, recursos i oportunitats puguin trobar-se."
   },
   "description_courte": {
-    "es": "MUSIMA crea conexiones entre personas, proyectos e iniciativas para hacer circular ideas, conocimientos, recursos y oportunidades y dar lugar a nuevas posibilidades. Con la diáspora africana como parte esencial de su identidad.",
-    "fr": "MUSIMA crée des connexions entre des personnes, des projets et des initiatives pour faire circuler les idées, les savoirs, les ressources et les opportunités, et donner lieu à de nouvelles possibilités. Avec la diaspora africaine comme part essentielle de son identité.",
-    "en": "MUSIMA creates connections between people, projects and initiatives so that ideas, knowledge, resources and opportunities can travel and open up new possibilities. With the African diaspora as an essential part of its identity.",
-    "ca": "MUSIMA crea connexions entre persones, projectes i iniciatives per fer circular idees, coneixements, recursos i oportunitats i donar lloc a noves possibilitats. Amb la diàspora africana com a part essencial de la seva identitat."
+    "es": "MUSIMA conecta personas, proyectos e iniciativas para que ideas, recursos y oportunidades circulen. Anclada en la diáspora africana, en Barcelona.",
+    "fr": "MUSIMA connecte personnes, projets et initiatives pour faire circuler idées, ressources et opportunités. Ancrée dans la diaspora africaine, à Barcelone.",
+    "en": "MUSIMA connects people, projects and initiatives so that ideas, resources and opportunities can travel. Anchored in the African diaspora, in Barcelona.",
+    "ca": "MUSIMA connecta persones, projectes i iniciatives perquè idees, recursos i oportunitats circulin. Ancorada en la diàspora africana, a Barcelona."
   },
   "langue": "fr",
   "contact": {
     "email": "contacto@musima.org",
-    "telephone": "[TÉLÉPHONE À AJOUTER]",
     "siege": {
       "es": "Barcelona, Catalunya — España",
       "fr": "Barcelone, Catalogne — Espagne",

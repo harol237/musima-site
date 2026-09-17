@@ -1,10 +1,10 @@
 ---
 cle: lassina-traore
 nom: "Lassina Traore"
-fonction: "Emprenedor i CEO"
-organisation: "Zentra / Nexuspreneur / LT Consulting"
+fonction: "Emprenedor i CEO de Zentra i Nexuspreneur. Fundador de LT Consulting."
+organisation: ""
 territoire: "Barcelona, Espanya"
-domaines: ["Emprenedoria", "Inversió i educació financera"]
+domaines: ["Emprenedoria", "Mobilitat i serveis", "Educació financera"]
 photo: ../../../assets/uploads/intervenant2.jpg
 photo_alt: "Retrat de Lassina Traore dret, amb camisa blanca i corbata vermella, els braços creuats i un somriure, en una oficina envidrada amb la ciutat al fons; davant seu, un portàtil, un got de cafè i una tauleta sobre una taula blanca."
 credit_photo: "[CRÉDIT PHOTO À AJOUTER]"

@@ -17,12 +17,8 @@ en_avant: true
 
 Jeffrey Nomba dirigeix el desenvolupament comercial d'Empresa Group Pirineo, a Barcelona.
 
-L'ofici cap en una frase i costa anys d'aprendre: decidir on anirà a buscar el creixement una empresa, i després aconseguir que allò passi de debò. En concret, vol dir construir estratègies de desenvolupament a gran escala, seguir de prop els comptes que pesen, i obrir mercats a Europa i a l'Àfrica.
+La seva feina consisteix a decidir on creixerà l'empresa i a aconseguir que passi: definir l'estratègia, seguir de prop els comptes que més pesen i obrir mercats a Europa i a l'Àfrica. I, un cop fixat un objectiu, convertir-lo en resultats que es puguin mesurar, afinant pel camí la manera de vendre.
 
-L'altra meitat de la feina es veu menys: dirigir equips multiculturals. Gent que no comparteix ni la llengua materna, ni els reflexos professionals, ni la mateixa idea del que és una reunió que ha anat bé. Fer que tot això funcioni junt és una competència en si mateixa, i no s'aprèn en un llibre.
-
-<!-- A COMPLETAR — el camí. És la part que la gent ve a buscar: d'on ve
-     Jeffrey Nomba, com es va construir aquesta trajectòria, què va ser
-     difícil. Amb tres o quatre frases n'hi ha prou. -->
+L'altra part de la feina es veu menys: dirigir equips multiculturals. Persones que no comparteixen ni la llengua ni els reflexos professionals, i que han de funcionar juntes. És el que, a la llarga, sosté la posició d'una empresa als mercats que li importen.
 
 <!-- A COMPLETAR — què ve a compartir el 26 de setembre. Una o dues frases. -->

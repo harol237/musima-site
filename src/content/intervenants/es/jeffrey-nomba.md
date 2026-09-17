@@ -17,12 +17,8 @@ en_avant: true
 
 Jeffrey Nomba dirige el desarrollo comercial de Empresa Group Pirineo, en Barcelona.
 
-El oficio cabe en una frase y cuesta años aprenderlo: decidir dónde va a buscar su crecimiento una empresa, y luego conseguir que eso ocurra de verdad. En concreto, significa construir estrategias de desarrollo a gran escala, seguir de cerca las cuentas que pesan, y abrir mercados en Europa y en África.
+Su trabajo consiste en decidir dónde va a crecer la empresa y en conseguir que ocurra: definir la estrategia, seguir de cerca las cuentas que más pesan y abrir mercados en Europa y en África. Y, una vez fijado un objetivo, convertirlo en resultados que se puedan medir, afinando por el camino la manera de vender.
 
-La otra mitad del trabajo se ve menos: dirigir equipos multiculturales. Gente que no comparte ni la lengua materna, ni los reflejos profesionales, ni la misma idea de lo que es una reunión que ha ido bien. Hacer que todo eso funcione junto es una competencia en sí misma, y no se aprende en un libro.
-
-<!-- A COMPLETAR — el camino. Es la parte que la gente viene a buscar:
-     de dónde viene Jeffrey Nomba, cómo se construyó esa trayectoria,
-     qué fue difícil. Con tres o cuatro frases basta. -->
+La otra parte del trabajo se ve menos: dirigir equipos multiculturales. Personas que no comparten ni la lengua ni los reflejos profesionales, y que tienen que funcionar juntas. Es lo que, a la larga, sostiene la posición de una empresa en los mercados que le importan.
 
 <!-- A COMPLETAR — qué viene a compartir el 26 de septiembre. Una o dos frases. -->

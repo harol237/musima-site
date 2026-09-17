@@ -88,6 +88,9 @@ const sousTitre = [data.fonction, data.organisation].filter(Boolean).join(' · '
     margin-top: auto;
     padding-top: var(--e-3);
   }
+  /* Une étiquette saisie dans le CMS peut être plus large que la carte :
+     elle se replie plutôt que de sortir du cadre. */
+  .fiche__domaines .puce { white-space: normal; text-align: left; max-width: 100%; }
 
   /* Les portraits viennent de mains différentes : une désaturation légère
      au repos les rassemble, et le survol rend la couleur. */

@@ -17,13 +17,8 @@ en_avant: true
 
 Jeffrey Nomba dirige le développement commercial d'Empresa Group Pirineo, à Barcelone.
 
-Le métier tient en une phrase et prend des années à apprendre : décider où une entreprise va chercher sa croissance, puis faire en sorte que ça arrive pour de vrai. Concrètement, ça veut dire construire des stratégies de développement à grande échelle, suivre de près les comptes qui pèsent, et ouvrir des marchés — en Europe et en Afrique.
+Son travail consiste à décider où l'entreprise va chercher sa croissance, puis à faire en sorte que ça arrive : définir la stratégie, suivre de près les comptes qui pèsent, ouvrir des marchés en Europe et en Afrique. Et, une fois un objectif fixé, le transformer en résultats mesurables, en réglant au passage la manière de vendre.
 
-L'autre moitié du travail est moins visible : diriger des équipes multiculturelles. Des gens qui n'ont ni la même langue maternelle, ni les mêmes réflexes professionnels, ni la même idée de ce qu'est une réunion qui s'est bien passée. Faire travailler tout ça ensemble est une compétence à part entière, et elle ne s'apprend pas dans un livre.
+L'autre partie du travail se voit moins : diriger des équipes multiculturelles. Des personnes qui ne partagent ni la langue ni les réflexes professionnels, et qui doivent fonctionner ensemble. C'est ce qui, à la longue, tient la position d'une entreprise sur les marchés qui comptent pour elle.
 
-<!-- À COMPLÉTER — le chemin. C'est la partie que les gens viennent chercher :
-     d'où vient Jeffrey Nomba, comment cette trajectoire s'est construite,
-     ce qui a été difficile. Trois ou quatre phrases suffisent. -->
-
-<!-- À COMPLÉTER — ce qu'il ou elle vient partager le 26 septembre.
-     Une ou deux phrases. -->
+<!-- À COMPLÉTER — ce qu'il vient partager le 26 septembre. Une ou deux phrases. -->
