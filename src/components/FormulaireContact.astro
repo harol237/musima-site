@@ -168,9 +168,12 @@ const messages = {
     const jeton = url.get(form.dataset.parametre || 'motif')
       ?? anciens[url.get('via') ?? ''] ?? null;
     const select = champ('motif') as unknown as HTMLSelectElement | null;
-    if (jeton && select && [...select.options].some((o) => o.value === jeton)) {
-      select.value = jeton;
-    }
+    const preselectionner = () => {
+      if (jeton && select && [...select.options].some((o) => o.value === jeton)) {
+        select.value = jeton;
+      }
+    };
+    preselectionner();
 
     const montrerErreur = (nom: string, texte: string | null) => {
       const bloc = form.querySelector<HTMLElement>(`[data-erreur="${nom}"]`);
@@ -254,9 +257,16 @@ const messages = {
         if (r.ok && data.ok) {
           /* On ne promet l'e-mail de confirmation que s'il est parti. */
           dire(data.accuse ? `${m.merci} ${m.merciDetail}` : m.merci, 'ok');
-          form.querySelectorAll('input, select, textarea, button').forEach((c) => {
-            (c as HTMLInputElement).disabled = true;
-          });
+          /* Le formulaire repart de zéro : champs vidés, cases décochées,
+             erreurs effacées, et le motif venu de l'adresse remis en
+             place. Un second message part comme le premier, sans avoir
+             à recharger la page. */
+          form.reset();
+          preselectionner();
+          tente = false;
+          for (const n of ['motif', 'prenom', 'nom', 'email', 'telephone', 'message', 'consentement']) {
+            montrerErreur(n, null);
+          }
           retour.setAttribute('tabindex', '-1');
           retour.focus();
           return;
@@ -275,10 +285,9 @@ const messages = {
       } catch {
         dire(`${m.reseau} ${m.contact}`, 'ko');
       } finally {
-        if (!retour.classList.contains('formulaire__retour--ok')) {
-          bouton.disabled = false;
-          bouton.textContent = m.envoyer;
-        }
+        /* Quoi qu'il soit arrivé, le bouton retrouve son état initial. */
+        bouton.disabled = false;
+        bouton.textContent = m.envoyer;
       }
     });
   }

@@ -259,7 +259,14 @@ const messages = {
 
         if (r.ok && data.ok) {
           dire(data.accuse ? `${m.merci} ${m.merciDetail}` : m.merci, 'ok');
-          form.querySelectorAll('input, button').forEach((c) => { (c as HTMLInputElement).disabled = true; });
+          /* Le formulaire repart de zéro : champs vidés, pastilles et cases
+             décochées, erreurs effacées. La personne suivante — à une
+             rencontre, sur le même téléphone — remplit un formulaire neuf. */
+          form.reset();
+          tente = false;
+          for (const n of ['prenom', 'nom', 'email', 'telephone', 'perfil', 'proyecto', 'enlaces', 'consentement']) {
+            montrerErreur(n, null);
+          }
           retour.setAttribute('tabindex', '-1');
           retour.focus();
           return;
@@ -274,10 +281,9 @@ const messages = {
       } catch {
         dire(`${m.reseau} ${m.contact}`, 'ko');
       } finally {
-        if (!retour.classList.contains('formulaire__retour--ok')) {
-          bouton.disabled = false;
-          bouton.textContent = m.envoyer;
-        }
+        /* Quoi qu'il soit arrivé, le bouton retrouve son état initial. */
+        bouton.disabled = false;
+        bouton.textContent = m.envoyer;
       }
     });
   }
