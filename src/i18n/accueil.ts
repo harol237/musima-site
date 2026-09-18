@@ -81,7 +81,7 @@ export const accueilPar: Record<Langue, Accueil> = {
       titre: 'Personas · Proyectos · Organizaciones',
       texte: 'MUSIMA quiere construir progresivamente un ecosistema de personas, empresas, asociaciones, instituciones, universidades y proyectos que puedan encontrarse, compartir recursos y conocimientos, colaborar y dar más fuerza a lo que se construye.',
       phrase: 'No necesitas pertenecer a una comunidad concreta para formar parte. Puedes aportar una idea, una experiencia, una competencia, un contacto, un recurso, un proyecto o simplemente tu interés.',
-      bouton: 'Reunirme al ecosistema',
+      bouton: 'Unirme al ecosistema',
     },
   },
 
