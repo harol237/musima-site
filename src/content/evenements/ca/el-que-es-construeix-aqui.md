@@ -20,7 +20,7 @@ lieu:
   en_ligne: false
 image: ../../../assets/uploads/pages/barcelone.jpg
 image_alt: "Barcelona vista des dalt de Montjuïc: la ciutat s'estén fins al Mediterrani, els turons al fons, una senyera a l'esquerra, amb una llum d'hivern baixa i daurada."
-resume: "La primera trobada de MUSIMA. Hem convidat persones que han muntat alguna cosa a Barcelona —una activitat, un projecte, un ofici— i els hem demanat que expliquessin com va anar de debò. Res de versions retocades: què va funcionar, què es va encallar, què farien diferent."
+resume: "La primera trobada de MUSIMA. Persones que estan construint alguna cosa a Barcelona expliquen com ho fan —el que funciona, el que costa, el que han après pel camí— i la sala pregunta. Una tarda per escoltar, conèixer gent i veure què pot començar."
 intervenants:
   - ca/jeffrey-nomba
 tarif: "Gratuït — places limitades"
@@ -28,12 +28,12 @@ gratuit: true
 places_limitees: true
 lien_inscription: ""
 en_avant: true
-meta_description: "Primera trobada de MUSIMA a Barcelona, el dissabte 26 de setembre de 2026 de 16:30 a 20:00, al Centre Cívic Casa Orlandai. Persones que han construït alguna cosa aquí expliquen com."
+meta_description: "Primera trobada de MUSIMA, dissabte 26 de setembre de 2026, 16:30–20:00, Centre Cívic Casa Orlandai, Barcelona. Persones que construeixen alguna cosa aquí expliquen com. Gratuït, places limitades."
 ---
 
-Per a la primera trobada no volíem una taula rodona sobre «l'emprenedoria africana». Volíem gent concreta, que ha fet coses concretes, i que accepta explicar-ne el detall.
+Per a la primera trobada hem convidat persones que estan construint alguna cosa aquí, a Barcelona: un projecte, una empresa, una trajectòria. Vénen a explicar com ho fan —el que funciona, el que costa, el que han après pel camí— i a respondre les preguntes de la sala.
 
-Doncs això vam fer. Vam convidar persones instal·lades aquí, a Barcelona, que han construït alguna cosa, i els vam fer les preguntes que ens fem tots quan comencem: per on vas començar, amb quin diner, qui et va donar un cop de mà, què no vas veure venir.
+No és una conferència per escoltar i marxar. És un punt de partida: una tarda per conèixer gent que construeix, per trobar qui et pot ajudar o a qui pots ajudar tu, i perquè d'una conversa en surti alguna cosa que duri.
 
 ## El programa
 
@@ -49,13 +49,15 @@ Doncs això vam fer. Vam convidar persones instal·lades aquí, a Barcelona, que
 
 ## Per a qui?
 
-Per a tu, si ja has muntat alguna cosa i vols contrastar les teves notes amb les d'altra gent.
+Per a tu, si ja estàs construint alguna cosa i vols contrastar-la amb altres persones que també construeixen.
 
-També per a tu, si no has muntat res però la idea et ronda, i tens ganes de veure quina pinta fa algú que sí que ho ha fet.
+Per a tu, si tens una idea, un projecte al cap o simplement ganes de veure com ho han fet altres.
 
-I per a tu igualment, si no ets africà i simplement vols escoltar. La trobada és en francès, amb estones en castellà quan els ponents s'hi troben més còmodes.
+I per a tu, si vols conèixer gent, descobrir el que s'està construint a Barcelona i veure si hi ha alguna cosa que puguis aportar, o en què puguis col·laborar. No cal pertànyer a cap comunitat: MUSIMA està ancorada en la diàspora africana i oberta a tothom.
 
-És gratuït, però la sala té aforament: les places són limitades. No cal ser-ne soci ni conèixer ningú — només val més no deixar-ho per a l'últim dia.
+La trobada és en francès, amb parts en castellà quan els ponents s'hi senten més còmodes.
+
+És gratuïta, però la sala té aforament: les places són limitades. No cal ser soci ni conèixer ningú — només convé no deixar-ho per a l'últim dia.
 
 ## Com arribar-hi
 

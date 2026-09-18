@@ -20,7 +20,7 @@ lieu:
   en_ligne: false
 image: ../../../assets/uploads/pages/barcelone.jpg
 image_alt: "Barcelona seen from the heights of Montjuïc: the city stretching out to the Mediterranean, hills on the horizon, a Catalan flag on the left, in low golden winter light."
-resume: "MUSIMA's first gathering. We invited people who have built something in Barcelona — a business, a project, a craft — and asked them to tell us how it actually went. Not the polished version: what worked, what stalled, what they would do differently."
+resume: "MUSIMA's first gathering. People building something in Barcelona talk about how they go about it — what works, what it costs, what they learnt along the way — and the room asks its questions. An afternoon to listen, meet people and see what can start."
 intervenants:
   - en/jeffrey-nomba
 tarif: "Free — limited places"
@@ -28,12 +28,12 @@ gratuit: true
 places_limitees: true
 lien_inscription: ""
 en_avant: true
-meta_description: "MUSIMA's first gathering in Barcelona, Saturday 26 September 2026, 4.30pm to 8pm, at the Centre Cívic Casa Orlandai. People who have built something here talk about how."
+meta_description: "MUSIMA's first gathering, Saturday 26 September 2026, 4.30pm–8pm, Centre Cívic Casa Orlandai, Barcelona. People building something here talk about how. Free, limited places."
 ---
 
-For the first gathering we did not want a panel discussion about "African entrepreneurship". We wanted specific people, who have done specific things, and who are willing to talk about the detail.
+For the first gathering we have invited people who are building something here, in Barcelona: a project, a business, a path. They come to talk about how they go about it — what works, what it costs, what they learnt along the way — and to answer the room's questions.
 
-So that is what we did. We invited people based here, in Barcelona, who have built something, and we asked them the questions we all ask ourselves when starting out: where did you begin, with whose money, who helped you, what did you not see coming.
+It is not a talk you listen to before going home. It is a starting point: an afternoon to meet people who build, to find who can help you or who you can help, and to let something lasting come out of a conversation.
 
 ## The evening
 
@@ -49,13 +49,15 @@ So that is what we did. We invited people based here, in Barcelona, who have bui
 
 ## Who it is for
 
-For you, if you have already built something and want to compare notes with other people who have.
+For you, if you are already building something and want to compare notes with others who build too.
 
-Also for you, if you have built nothing at all but the idea keeps nagging, and you would like to see what someone who has done it actually looks like.
+For you, if you have an idea, a project in mind, or simply want to see how others went about it.
 
-And for you too, if you are not African and simply want to listen. The gathering runs in French, with stretches in Spanish where speakers are more comfortable that way.
+And for you, if you want to meet people, discover what is being built in Barcelona and see whether there is something you can bring, or work on with others. You don't need to belong to any community: MUSIMA is anchored in the African diaspora and open to everyone.
 
-It is free, but the room has a capacity: places are limited. You do not need to be a member, you do not need to know anyone — just don't leave it to the last day.
+The gathering is in French, with parts in Spanish when the speakers are more comfortable that way.
+
+It is free, but the room has a capacity: places are limited. No need to be a member or to know anyone — just don't leave it to the last day.
 
 ## Getting there
 
