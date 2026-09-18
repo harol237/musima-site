@@ -53,7 +53,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self'",
   "font-src 'self'",
-  /* Le formulaire poste sur /api/contact, même origine. */
+  /* Les formulaires postent sur /api/contact et /api/ecosistema, même origine. */
   "connect-src 'self'",
   "form-action 'self'",
   /* Le site n'intègre rien et ne veut pas être intégré. */

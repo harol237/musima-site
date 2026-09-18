@@ -15,7 +15,7 @@ import { langues, type CleSegment, type Langue } from './config';
 export type Vue =
   | 'accueil' | 'association' | 'equipe'
   | 'evenements' | 'intervenants' | 'projets' | 'recits' | 'galerie'
-  | 'engagement' | 'contact'
+  | 'engagement' | 'ecosysteme' | 'contact'
   | 'legal' | 'confidentialite' | 'cookies' | 'accessibilite';
 
 export type PageStatique = {
@@ -48,6 +48,7 @@ export const pagesStatiques: PageStatique[] = [
   { vue: 'recits',          segment: 'recits', disponible: toutes },
   { vue: 'galerie',         segment: 'galerie', disponible: toutes },
   { vue: 'engagement',      segment: 'engagement', disponible: toutes },
+  { vue: 'ecosysteme',      segment: 'ecosysteme', disponible: toutes },
   { vue: 'contact',         segment: 'contact', disponible: toutes },
   { vue: 'legal',           segment: 'legal', disponible: toutes },
   { vue: 'confidentialite', segment: 'confidentialite', disponible: toutes },

@@ -23,7 +23,6 @@ import { horodatageISO } from '~/lib/contenu';
 import { chemin, type Langue } from '~/i18n/config';
 import { traducteur } from '~/i18n/ui';
 import { accueilPar, ancreEcosysteme } from '~/i18n/accueil';
-import { parametreMotif, ancreFormulaire } from '~/i18n/formulaire';
 
 /* Photo d'ouverture. Le héros retrouve sa seconde colonne dès qu'elle
    existe ; à `null`, il se replie sur une seule colonne plutôt que
@@ -53,10 +52,10 @@ const enAvant = <T extends { data: { en_avant: boolean } }>(liste: T[], nombre: 
   return (mis.length ? mis : liste).slice(0, nombre);
 };
 
-/* Le bouton de l'écosystème ouvre le formulaire sur le motif qui
-   correspond : une seule porte d'entrée, comme pour les voies de la
-   page Participer. */
-const lienEcosysteme = `${chemin(langue, 'contact')}?${parametreMotif[langue]}=adherer#${ancreFormulaire[langue]}`;
+/* Le bouton du bloc mène à la page de l'écosystème et à son propre
+   formulaire. L'ancre du bloc reste : un lien déjà partagé vers
+   /#ecosistema atterrit toujours ici. */
+const lienEcosysteme = chemin(langue, 'ecosysteme');
 
 /* Ligne de données du héros : la date, le lieu et le tarif de la
    prochaine rencontre. Trois informations réelles, ou rien. */

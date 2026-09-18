@@ -1,0 +1,370 @@
+---
+/**
+ * Formulaire de l'écosystème : formulaire natif, envoi par /api/ecosistema,
+ * aucun script tiers — la page cookies reste vraie.
+ *
+ * Il est pensé pour un téléphone, debout, pendant une rencontre : seule
+ * l'identité est obligatoire, les choix sont des pastilles de la taille
+ * d'un pouce, les champs annoncent leur nature pour que le remplissage
+ * automatique du téléphone fasse le gros du travail.
+ *
+ * Mêmes protections que le formulaire de contact : champ piège, délai
+ * minimal mesuré par le navigateur et vérifié par le serveur, longueurs
+ * bornées des deux côtés, aucune erreur brute renvoyée.
+ */
+import site from '~/data/site.json';
+import { chemin, type Langue } from '~/i18n/config';
+import {
+  LIMITES, aportes, busquedas, profils, textes,
+} from '~/i18n/ecosysteme';
+
+interface Props { langue: Langue }
+const { langue } = Astro.props;
+const t = textes[langue];
+
+/* Les messages du script, dans la langue de la page. */
+const messages = {
+  requis: t.erreurChamp.requis,
+  email: t.erreurChamp.email,
+  telephone: t.erreurChamp.telephone,
+  trop: t.erreurChamp.trop,
+  generale: t.erreurGenerale,
+  reseau: t.erreurReseau,
+  contact: `${site.contact.email}`,
+  merci: t.merci,
+  merciDetail: t.merciDetail,
+  envoi: t.envoiEnCours,
+  envoyer: t.envoyer,
+};
+---
+
+<form
+  class="formulaire"
+  method="post"
+  action="/api/ecosistema"
+  novalidate
+  data-formulaire-ecosysteme
+  data-langue={langue}
+  data-messages={JSON.stringify(messages)}
+  data-limites={JSON.stringify(LIMITES)}
+>
+  <fieldset class="formulaire__groupe">
+    <legend class="visuellement-cache">{t.titre}</legend>
+
+    <div class="formulaire__paire">
+      <div class="champ">
+        <label for="e-prenom">{t.labelPrenom}</label>
+        <input id="e-prenom" name="prenom" type="text" maxlength={LIMITES.prenom} autocomplete="given-name" required aria-describedby="err-prenom" />
+        <p class="champ__erreur" id="err-prenom" data-erreur="prenom" hidden></p>
+      </div>
+      <div class="champ">
+        <label for="e-nom">{t.labelNom}</label>
+        <input id="e-nom" name="nom" type="text" maxlength={LIMITES.nom} autocomplete="family-name" required aria-describedby="err-nom" />
+        <p class="champ__erreur" id="err-nom" data-erreur="nom" hidden></p>
+      </div>
+    </div>
+    <div class="formulaire__paire">
+      <div class="champ">
+        <label for="e-email">{t.labelEmail}</label>
+        <input id="e-email" name="email" type="email" inputmode="email" maxlength={LIMITES.email} autocomplete="email" required aria-describedby="err-email" />
+        <p class="champ__erreur" id="err-email" data-erreur="email" hidden></p>
+      </div>
+      <div class="champ">
+        <label for="e-tel">{t.labelTelephone} <span class="champ__facultatif">({t.facultatif})</span></label>
+        <input id="e-tel" name="telephone" type="tel" inputmode="tel" maxlength={LIMITES.telephone} autocomplete="tel" aria-describedby="err-telephone aide-tel" />
+        <p class="champ__aide" id="aide-tel">{t.aideTelephone}</p>
+        <p class="champ__erreur" id="err-telephone" data-erreur="telephone" hidden></p>
+      </div>
+    </div>
+  </fieldset>
+
+  {/* Un seul profil : des boutons radio habillés en pastilles. Le
+      contrôle natif reste dans la page, pour le clavier et les lecteurs
+      d'écran ; seule son apparence est déléguée à l'étiquette. */}
+  <fieldset class="formulaire__groupe formulaire__groupe--choix" aria-describedby="err-perfil">
+    <legend class="choix__legende">{t.labelProfil}</legend>
+    <div class="pastilles">
+      {profils.map((p) => (
+        <label class="pastille">
+          <input type="radio" name="perfil" value={p} required />
+          <span>{t.profil[p]}</span>
+        </label>
+      ))}
+    </div>
+    <p class="champ__erreur" id="err-perfil" data-erreur="perfil" hidden></p>
+  </fieldset>
+
+  {/* Deux listes en miroir : ce qu'on apporte, ce qu'on cherche. Chaque
+      case devient un attribut booléen dans Brevo. Facultatives : quelqu'un
+      debout peut envoyer sans, et compléter plus tard. */}
+  <fieldset class="formulaire__groupe formulaire__groupe--choix">
+    <legend class="choix__legende">{t.labelAporta} <span class="champ__facultatif">({t.facultatif})</span></legend>
+    <div class="pastilles">
+      {aportes.map((a) => (
+        <label class="pastille">
+          <input type="checkbox" name="aporta" value={a} />
+          <span>{t.aporta[a]}</span>
+        </label>
+      ))}
+    </div>
+  </fieldset>
+
+  <fieldset class="formulaire__groupe formulaire__groupe--choix">
+    <legend class="choix__legende">{t.labelBusca} <span class="champ__facultatif">({t.facultatif})</span></legend>
+    <div class="pastilles">
+      {busquedas.map((b) => (
+        <label class="pastille">
+          <input type="checkbox" name="busca" value={b} />
+          <span>{t.busca[b]}</span>
+        </label>
+      ))}
+    </div>
+  </fieldset>
+
+  <fieldset class="formulaire__groupe">
+    <legend class="visuellement-cache">{t.labelProyecto}</legend>
+    <div class="champ">
+      <label for="e-proyecto">{t.labelProyecto} <span class="champ__facultatif">({t.facultatif})</span></label>
+      <input id="e-proyecto" name="proyecto" type="text" maxlength={LIMITES.proyecto} autocomplete="organization" aria-describedby="err-proyecto" />
+      <p class="champ__erreur" id="err-proyecto" data-erreur="proyecto" hidden></p>
+    </div>
+    <div class="champ">
+      <label for="e-enlaces">{t.labelEnlaces} <span class="champ__facultatif">({t.facultatif})</span></label>
+      <input id="e-enlaces" name="enlaces" type="text" inputmode="url" maxlength={LIMITES.enlaces} autocomplete="url" aria-describedby="err-enlaces" />
+      <p class="champ__erreur" id="err-enlaces" data-erreur="enlaces" hidden></p>
+    </div>
+
+    {/* Champ piège. Masqué à l'œil, retiré du parcours clavier et de
+        l'arbre d'accessibilité : seul un robot le remplit. */}
+    <div class="piege" aria-hidden="true">
+      <label for="e-site">Site</label>
+      <input id="e-site" name="site" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <label class="consentement">
+      <input type="checkbox" name="consentement" value="1" required aria-describedby="err-consentement" />
+      <span>
+        {t.consentement}{' '}
+        <a href={chemin(langue, 'confidentialite')} class="lien">{t.consentementLien}</a>.
+      </span>
+    </label>
+    <p class="champ__erreur" id="err-consentement" data-erreur="consentement" hidden></p>
+
+    <button type="submit" class="bouton formulaire__envoi">{t.envoyer}</button>
+    <p class="formulaire__retour" data-retour role="status" aria-live="polite" hidden></p>
+    <noscript>
+      <p class="champ__aide">
+        {t.sansJs}{' '}
+        <a href={`mailto:${site.contact.email}`} class="lien">{site.contact.email}</a>.
+      </p>
+    </noscript>
+  </fieldset>
+</form>
+
+<script>
+  type Messages = Record<string, string>;
+
+  const form = document.querySelector<HTMLFormElement>('[data-formulaire-ecosysteme]');
+  if (form) {
+    const m: Messages = JSON.parse(form.dataset.messages || '{}');
+    const limites: Record<string, number> = JSON.parse(form.dataset.limites || '{}');
+    /* Point de départ du délai : le moment où le formulaire devient
+       utilisable. Le serveur refuse en dessous de trois secondes. */
+    const affiche = Date.now();
+    const retour = form.querySelector<HTMLElement>('[data-retour]')!;
+    const bouton = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const champ = (n: string) => form.elements.namedItem(n) as HTMLInputElement | null;
+    const coches = (n: string) =>
+      [...form.querySelectorAll<HTMLInputElement>(`input[name="${n}"]:checked`)].map((c) => c.value);
+
+    /* D'où vient la visite : la bâche imprime ?via=qr. Aucun cookie,
+       aucun traceur — la valeur voyage avec l'envoi, et c'est tout. */
+    const origen = new URLSearchParams(location.search).get('via') === 'qr' ? 'qr' : 'web';
+
+    const montrerErreur = (nom: string, texte: string | null) => {
+      const bloc = form.querySelector<HTMLElement>(`[data-erreur="${nom}"]`);
+      if (bloc) { bloc.textContent = texte ?? ''; bloc.hidden = !texte; }
+      const entree = champ(nom);
+      if (entree && entree instanceof HTMLInputElement) {
+        entree.setAttribute('aria-invalid', texte ? 'true' : 'false');
+      }
+    };
+
+    const emailValide = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+    const telValide = (v: string) => /^[+()\d][\d\s().-]{5,}$/.test(v);
+
+    function verifier() {
+      const erreurs: Record<string, string> = {};
+      const lire = (n: string) => (champ(n)?.value || '').trim();
+      for (const n of ['prenom', 'nom', 'email']) if (!lire(n)) erreurs[n] = m.requis;
+      for (const [n, max] of Object.entries(limites)) {
+        if (lire(n).length > max) erreurs[n] = m.trop.replace('{max}', String(max));
+      }
+      if (!erreurs.email && !emailValide(lire('email'))) erreurs.email = m.email;
+      if (lire('telephone') && !telValide(lire('telephone'))) erreurs.telephone = m.telephone;
+      if (coches('perfil').length !== 1) erreurs.perfil = m.requis;
+      if (!champ('consentement')?.checked) erreurs.consentement = m.requis;
+      for (const n of ['prenom', 'nom', 'email', 'telephone', 'perfil', 'proyecto', 'enlaces', 'consentement']) {
+        montrerErreur(n, erreurs[n] ?? null);
+      }
+      return erreurs;
+    }
+
+    /* On ne signale une erreur qu'après une première tentative. */
+    let tente = false;
+    form.addEventListener('input', () => { if (tente) verifier(); });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      tente = true;
+      const erreurs = verifier();
+      if (Object.keys(erreurs).length) {
+        form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+        return;
+      }
+
+      bouton.disabled = true;
+      bouton.textContent = m.envoi;
+      retour.hidden = true;
+      retour.className = 'formulaire__retour';
+
+      const dire = (texte: string, etat: 'ok' | 'ko') => {
+        retour.textContent = texte;
+        retour.className = `formulaire__retour formulaire__retour--${etat}`;
+        retour.hidden = false;
+      };
+
+      try {
+        const r = await fetch('/api/ecosistema', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            prenom: champ('prenom')?.value,
+            nom: champ('nom')?.value,
+            email: champ('email')?.value,
+            telephone: champ('telephone')?.value,
+            perfil: coches('perfil')[0],
+            aporta: coches('aporta'),
+            busca: coches('busca'),
+            proyecto: champ('proyecto')?.value,
+            enlaces: champ('enlaces')?.value,
+            consentement: !!champ('consentement')?.checked,
+            site: champ('site')?.value,
+            langue: form.dataset.langue,
+            origen,
+            delai: Date.now() - affiche,
+          }),
+        });
+        const data = await r.json().catch(() => ({}));
+
+        if (r.ok && data.ok) {
+          dire(data.accuse ? `${m.merci} ${m.merciDetail}` : m.merci, 'ok');
+          form.querySelectorAll('input, button').forEach((c) => { (c as HTMLInputElement).disabled = true; });
+          retour.setAttribute('tabindex', '-1');
+          retour.focus();
+          return;
+        }
+        if (data.champs) {
+          for (const [nom, texte] of Object.entries(data.champs as Messages)) montrerErreur(nom, texte);
+          form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+          dire(m.generale, 'ko');
+        } else {
+          dire(`${m.generale} ${m.contact}`, 'ko');
+        }
+      } catch {
+        dire(`${m.reseau} ${m.contact}`, 'ko');
+      } finally {
+        if (!retour.classList.contains('formulaire__retour--ok')) {
+          bouton.disabled = false;
+          bouton.textContent = m.envoyer;
+        }
+      }
+    });
+  }
+</script>
+
+<style>
+  .formulaire { display: flex; flex-direction: column; gap: var(--e-6); margin-top: var(--e-3); }
+  .formulaire__groupe { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--e-4); }
+  .formulaire__groupe--choix { gap: var(--e-3); }
+  .formulaire__paire { display: grid; gap: var(--e-4); }
+  @media (min-width: 40rem) { .formulaire__paire { grid-template-columns: 1fr 1fr; } }
+
+  .champ { display: flex; flex-direction: column; gap: var(--e-2); }
+  .champ label, .choix__legende {
+    font-family: var(--f-titre);
+    font-size: var(--t-200);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--encre-douce);
+    padding: 0;
+  }
+  .choix__legende { margin-bottom: var(--e-2); }
+  .champ input {
+    padding: 0.8em 0.9em;
+    border: 1px solid var(--trait-fort);
+    border-radius: var(--r-carte);
+    background: var(--surface);
+    font-size: var(--t-300);
+    font-family: var(--f-lecture);
+    color: var(--encre);
+  }
+  .champ__facultatif { color: var(--encre-faible); font-weight: 400; text-transform: none; letter-spacing: 0; }
+  .champ__aide { font-size: var(--t-200); color: var(--encre-faible); line-height: 1.5; margin: 0; }
+  .champ__erreur { margin: 0; font-family: var(--f-titre); font-size: var(--t-200); color: var(--terre); }
+
+  /* Pastilles : une cible de la taille d'un pouce, l'étiquette entière
+     cliquable. Le contrôle natif est rendu invisible mais reste dans le
+     flux : le clavier et les lecteurs d'écran le trouvent, et la
+     pastille montre l'état par :has(). */
+  .pastilles { display: flex; flex-wrap: wrap; gap: var(--e-2); }
+  .pastille {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.7em 0.95em;
+    border: 1px solid var(--trait-fort);
+    border-radius: var(--r-pilule);
+    background: var(--surface);
+    font-family: var(--f-titre);
+    font-size: var(--t-300);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--encre);
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+  }
+  .pastille input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .pastille:has(input:checked) { background: var(--encre); border-color: var(--encre); color: var(--papier); }
+  .pastille:has(input:checked) span::before { content: '✓ '; color: var(--or); }
+  .pastille:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .pastille:has(input:disabled) { opacity: 0.6; cursor: default; }
+
+  .consentement {
+    display: flex; align-items: flex-start; gap: var(--e-3);
+    font-size: var(--t-300); line-height: 1.55; color: var(--encre-douce); cursor: pointer;
+  }
+  .consentement input { flex: none; width: 1.35rem; height: 1.35rem; margin-top: 0.1em; accent-color: var(--terre); }
+
+  .formulaire__envoi { align-self: flex-start; margin-top: var(--e-2); }
+  .piege { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .formulaire__retour {
+    margin: 0;
+    padding: var(--e-4) var(--e-5);
+    border-radius: var(--r-carte);
+    font-size: var(--t-300);
+    line-height: 1.55;
+  }
+  .formulaire__retour--ok { background: var(--surface-2); color: var(--encre); border-left: 3px solid var(--or); }
+  .formulaire__retour--ko { background: var(--surface-2); color: var(--encre); border-left: 3px solid var(--terre); }
+</style>

@@ -17,9 +17,8 @@ const t = traducteur(langue);
    que MUSIMA en fait. La dernière n'a que la première — c'est le texte
    fourni par l'association, on ne lui en invente pas une seconde.
 
-   `via` règle le motif du formulaire de contact : une seule porte
-   d'entrée pour les six voies, et chaque motif du formulaire a la
-   sienne. */
+   `via` règle la destination : le motif du formulaire de contact pour
+   cinq voies, la page de l'écosystème pour la sixième. */
 const textes = {
   es: {
     titreExact: 'Participar en MUSIMA',
@@ -67,7 +66,7 @@ const textes = {
         titre: 'Participar en el ecosistema',
         pour: 'Quieres conocer personas, proyectos e iniciativas, descubrir oportunidades, compartir conocimientos y mantenerte conectado a la dinámica MUSIMA.',
         action: 'Reunirme al ecosistema',
-        via: 'adherer',
+        via: 'ecosisteme',
       },
     ],
     cadreSurtitre: 'Marco',
@@ -123,7 +122,7 @@ const textes = {
         titre: 'Participer à l’écosystème',
         pour: 'Tu veux rencontrer des personnes, des projets et des initiatives, découvrir des opportunités, partager des savoirs et rester connecté à la dynamique MUSIMA.',
         action: 'Rejoindre l’écosystème',
-        via: 'adherer',
+        via: 'ecosisteme',
       },
     ],
     cadreSurtitre: 'Cadre',
@@ -179,7 +178,7 @@ const textes = {
         titre: 'Join the ecosystem',
         pour: 'You want to meet people, projects and initiatives, find opportunities, share knowledge and stay connected to what MUSIMA is doing.',
         action: 'Join the ecosystem',
-        via: 'adherer',
+        via: 'ecosisteme',
       },
     ],
     cadreSurtitre: 'The frame',
@@ -235,7 +234,7 @@ const textes = {
         titre: 'Participar en l’ecosistema',
         pour: 'Vols conèixer persones, projectes i iniciatives, descobrir oportunitats, compartir coneixements i mantenir-te connectat a la dinàmica MUSIMA.',
         action: 'Unir-me a l’ecosistema',
-        via: 'adherer',
+        via: 'ecosisteme',
       },
     ],
     cadreSurtitre: 'Marc',
@@ -252,10 +251,12 @@ const x = textes[langue];
    passe en pleine largeur, sur fond profond. La hiérarchie est la
    recommandation — six cartes identiques n'en recommandent aucune. */
 const [principale, ...secondaires] = x.voies;
-/* Les six parcours de cette page correspondent chacun à un motif du
-   formulaire de contact. */
+/* Cinq parcours ouvrent le formulaire de contact sur leur motif ; le
+   sixième, l'écosystème, a sa page et son propre formulaire. */
 const lienVoie = (via: string) =>
-  `${chemin(langue, 'contact')}?${parametreMotif[langue]}=${via}#${ancreFormulaire[langue]}`;
+  via === 'ecosisteme'
+    ? chemin(langue, 'ecosysteme')
+    : `${chemin(langue, 'contact')}?${parametreMotif[langue]}=${via}#${ancreFormulaire[langue]}`;
 ---
 
 <Base

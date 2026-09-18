@@ -13,9 +13,9 @@ import type { Langue } from './config';
    n'existent que sur l'accueil.
    ================================================================== */
 
-/** Ancre du bloc écosystème, traduite comme le reste des adresses.
-    Trois boutons pointent dessus : le bloc lui-même, la sixième voie
-    de la page Participer, et l'entrée « Ecosistema » du menu. */
+/** Ancre du bloc écosystème sur l'accueil, traduite comme le reste des
+    adresses. Depuis que l'écosystème a sa page, plus rien n'y mène sur
+    le site ; elle reste pour les liens déjà partagés vers /#ecosistema. */
 export const ancreEcosysteme: Record<Langue, string> = {
   es: 'ecosistema', fr: 'ecosysteme', en: 'ecosystem', ca: 'ecosistema',
 };

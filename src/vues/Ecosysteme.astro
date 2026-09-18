@@ -1,0 +1,40 @@
+---
+import Base from '~/layouts/Base.astro';
+import EntetePage from '~/components/EntetePage.astro';
+import FormulaireEcosysteme from '~/components/FormulaireEcosysteme.astro';
+import type { Langue } from '~/i18n/config';
+import { ancreFormulaireEcosysteme, textes } from '~/i18n/ecosysteme';
+
+/* La page de l'écosystème : musima.org/ecosistema, imprimé sur une
+   bâche. Un en-tête, un formulaire, rien d'autre — la page est elle-même
+   l'appel, elle n'en a pas besoin d'un second en bas. Souvent ouverte
+   depuis un QR, debout, sur téléphone : le formulaire est pensé pour ça. */
+interface Props { langue: Langue; alternatives: Record<Langue, string> }
+const { langue, alternatives } = Astro.props;
+const t = textes[langue];
+---
+
+<Base titre={t.titre} description={t.meta} langue={langue} alternatives={alternatives}>
+  <EntetePage
+    surtitre={t.surtitre}
+    titre={t.titre}
+    chapo={t.intro[0]}
+    ariane={[{ libelle: t.surtitre }]}
+  ><p class="entete-page__corps ecosysteme__invite">{t.intro[1]}</p></EntetePage>
+
+  <section class="section conteneur ecosysteme" id={ancreFormulaireEcosysteme[langue]}>
+    <div class="ecosysteme__form">
+      <FormulaireEcosysteme langue={langue} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* La seconde phrase de l'en-tête porte la question et l'invitation :
+     elle reste en pleine encre, pas en douce comme le chapô. */
+  .ecosysteme__invite { color: var(--encre); max-width: 42rem; text-wrap: pretty; }
+  /* Une colonne de lecture : sur grand écran le formulaire ne s'étale
+     pas sur toute la largeur, les champs garderaient une taille de
+     phrase et les pastilles feraient une seule longue ligne. */
+  .ecosysteme__form { max-width: 44rem; }
+</style>

@@ -32,6 +32,9 @@ export const segments = {
   recits:          { es: 'relatos',       fr: 'recits',           en: 'stories',       ca: 'relats' },
   galerie:         { es: 'galeria',       fr: 'galerie',          en: 'gallery',       ca: 'galeria' },
   engagement:      { es: 'participar',    fr: 's-engager',        en: 'get-involved',  ca: 'participa' },
+  /* Imprimé sur une bâche en septembre 2026 : musima.org/ecosistema.
+     Ce segment ne change plus, jamais. */
+  ecosysteme:      { es: 'ecosistema',    fr: 'ecosysteme',       en: 'ecosystem',     ca: 'ecosistema' },
   contact:         { es: 'contacto',      fr: 'contact',          en: 'contact',       ca: 'contacte' },
   legal:           { es: 'aviso-legal',   fr: 'mentions-legales', en: 'legal-notice',  ca: 'avis-legal' },
   confidentialite: { es: 'privacidad',    fr: 'confidentialite',  en: 'privacy',       ca: 'privacitat' },

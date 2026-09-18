@@ -30,6 +30,7 @@ import Recit from '~/vues/Recit.astro';
 import Galerie from '~/vues/Galerie.astro';
 import Album from '~/vues/Album.astro';
 import Engagement from '~/vues/Engagement.astro';
+import Ecosysteme from '~/vues/Ecosysteme.astro';
 import Contact from '~/vues/Contact.astro';
 import Legal from '~/vues/Legal.astro';
 import Confidentialite from '~/vues/Confidentialite.astro';
@@ -126,6 +127,7 @@ const commun = { langue, alternatives };
 {vue === 'recits' && <Recits {...commun} />}
 {vue === 'galerie' && <Galerie {...commun} />}
 {vue === 'engagement' && <Engagement {...commun} />}
+{vue === 'ecosysteme' && <Ecosysteme {...commun} />}
 {vue === 'contact' && <Contact {...commun} />}
 {vue === 'legal' && <Legal {...commun} />}
 {vue === 'confidentialite' && <Confidentialite {...commun} />}

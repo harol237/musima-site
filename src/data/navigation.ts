@@ -1,6 +1,5 @@
 import { chemin, type CleSegment, type Langue } from '~/i18n/config';
 import { traducteur, type CleUi } from '~/i18n/ui';
-import { ancreEcosysteme } from '~/i18n/accueil';
 
 /* Navigation — 4 rubriques + 1 action, construites pour la langue de la
    page. Modifier ce fichier suffit à changer le menu partout : en-tête,
@@ -36,15 +35,15 @@ const entree = (
   };
 };
 
-/* L'écosystème n'a pas de page : l'entrée mène au bloc de l'accueil.
-   Pas de `rubrique` — il n'y a pas de collection derrière, donc rien à
-   masquer quand elle est vide ; `apercu` lui donne malgré tout sa propre
-   vignette dans le menu plein écran. */
+/* L'écosystème est une page depuis septembre 2026 (musima.org/ecosistema,
+   imprimé sur une bâche). Pas de `rubrique` — il n'y a pas de collection
+   derrière, donc rien à masquer ; `apercu` lui donne sa propre vignette
+   dans le menu plein écran. */
 const entreeEcosysteme = (langue: Langue): Entree => {
   const t = traducteur(langue);
   return {
     libelle: t('navEcosysteme'),
-    url: `${chemin(langue)}#${ancreEcosysteme[langue]}`,
+    url: chemin(langue, 'ecosysteme'),
     description: t('navEcosystemeDesc'),
     apercu: 'ecosysteme',
   };
