@@ -316,26 +316,16 @@ const messages = {
 
   /* Pastilles : une cible de la taille d'un pouce, l'étiquette entière
      cliquable. Le contrôle natif est rendu invisible mais reste dans le
-     flux : le clavier et les lecteurs d'écran le trouvent, et la
-     pastille montre l'état par :has(). */
+     flux — le clavier et les lecteurs d'écran le trouvent — et c'est le
+     `span` qui porte l'apparence.
+
+     L'état coché se lit par `input:checked + span`, un sélecteur que
+     tous les navigateurs connaissent depuis toujours : sur un appareil
+     ancien, la pastille sélectionnée reste visible. `:has()` n'aurait
+     rien montré là où il n'est pas connu, et c'est précisément sur un
+     vieux téléphone, à une rencontre, que ce formulaire sera rempli. */
   .pastilles { display: flex; flex-wrap: wrap; gap: var(--e-2); }
-  .pastille {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4em;
-    padding: 0.7em 0.95em;
-    border: 1px solid var(--trait-fort);
-    border-radius: var(--r-pilule);
-    background: var(--surface);
-    font-family: var(--f-titre);
-    font-size: var(--t-300);
-    font-weight: 600;
-    line-height: 1;
-    color: var(--encre);
-    cursor: pointer;
-    transition: background var(--transition), color var(--transition), border-color var(--transition);
-  }
+  .pastille { position: relative; display: inline-flex; cursor: pointer; }
   .pastille input {
     position: absolute;
     inset: 0;
@@ -345,10 +335,29 @@ const messages = {
     opacity: 0;
     cursor: pointer;
   }
-  .pastille:has(input:checked) { background: var(--encre); border-color: var(--encre); color: var(--papier); }
-  .pastille:has(input:checked) span::before { content: '✓ '; color: var(--or); }
-  .pastille:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
-  .pastille:has(input:disabled) { opacity: 0.6; cursor: default; }
+  .pastille span {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.7em 0.95em;
+    border: 1px solid var(--trait-fort);
+    border-radius: var(--r-pilule);
+    background: var(--surface);
+    font-family: var(--f-titre);
+    font-size: var(--t-300);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--encre);
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+  }
+  .pastille input:checked + span {
+    background: var(--encre);
+    border-color: var(--encre);
+    color: var(--papier);
+  }
+  /* La coche double la couleur : l'état ne tient pas qu'au contraste. */
+  .pastille input:checked + span::before { content: '✓'; color: var(--or); margin-right: 0.4em; }
+  .pastille input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .pastille input:disabled + span { opacity: 0.6; }
 
   .consentement {
     display: flex; align-items: flex-start; gap: var(--e-3);
